@@ -12,9 +12,11 @@
 - `CLAUDE.md` — протокол поведения (грузится автоматически каждой сессией).
 - `SYSTEM.md` — устройство: контуры хранения, модель заметки, хранение и загрузка.
 - `BOOTSTRAP.md` — промпт загрузки системы.
-- `memory/memory.md` — снимок канонической памяти (эталон — в Drive).
-- `vault/` — база знаний: `00-index` (карта, метки), `10-sources`, `20-notes`,
-  `30-entities`, `40-reports`, `_templates`.
+- `docs/` — **канон знаний** (кураторский): `01-strategy` … `07-principles`;
+  `docs/private/` — поток-1, вне git.
+- `reference/` — оригиналы методологий. `memory/memory.md` — дословный снимок памяти с Drive.
+- `vault/` — **рабочие заметки** из новых ингестов: `00-index` (карта, метки),
+  `10-sources`, `20-notes`, `30-entities`, `40-reports`, `_templates`.
 - `scripts/` — `extract.py` (файл → текст), `pdf_ru.py` (отчёт → кириллический PDF),
   `setup.sh`, `requirements.txt`.
 - `.claude/skills/` — `boot`, `ingest`, `report`.
