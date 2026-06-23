@@ -1,0 +1,869 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MainExperts. Сверочный лист системы</title>
+<style>
+  :root{
+    --bg:#EEF1F5;
+    --surface:#FFFFFF;
+    --ink:#18202E;
+    --ink-2:#5A6678;
+    --ink-3:#8A93A2;
+    --line:#DCE1E8;
+    --line-2:#C9D0DA;
+    --axis:#243B5A;
+    --axis-soft:#2E4A6B;
+    --ok:#2F7D5B;
+    --ok-bg:#E7F2EC;
+    --draft:#B5852A;
+    --draft-bg:#F7EEDB;
+    --gap:#6E7686;
+    --gap-bg:#EEF0F3;
+    --later:#5C7CA6;
+    --later-bg:#E9EFF6;
+    --risk:#B0463C;
+    --risk-bg:#F7E7E4;
+    --focus:#2E4A6B;
+    --radius:10px;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --serif:Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 20px 96px}
+
+  header.top{margin-bottom:26px}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-3)}
+  h1{font-family:var(--sans);font-weight:680;font-size:25px;line-height:1.2;margin:6px 0 8px}
+  .sub{color:var(--ink-2);max-width:64ch}
+  .meta{margin-top:14px;display:flex;gap:18px;flex-wrap:wrap;font-family:var(--mono);
+    font-size:11.5px;color:var(--ink-3);letter-spacing:.03em}
+
+  .progress{margin:22px 0 8px;background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--radius);padding:14px 16px;display:flex;gap:22px;flex-wrap:wrap;align-items:center}
+  .progress .p-item{display:flex;align-items:baseline;gap:8px}
+  .progress .num{font-family:var(--mono);font-size:20px;font-weight:600}
+  .progress .lbl{font-size:12px;color:var(--ink-2)}
+  .num.ok{color:var(--ok)} .num.draft{color:var(--draft)}
+  .num.gap{color:var(--gap)} .num.later{color:var(--later)} .num.risk{color:var(--risk)}
+
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 4px}
+  button.tool{font-family:var(--sans);font-size:13px;color:var(--ink);background:var(--surface);
+    border:1px solid var(--line-2);border-radius:8px;padding:7px 13px;cursor:pointer}
+  button.tool:hover{border-color:var(--axis-soft)}
+  button.tool:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+  .saved{font-family:var(--mono);font-size:11px;color:var(--ink-3);align-self:center;margin-left:4px}
+  input[type=file]{display:none}
+
+  .axis-area{position:relative;margin-top:10px;padding-left:30px}
+  .axis-line{position:absolute;left:9px;top:14px;bottom:14px;width:2px;background:var(--line-2)}
+
+  .module{position:relative;background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--radius);margin:14px 0;overflow:hidden}
+  .module::before{content:"";position:absolute;left:-21.5px;top:22px;width:11px;height:11px;
+    border-radius:50%;background:var(--bg);border:2px solid var(--line-2)}
+  .module[data-state=ok]::before{border-color:var(--ok);background:var(--ok)}
+  .module[data-state=draft]::before{border-color:var(--draft);background:var(--draft)}
+  .module[data-state=gap]::before{border-color:var(--gap);background:var(--bg)}
+  .module[data-state=later]::before{border-color:var(--later);background:var(--bg)}
+  .module[data-state=risk]::before{border-color:var(--risk);background:var(--risk)}
+
+  .m-head{display:flex;align-items:flex-start;gap:14px;padding:16px 18px;cursor:pointer;user-select:none}
+  .m-head:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+  .m-no{font-family:var(--mono);font-size:13px;color:var(--ink-3);padding-top:2px;min-width:26px}
+  .m-title-area{flex:1;min-width:0}
+  .m-title{font-weight:640;font-size:16px}
+  .m-note-line{color:var(--ink-2);font-size:13px;margin-top:3px}
+  .m-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .chev{color:var(--ink-3);font-size:12px;transition:transform .18s ease;font-family:var(--mono)}
+  .module.open .chev{transform:rotate(90deg)}
+
+  .stage{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;
+    padding:3px 8px;border-radius:999px;border:1px solid var(--line-2);color:var(--ink-2);white-space:nowrap}
+  .stage.now{color:var(--axis);border-color:var(--axis-soft);background:#EAF0F7}
+  .stage.scale{color:var(--later);border-color:#A9C0DC;background:var(--later-bg)}
+  .stage.excess{color:var(--ink-3);background:var(--gap-bg)}
+
+  .m-body{padding:0 18px 18px 58px;display:none}
+  .module.open .m-body{display:block}
+  .m-body.shallow{padding-left:18px}
+
+  .status-row{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 14px}
+  .status-row .seg{font-family:var(--mono);font-size:11px;letter-spacing:.02em;padding:6px 10px;
+    border:1px solid var(--line-2);border-radius:7px;cursor:pointer;color:var(--ink-2);background:#fff}
+  .seg[aria-pressed=true][data-v=ok]{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+  .seg[aria-pressed=true][data-v=draft]{background:var(--draft-bg);border-color:var(--draft);color:var(--draft)}
+  .seg[aria-pressed=true][data-v=gap]{background:var(--gap-bg);border-color:var(--gap);color:var(--gap)}
+  .seg[aria-pressed=true][data-v=later]{background:var(--later-bg);border-color:var(--later);color:var(--later)}
+  .seg[aria-pressed=true][data-v=risk]{background:var(--risk-bg);border-color:var(--risk);color:var(--risk)}
+  .seg:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+  .subs{border-top:1px solid var(--line);margin-top:4px}
+  .sub{padding:15px 0;border-bottom:1px solid var(--line)}
+  .sub:last-child{border-bottom:none}
+  .sub-head{display:flex;align-items:baseline;gap:10px}
+  .sub-no{font-family:var(--mono);font-size:12px;color:var(--ink-3);min-width:34px}
+  .sub-title{font-weight:600;font-size:14.5px}
+  .sub-tag{margin-left:auto;font-family:var(--mono);font-size:10px;letter-spacing:.04em;
+    text-transform:uppercase;padding:2px 7px;border-radius:999px}
+  .tag-ok{background:var(--ok-bg);color:var(--ok)}
+  .tag-draft{background:var(--draft-bg);color:var(--draft)}
+  .tag-gap{background:var(--gap-bg);color:var(--gap)}
+  .tag-risk{background:var(--risk-bg);color:var(--risk)}
+  .sub-body{padding-left:44px;margin-top:8px;color:var(--ink-2);font-size:13.5px}
+  .sub-body p{margin:0 0 8px}
+
+  .mission-block{font-family:var(--serif);font-size:17px;line-height:1.45;color:var(--ink);
+    border-left:3px solid var(--axis-soft);padding:4px 0 4px 16px;margin:10px 0}
+  .mission-block .role{font-family:var(--sans);font-size:11px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:2px}
+  .mini{font-size:12.5px;color:var(--ink-3)}
+
+  .method{background:#F4F6F9;border:1px solid var(--line);border-radius:8px;padding:12px 14px;
+    margin:12px 0;font-size:13px;color:var(--ink)}
+  .method h5{margin:0 0 7px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--axis-soft);font-family:var(--mono)}
+  .method ol{margin:6px 0 0;padding-left:20px}
+  .method ol li{margin:4px 0}
+  .method .chain{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);line-height:1.7}
+
+  .callout{border-left:3px solid var(--risk);background:var(--risk-bg);padding:10px 12px;
+    border-radius:0 8px 8px 0;margin:12px 0;font-size:13px;color:var(--ink)}
+  .callout b{color:var(--risk)}
+
+  .crit{list-style:none;margin:10px 0 0;padding:0}
+  .crit li{display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:13.5px;color:var(--ink)}
+  .crit input{margin-top:3px;width:16px;height:16px;accent-color:var(--axis);flex-shrink:0;cursor:pointer}
+  .crit label{cursor:pointer}
+  .crit-src{font-family:var(--mono);font-size:10px;color:var(--ink-3);margin-left:6px}
+
+  textarea.note{width:100%;margin-top:10px;min-height:46px;resize:vertical;font-family:var(--sans);
+    font-size:13.5px;color:var(--ink);border:1px solid var(--line-2);border-radius:8px;padding:9px 11px;
+    background:#FCFDFE}
+  textarea.note:focus-visible{outline:2px solid var(--focus);outline-offset:1px;border-color:var(--axis-soft)}
+
+  .pending{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);padding:2px 0;line-height:1.7}
+
+  footer.foot{margin-top:34px;color:var(--ink-3);font-size:12px;font-family:var(--mono);
+    letter-spacing:.02em;line-height:1.7}
+
+  @media (max-width:560px){
+    .m-body{padding-left:18px}
+    .sub-body{padding-left:0}
+    h1{font-size:21px}
+  }
+  @media (prefers-reduced-motion:reduce){ *{transition:none!important} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="eyebrow">MainExperts · сверочный лист системы</div>
+    <h1>Система по чек-листу. Модуль 1: верхушка</h1>
+    <p class="sub">Каркас и методика взяты из «Чек-листа Системы» Федоренко (блок 1, занятия 1 и 2), но наполняются по стадии проекта: каждый блок помечен «нужно сейчас», «нужно при масштабе» или «избыточно». Верхушка проработана, остальное стоит дорожной картой.</p>
+    <div class="meta">
+      <span>версия 0.3 · 23.06.2026</span>
+      <span>поток: зонтик над обоими, операционка → поток 2</span>
+      <span>статус автосохраняется в браузере</span>
+    </div>
+  </header>
+
+  <div class="progress" id="progress" aria-label="Сводка статусов">
+    <div class="p-item"><span class="num ok" data-count="ok">0</span><span class="lbl">готово</span></div>
+    <div class="p-item"><span class="num draft" data-count="draft">0</span><span class="lbl">черновик</span></div>
+    <div class="p-item"><span class="num gap" data-count="gap">0</span><span class="lbl">пробел</span></div>
+    <div class="p-item"><span class="num later" data-count="later">0</span><span class="lbl">при масштабе</span></div>
+    <div class="p-item"><span class="num risk" data-count="risk">0</span><span class="lbl">риск</span></div>
+  </div>
+
+  <div class="toolbar">
+    <button class="tool" id="expandAll">Раскрыть всё</button>
+    <button class="tool" id="collapseAll">Свернуть всё</button>
+    <button class="tool" id="exportBtn">Скачать состояние (JSON)</button>
+    <button class="tool" id="importBtn">Загрузить состояние</button>
+    <button class="tool" id="resetBtn">Сбросить</button>
+    <input type="file" id="importFile" accept="application/json">
+    <span class="saved" id="savedFlag"></span>
+  </div>
+
+  <div class="axis-area">
+    <div class="axis-line"></div>
+
+    <!-- ============ MODULE 1: ВЕРХУШКА ============ -->
+    <section class="module open" data-id="m1" data-state="draft">
+      <div class="m-head" tabindex="0" role="button" aria-expanded="true">
+        <div class="m-no">01</div>
+        <div class="m-title-area">
+          <div class="m-title">Верхушка: миссия, видение, ценности, политики, потребители</div>
+          <div class="m-note-line">Миссия и потребители проработаны. Пробелы: видение, ценности компании, политика качества, кадровая политика. Дополнено методикой блока 1 (занятия 1–4). Скрытый риск: регулятор как сторона.</div>
+        </div>
+        <div class="m-right">
+          <span class="stage now">сейчас</span>
+          <span class="chev">▶</span>
+        </div>
+      </div>
+      <div class="m-body shallow">
+        <div class="status-row" data-status-for="m1">
+          <span class="seg" data-v="ok" role="button" aria-pressed="false">готово</span>
+          <span class="seg" data-v="draft" role="button" aria-pressed="true">черновик</span>
+          <span class="seg" data-v="gap" role="button" aria-pressed="false">пробел</span>
+          <span class="seg" data-v="later" role="button" aria-pressed="false">при масштабе</span>
+          <span class="seg" data-v="risk" role="button" aria-pressed="false">риск</span>
+        </div>
+
+        <div class="subs">
+
+          <!-- 1.0 КАК УСТРОЕНА СИСТЕМА -->
+          <div class="sub">
+            <div class="sub-head">
+              <span class="sub-no">1.0</span>
+              <span class="sub-title">Как устроена устойчивая система</span>
+              <span class="sub-tag tag-draft">методика</span>
+            </div>
+            <div class="sub-body">
+              <p>Прямой ответ методики на вопрос блока. Система держится на трёх базовых составляющих, их нельзя смешивать.</p>
+              <div class="method">
+                <h5>Три базовых составляющих системы управления (Федоренко, блок 1)</h5>
+                <ol>
+                  <li><b>Идеология:</b> миссия, ценности, политика качества, кадровая политика — верхушка, этот модуль.</li>
+                  <li><b>Процессы:</b> процессная модель, схемы и алгоритмы процессов, регламенты и инструкции — модули 4–6.</li>
+                  <li><b>Развитие людей:</b> кадровая политика, корпоративный кодекс, система процессов развития сотрудников — частично здесь (1.6), частично модуль 9.</li>
+                </ol>
+              </div>
+              <div class="method">
+                <h5>Единая система смыслов</h5>
+                <div class="chain">Миссия (зачем существуем) → Ценности (что ценно и почему) → Политика качества · Кадровая политика · Корп. кодекс (как закреплено в работе и поведении)</div>
+                <p style="margin:8px 0 0">Каждый документ верхушки следует из предыдущего; разрыв между уровнями ломает систему при росте. Все тексты утверждаются и проверяемы: каждое слово обеспечено процессом, целью и показателем, иначе это лозунг.</p>
+              </div>
+              <p class="mini">Двенадцать шагов построения устойчивой системы из методики (орг. структура и процессы → стыковка и реестр регулирующих воздействий → планирование и аналитика → PDCA и шесть обязательных процедур → улучшения → мониторинг и аудиты → корп. управление → развитие компетенций → инструкция ко всей системе) разложены ниже по модулям 2–11 как дорожная карта.</p>
+            </div>
+          </div>
+
+          <!-- 1.1 -->
+          <div class="sub">
+            <div class="sub-head">
+              <span class="sub-no">1.1</span>
+              <span class="sub-title">Орган управления и лидеры изменений</span>
+              <span class="sub-tag tag-draft">черновик</span>
+            </div>
+            <div class="sub-body">
+              <p>В оригинале «Совет территориальных органов». У вас де-факто: основатель плюс операционное ядро. Формального органа нет, и на пяти людях он не нужен. Зафиксировать нужно одно: кто единолично владеет каждым из двух потоков выручки, чтобы решения не размывались.</p>
+              <div class="method">
+                <h5>Лидеры изменений (Федоренко)</h5>
+                Система меняется силами трёх ролей: собственник; ответственный сотрудник с полномочиями на разработку, внедрение и улучшение (и оценку зрелости); внешняя экспертная и методическая поддержка. Распредели эти три роли поимённо: владелец потока 1, владелец потока 2, кто отвечает за саму систему.
+              </div>
+              <p class="mini" style="margin-top:10px"><b>Распределение (ответ где есть, иначе пробел):</b><br>
+                — Владелец потока 1 (HNW): <b>Макс</b> — канал и продажи. <span style="color:var(--ink-3)">docs/01</span><br>
+                — Ответственный за систему процессов: <b>Игорь</b> — ведение системы, сквозная аналитика. <span style="color:var(--ink-3)">docs/07</span><br>
+                — Владелец потока 2 (воронка): <b style="color:var(--gap)">пробел</b> — стратегию ведёт Игорь, сборку Александр; единый владелец выручки не назначен. <span style="color:var(--ink-3)">решение Макса</span><br>
+                — Внешняя методическая поддержка: методбаза Федоренко; персональный методист — <b style="color:var(--gap)">пробел</b>.</p>
+              <p class="mini">Шаг 1 построения системы (методика): определить орг. структуру и систему процессов, распределить функции, ответственность, полномочия, исключить дублирование и двойное подчинение.</p>
+            </div>
+          </div>
+
+          <!-- 1.2 МИССИЯ -->
+          <div class="sub">
+            <div class="sub-head">
+              <span class="sub-no">1.2</span>
+              <span class="sub-title">Миссия</span>
+              <span class="sub-tag tag-draft">не финал</span>
+            </div>
+            <div class="sub-body">
+              <p>Миссия отвечает на вопрос «зачем существует организация». Это глобальный ориентир на годы, а не слоган. Согласовано 18.06 из 10 твоих кандидатов, три уровня разведены и смешивать их нельзя.</p>
+
+              <div class="mission-block">
+                <span class="role">мастер-миссия</span>
+                Навигация человеческого развития в мире, который меняется быстрее, чем образование.
+              </div>
+              <div class="mission-block">
+                <span class="role">сегментная ценность · родитель</span>
+                Видеть развитие ребёнка целиком: состояние, сильные стороны, риски и следующий шаг, а не россыпь тестов и советов.
+              </div>
+              <div class="mission-block">
+                <span class="role">сегментная ценность · подросток</span>
+                Ты не обязан заранее знать, кем станешь, но можешь понять, что в тебе уже растёт и какой шаг сделать сейчас.
+              </div>
+              <div class="mission-block">
+                <span class="role">сегментная ценность · взрослый</span>
+                Оставаться сильным, когда меняются роли, профессии и правила игры.
+              </div>
+              <div class="mission-block">
+                <span class="role">бренд-строка</span>
+                Видим траекторию человека раньше, чем она станет строчкой в резюме.
+              </div>
+              <p class="mini">Кандидат про «большие техзадачи и людей, которые учатся» отложен в инвесторскую и B2B-подачу: для родителя не работает, относится к потоку 1.</p>
+
+              <div class="method">
+                <h5>Метод вывода и проверки (Федоренко)</h5>
+                Миссия бизнеса синхронизируется по уровням, от основателя к обществу. Проверь, что наша мастер-миссия не противоречит ни одному:
+                <div class="chain" style="margin-top:8px">
+                  основатель (Макс) → сотрудники → бизнес → отрасль → государство и сограждане → общество
+                </div>
+                <p style="margin:8px 0 0">Контроль: совпадает ли миссия с личной миссией Макса и с уровнем «человек, семья, общество». Если на каком-то уровне разрыв, миссия не удержит систему при росте.</p>
+              </div>
+
+              <div class="method">
+                <h5>Восемь вопросов к миссии (Федоренко, адаптировано под нас)</h5>
+                <ol>
+                  <li>К какой сфере благополучия относится продукт. У нас: развитие человека, выбор пути без потерянных лет.</li>
+                  <li>Кто клиент и его скрытые и явные ожидания, чем проверяем. Есть из custdev: четыре персонажа, видеозвонок до покупки, отчёт плюс эксперт.</li>
+                  <li>Вовлечён ли клиент в продукт. У нас аналог: повторный тест и лонгитюдный профиль, динамика по апдейтам.</li>
+                  <li>Чем меряем качество и какова динамика. Узкое место всех трёх слоёв: экспертная проверка отчёта; мерим долю правок и срок.</li>
+                  <li>Динамика эффективности компании. Сквозная аналитика: лид, конверсия, LTV, ДРР.</li>
+                  <li>Что для нас «наилучшее качество», кто эталон. Открытый вопрос, привязать к O*NET и ESCO и к экспертной планке.</li>
+                  <li>Что для нас «этика созидания» применительно к ребёнку: данные несовершеннолетних, не навязать неверный путь, граница психодиагностики.</li>
+                  <li>Влияние на ребёнка, семью, общество. Вместо экологического следа у образовательной платформы здесь стоит ответственность за данные и за решения о детях.</li>
+                </ol>
+              </div>
+
+              <div class="callout">
+                <b>Расхождение, помечаю явно.</b> Типовой шаблон миссии Федоренко («вклад в развитие благополучия граждан, посредством создания продукта наилучшего качества, в соответствии с этическими и экологическими принципами созидания») рассчитан на госструктуру и крупный бизнес. Он слабее нашей мастер-миссии и не бьёт в боль ЦА. Используем его как тест, а не как формулировку. Экологический след для нас нерелевантен, заменён этикой в отношении несовершеннолетних.
+              </div>
+
+              <p style="margin-top:12px;color:var(--ink)">Чтобы закрыть пункт, нужно решение, не ещё одно обсуждение. Критерии:</p>
+              <ul class="crit" data-crit-for="mission">
+                <li><input type="checkbox" id="c-m1"><label for="c-m1">Три уровня разведены, мастер-миссию не используем как слоган</label></li>
+                <li><input type="checkbox" id="c-m2"><label for="c-m2">Финальная мастер-формулировка утверждена тобой и Максом</label></li>
+                <li><input type="checkbox" id="c-m3"><label for="c-m3">Держит обоих субъектов: родитель решает, ребёнок проживает</label></li>
+                <li><input type="checkbox" id="c-m4"><label for="c-m4">Отсекает: видно, чего мы НЕ делаем, а не «развитие вообще»</label></li>
+                <li><input type="checkbox" id="c-m5"><label for="c-m5">Не противоречит разделению потоков (зонтик общий, подача разная)</label></li>
+                <li><input type="checkbox" id="c-mf1"><label for="c-mf1">Каждое слово формирует каркас всей системы<span class="crit-src">Федоренко</span></label></li>
+                <li><input type="checkbox" id="c-mf2"><label for="c-mf2">Каждое слово проверяемо и считаемо<span class="crit-src">Федоренко</span></label></li>
+                <li><input type="checkbox" id="c-mf3"><label for="c-mf3">Клиент в центре формулировки<span class="crit-src">Федоренко</span></label></li>
+                <li><input type="checkbox" id="c-mf4"><label for="c-mf4">Задан масштаб: рынок, а не одна точка<span class="crit-src">Федоренко</span></label></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 1.3 ВИДЕНИЕ -->
+          <div class="sub">
+            <div class="sub-head">
+              <span class="sub-no">1.3</span>
+              <span class="sub-title">Видение</span>
+              <span class="sub-tag tag-gap">пробел</span>
+            </div>
+            <div class="sub-body">
+              <p>Федоренко разводит миссию и видение, и это важно: миссия это «зачем», видение это «во что мы растём», образ будущего, дом, который строим. У нас этого артефакта нет.</p>
+              <p class="mini">Формат: полстраницы текста, реальный долгосрочный ориентир, без фантазий. Что писать: каким станет MainExperts через три-пять лет (платформа Costco с двумя сторонами подписки и лонгитюдными профилями), а не как звучит слоган.</p>
+            </div>
+          </div>
+
+          <!-- 1.4 ЦЕННОСТИ -->
+          <div class="sub">
+            <div class="sub-head">
+              <span class="sub-no">1.4</span>
+              <span class="sub-title">Ценности компании (внутренние)</span>
+              <span class="sub-tag tag-gap">пробел</span>
+            </div>
+            <div class="sub-body">
+              <p>Не путать с сегментными ценностями из пункта 1.2: те это рыночное обещание клиенту, а это внутренний код, как работает команда. По Федоренко ценности дают строить корпоративную культуру, тогда как миссия задаёт процессы. Формат: ключевое слово плюс ключевая фраза на каждую ценность.</p>
+              <div class="method">
+                <h5>Метод (Федоренко, занятие 4)</h5>
+                Ценности следуют из миссии и отвечают на вопрос «что ценно? почему? как мы это понимаем?». Каждая ценность — ключевое слово плюс ключевая фраза. Это звено единой системы смыслов: миссия → ценности → кадровая политика и корпоративный кодекс (модели поведения в рабочих ситуациях).
+              </div>
+              <p class="mini">Кандидаты из практики (черновик, не утверждено):<br>
+                 — Критическая проверка вместо согласия: гипотезу называем гипотезой.<br>
+                 — Каждый факт несёт источник, дату и ссылку.<br>
+                 — Два потока выручки ведём раздельно.<br>
+                 — Данные ребёнка защищаем по умолчанию.<br>
+                 — Сжатие важнее объёма: решение, а не презентация.</p>
+            </div>
+          </div>
+
+          <!-- 1.5 ПОЛИТИКА КАЧЕСТВА -->
+          <div class="sub">
+            <div class="sub-head">
+              <span class="sub-no">1.5</span>
+              <span class="sub-title">Политика в области качества</span>
+              <span class="sub-tag tag-draft">зачаток</span>
+            </div>
+            <div class="sub-body">
+              <p>По Федоренко это публичный текст на одну страницу: вы заявляете, что гарантируете качество и стабильность продукта, в логике ИСО 9001. Зачаток есть в рабочей инструкции. Узкое место всех трёх слоёв диктует фокус: качество определяется экспертной проверкой отчёта, её надёжность и мерим.</p>
+              <div class="method">
+                <h5>Что содержит политика качества (Федоренко, занятие 3)</h5>
+                <ol>
+                  <li>Цель и стратегическое направление компании.</li>
+                  <li>Ответственность руководства за деятельность.</li>
+                  <li>Область действия системы менеджмента качества.</li>
+                  <li>Обязательство соответствовать требованиям к продукту и услуге.</li>
+                  <li>Обязательство постоянно совершенствовать систему.</li>
+                </ol>
+                Суть — ответственность и обязательства руководства перед заказчиками, партнёрами, поставщиками, сотрудниками. Утверждается, содержит миссию, лозунг, ценности. Проверяемость: каждое слово обеспечено программой, процессом, целью и результатом.
+              </div>
+              <p class="mini" style="color:var(--gap)">Полный текст политики — пробел, решение за Максом. Каркас для заполнения: ориентация на качество и клиента → инструменты непрерывных улучшений → мониторинг удовлетворённости и аудиты → обязательства руководства → проверяемость.</p>
+              <p class="mini">Кандидат: «Каждый отчёт проходит экспертную проверку до выдачи; доля правок после выдачи и срок проверки контролируются как главный показатель качества».</p>
+            </div>
+          </div>
+
+          <!-- 1.6 КАДРОВАЯ -->
+          <div class="sub">
+            <div class="sub-head">
+              <span class="sub-no">1.6</span>
+              <span class="sub-title">Кадровая политика</span>
+              <span class="sub-tag tag-gap">не сейчас</span>
+            </div>
+            <div class="sub-body">
+              <p>По Федоренко это текст на одну страницу для сотрудников: образ идеального сотрудника и подход к формированию команды. На пяти людях формальный документ избыточен. Помечаю «при масштабе»: вернёмся при найме на роли. Сейчас работает распределение по направлениям (разработка, методология, продукт, операции, платежи).</p>
+              <div class="method">
+                <h5>Пять принципов кадровой политики (Федоренко, занятие 4)</h5>
+                <ol>
+                  <li>Эффективность (окупаемость): вложения в работу с кадрами покрываются результатом.</li>
+                  <li>Комплексность: охватывает все категории сотрудников и все области их работы.</li>
+                  <li>Системность: взаимосвязь всех процессов управления кадрами, учёт всех результатов.</li>
+                  <li>Методичность: анализ выбранных методов, уход от взаимоисключающих инструментов.</li>
+                  <li>Инновационность (научность): современные инструменты достижения целей.</li>
+                </ol>
+                Структура повторяет политику качества: ориентация на клиента и качество процессов → этический кодекс и модели поведения → развитие человека → наставничество и жизненный цикл сотрудника → профессионализм и ответственность руководства.
+              </div>
+              <p class="mini">Уточнение к стадии: документ «при масштабе», но методика помечает кадровую политику как зону наибольших рисков. У нас это смыкается с модулем 10 — кадровая безопасность и доступ к данным несовершеннолетних. Полный текст — <span style="color:var(--gap)">пробел</span>.</p>
+            </div>
+          </div>
+
+          <!-- 1.7 ПОТРЕБИТЕЛИ -->
+          <div class="sub">
+            <div class="sub-head">
+              <span class="sub-no">1.7</span>
+              <span class="sub-title">Иерархия потребителей и сторон</span>
+              <span class="sub-tag tag-ok">проработано</span>
+            </div>
+            <div class="sub-body">
+              <p>Прямые потребители проработаны в custdev. Платформа двусторонняя, потребителей два класса, их нельзя сводить в один.</p>
+              <p class="mini"><b>Семьи:</b> Ольга Защитница 42 (55%), Инесса Лидер 45 (20%), Андрей Стратег 50 (15%), Валерий Технолог 38 (10%).<br>
+                 <b>Эксперты и агентства:</b> арендаторы платформы, приманка это отказ от комиссии с сессий.</p>
+              <p class="mini">Уровни влияния (среды созидания у Федоренко): человек, семья, общество. Для нас это рамка ответственности, а не маркетинг.</p>
+              <p style="color:var(--risk)"><b>Скрытая сторона, которой не было в картах:</b> регулятор. Данные несовершеннолетних, длительное хранение профиля, граница психодиагностики. Не «потребитель», но сторона с правом остановить процесс. Держим как отдельный узел риска, см. модуль 10.</p>
+            </div>
+          </div>
+
+          <!-- 1.8 ДОКУМЕНТЫ -->
+          <div class="sub">
+            <div class="sub-head">
+              <span class="sub-no">1.8</span>
+              <span class="sub-title">Документы, единая система, библиотека практик</span>
+              <span class="sub-tag tag-draft">зачаток</span>
+            </div>
+            <div class="sub-body">
+              <p>В оригинале: управление документацией, управление записями, руководство по качеству (инструкция ко всей системе), библиотека лучших решений. У вас де-факто есть база знаний и рабочая инструкция на Диске, версии по правилу «две версии». Полный набор из шести обязательных процедур относится к модулю 10, здесь достаточно зафиксировать единый источник истины и где он лежит.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <textarea class="note" data-note-for="m1" placeholder="Заметки и решения по верхушке. Сюда пиши финальные формулировки миссии, видения и ценностей, когда утвердите."></textarea>
+      </div>
+    </section>
+
+    <!-- ============ ДОРОЖНАЯ КАРТА: МОДУЛИ 2+ ============ -->
+
+    <section class="module" data-id="m2" data-state="gap">
+      <div class="m-head" tabindex="0" role="button" aria-expanded="false">
+        <div class="m-no">02</div>
+        <div class="m-title-area">
+          <div class="m-title">Цели первого уровня</div>
+          <div class="m-note-line">Цели развития организации и человека в ней. Ждёт ввода.</div>
+        </div>
+        <div class="m-right"><span class="stage now">сейчас</span><span class="chev">▶</span></div>
+      </div>
+      <div class="m-body shallow">
+        <div class="status-row" data-status-for="m2">
+          <span class="seg" data-v="ok" role="button" aria-pressed="false">готово</span>
+          <span class="seg" data-v="draft" role="button" aria-pressed="false">черновик</span>
+          <span class="seg" data-v="gap" role="button" aria-pressed="true">пробел</span>
+          <span class="seg" data-v="later" role="button" aria-pressed="false">при масштабе</span>
+          <span class="seg" data-v="risk" role="button" aria-pressed="false">риск</span>
+        </div>
+        <p class="pending">Перечень ключевых целей (Федоренко): финансы, продукт, кадры, клиент, рынок, безопасность, качество.<br>Каждая по SMART. Тут же развяжем привязку к цели в миллион.</p>
+        <textarea class="note" data-note-for="m2" placeholder="Цели первого уровня…"></textarea>
+      </div>
+    </section>
+
+    <section class="module" data-id="m3" data-state="gap">
+      <div class="m-head" tabindex="0" role="button" aria-expanded="false">
+        <div class="m-no">03</div>
+        <div class="m-title-area">
+          <div class="m-title">Цели второго уровня (Ц1 · Ц2 · Ц3)</div>
+          <div class="m-note-line">Цели качества процессов: результативность, эффективность, качество. Ждёт ввода.</div>
+        </div>
+        <div class="m-right"><span class="stage now">сейчас</span><span class="chev">▶</span></div>
+      </div>
+      <div class="m-body shallow">
+        <div class="status-row" data-status-for="m3">
+          <span class="seg" data-v="ok" role="button" aria-pressed="false">готово</span>
+          <span class="seg" data-v="draft" role="button" aria-pressed="false">черновик</span>
+          <span class="seg" data-v="gap" role="button" aria-pressed="true">пробел</span>
+          <span class="seg" data-v="later" role="button" aria-pressed="false">при масштабе</span>
+          <span class="seg" data-v="risk" role="button" aria-pressed="false">риск</span>
+        </div>
+        <p class="pending">Цели в области качества процессов: результативность, эффективность, качество, взаимосвязи, нет дублирования.<br>Здесь разведём три цели привлечения экспертов: валидация продукта, проверка гипотезы скрининга, накопление опыта.</p>
+        <textarea class="note" data-note-for="m3" placeholder="Цели второго уровня…"></textarea>
+      </div>
+    </section>
+
+    <section class="module" data-id="m4" data-state="gap">
+      <div class="m-head" tabindex="0" role="button" aria-expanded="false">
+        <div class="m-no">04</div>
+        <div class="m-title-area">
+          <div class="m-title">Планирование (P)</div>
+          <div class="m-note-line">Анализ, дизайн-мышление, программа улучшений, дорожные карты, показатели. Ждёт ввода.</div>
+        </div>
+        <div class="m-right"><span class="stage now">сейчас</span><span class="chev">▶</span></div>
+      </div>
+      <div class="m-body shallow">
+        <div class="status-row" data-status-for="m4">
+          <span class="seg" data-v="ok" role="button" aria-pressed="false">готово</span>
+          <span class="seg" data-v="draft" role="button" aria-pressed="false">черновик</span>
+          <span class="seg" data-v="gap" role="button" aria-pressed="true">пробел</span>
+          <span class="seg" data-v="later" role="button" aria-pressed="false">при масштабе</span>
+          <span class="seg" data-v="risk" role="button" aria-pressed="false">риск</span>
+        </div>
+        <p class="pending">По Федоренко: анализ МУП, дизайн-мышление, программа улучшения процессов, стратегия и дорожные карты, показатели.</p>
+        <textarea class="note" data-note-for="m4" placeholder="Планирование…"></textarea>
+      </div>
+    </section>
+
+    <section class="module" data-id="m5" data-state="gap">
+      <div class="m-head" tabindex="0" role="button" aria-expanded="false">
+        <div class="m-no">05</div>
+        <div class="m-title-area">
+          <div class="m-title">Делание (D)</div>
+          <div class="m-note-line">Ресурсы, документированные процедуры, нормативный срок, стандарты. Ждёт ввода.</div>
+        </div>
+        <div class="m-right"><span class="stage now">сейчас</span><span class="chev">▶</span></div>
+      </div>
+      <div class="m-body shallow">
+        <div class="status-row" data-status-for="m5">
+          <span class="seg" data-v="ok" role="button" aria-pressed="false">готово</span>
+          <span class="seg" data-v="draft" role="button" aria-pressed="false">черновик</span>
+          <span class="seg" data-v="gap" role="button" aria-pressed="true">пробел</span>
+          <span class="seg" data-v="later" role="button" aria-pressed="false">при масштабе</span>
+          <span class="seg" data-v="risk" role="button" aria-pressed="false">риск</span>
+        </div>
+        <p class="pending">По Федоренко: обеспечение ресурсами, документированные процедуры, быстрый нормативный срок, инструкции и стандарты ко всем процессам.<br>Схема процесса: вход (кто, что) → цель в области качества → выход (кто, что); регулирующие воздействия сверху, ресурсы снизу.</p>
+        <textarea class="note" data-note-for="m5" placeholder="Делание…"></textarea>
+      </div>
+    </section>
+
+    <section class="module" data-id="m6" data-state="gap">
+      <div class="m-head" tabindex="0" role="button" aria-expanded="false">
+        <div class="m-no">06</div>
+        <div class="m-title-area">
+          <div class="m-title">Контроль (C)</div>
+          <div class="m-note-line">Контроль меньше, результат больше. Системы контроля без белых пятен. Ждёт ввода.</div>
+        </div>
+        <div class="m-right"><span class="stage now">сейчас</span><span class="chev">▶</span></div>
+      </div>
+      <div class="m-body shallow">
+        <div class="status-row" data-status-for="m6">
+          <span class="seg" data-v="ok" role="button" aria-pressed="false">готово</span>
+          <span class="seg" data-v="draft" role="button" aria-pressed="false">черновик</span>
+          <span class="seg" data-v="gap" role="button" aria-pressed="true">пробел</span>
+          <span class="seg" data-v="later" role="button" aria-pressed="false">при масштабе</span>
+          <span class="seg" data-v="risk" role="button" aria-pressed="false">риск</span>
+        </div>
+        <p class="pending">По Федоренко: меньше контроля при большем результате; контроль без белых пятен. Контролируемые параметры выводятся из показателей качества.</p>
+        <textarea class="note" data-note-for="m6" placeholder="Контроль…"></textarea>
+      </div>
+    </section>
+
+    <section class="module" data-id="m7" data-state="gap">
+      <div class="m-head" tabindex="0" role="button" aria-expanded="false">
+        <div class="m-no">07</div>
+        <div class="m-title-area">
+          <div class="m-title">Анализ (A)</div>
+          <div class="m-note-line">Единая система анализа, центр сбора улучшений, самооценка. Ждёт ввода.</div>
+        </div>
+        <div class="m-right"><span class="stage now">сейчас</span><span class="chev">▶</span></div>
+      </div>
+      <div class="m-body shallow">
+        <div class="status-row" data-status-for="m7">
+          <span class="seg" data-v="ok" role="button" aria-pressed="false">готово</span>
+          <span class="seg" data-v="draft" role="button" aria-pressed="false">черновик</span>
+          <span class="seg" data-v="gap" role="button" aria-pressed="true">пробел</span>
+          <span class="seg" data-v="later" role="button" aria-pressed="false">при масштабе</span>
+          <span class="seg" data-v="risk" role="button" aria-pressed="false">риск</span>
+        </div>
+        <p class="pending">По Федоренко: единая цельная система анализа, совет анализа и улучшений, ПРК как центр сбора улучшений, самооценка.<br>При масштабе: оценка производительности, 5С, 360, рейтинговые оценки. Сейчас достаточно сквозной аналитики (Метрика, GA, Data Studio).</p>
+        <textarea class="note" data-note-for="m7" placeholder="Анализ…"></textarea>
+      </div>
+    </section>
+
+    <section class="module" data-id="m8" data-state="gap">
+      <div class="m-head" tabindex="0" role="button" aria-expanded="false">
+        <div class="m-no">08</div>
+        <div class="m-title-area">
+          <div class="m-title">Мониторинг удовлетворённости потребителей</div>
+          <div class="m-note-line">NPS, CSI, LTV; текущий и периодический; службы клиента. Ждёт ввода.</div>
+        </div>
+        <div class="m-right"><span class="stage now">сейчас</span><span class="chev">▶</span></div>
+      </div>
+      <div class="m-body shallow">
+        <div class="status-row" data-status-for="m8">
+          <span class="seg" data-v="ok" role="button" aria-pressed="false">готово</span>
+          <span class="seg" data-v="draft" role="button" aria-pressed="false">черновик</span>
+          <span class="seg" data-v="gap" role="button" aria-pressed="true">пробел</span>
+          <span class="seg" data-v="later" role="button" aria-pressed="false">при масштабе</span>
+          <span class="seg" data-v="risk" role="button" aria-pressed="false">риск</span>
+        </div>
+        <p class="pending">По Федоренко: процесс мониторинга удовлетворённости, показатели NPS, CSI, LTV; текущий и периодический замер; службы клиента; работа с несоответствиями.</p>
+        <textarea class="note" data-note-for="m8" placeholder="Мониторинг потребителей…"></textarea>
+      </div>
+    </section>
+
+    <section class="module" data-id="m9" data-state="later">
+      <div class="m-head" tabindex="0" role="button" aria-expanded="false">
+        <div class="m-no">09</div>
+        <div class="m-title-area">
+          <div class="m-title">Роли и зрелость</div>
+          <div class="m-note-line">Высшее руководство, разработчики, аудиторы, сотрудники. Часть избыточна сейчас.</div>
+        </div>
+        <div class="m-right"><span class="stage scale">при масштабе</span><span class="chev">▶</span></div>
+      </div>
+      <div class="m-body shallow">
+        <div class="status-row" data-status-for="m9">
+          <span class="seg" data-v="ok" role="button" aria-pressed="false">готово</span>
+          <span class="seg" data-v="draft" role="button" aria-pressed="false">черновик</span>
+          <span class="seg" data-v="gap" role="button" aria-pressed="false">пробел</span>
+          <span class="seg" data-v="later" role="button" aria-pressed="true">при масштабе</span>
+          <span class="seg" data-v="risk" role="button" aria-pressed="false">риск</span>
+        </div>
+        <p class="pending">По Федоренко: высшее руководство (оперативный и стратегический анализ, СМК), разработчики, аудиторы, сотрудники (PDCA в должностных инструкциях).<br>Внешний аудит IAF, корпоративный университет, совет директоров, стратегический комитет: избыточно на пяти людях. Сейчас держим роль владельца процесса и наставника.</p>
+        <textarea class="note" data-note-for="m9" placeholder="Роли и зрелость…"></textarea>
+      </div>
+    </section>
+
+    <section class="module" data-id="m10" data-state="risk">
+      <div class="m-head" tabindex="0" role="button" aria-expanded="false">
+        <div class="m-no">10</div>
+        <div class="m-title-area">
+          <div class="m-title">КД и ПД, риски, регулирующие воздействия</div>
+          <div class="m-note-line">Корректирующие и предупреждающие действия во всех решениях. Сюда сводим путь риска.</div>
+        </div>
+        <div class="m-right"><span class="stage now">сейчас</span><span class="chev">▶</span></div>
+      </div>
+      <div class="m-body shallow">
+        <div class="status-row" data-status-for="m10">
+          <span class="seg" data-v="ok" role="button" aria-pressed="false">готово</span>
+          <span class="seg" data-v="draft" role="button" aria-pressed="false">черновик</span>
+          <span class="seg" data-v="gap" role="button" aria-pressed="false">пробел</span>
+          <span class="seg" data-v="later" role="button" aria-pressed="false">при масштабе</span>
+          <span class="seg" data-v="risk" role="button" aria-pressed="true">риск</span>
+        </div>
+        <p class="pending">Шесть обязательных процедур (Федоренко): управление документацией, управление записями, управление несоответствиями, КД, ПД, внутренний аудит.<br>Реестр регулирующих воздействий: данные несовершеннолетних, хранение профиля, граница психодиагностики, лицензии на методики. Это до запуска трафика, не «при масштабе».</p>
+        <textarea class="note" data-note-for="m10" placeholder="КД, ПД, реестр рисков…"></textarea>
+      </div>
+    </section>
+
+    <section class="module" data-id="m11" data-state="gap">
+      <div class="m-head" tabindex="0" role="button" aria-expanded="false">
+        <div class="m-no">11</div>
+        <div class="m-title-area">
+          <div class="m-title">Сквозной цикл PDCA и сбор данных мониторинга</div>
+          <div class="m-note-line">Низ кольца: единая система сбора данных, что замыкает виток. Ждёт ввода.</div>
+        </div>
+        <div class="m-right"><span class="stage now">сейчас</span><span class="chev">▶</span></div>
+      </div>
+      <div class="m-body shallow">
+        <div class="status-row" data-status-for="m11">
+          <span class="seg" data-v="ok" role="button" aria-pressed="false">готово</span>
+          <span class="seg" data-v="draft" role="button" aria-pressed="false">черновик</span>
+          <span class="seg" data-v="gap" role="button" aria-pressed="true">пробел</span>
+          <span class="seg" data-v="later" role="button" aria-pressed="false">при масштабе</span>
+          <span class="seg" data-v="risk" role="button" aria-pressed="false">риск</span>
+        </div>
+        <p class="pending">По Федоренко: цикл PDCA, единая система улучшений, борды контролируемых параметров, система сбора данных мониторинга.<br>Прямая стыковка с журналом событий из операционной базы V4.1: без событий PDCA крутится на ощущениях. Пункт «релевантная информация по жизненным ситуациям» это и есть ваша профориентация.</p>
+        <textarea class="note" data-note-for="m11" placeholder="PDCA и сбор данных…"></textarea>
+      </div>
+    </section>
+
+  </div>
+
+  <footer class="foot">
+    Правило стадии: «нужно сейчас» — до запуска трафика и первого вебинара; «при масштабе» — после повторяемой выручки; «избыточно» — не строим, пока не появится то, что делает блок осмысленным.<br>
+    Источники: миссия согласована 18.06.2026; методика блока 1 (занятия 1–4) Федоренко; узкое место и путь риска — трёхслойная карта 22.06.2026.
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var KEY = "mainexperts_system_state_v1";
+  var flag = document.getElementById("savedFlag");
+  var saveTimer = null;
+  var hasStorage = (typeof window.storage !== "undefined" && window.storage);
+
+  function collectState(){
+    var st = {modules:{}, crit:{}, notes:{}};
+    document.querySelectorAll(".module").forEach(function(m){
+      st.modules[m.dataset.id] = m.getAttribute("data-state");
+    });
+    document.querySelectorAll("textarea.note").forEach(function(t){
+      st.notes[t.dataset.noteFor] = t.value;
+    });
+    document.querySelectorAll('.crit input[type=checkbox]').forEach(function(c){
+      st.crit[c.id] = c.checked;
+    });
+    return st;
+  }
+
+  function applyState(st){
+    if(!st) return;
+    if(st.modules){
+      Object.keys(st.modules).forEach(function(id){
+        var m = document.querySelector('.module[data-id="'+id+'"]');
+        if(m){ setModuleState(m, st.modules[id], true); }
+      });
+    }
+    if(st.notes){
+      Object.keys(st.notes).forEach(function(k){
+        var t = document.querySelector('textarea.note[data-note-for="'+k+'"]');
+        if(t){ t.value = st.notes[k]; }
+      });
+    }
+    if(st.crit){
+      Object.keys(st.crit).forEach(function(id){
+        var c = document.getElementById(id);
+        if(c){ c.checked = !!st.crit[id]; }
+      });
+    }
+    recount();
+  }
+
+  function setModuleState(moduleEl, val, silent){
+    moduleEl.setAttribute("data-state", val);
+    moduleEl.querySelectorAll('.status-row .seg').forEach(function(seg){
+      seg.setAttribute("aria-pressed", seg.dataset.v === val ? "true":"false");
+    });
+    if(!silent){ scheduleSave(); recount(); }
+  }
+
+  function recount(){
+    var counts = {ok:0,draft:0,gap:0,later:0,risk:0};
+    document.querySelectorAll(".module").forEach(function(m){
+      var s = m.getAttribute("data-state");
+      if(counts[s] !== undefined) counts[s]++;
+    });
+    document.querySelectorAll('#progress .num').forEach(function(n){
+      n.textContent = counts[n.dataset.count] || 0;
+    });
+  }
+
+  function scheduleSave(){
+    if(saveTimer) clearTimeout(saveTimer);
+    flag.textContent = "…";
+    saveTimer = setTimeout(saveNow, 600);
+  }
+
+  async function saveNow(){
+    var st = collectState();
+    var ok = false;
+    try{ localStorage.setItem(KEY, JSON.stringify(st)); ok = true; }catch(e){}
+    if(hasStorage){
+      try{ await window.storage.set(KEY, JSON.stringify(st), false); ok = true; }catch(e){}
+    }
+    if(ok){ stamp(); } else { flag.textContent = "не сохранено"; }
+  }
+
+  function stamp(){
+    var d = new Date();
+    var hh = String(d.getHours()).padStart(2,"0");
+    var mm = String(d.getMinutes()).padStart(2,"0");
+    flag.textContent = "сохранено " + hh + ":" + mm;
+  }
+
+  async function loadInitial(){
+    try{
+      var raw = localStorage.getItem(KEY);
+      if(raw){ applyState(JSON.parse(raw)); return; }
+    }catch(e){ }
+    if(hasStorage){
+      try{
+        var res = await window.storage.get(KEY, false);
+        if(res && res.value){ applyState(JSON.parse(res.value)); return; }
+      }catch(e){ }
+    }
+    recount();
+  }
+
+  document.querySelectorAll('.status-row').forEach(function(row){
+    row.querySelectorAll('.seg').forEach(function(seg){
+      seg.addEventListener("click", function(){
+        var moduleEl = seg.closest(".module");
+        setModuleState(moduleEl, seg.dataset.v, false);
+      });
+      seg.addEventListener("keydown", function(ev){
+        if(ev.key === "Enter" || ev.key === " "){ ev.preventDefault(); seg.click(); }
+      });
+    });
+  });
+
+  document.querySelectorAll("textarea.note").forEach(function(t){
+    t.addEventListener("input", scheduleSave);
+  });
+
+  document.querySelectorAll('.crit input[type=checkbox]').forEach(function(c){
+    c.addEventListener("change", scheduleSave);
+  });
+
+  function toggleModule(m, open){
+    if(open === undefined) open = !m.classList.contains("open");
+    m.classList.toggle("open", open);
+    var head = m.querySelector(".m-head");
+    if(head) head.setAttribute("aria-expanded", open ? "true":"false");
+  }
+  document.querySelectorAll(".m-head").forEach(function(head){
+    head.addEventListener("click", function(){ toggleModule(head.closest(".module")); });
+    head.addEventListener("keydown", function(ev){
+      if(ev.key === "Enter" || ev.key === " "){ ev.preventDefault(); toggleModule(head.closest(".module")); }
+    });
+  });
+  document.getElementById("expandAll").addEventListener("click", function(){
+    document.querySelectorAll(".module").forEach(function(m){ toggleModule(m, true); });
+  });
+  document.getElementById("collapseAll").addEventListener("click", function(){
+    document.querySelectorAll(".module").forEach(function(m){ toggleModule(m, false); });
+  });
+
+  document.getElementById("exportBtn").addEventListener("click", function(){
+    var st = collectState();
+    var blob = new Blob([JSON.stringify(st,null,2)], {type:"application/json"});
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "mainexperts_sistema_state.json";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+  });
+
+  document.getElementById("importBtn").addEventListener("click", function(){
+    document.getElementById("importFile").click();
+  });
+  document.getElementById("importFile").addEventListener("change", function(ev){
+    var f = ev.target.files && ev.target.files[0];
+    if(!f) return;
+    var r = new FileReader();
+    r.onload = function(){
+      try{ applyState(JSON.parse(r.result)); saveNow(); }
+      catch(e){ flag.textContent = "файл не прочитан"; }
+    };
+    r.readAsText(f);
+    ev.target.value = "";
+  });
+
+  document.getElementById("resetBtn").addEventListener("click", async function(){
+    if(!confirm("Сбросить все статусы, отметки и заметки?")) return;
+    try{ localStorage.removeItem(KEY); }catch(e){}
+    if(hasStorage){ try{ await window.storage.delete(KEY, false); }catch(e){} }
+    location.reload();
+  });
+
+  loadInitial();
+})();
+</script>
+</body>
+</html>
