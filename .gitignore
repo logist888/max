@@ -11,6 +11,7 @@ venv/
 build/
 *.tmp
 scratch/
+scratch_pdf/
 
 # Сырьё ингеста (большие бинарники); каталог держим через .gitkeep
 raw/*
