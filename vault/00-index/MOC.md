@@ -16,9 +16,12 @@ updated: 2026-06-23
 - `docs/05-risk-compliance.md` — путь риска, регулятор, данные несовершеннолетних, лицензии.
 - `docs/06-data-tools-payments.md` — базы профессий, трафик, аналитика, платежи, инструменты.
 - `docs/07-principles-open-questions.md` — принципы, открытые вопросы, горизонт, артефакты.
+- `docs/08-board-system.md` — система управленческих бордов MMS (обзор, иерархия L0–L3, критика); канон — `docs/boards/`.
+- `docs/boards/` — каркас борда, KPI-фреймворк (L0–L3), роли/доступ, цикл решений, семь бордов (Owner…Product), критерии приёмки.
 - `docs/private/stream-1-hnw.md` — поток-1, HNW. **Конфиденциально, в git не идёт, без явной причины не открывать.**
 
 Дословный снимок Диска — `memory/memory.md`. Оригиналы методологий — `reference/`.
+Источники MMS — `vault/10-sources/mms-tom-1-business-architecture.md`, `…/mms-tom-2-functional-specification.md`.
 
 ## Рабочие заметки — vault/ (из новых ингестов)
 Якоря потоков и гипотезы:
