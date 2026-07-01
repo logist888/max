@@ -1,7 +1,7 @@
 ---
 type: index
 title: MOC — карта содержания MainExperts
-updated: 2026-06-23
+updated: 2026-07-01
 ---
 
 # Карта содержания (MOC)
