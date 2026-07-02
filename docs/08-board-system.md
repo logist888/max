@@ -163,3 +163,4 @@ KPI v0 с формулами и источниками данных, крите�
   `05-risk-compliance.md` · `06-data-tools-payments.md`.
 - Источники: `../vault/10-sources/mms-tom-1-business-architecture.md` ·
   `../vault/10-sources/mms-tom-2-functional-specification.md`.
+- Блок-схема всей системы (листы и процессы) — `09-system-map.md`.
