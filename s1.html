@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MainExperts — S1: борд «трафик → оплаты»</title>
+<style>
+  :root{
+    --bg:#EEF1F5; --surface:#FFFFFF; --surface-2:#F6F8FB;
+    --ink:#18202E; --ink-2:#5A6678; --ink-3:#8A93A2;
+    --line:#DCE1E8; --line-2:#C9D0DA;
+    --accent:#3B6FD0; --accent-soft:#E7EEFA;
+    --ok:#197A4B; --ok-bg:#E8F5EE; --warn:#9A6700; --warn-bg:#FBF3DD;
+    --crit:#B23A36; --crit-bg:#FBEBE9; --info:#2A6BB0; --info-bg:#E9F1FA;
+    --r:11px; --r-s:8px;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14.5px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:22px 18px 90px}
+  header .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+  header h1{font-size:21px;margin:4px 0 2px;letter-spacing:-.01em}
+  header .sub{color:var(--ink-2);font-size:13px;max-width:760px}
+  .privacy{margin-top:10px;background:var(--info-bg);border:1px solid #cdd9ea;border-radius:var(--r-s);padding:8px 12px;font-size:12px;color:#2a567f}
+
+  .tabs{display:flex;gap:6px;margin:18px 0 0;flex-wrap:wrap}
+  .tab{border:1px solid var(--line);background:var(--surface);border-radius:9px;padding:7px 14px;cursor:pointer;font-size:13px;color:var(--ink-2);font-family:var(--sans)}
+  .tab:hover{border-color:var(--accent);color:var(--accent)}
+  .tab.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+  .toolbar{display:flex;gap:7px;margin:12px 0 0;flex-wrap:wrap;align-items:center}
+  .btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12.5px;color:var(--ink-2)}
+  .btn:hover{border-color:var(--accent);color:var(--accent)}
+  .btn.warn:hover{border-color:var(--crit);color:var(--crit)}
+  .spacer{flex:1}
+  .toggle{display:inline-flex;gap:7px;align-items:center;font-size:12.5px;color:var(--ink-2);cursor:pointer;user-select:none}
+  .toggle input{accent-color:var(--accent)}
+  .demoflag{font-family:var(--mono);font-size:11px;background:var(--warn-bg);color:#7a5a14;border:1px solid #ecd9a8;border-radius:6px;padding:2px 8px;display:none}
+  body.demo .demoflag{display:inline-block}
+
+  .view{display:none;margin-top:18px}
+  .view.on{display:block}
+  .sec{margin:20px 0}
+  .sec>h2{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:0 0 10px;font-family:var(--mono);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .sec>h2 .note{letter-spacing:0;text-transform:none;font-family:var(--sans);font-size:12px;color:var(--ink-3);font-weight:400}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 15px}
+
+  /* stat tiles */
+  .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+  .tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 13px;min-width:0}
+  .tile .t-name{font-size:12px;color:var(--ink-2);font-weight:600}
+  .tile .t-val{font-size:24px;font-weight:700;letter-spacing:-.02em;margin:4px 0 0;font-feature-settings:"tnum";color:var(--ink)}
+  .tile .t-sub{font-size:11.5px;color:var(--ink-3);margin-top:3px;font-family:var(--mono)}
+  .tile .status{display:inline-flex;gap:5px;align-items:center;font-size:11px;font-family:var(--mono);border-radius:6px;padding:1px 8px;margin-top:7px}
+  .status.s-ok{background:var(--ok-bg);color:var(--ok)}
+  .status.s-warn{background:var(--warn-bg);color:var(--warn)}
+  .status.s-crit{background:var(--crit-bg);color:var(--crit)}
+  .status.s-na{background:var(--surface-2);color:var(--ink-3)}
+  .tile .spark{margin-top:8px;display:block}
+
+  /* funnel */
+  .funnel{display:flex;flex-direction:column;gap:8px}
+  .fstage{display:grid;grid-template-columns:110px 1fr 120px;gap:12px;align-items:center}
+  .fstage .fn{font-size:12.5px;color:var(--ink-2);font-weight:600;text-align:right}
+  .fbar{height:26px;background:var(--surface-2);border-radius:5px;position:relative;overflow:hidden}
+  .fbar i{position:absolute;left:0;top:0;bottom:0;background:var(--accent);border-radius:4px;min-width:2px}
+  .fbar span{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--ink)}
+  .fbar.inv i{background:#8FB0E8}
+  .fcr{font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+  .fcr b{color:var(--ink)}
+  .fdrop{grid-column:2;font-size:11px;color:var(--ink-3);font-family:var(--mono);padding-left:2px}
+
+  /* tables */
+  table.t{width:100%;border-collapse:collapse;font-size:13px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  table.t th,table.t td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:middle}
+  table.t th{background:var(--surface-2);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);font-family:var(--mono);white-space:nowrap}
+  table.t tr:last-child td{border-bottom:0}
+  table.t td.m{font-family:var(--mono);font-feature-settings:"tnum";font-size:12.5px}
+  table.t input[type=number],table.t input[type=text],table.t input[type=datetime-local],table.t input[type=date]{
+    width:100%;border:1px solid transparent;background:transparent;border-radius:6px;padding:4px 6px;
+    font:inherit;font-family:var(--mono);font-size:12.5px;color:var(--ink)}
+  table.t input:hover{border-color:var(--line-2)}
+  table.t input:focus{border-color:var(--accent);outline:none;background:var(--accent-soft)}
+  table.t textarea{width:100%;border:1px solid transparent;background:transparent;border-radius:6px;padding:4px 6px;font:inherit;font-size:12.5px;resize:vertical;min-height:32px}
+  table.t textarea:focus{border-color:var(--accent);outline:none;background:var(--accent-soft)}
+  .rowdel{border:0;background:none;color:var(--ink-3);cursor:pointer;font-size:15px;line-height:1}
+  .rowdel:hover{color:var(--crit)}
+  .addrow{margin-top:9px}
+
+  .settings{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+  .set{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-s);padding:10px 12px}
+  .set label{font-size:11.5px;color:var(--ink-2);font-weight:600;display:block}
+  .set .hint{font-size:10.5px;color:var(--ink-3);margin-top:2px}
+  .set input{width:90px;border:1px solid var(--line);border-radius:6px;padding:4px 8px;font-family:var(--mono);font-size:13px;margin-top:6px}
+  .set input:focus{border-color:var(--accent);outline:none}
+
+  .rule{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-s);padding:8px 12px;font-size:12px;color:var(--ink-2)}
+  .rule b{color:var(--ink)}
+  .weeksel{display:inline-flex;gap:8px;align-items:center;font-size:13px;color:var(--ink-2)}
+  .weeksel select{border:1px solid var(--line);border-radius:7px;padding:5px 9px;font:inherit;font-size:13px;background:var(--surface)}
+  body.hideP1 .p1row{display:none}
+  .empty{color:var(--ink-3);font-size:13px;padding:14px;text-align:center}
+  footer{margin-top:34px;color:var(--ink-3);font-size:11.5px;line-height:1.6;border-top:1px solid var(--line);padding-top:12px}
+  @media print{.tabs,.toolbar,.privacy{display:none}.view{display:block!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="eyebrow">MainExperts · стартовый контур · этап S1</div>
+  <h1>Борд «трафик → оплаты»</h1>
+  <div class="sub">Рабочий инструмент по канону <span style="font-family:var(--mono)">docs/boards/04-stage0-mvp.md</span>:
+  воронка потока-2 от визитов до денег + деньги + очередь проверки (S0) + журнал решений.
+  Заполняется вручную раз в неделю; конверсии, Runway и метрики очереди считаются сами.</div>
+  <div class="privacy">Данные хранятся <b>только в этом браузере</b> (localStorage) и никуда не отправляются —
+  страницу можно держать на публичном хостинге, цифры видит только тот, кто их ввёл на своём устройстве.
+  Резервная копия — «Экспорт JSON». Правило потока-1: строку HNW из экспорта в общие таблицы не переносить.</div>
+</header>
+
+<div class="tabs" id="tabs">
+  <button class="tab active" data-v="board">Борд</button>
+  <button class="tab" data-v="weeks">Недели · данные</button>
+  <button class="tab" data-v="queue">Очередь S0</button>
+  <button class="tab" data-v="dec">Журнал решений</button>
+</div>
+<div class="toolbar">
+  <button class="btn" id="btnExport">Экспорт JSON</button>
+  <button class="btn" id="btnImport">Импорт JSON</button>
+  <input type="file" id="fileImport" accept=".json" style="display:none">
+  <button class="btn" id="btnDemo">Загрузить пример</button>
+  <button class="btn warn" id="btnClear">Очистить всё</button>
+  <span class="demoflag">ПРИМЕР — числа вымышленные</span>
+  <span class="spacer"></span>
+  <label class="toggle"><input type="checkbox" id="hideP1"> Скрыть поток-1 (режим показа)</label>
+</div>
+
+<!-- ============ БОРД ============ -->
+<div class="view on" id="v-board">
+  <div class="sec">
+    <h2>Неделя <span class="note">— борд показывает выбранную неделю из вкладки «Недели»</span></h2>
+    <div class="weeksel">Показать: <select id="weekSel"></select></div>
+  </div>
+
+  <div class="sec">
+    <h2>Воронка · поток-2 <span class="note">событие (вебинар и т.п.) — метка канала, не отдельная воронка</span></h2>
+    <div class="card"><div class="funnel" id="funnel"></div></div>
+  </div>
+
+  <div class="sec">
+    <h2>Деньги</h2>
+    <div class="tiles" id="moneyTiles"></div>
+    <div class="rule" style="margin-top:9px"><b>Потоки не суммируются.</b> Выручка потока-1 (HNW) и потока-2 (воронка)
+    — отдельные строки; консолидация только в Cash. Итога «общая выручка» на борде нет намеренно.</div>
+  </div>
+
+  <div class="sec">
+    <h2>Очередь проверки отчётов <span class="note">считается из журнала S0 (вкладка «Очередь S0»), по всему журналу</span></h2>
+    <div class="tiles" id="queueTiles"></div>
+  </div>
+
+  <div class="sec">
+    <h2>Пороги и настройки <span class="note">решения основателя — канон значений не задаёт</span></h2>
+    <div class="settings">
+      <div class="set"><label>Runway: внимание, мес</label><div class="hint">начать готовить план</div><input type="number" step="0.5" id="setWarn"></div>
+      <div class="set"><label>Runway: критично, мес</label><div class="hint">якорь источника — 6 (Том II, 5.15)</div><input type="number" step="0.5" id="setCrit"></div>
+      <div class="set"><label>Runway: аварийно, мес</label><div class="hint">мораторий на несущественное</div><input type="number" step="0.5" id="setEmg"></div>
+      <div class="set"><label>Обещание клиенту, часов</label><div class="hint">срок выдачи отчёта; порог очереди M = обещание − медиана проверки</div><input type="number" id="setPromise"></div>
+      <div class="set"><label>Окно атрибуции, дней</label><div class="hint">оплата привязывается к визиту/событию в течение N дней</div><input type="number" id="setAttr"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ НЕДЕЛИ ============ -->
+<div class="view" id="v-weeks">
+  <div class="sec">
+    <h2>Недельные данные <span class="note">визиты — веб-аналитика · лиды — GetCourse/платформа · скрининги — платформа · оплаты и выручка — платёжка · cash — банк · burn — учёт расходов</span></h2>
+    <table class="t" id="weeksTbl">
+      <thead><tr>
+        <th style="min-width:110px">Неделя</th><th>Визиты</th><th>Лиды</th><th>Скрининги</th><th>Оплаты, шт</th>
+        <th>Выручка П-2, ₽</th><th class="p1row">Выручка П-1, ₽</th><th>Cash, ₽</th><th>Burn/мес, ₽</th>
+        <th>CR сквозная</th><th>Runway</th><th></th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+    <button class="btn addrow" id="addWeek">+ Неделя</button>
+    <div class="rule" style="margin-top:9px">Оплаты ↔ источник трафика связываются вручную (cross-domain);
+    держись зафиксированного окна атрибуции. Первые фактические значения = база для порогов конверсий — цели до факта не выдумываются.</div>
+  </div>
+</div>
+
+<!-- ============ ОЧЕРЕДЬ S0 ============ -->
+<div class="view" id="v-queue">
+  <div class="sec">
+    <h2>Журнал S0 — очередь проверки отчётов <span class="note">одна строка = отчёт; пять событий канона</span></h2>
+    <table class="t" id="s0Tbl">
+      <thead><tr>
+        <th>№</th><th>Поступил в очередь</th><th>Взят в проверку</th><th>Выдан клиенту</th>
+        <th>Доработки до выдачи</th><th>Правка после выдачи</th><th>Ожидание, ч</th><th>Проверка, ч</th><th>Статус</th><th></th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+    <button class="btn addrow" id="addS0">+ Отчёт</button>
+    <div class="rule" style="margin-top:9px"><b>Доля правок после выдачи</b> — сильный сигнал качества (V4.1):
+    считается по событию «правка после выдачи», внутренние доработки до выдачи в него не входят.</div>
+  </div>
+</div>
+
+<!-- ============ РЕШЕНИЯ ============ -->
+<div class="view" id="v-dec">
+  <div class="sec">
+    <h2>Журнал решений <span class="note">ручной цикл 03-decision-loop: посмотрел → решил → проверил; измеритель критерия S1→S2</span></h2>
+    <table class="t" id="decTbl">
+      <thead><tr>
+        <th style="width:110px">Дата</th><th>Какие данные</th><th>Решение</th><th style="width:110px">Проверка (дата)</th><th>Факт проверки</th><th></th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+    <button class="btn addrow" id="addDec">+ Решение</button>
+    <div class="rule" style="margin-top:9px" id="decRule"></div>
+  </div>
+</div>
+
+<footer>
+  Канон: docs/boards/04-stage0-mvp.md (стартовый контур S0–S2) · формулы стандартные управленческие;
+  пороги — решения основателя. Потоки выручки раздельны; страницу ведёт и видит только основатель.
+  Известное ограничение: localStorage привязан к браузеру и домену — при смене устройства перенеси данные экспортом.
+</footer>
+</div>
+
+<script>
+"use strict";
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const KEY="mms_s1_board_v1";
+const DEF={weeks:[],s0:[],dec:[],set:{warn:9,crit:6,emg:3,promise:null,attr:null},demo:false};
+let D=load();
+
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY));if(x&&x.weeks)return Object.assign(JSON.parse(JSON.stringify(DEF)),x);}catch(e){}return JSON.parse(JSON.stringify(DEF));}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(D));}catch(e){}}
+const fmt=n=>(n==null||isNaN(n))?"—":Number(n).toLocaleString("ru-RU");
+const fmtM=n=>(n==null||isNaN(n))?"—":(n>=1e6?(n/1e6).toLocaleString("ru-RU",{maximumFractionDigits:2})+" млн":fmt(Math.round(n)));
+const pct=(a,b)=>(b>0&&a!=null&&!isNaN(a))?(100*a/b):null;
+const fpct=v=>v==null?"—":v.toLocaleString("ru-RU",{maximumFractionDigits:1})+"%";
+const hrs=(a,b)=>{if(!a||!b)return null;const t=(new Date(b)-new Date(a))/36e5;return t>=0?t:null;};
+const quant=(arr,q)=>{if(!arr.length)return null;const s=[...arr].sort((a,b)=>a-b);const i=(s.length-1)*q,lo=Math.floor(i),hi=Math.ceil(i);return s[lo]+(s[hi]-s[lo])*(i-lo);};
+
+/* ---------- tabs ---------- */
+$("#tabs").addEventListener("click",e=>{const b=e.target.closest(".tab");if(!b)return;
+  $$(".tab").forEach(t=>t.classList.toggle("active",t===b));
+  $$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-"+b.dataset.v));});
+
+/* ---------- board ---------- */
+function weekOptions(){const sel=$("#weekSel");sel.innerHTML="";
+  if(!D.weeks.length){sel.innerHTML="<option>нет данных</option>";return;}
+  D.weeks.forEach((w,i)=>{const o=document.createElement("option");o.value=i;o.textContent=w.label||("неделя "+(i+1));sel.appendChild(o);});
+  sel.value=String(D.weeks.length-1);}
+$("#weekSel").addEventListener("change",renderBoard);
+
+function statusEl(kind,text){return `<span class="status s-${kind}">${kind==="ok"?"●":kind==="warn"?"▲":kind==="crit"?"■":"○"} ${text}</span>`;}
+function spark(vals,color){const v=vals.filter(x=>x!=null&&!isNaN(x));if(v.length<2)return"";
+  const w=120,h=26,p=3,mn=Math.min(...v),mx=Math.max(...v),rg=(mx-mn)||1;
+  const pts=v.map((x,i)=>[p+i*(w-2*p)/(v.length-1),h-p-(x-mn)/rg*(h-2*p)]);
+  const d=pts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ");
+  return `<svg class="spark" width="${w}" height="${h}" aria-hidden="true"><polyline points="${d}" fill="none" stroke="${color||"#3B6FD0"}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;}
+
+function renderBoard(){
+  weekPersistSel();
+  const i=+($("#weekSel").value||-1), w=D.weeks[i];
+  /* funnel */
+  const f=$("#funnel");
+  if(!w){f.innerHTML='<div class="empty">Добавь первую неделю на вкладке «Недели · данные» — воронка построится сама.</div>';}
+  else{
+    const stages=[["Визиты",w.visits],["Лиды",w.leads],["Скрининги",w.screens],["Оплаты",w.pays]];
+    const base=w.visits>0?w.visits:Math.max(...stages.map(s=>s[1]||0),1);
+    let html="";
+    stages.forEach((s,k)=>{
+      const val=s[1], width=val!=null&&base>0?Math.max(100*val/base,1):0;
+      const cr=k>0?pct(val,stages[k-1][1]):null;
+      html+=`<div class="fstage"><div class="fn">${s[0]}</div>
+        <div class="fbar"><i style="width:${width}%"></i><span>${fmt(val)}</span></div>
+        <div class="fcr">${k>0?("CR: <b>"+fpct(cr)+"</b>"):"&nbsp;"}</div></div>`;
+    });
+    const e2e=pct(w.pays,w.visits);
+    html+=`<div class="fstage"><div class="fn">Выдача</div>
+      <div class="fdrop">замыкается на журнал S0 — метрики очереди ниже</div>
+      <div class="fcr">сквозная: <b>${fpct(e2e)}</b></div></div>`;
+    f.innerHTML=html;
+  }
+  /* money */
+  const mt=$("#moneyTiles");mt.innerHTML="";
+  const hist=k=>D.weeks.map(x=>x[k]);
+  const runway=w&&w.burn>0?(w.cash/w.burn):null;
+  let rw="na",rt="нет данных";
+  if(runway!=null){const s=D.set;
+    if(runway<s.emg){rw="crit";rt="аварийно (<"+s.emg+" мес)";}
+    else if(runway<s.crit){rw="crit";rt="критично (<"+s.crit+" мес)";}
+    else if(runway<s.warn){rw="warn";rt="внимание (<"+s.warn+" мес)";}
+    else {rw="ok";rt="норма (≥"+s.warn+" мес)";}}
+  const tiles=[
+    {n:"Cash",v:w?fmtM(w.cash)+" ₽":"—",sub:"банк, на конец недели",sp:hist("cash")},
+    {n:"Burn Rate",v:w?fmtM(w.burn)+" ₽/мес":"—",sub:"учёт расходов",sp:hist("burn")},
+    {n:"Runway",v:runway!=null?runway.toLocaleString("ru-RU",{maximumFractionDigits:1})+" мес":"—",sub:"Cash ÷ Burn",st:[rw,rt]},
+    {n:"Выручка П-2 (воронка)",v:w?fmtM(w.revP2)+" ₽":"—",sub:"платёжка, за неделю",sp:hist("revP2")},
+    {n:"Выручка П-1 (HNW)",v:w?fmtM(w.revP1)+" ₽":"—",sub:"личный учёт · не суммируется с П-2",sp:hist("revP1"),p1:true},
+  ];
+  tiles.forEach(t=>{
+    const el=document.createElement("div");el.className="tile"+(t.p1?" p1row":"");
+    el.innerHTML=`<div class="t-name">${t.n}</div><div class="t-val">${t.v}</div><div class="t-sub">${t.sub}</div>
+      ${t.st?statusEl(t.st[0],t.st[1]):""}${t.sp?spark(t.sp):""}`;
+    mt.appendChild(el);});
+  /* queue */
+  renderQueueTiles();
+}
+
+function queueMetrics(){
+  const rows=D.s0;
+  const wip=rows.filter(r=>r.tin&&!r.tout).length;
+  const waits=rows.map(r=>hrs(r.tin,r.ttaken)).filter(x=>x!=null);
+  const checks=rows.map(r=>hrs(r.ttaken,r.tout)).filter(x=>x!=null);
+  const issued=rows.filter(r=>r.tout).length;
+  const post=rows.filter(r=>r.tout&&r.postfix).length;
+  return {wip,p90:quant(waits,0.9),med:quant(checks,0.5),rework:issued?100*post/issued:null,issued};
+}
+function renderQueueTiles(){
+  const q=queueMetrics(),qt=$("#queueTiles");qt.innerHTML="";
+  const M=(D.set.promise!=null&&q.med!=null)?Math.max(D.set.promise-q.med,0):null;
+  let pst=["na","порог не задан"],psub="p90 «поступил → взят»";
+  if(M!=null&&q.p90!=null){
+    psub=`порог M = ${D.set.promise} − ${q.med.toFixed(0)} = ${M.toFixed(0)} ч`;
+    pst = q.p90>M?["crit","критично (> M)"]:(q.p90>0.7*M?["warn","внимание (> 0.7·M)"]:["ok","норма"]);
+  } else if(D.set.promise==null) psub="задай «обещание клиенту» в настройках";
+  const tiles=[
+    {n:"WIP — в работе",v:q.wip,sub:"в очереди + в проверке, сейчас"},
+    {n:"Ожидание p90",v:q.p90!=null?q.p90.toFixed(0)+" ч":"—",sub:psub,st:pst},
+    {n:"Срок проверки (медиана)",v:q.med!=null?q.med.toFixed(0)+" ч":"—",sub:"«взят → выдан»"},
+    {n:"Правки после выдачи",v:q.rework!=null?q.rework.toFixed(0)+"%":"—",sub:q.issued?("из "+q.issued+" выданных · порог: не хуже базы"):"нет выданных"},
+  ];
+  tiles.forEach(t=>{const el=document.createElement("div");el.className="tile";
+    el.innerHTML=`<div class="t-name">${t.n}</div><div class="t-val">${t.v}</div><div class="t-sub">${t.sub}</div>${t.st?statusEl(t.st[0],t.st[1]):""}`;
+    qt.appendChild(el);});
+}
+
+let selWeekTouched=false;
+function weekPersistSel(){if(!selWeekTouched&&D.weeks.length)$("#weekSel").value=String(D.weeks.length-1);}
+$("#weekSel").addEventListener("input",()=>{selWeekTouched=true;});
+
+/* ---------- weeks table ---------- */
+const WCOLS=[["label","text"],["visits","number"],["leads","number"],["screens","number"],["pays","number"],["revP2","number"],["revP1","number"],["cash","number"],["burn","number"]];
+function renderWeeks(){
+  const tb=$("#weeksTbl tbody");tb.innerHTML="";
+  D.weeks.forEach((w,i)=>{
+    const tr=document.createElement("tr");
+    WCOLS.forEach(([k,type])=>{
+      const td=document.createElement("td");
+      if(k==="revP1")td.className="p1row";
+      const inp=document.createElement("input");inp.type=type;if(type==="number"){inp.min="0";inp.step="1";}
+      inp.value=w[k]??"";inp.placeholder=k==="label"?"29.06–05.07":"";
+      inp.addEventListener("input",()=>{w[k]=type==="number"?(inp.value===""?null:+inp.value):inp.value;save();renderDerived();});
+      td.appendChild(inp);tr.appendChild(td);
+    });
+    const e2e=document.createElement("td");e2e.className="m";e2e.dataset.d="e2e";
+    const rw=document.createElement("td");rw.className="m";rw.dataset.d="rw";
+    const del=document.createElement("td");del.innerHTML='<button class="rowdel" title="удалить">×</button>';
+    del.firstChild.onclick=()=>{if(confirm("Удалить неделю «"+(w.label||i+1)+"»?")){D.weeks.splice(i,1);save();renderWeeks();weekOptions();renderBoard();}};
+    tr.append(e2e,rw,del);tb.appendChild(tr);
+  });
+  renderDerived();
+  function renderDerived(){
+    $$("#weeksTbl tbody tr").forEach((tr,i)=>{const w=D.weeks[i];
+      tr.querySelector('[data-d="e2e"]').textContent=fpct(pct(w.pays,w.visits));
+      tr.querySelector('[data-d="rw"]').textContent=(w.burn>0&&w.cash!=null)?(w.cash/w.burn).toLocaleString("ru-RU",{maximumFractionDigits:1})+" мес":"—";});
+    weekOptions();renderBoard();
+  }
+}
+$("#addWeek").onclick=()=>{D.weeks.push({label:"",visits:null,leads:null,screens:null,pays:null,revP2:null,revP1:null,cash:null,burn:null});save();renderWeeks();};
+
+/* ---------- s0 table ---------- */
+function renderS0(){
+  const tb=$("#s0Tbl tbody");tb.innerHTML="";
+  D.s0.forEach((r,i)=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td class="m">${i+1}</td>`;
+    [["tin","datetime-local"],["ttaken","datetime-local"],["tout","datetime-local"]].forEach(([k,type])=>{
+      const td=document.createElement("td");const inp=document.createElement("input");inp.type=type;inp.value=r[k]||"";
+      inp.addEventListener("input",()=>{r[k]=inp.value||null;save();refreshS0Row(tr,r);renderQueueTiles();});
+      td.appendChild(inp);tr.appendChild(td);});
+    const tdRe=document.createElement("td");const re=document.createElement("input");re.type="number";re.min="0";re.value=r.reworkPre??"";
+    re.addEventListener("input",()=>{r.reworkPre=re.value===""?null:+re.value;save();});tdRe.appendChild(re);tr.appendChild(tdRe);
+    const tdPf=document.createElement("td");tdPf.style.textAlign="center";
+    const pf=document.createElement("input");pf.type="checkbox";pf.checked=!!r.postfix;pf.style.accentColor="var(--crit)";
+    pf.addEventListener("input",()=>{r.postfix=pf.checked;save();renderQueueTiles();});tdPf.appendChild(pf);tr.appendChild(tdPf);
+    const w=document.createElement("td");w.className="m";w.dataset.d="wait";
+    const c=document.createElement("td");c.className="m";c.dataset.d="check";
+    const st=document.createElement("td");st.dataset.d="st";
+    const del=document.createElement("td");del.innerHTML='<button class="rowdel" title="удалить">×</button>';
+    del.firstChild.onclick=()=>{if(confirm("Удалить отчёт №"+(i+1)+"?")){D.s0.splice(i,1);save();renderS0();renderQueueTiles();}};
+    tr.append(w,c,st,del);refreshS0Row(tr,r);tb.appendChild(tr);
+  });
+}
+function refreshS0Row(tr,r){
+  const wt=hrs(r.tin,r.ttaken),ct=hrs(r.ttaken,r.tout);
+  tr.querySelector('[data-d="wait"]').textContent=wt!=null?wt.toFixed(0)+" ч":"—";
+  tr.querySelector('[data-d="check"]').textContent=ct!=null?ct.toFixed(0)+" ч":"—";
+  const st=tr.querySelector('[data-d="st"]');
+  const s=r.tout?["ok","выдан"]:(r.ttaken?["warn","в проверке"]:(r.tin?["na","в очереди"]:["na","—"]));
+  st.innerHTML=statusEl(s[0],s[1]);
+}
+$("#addS0").onclick=()=>{D.s0.push({tin:null,ttaken:null,tout:null,reworkPre:null,postfix:false});save();renderS0();};
+
+/* ---------- decisions ---------- */
+function renderDec(){
+  const tb=$("#decTbl tbody");tb.innerHTML="";
+  D.dec.forEach((d,i)=>{
+    const tr=document.createElement("tr");
+    const mk=(k,type)=>{const td=document.createElement("td");
+      const inp=type==="area"?document.createElement("textarea"):document.createElement("input");
+      if(type!=="area")inp.type=type;inp.value=d[k]||"";
+      inp.addEventListener("input",()=>{d[k]=inp.value;save();decCount();});
+      td.appendChild(inp);return td;};
+    tr.append(mk("date","date"),mk("data","area"),mk("decision","area"),mk("checkDate","date"),mk("result","area"));
+    const del=document.createElement("td");del.innerHTML='<button class="rowdel">×</button>';
+    del.firstChild.onclick=()=>{if(confirm("Удалить запись?")){D.dec.splice(i,1);save();renderDec();}};
+    tr.appendChild(del);tb.appendChild(tr);
+  });
+  decCount();
+}
+function decCount(){
+  const done=D.dec.filter(d=>d.decision&&d.result).length;
+  $("#decRule").innerHTML=`Решений с проверенным фактом: <b>${done}</b>. Критерий S1→S2 — 4 недели подряд заполненная страница <b>и хотя бы одно решение по данным с проверкой</b> (см. 90-acceptance).`;
+}
+$("#addDec").onclick=()=>{D.dec.push({date:"",data:"",decision:"",checkDate:"",result:""});save();renderDec();};
+
+/* ---------- settings ---------- */
+function bindSet(id,key){const el=$(id);el.value=D.set[key]??"";
+  el.addEventListener("input",()=>{D.set[key]=el.value===""?null:+el.value;save();renderBoard();});}
+function renderSettings(){bindSet("#setWarn","warn");bindSet("#setCrit","crit");bindSet("#setEmg","emg");bindSet("#setPromise","promise");bindSet("#setAttr","attr");}
+
+/* ---------- toolbar ---------- */
+$("#btnExport").onclick=()=>{const blob=new Blob([JSON.stringify(D,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+  a.download="mms-s1-board-"+new Date().toISOString().slice(0,10)+".json";a.click();URL.revokeObjectURL(a.href);};
+$("#btnImport").onclick=()=>$("#fileImport").click();
+$("#fileImport").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;
+  const rd=new FileReader();rd.onload=()=>{try{const x=JSON.parse(rd.result);
+    if(!x.weeks)throw 0;D=Object.assign(JSON.parse(JSON.stringify(DEF)),x);save();initAll();}
+    catch(err){alert("Не удалось прочитать JSON");}};rd.readAsText(f);e.target.value="";});
+$("#btnClear").onclick=()=>{if(confirm("Стереть все данные борда в этом браузере?")){D=JSON.parse(JSON.stringify(DEF));save();document.body.classList.remove("demo");initAll();}};
+$("#hideP1").addEventListener("input",e=>document.body.classList.toggle("hideP1",e.target.checked));
+
+/* ---------- demo ---------- */
+const DEMO={
+ weeks:[
+  {label:"нед 1",visits:1800,leads:210,screens:120,pays:6,revP2:64000,revP1:0,cash:8200000,burn:1450000},
+  {label:"нед 2",visits:2400,leads:300,screens:180,pays:11,revP2:128000,revP1:390000,cash:8050000,burn:1480000},
+  {label:"нед 3",visits:2100,leads:340,screens:210,pays:14,revP2:176000,revP1:0,cash:7900000,burn:1500000}],
+ s0:[
+  {tin:"2026-07-06T10:00",ttaken:"2026-07-06T18:00",tout:"2026-07-07T15:00",reworkPre:1,postfix:false},
+  {tin:"2026-07-07T09:00",ttaken:"2026-07-08T11:00",tout:"2026-07-09T10:00",reworkPre:0,postfix:true},
+  {tin:"2026-07-09T12:00",ttaken:"2026-07-10T09:00",tout:null,reworkPre:0,postfix:false},
+  {tin:"2026-07-10T16:00",ttaken:null,tout:null,reworkPre:null,postfix:false}],
+ dec:[{date:"2026-07-13",data:"CR лид→скрининг 60%, скрининг→оплата 6%; p90 ожидания 22 ч",
+   decision:"Упростить переход к оплате после скрининга (1 экран вместо 3)",checkDate:"2026-07-20",result:"CR скрининг→оплата 6% → 8%"}],
+ set:{warn:9,crit:6,emg:3,promise:48,attr:7},demo:true};
+$("#btnDemo").onclick=()=>{if(D.weeks.length&&!D.demo&&!confirm("Заменить текущие данные примером?"))return;
+  D=JSON.parse(JSON.stringify(DEMO));save();initAll();};
+
+/* ---------- init ---------- */
+function initAll(){
+  document.body.classList.toggle("demo",!!D.demo);
+  renderSettings();renderWeeks();renderS0();renderDec();weekOptions();renderBoard();
+}
+if(new URLSearchParams(location.search).get("demo")==="1"&&!D.weeks.length){D=JSON.parse(JSON.stringify(DEMO));}
+initAll();
+</script>
+</body>
+</html>
