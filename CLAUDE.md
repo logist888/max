@@ -33,7 +33,7 @@ MainExperts — образовательная платформа профори
 - `docs/06-data-tools-payments.md` — базы профессий, маркетинг и слои трафика, аналитика, платежи, инструменты.
 - `docs/07-principles-open-questions.md` — уроки, открытые вопросы, горизонт, реестр артефактов.
 - `docs/08-board-system.md` — система управленческих бордов MMS: обзор, иерархия L0–L3, реестр семи бордов, критический разбор. Детальный канон — `docs/boards/`.
-- `docs/boards/` — модуль системы бордов: `00-framework` (каркас), `01-kpi-framework` (KPI L0–L3), `02-roles-access` (RBAC), `03-decision-loop` (цикл решений, playbooks), `10-owner`…`16-product` (семь бордов), `90-acceptance` (критерии приёмки). Источник — MMS Том I+II.
+- `docs/boards/` — модуль системы бордов: `00-framework` (каркас), `01-kpi-framework` (KPI L0–L3), `02-roles-access` (RBAC), `03-decision-loop` (цикл решений, playbooks), `04-stage0-mvp` (стартовый контур S0–S2, каталог KPI v0 — производный, не из источника), `10-owner`…`16-product` (семь бордов), `90-acceptance` (критерии приёмки). Источник — MMS Том I+II.
 - `docs/private/stream-1-hnw.md` — поток 1, HNW, имена, премиум. **Конфиденциально, держать вне общего git.**
 - `reference/` — оригиналы методологий как есть: рабочая инструкция, схема процесса, V4.1, чек-лист Федоренко. Плюс `memory.md` (реконструкция из памяти Claude).
 

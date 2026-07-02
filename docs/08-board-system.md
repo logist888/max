@@ -65,6 +65,7 @@ AI-First. Требование скорости: загрузка борда ≤
 
 Кросс-функциональный канон: `boards/01-kpi-framework.md`, `boards/02-roles-access.md`,
 `boards/03-decision-loop.md`, сводные критерии приёмки — `boards/90-acceptance.md`.
+Порядок ввода системы в строй (S0–S2, каталог KPI v0) — `boards/04-stage0-mvp.md`.
 
 ## Связь с двумя потоками выручки
 
@@ -118,20 +119,23 @@ KPI, мощность и ограничения. Это прямо стыкуе�
 Минимальный осмысленный старт по V4.1 — наблюдаемость узкого места: события и состояния
 (очередь отчётов, срок проверки, доля правок после выдачи), затем Owner Dashboard поверх
 5–7 реальных метрик и Operations по Capacity. Полный набор — «при масштабе».
+Этот стартовый порядок специфицирован: `boards/04-stage0-mvp.md` (этапы S0–S2, каталог
+KPI v0 с формулами и источниками данных, критерии перехода).
 
 ## Что дальше
 
 - При появлении полного Тома II — снять пробелы (Data Dictionary, ETL, Security, NFR,
   Acceptance), завести соответствующие файлы канона.
 - Связать KPI уровня L0 с целями Федоренко (Модуль 2, `04-operations.md`).
-- Зафиксировать приоритет первого борда (рекомендация — Owner + Operations по узкому
-  месту) как решение основателя.
+- Решения основателя по стартовому контуру (`boards/04-stage0-mvp.md`): утвердить пороги
+  (Runway < N мес, p90 очереди > M дней), завести журнал S0 до вебинара 04.07.
 
 ## Связи
 
 - Канон модуля: `boards/00-framework.md` · `boards/01-kpi-framework.md` ·
-  `boards/02-roles-access.md` · `boards/03-decision-loop.md` · борды
-  `boards/10-owner.md`…`boards/16-product.md` · `boards/90-acceptance.md`.
+  `boards/02-roles-access.md` · `boards/03-decision-loop.md` ·
+  `boards/04-stage0-mvp.md` · борды `boards/10-owner.md`…`boards/16-product.md` ·
+  `boards/90-acceptance.md`.
 - Существующий канон: `04-operations.md` · `02-product.md` · `01-strategy.md` ·
   `05-risk-compliance.md` · `06-data-tools-payments.md`.
 - Источники: `../vault/10-sources/mms-tom-1-business-architecture.md` ·
