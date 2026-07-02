@@ -71,6 +71,10 @@ Primary Events
 | Экспертная сеть | Capacity Utilization; Average Rating; Repeat Sessions |
 | Финансы | Gross Margin; Burn Rate; Cash Conversion |
 
+> Пробел: показатели L1 для функций Операции и Продукты в гл. 9 Тома I не приведены; состав
+> функций не совпадает с набором L1-бордов — см. расхождение по составу L1 в
+> [00-framework](00-framework.md).
+
 ### L2 — Operational KPIs
 
 Используются линейными руководителями, применяются ежедневно. Например:
@@ -255,6 +259,38 @@ AI не принимает окончательных управленчески
 Система KPI MainExperts — не набор независимых метрик, а единая модель бизнеса: каждый показатель связан с другими, каждое изменение распространяется по дереву зависимостей, каждый руководитель работает только со своим уровнем показателей. Собственник получает только стратегические KPI, детализация — через Drill Down по мере необходимости. KPI Philosophy формирует единый язык управления и обеспечивает сопоставимость данных между подразделениями, позволяя использовать AI, BI и управленческие процессы как элементы единой Management Operating System.
 
 > Пробел: формулы конкретных KPI, числовые пороги (норма / предупреждение / критическое значение) и владельцы по каждому показателю в выданном срезе не приведены — раздел задаёт структуру паспорта, но не его заполнение.
+
+## Сводный реестр KPI канона (v0, агрегация)
+
+Все показатели, упомянутые в модуле, в одном месте — чистая агрегация, без выдумывания.
+Формулы и пороги в извлечении источника отсутствуют (пробел); колонка «Происхождение»
+говорит, откуда брать формулу: **С** — стандартная отраслевая (типовая формула применима,
+источник её не подтверждал), **И** — структура задана источником (глава указана),
+**П** — проектно-специфичная, не определена нигде (пробел до полного Тома I/II или решения
+основателя). Заполненные паспорта стартового подмножества — [04-stage0-mvp](04-stage0-mvp.md).
+
+| Группа | KPI | Где в каноне | Владелец (если назван) | Происх. |
+|---|---|---|---|---|
+| L0 Strategic (гл. 9.4) | Revenue | 10, 11, 03 (матрица) | CCO / Commercial Director — расхождение | С |
+| | Contribution | 10, 11, 15, 16 | CFO | И (5.7: Revenue − Variable Costs) |
+| | EBITDA; Operating Cash Flow; Cash; Runway; Enterprise Value | 10, 11 | Runway → CEO (4.5); Cash — не назван | С |
+| | Customer Lifetime Value (LTV); Net Revenue Retention (NRR) | 10, 11, 12 | — | С |
+| Финансы (11) | Burn Rate; Gross Margin; Net Profit; Cash Conversion; Deferred Revenue; AR/AP | 10, 11 | Burn Rate → CFO | С |
+| | Contribution per Client; Payback Period; LTV/CAC | 11 | — | С |
+| Маркетинг (12) | CAC; DRR; ROMI; Conversion Rate; Marketing Spend; Payback | 10, 12 | DRR-агрегат → CMO (8.10) | DRR — И (6.8: Spend/Revenue); ост. — С |
+| | CTR; CPC; CPL; AI Score; AI Engagement Score | 12 | — | CTR/CPC/CPL — С; AI-скоры — П |
+| Продажи (13) | Win Rate; Sales Velocity; Average Deal (Size); Sales Cycle; Pipeline; Revenue Forecast | 13 | — | С |
+| | Performance Score (менеджера) | 13 | — | П |
+| Операции (14) | Capacity; Capacity Utilization; Queue Length; SLA Compliance; Average Delivery Time | 10, 14 | Capacity → COO | Utilization — И (8.8: Booked/Available); ост. — С/И |
+| | Peak/Reserve/Critical Capacity; Hiring Demand | 14 | — | П |
+| Эксперты (15) | Average Rating; NPS; CSAT; Repeat Sessions; Expert Performance Score | 14, 15 | Expert Quality → Head of Expert Network | Rating — И (9.7: веса-пример); Score — П (состав 9.6 без весов) |
+| AI (10, 14) | AI Requests; AI Cost; Cost per Request; Latency; AI Adoption Rate; AI Contribution; Failure Rate | 10, 14 | AI Cost → CTO | Cost/Latency — С; Adoption/Contribution — П |
+| Продукты (16) | Margin; Product ROI; Product Adoption; Retention; Refund Rate; DAU/MAU | 16 | — | С, Adoption — П |
+| Том I гл. 10 (только там) | Product Growth; International Expansion; Innovation Index; Expert Utilization; AI Utilization | 10 (расхождение гл. 4 vs 10) | — | П — сущности без определения |
+
+Синонимы-кандидаты (сведение имён — подтвердить у источника): Customer Lifetime Value ≈ LTV;
+Average Deal Size ≈ Average Deal ≈ средний чек (Average Check) в контексте продаж.
+Cash и Operating Cash Flow — **разные** показатели (остаток vs поток), не сводить.
 
 ## Связи
 
