@@ -8,7 +8,7 @@ stream: поток-2
 goal: н/д
 status: факт
 source: "[[10-sources/2026-07-03-1622-marketing-call-1]]"
-source_ref: "Marketing_call_030726_162233.txt, стр. 114–115"
+source_ref: "Marketing_call_030726_162233.txt, стр. 104–115, 134–135"
 source_date: 2026-07-03
 source_url: "загрузка в чат 05.07.2026"
 tags: [kpi, метрики, воронка, управление]
