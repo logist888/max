@@ -56,7 +56,6 @@
   .gate{border-radius:var(--rs);padding:10px 13px;font-weight:700;font-size:13px;display:flex;gap:9px;align-items:center}
   .gate.no{background:var(--crb);color:var(--cr);border:1px solid #ecc7c4}
   .gate.yes{background:var(--okb);color:var(--ok);border:1px solid #bfe0cd}
-  /* kanban */
   .kan{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
   .kcol{background:var(--sf2);border:1px solid var(--ln);border-radius:var(--r);padding:9px;min-height:220px}
   .kcol h3{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin:0 0 8px;font-family:var(--mono)}
@@ -64,7 +63,6 @@
   .kcard:active{cursor:grabbing}
   .kcard .kc-meta{font-size:10px;color:var(--ink3);font-family:var(--mono);margin-top:3px}
   .kcol.over{border-color:var(--ac);background:var(--acs)}
-  /* gantt */
   .gwrap{overflow-x:auto;background:var(--sf);border:1px solid var(--ln);border-radius:var(--r);padding:10px}
   .grow{position:relative;height:26px;margin:3px 0}
   .glabel{position:absolute;left:0;width:230px;font-size:11px;color:var(--ink2);top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -350,7 +348,7 @@ function renderKan(){
 const DAY=864e5;
 const p2d=s=>s?new Date(s+"T00:00:00"):null;
 const d2s=d=>d.toISOString().slice(0,10);
-function cascade(idx){ // push dependents whose start < dep.due
+function cascade(idx){
  D.tasks.forEach((t,i)=>{
   if(String(t.dep).trim()===String(idx+1)&&t.start&&t.due&&D.tasks[idx].due){
    const depEnd=p2d(D.tasks[idx].due),st=p2d(t.start);
@@ -381,7 +379,6 @@ function renderGantt(){
     <div class="gbar" data-i="${i}" style="left:${x}px;width:${w}px"><span>${t.dep?("← #"+esc(t.dep)):""}</span><div class="ghandle"></div></div>
    </div>`;
   g.appendChild(row);});
- // drag
  let drag=null;
  g.onmousedown=e=>{const bar=e.target.closest(".gbar");if(!bar)return;
   const i=+bar.dataset.i,mode=e.target.classList.contains("ghandle")?"resize":"move";
