@@ -1,5 +1,14 @@
 # CHANGELOG контекста MainExperts
 
+## 2026-07-08 — бриф C-level по модели данных + интерактивная визуализация
+Поверх `docs/10-data-model.md`: (1) `vault/40-reports/data-model.html` — автономный
+интерактивный визуализатор (карта слоёв с рёбрами-связями, 31 таблица, демо-данные, дерево
+целей, витрины с живым расчётом P&L, приёмка), проверен headless-рендером, live на GitHub
+Pages (`data-model.html` в корне); (2) `Модель_данных_бриф_для_C-level.pdf` — one-pager на
+роль (CEO/COO/CMO/CPO/CTO): что даёт, чем управляете, какие решения, честная граница;
+сборка `scripts/data_model_roles_pdf.py` (WeasyPrint+DejaVu). Правило двух потоков и статус
+«спецификация, не БД» проведены сквозь оба артефакта.
+
 ## 2026-07-08 — модель данных «запуск любого продукта где угодно»
 По загруженному промпту собрана реляционная модель `docs/10-data-model.md`: ядро
 Product→SKU→Listing→(Market×Channel)→Fact, слой целей (Business→Marketing→Campaign/Channel/
