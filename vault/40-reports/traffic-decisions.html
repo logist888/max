@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Трафик → Платформа → Решения · MainExperts</title>
+<style>
+  :root{--primary:#1D4ED8;--secondary:#0F172A;--accent:#10B981;--warning:#F59E0B;
+    --error:#DC2626;--indigo:#4338CA;--ink:#1E293B;--muted:#64748B;--line:#E2E8F0;--bg:#F8FAFC;--card:#fff;}
+  *{box-sizing:border-box}html,body{margin:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);
+    background:var(--bg);font-size:14px;line-height:1.45}
+  a{color:var(--primary);text-decoration:none}
+  header{background:linear-gradient(135deg,var(--secondary),#16265c 55%,var(--primary));color:#fff;padding:20px 24px 16px}
+  header .eyebrow{letter-spacing:.28em;font-size:10px;text-transform:uppercase;color:rgba(255,255,255,.6)}
+  header h1{margin:5px 0 4px;font-size:22px;font-weight:800;letter-spacing:-.3px}
+  header p{margin:0;font-size:12.5px;color:rgba(255,255,255,.82);max-width:940px}
+  header .uses{margin-top:9px;display:flex;gap:8px;flex-wrap:wrap}
+  header .use{font-size:11px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);
+    padding:4px 10px;border-radius:7px;color:rgba(255,255,255,.92)}
+  header .use b{color:#7dd3fc}
+  nav{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);display:flex;gap:2px;padding:0 12px;overflow-x:auto}
+  nav button{appearance:none;border:none;background:none;font:inherit;cursor:pointer;padding:12px 14px;color:var(--muted);
+    font-weight:600;font-size:13px;border-bottom:3px solid transparent;white-space:nowrap}
+  nav button:hover{color:var(--ink)} nav button.on{color:var(--primary);border-bottom-color:var(--primary)}
+  main{max-width:1180px;margin:0 auto;padding:20px 16px 60px}
+  section{display:none} section.on{display:block}
+  h2.st{font-size:18px;margin:2px 0 4px;color:var(--secondary)}
+  .sub{color:var(--muted);font-size:13px;margin:0 0 16px;max-width:880px}
+  .tablewrap{border:1px solid var(--line);border-radius:10px;overflow:auto;margin:10px 0 18px;background:#fff}
+  table{border-collapse:collapse;width:100%;font-size:12px}
+  thead th{background:var(--primary);color:#fff;text-align:left;padding:7px 10px;font-weight:600;position:sticky;top:0;white-space:nowrap}
+  tbody td{padding:6px 10px;border-top:1px solid var(--line);vertical-align:top;line-height:1.34}
+  tbody tr:nth-child(even){background:var(--bg)} td.k,th.k{font-weight:700;color:var(--secondary);white-space:nowrap}
+  .pill{display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px}
+  .p-cis{background:#DBEAFE;color:#1E40AF}.p-mena{background:#FEF3C7;color:#92400E}.p-both{background:#D1FAE5;color:#065F46}
+  .t-cold{background:#DBEAFE;color:#1E40AF}.t-warm{background:#FEF3C7;color:#92400E}.t-hot{background:#FEE2E2;color:#991B1B}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+  .filters input,.filters select{font:inherit;padding:6px 9px;border:1px solid var(--line);border-radius:8px}
+  /* builder */
+  .builder{display:grid;grid-template-columns:340px 1fr;gap:16px}
+  @media(max-width:820px){.builder{grid-template-columns:1fr}}
+  .form{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;align-self:start}
+  .form label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin:10px 0 3px}
+  .form select,.form input{width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+  .out .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:12px}
+  .out h3{margin:0 0 6px;font-size:14px;color:var(--secondary)}
+  .banner{border-radius:9px;padding:10px 13px;font-size:13px;font-weight:600;margin-bottom:12px}
+  .b-ok{background:#ECFDF5;border:1px solid var(--accent);color:#065F46}
+  .b-warn{background:#FFFBEB;border:1px solid var(--warning);color:#92400E}
+  .b-err{background:#FEF2F2;border:1px solid var(--error);color:#991B1B}
+  .kv{display:grid;grid-template-columns:130px 1fr;gap:4px 10px;font-size:12.5px}
+  .kv .kk{color:var(--muted)} .kv .vv{font-family:ui-monospace,Menlo,monospace;color:var(--secondary);word-break:break-all}
+  pre.brief{white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;background:var(--bg);
+    border:1px solid var(--line);border-radius:9px;padding:11px 12px;margin:0;line-height:1.45;max-height:none}
+  .copy{appearance:none;border:1px solid var(--primary);background:#EFF4FF;color:var(--primary);font:inherit;font-weight:700;
+    font-size:12px;padding:6px 12px;border-radius:8px;cursor:pointer;margin-top:8px}
+  .copy:hover{background:#dbeafe} .copy.done{border-color:var(--accent);background:#ECFDF5;color:#065F46}
+  .thr{font-size:12px} .thr .row{display:flex;justify-content:space-between;padding:3px 0;border-top:1px solid var(--line)}
+  .thr .row:first-child{border-top:none} .g{color:#065F46}.y{color:#92400E}.r{color:#991B1B}
+  /* matrix */
+  .mx{display:grid;grid-template-columns:250px 1fr;gap:14px}
+  @media(max-width:760px){.mx{grid-template-columns:1fr}}
+  .mxlist{border:1px solid var(--line);border-radius:10px;background:#fff;overflow:hidden;align-self:start}
+  .mxlist .it{padding:8px 11px;font-size:12.5px;cursor:pointer;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:6px}
+  .mxlist .it:first-child{border-top:none} .mxlist .it:hover{background:var(--bg)} .mxlist .it.on{background:#EFF4FF;color:var(--primary);font-weight:700}
+  .ld{border:1px solid var(--line);border-radius:8px;padding:9px 11px;margin-bottom:7px;font-size:12.5px}
+  .ld.ok{border-left:4px solid var(--accent)}.ld.al{border-left:4px solid var(--primary)}.ld.no{border-left:4px solid var(--error);background:#FEF2F2}
+  .ld .lk{font-weight:700;color:var(--secondary);font-family:ui-monospace,Menlo,monospace}
+  .note{background:#FFFBEB;border:1px solid var(--warning);border-radius:9px;padding:9px 12px;font-size:12px;margin:8px 0}
+  .note b{color:#92400E}
+  figure{margin:10px 0} .schema{border:1px solid var(--line);border-radius:10px;background:#fff;padding:12px}
+  .schema svg{width:100%;height:auto;display:block}
+  footer{max-width:1180px;margin:0 auto;padding:0 16px 40px;color:var(--muted);font-size:11.5px}
+  code{font-family:ui-monospace,Menlo,monospace;background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:0 4px}
+</style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">MainExperts · docs/12 · Поток-2 · СНГ + MENA</div>
+  <h1>Трафик → Платформа → Решения</h1>
+  <p>Рабочий слой привлечения. Один документ, по которому выбирается канал, за 15 минут собирается ТЗ
+     подрядчику и крутится цикл «статистика → решение → действие». Высокий чек: холодный трафик на
+     карточку товара не ведём.</p>
+  <div class="uses">
+    <span class="use"><b>Конструктор ТЗ</b> — собери бриф за минуту</span>
+    <span class="use"><b>Матрица</b> — куда можно лить канал</span>
+    <span class="use"><b>Цикл решений</b> — ДРР → действие</span>
+  </div>
+</header>
+
+<nav id="nav">
+  <button data-s="builder" class="on">Конструктор ТЗ</button>
+  <button data-s="sources">Источники (22)</button>
+  <button data-s="landings">Посадочные</button>
+  <button data-s="matrix">Матрица</button>
+  <button data-s="cycle">Учёт &amp; решения</button>
+</nav>
+
+<main>
+  <!-- BUILDER -->
+  <section id="builder" class="on">
+    <h2 class="st">Конструктор ТЗ подрядчику</h2>
+    <p class="sub">Выбери канал, рынок и посадочную — конструктор проверит по матрице (заблокирует
+      запрещённые связки), соберёт ключ ячейки <code>CELL_</code>, UTM-шаблон, целевое действие,
+      пороги решений и готовый бриф для копирования.</p>
+    <div class="builder">
+      <div class="form">
+        <label>Канал (MK_)</label><select id="f-mk"></select>
+        <label>Рынок</label><select id="f-mkt"><option value="RU">СНГ</option><option value="AE">MENA</option></select>
+        <label>Посадочная</label><select id="f-pg"></select>
+        <label>Номер ячейки (NN)</label><input id="f-nn" value="01" maxlength="3">
+        <label>ID креатива</label><input id="f-cr" value="cr01">
+        <label>Бюджет, $ (мин. 400)</label><input id="f-bud" type="number" value="400" min="400" step="50">
+      </div>
+      <div class="out" id="out"></div>
+    </div>
+  </section>
+
+  <!-- SOURCES -->
+  <section id="sources">
+    <h2 class="st">А. Реестр источников трафика (закрытый словарь MK_)</h2>
+    <p class="sub">Канонический набор из 22 каналов. Новый канал добавляется в словарь, а не заводится ad hoc.</p>
+    <div class="filters">
+      <input id="src-q" placeholder="поиск по каналу…" oninput="renderSources()">
+      <select id="src-mkt" onchange="renderSources()"><option value="">все рынки</option><option>СНГ</option><option>MENA</option><option>оба</option></select>
+    </div>
+    <div id="src-table"></div>
+  </section>
+
+  <!-- LANDINGS -->
+  <section id="landings">
+    <h2 class="st">Б. Реестр посадочных (PG_ / LST_)</h2>
+    <p class="sub">Целевое действие — событие или заказ, измеримые в системе (append-only факт). Карточка
+      <code>LST_DIAG_*</code> — только тёплый трафик (высокий чек).</p>
+    <div id="lnd-table"></div>
+  </section>
+
+  <!-- MATRIX -->
+  <section id="matrix">
+    <h2 class="st">В. Матрица соответствия: источник → посадочная</h2>
+    <p class="sub">Кликни канал — увидишь основную/допустимые (зелёные/синие) и запрещённые (красные, с причиной)
+      посадочные. Логика: температура трафика × чек.</p>
+    <div class="mx">
+      <div class="mxlist" id="mxlist"></div>
+      <div id="mxdetail"></div>
+    </div>
+  </section>
+
+  <!-- CYCLE -->
+  <section id="cycle">
+    <h2 class="st">Г–Д. Учётный контур и цикл решений</h2>
+    <p class="sub">Сквозная атрибуция через <code>user_id</code>, словарь UTM, таблица решений (ДРР главный,
+      CPL прокси) и каденция.</p>
+    <div id="cycle-body"></div>
+  </section>
+</main>
+
+<footer>
+  Источник: <code>docs/12-traffic-platform-decisions.md</code> · снимок 08.07.2026 · Поток-1 не затронут,
+  метрики сторон не агрегированы · гипотеза скрининга — <b>[ГИПОТЕЗА]</b>, не факт.
+</footer>
+
+<script>
+const P="#1D4ED8",S="#0F172A",A="#10B981",W="#F59E0B",E="#DC2626",IN="#4338CA",M="#64748B",LN="#E2E8F0",BG="#F8FAFC";
+
+/* ==== ДАННЫЕ ==== */
+// каналы: id,name,market,forming,lever,speed,medium,temp,cadence,owner
+const MK=[
+ ["MK_VK_ADS","Таргет VK","СНГ","аукцион","бюджет","часы","social","cold","ежедневно + еженедельно","маркетинг-лид"],
+ ["MK_META_ADS","Таргет Meta","MENA","аукцион","бюджет","часы","social","cold","ежедневно + еженедельно","маркетинг-лид"],
+ ["MK_YA_DIRECT","Контекст Яндекс","СНГ","аукцион","бюджет","часы","cpc","cold","ежедневно + еженедельно","маркетинг-лид"],
+ ["MK_GOOGLE_ADS","Контекст Google","MENA","аукцион","бюджет","часы","cpc","cold","ежедневно + еженедельно","маркетинг-лид"],
+ ["MK_TG_SEED","Посевы в Telegram","оба","рекомендация (пост)","отношения + бюджет","часы","social","cold","по факту + еженедельно","маркетинг-лид"],
+ ["MK_BLOG_PAID","Блогеры платные","оба","рекомендация","бюджет + отношения","недели","affiliate","cold","по факту размещения","партнёрский лид"],
+ ["MK_BLOG_ORG","Блогеры нативные","оба","рекомендация","отношения + контент","недели–месяцы","social","cold","ежемесячно","партнёрский лид"],
+ ["MK_OWN_SOCIAL_RU","Свои соцсети RU","СНГ","органика","контент","недели–месяцы","social","cold","ежемесячно","контент-лид"],
+ ["MK_OWN_SOCIAL_EN","Свои соцсети EN","MENA","органика","контент","недели–месяцы","social","cold","ежемесячно","контент-лид"],
+ ["MK_VIDEO","Видеоконтент","оба","выдача + рекомендация","контент","недели–месяцы","video","cold","ежемесячно","контент-лид"],
+ ["MK_SEO_INFO","SEO информационный","оба","выдача","контент + время","месяцы","seo","cold","ежемесячно","контент-лид"],
+ ["MK_SEO_COMM","SEO коммерческий","оба","выдача","контент + время","месяцы","seo","warm","ежемесячно","контент-лид"],
+ ["MK_SEO_BRAND","SEO брендовый","оба","выдача (бренд-спрос)","время / бренд","месяцы","seo","warm","ежемесячно","контент-лид"],
+ ["MK_PR","PR","оба","рекомендация (медиа)","отношения","недели–месяцы","pr","cold","по факту + ежемесячно","партнёрский лид"],
+ ["MK_EMAIL","Email","оба","база","контент","часы","email","warm","по рассылке + еженедельно","CRM-лид"],
+ ["MK_MSG_BROADCAST","Мессенджер-рассылки","оба","база","контент","часы","email","warm","по рассылке + еженедельно","CRM-лид"],
+ ["MK_REMARKETING","Ремаркетинг","оба","аукцион (пиксель/база)","бюджет + база","часы","remarketing","hot","ежедневно + еженедельно","маркетинг-лид"],
+ ["MK_REF_USER","Реф-ссылки пользователей","оба","рекомендация","отношения (продукт)","недели","referral","warm","ежемесячно","партнёрский лид"],
+ ["MK_REF_EXPERT","Реф-ссылки экспертов","оба","рекомендация","отношения","недели","referral","warm","ежемесячно","партнёрский лид"],
+ ["MK_PARTNER_EDU","Партнёрства (школы/репетиторы)","оба","база + отношения","отношения","недели–месяцы","affiliate","warm","ежемесячно","партнёрский лид"],
+ ["MK_WEBINAR","Вебинар (прогрев)","оба","база + рекомендация","контент + время","недели","email","warm","по эфиру + еженедельно","CRM-лид"],
+ ["MK_DIRECT","Прямые заходы","оба","база (память/бренд)","время / бренд","месяцы","(none)","warm","ежемесячно","маркетинг-лид"],
+];
+const MKI={};MK.forEach(r=>MKI[r[0]]={id:r[0],name:r[1],market:r[2],forming:r[3],lever:r[4],speed:r[5],medium:r[6],temp:r[7],cadence:r[8],owner:r[9]});
+
+// посадочные: id,type,action,next,slug
+const LND=[
+ ["PG_QUIZ","воронковая","EVT_SCREENING_DONE (+EVT_REG)","Профиль 10","/quiz"],
+ ["PG_PROFILE10","воронковая","EVT_PROFILE10_ACTIVATED","покупка диагностики","/profile"],
+ ["PG_WEBINAR","воронковая","EVT_WEBINAR_REG","прогрев → квиз/диагностика","/webinar"],
+ ["PG_HOME","воронковая","EVT_GOTO_QUIZ","квиз","/"],
+ ["PG_CATEGORY","воронковая","EVT_GOTO_QUIZ / EVT_VIEW_LISTING","квиз / карточка","/category"],
+ ["PG_BLOG","воронковая","EVT_GOTO_QUIZ","квиз","/blog"],
+ ["LST_DIAG","транзакционная","ORDER_DIAG (покупка 50К)","членство в подарок","/p/diagnostika"],
+ ["LST_RENEW","транзакционная","ORDER_RENEW (продление)","удержание","/p/renew"],
+];
+const LNDI={};LND.forEach(r=>LNDI[r[0]]={id:r[0],type:r[1],action:r[2],next:r[3],slug:r[4]});
+
+// матрица: main[], allowed[], deny[[id,reason]], target, note, needsRef
+const MX={
+ MK_VK_ADS:{main:["PG_QUIZ"],allowed:["PG_WEBINAR","PG_BLOG"],deny:[["LST_DIAG","холодный трафик + высокий чек = слив бюджета"],["PG_HOME","нет одного измеримого действия; ломает «1 кампания — 1 посадочная»"]],target:"EVT_SCREENING_DONE"},
+ MK_META_ADS:{main:["PG_QUIZ"],allowed:["PG_WEBINAR","PG_BLOG"],deny:[["LST_DIAG","холодный трафик + высокий чек = слив"],["PG_HOME","нет одного действия"]],target:"EVT_SCREENING_DONE"},
+ MK_YA_DIRECT:{main:["PG_QUIZ"],allowed:["PG_BLOG","PG_CATEGORY"],deny:[["LST_DIAG","холод (инфо-запрос) + чек"],["PG_HOME","нет одного действия"]],target:"EVT_SCREENING_DONE",note:"Для явного бренд/коммерч-запроса трафик тёплый — тогда допустима LST_DIAG / PG_CATEGORY."},
+ MK_GOOGLE_ADS:{main:["PG_QUIZ"],allowed:["PG_BLOG","PG_CATEGORY"],deny:[["LST_DIAG","холод (инфо-запрос) + чек"],["PG_HOME","нет одного действия"]],target:"EVT_SCREENING_DONE",note:"Для бренд/коммерч-запроса — тёплый трафик, LST_DIAG допустима."},
+ MK_TG_SEED:{main:["PG_QUIZ"],allowed:["PG_WEBINAR"],deny:[["LST_DIAG","холод + чек"],["PG_HOME","нет одного действия"]],target:"EVT_SCREENING_DONE"},
+ MK_BLOG_PAID:{main:["PG_QUIZ"],allowed:["PG_WEBINAR"],deny:[["LST_DIAG","холод + чек"],["PG_HOME","нет одного действия"]],target:"EVT_SCREENING_DONE"},
+ MK_BLOG_ORG:{main:["PG_QUIZ"],allowed:["PG_WEBINAR"],deny:[["LST_DIAG","холод + чек"],["PG_HOME","нет одного действия"]],target:"EVT_SCREENING_DONE"},
+ MK_OWN_SOCIAL_RU:{main:["PG_QUIZ"],allowed:["PG_WEBINAR","PG_BLOG"],deny:[["LST_DIAG","для холодных подписчиков — чек"]],target:"EVT_SCREENING_DONE"},
+ MK_OWN_SOCIAL_EN:{main:["PG_QUIZ"],allowed:["PG_WEBINAR","PG_BLOG"],deny:[["LST_DIAG","для холодных подписчиков — чек"]],target:"EVT_SCREENING_DONE"},
+ MK_VIDEO:{main:["PG_QUIZ"],allowed:["PG_WEBINAR","PG_BLOG"],deny:[["LST_DIAG","для холодных зрителей — чек"]],target:"EVT_SCREENING_DONE"},
+ MK_SEO_INFO:{main:["PG_BLOG"],allowed:["PG_QUIZ"],deny:[["LST_DIAG","инфо-интент, не транзакционный"]],target:"EVT_GOTO_QUIZ"},
+ MK_SEO_COMM:{main:["PG_CATEGORY"],allowed:["PG_QUIZ","LST_DIAG"],deny:[],target:"EVT_GOTO_QUIZ / ORDER_DIAG"},
+ MK_SEO_BRAND:{main:["PG_HOME"],allowed:["LST_DIAG","PG_PROFILE10"],deny:[],target:"ORDER_DIAG / повторный вход"},
+ MK_PR:{main:["PG_HOME"],allowed:["PG_BLOG","PG_QUIZ"],deny:[["LST_DIAG","репутационный формат, не прямая продажа"]],target:"EVT_GOTO_QUIZ"},
+ MK_EMAIL:{main:["PG_PROFILE10"],allowed:["LST_DIAG","PG_WEBINAR","PG_QUIZ"],deny:[],target:"ORDER_DIAG / EVT_WEBINAR_REG",note:"Повторный PG_QUIZ для уже прошедших — лишний шаг."},
+ MK_MSG_BROADCAST:{main:["PG_PROFILE10"],allowed:["LST_DIAG","PG_WEBINAR","PG_QUIZ"],deny:[],target:"ORDER_DIAG / EVT_WEBINAR_REG"},
+ MK_REMARKETING:{main:["LST_DIAG"],allowed:["PG_PROFILE10"],deny:[["PG_HOME","размывает намерение"]],target:"ORDER_DIAG"},
+ MK_REF_USER:{main:["PG_QUIZ"],allowed:["LST_DIAG"],deny:[],target:"EVT_SCREENING_DONE / ORDER_DIAG",needsRef:true},
+ MK_REF_EXPERT:{main:["PG_QUIZ"],allowed:["LST_DIAG"],deny:[],target:"EVT_SCREENING_DONE",needsRef:true,note:"Сторона экспертов — вне семейной воронки; метрики не агрегировать."},
+ MK_PARTNER_EDU:{main:["PG_QUIZ"],allowed:["PG_CATEGORY","PG_WEBINAR"],deny:[["PG_HOME","нет одного действия"]],target:"EVT_SCREENING_DONE"},
+ MK_WEBINAR:{main:["PG_WEBINAR"],allowed:["PG_QUIZ","LST_DIAG"],deny:[],target:"EVT_WEBINAR_REG → ORDER_DIAG",note:"Холодная карточка ДО эфира — нельзя; LST_DIAG только после эфира."},
+ MK_DIRECT:{main:["PG_HOME"],allowed:["LST_DIAG","PG_PROFILE10"],deny:[],target:"ORDER_DIAG / повторный вход"},
+};
+
+/* ==== ТАБЫ ==== */
+document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('main section').forEach(s=>s.classList.toggle('on',s.id===b.dataset.s));
+});
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+/* ==== КОНСТРУКТОР ==== */
+function mkShort(id){return id.replace('MK_','').replace(/_ADS$/,'').replace(/_DIRECT$/,'');}
+function lndShort(id){return id.replace(/^PG_/,'').replace(/^LST_/,'');}
+function fillSelects(){
+  const mk=document.getElementById('f-mk');
+  mk.innerHTML=MK.map(r=>`<option value="${r[0]}">${r[0]} · ${r[1]}</option>`).join('');
+  syncLandings();
+  mk.onchange=syncLandings;
+  ['f-mkt','f-pg','f-nn','f-cr','f-bud'].forEach(id=>document.getElementById(id).oninput=buildTZ);
+  document.getElementById('f-mkt').onchange=buildTZ;
+}
+function syncLandings(){
+  const mkid=document.getElementById('f-mk').value, mx=MX[mkid];
+  const opts=LND.map(r=>r[0]);
+  const pg=document.getElementById('f-pg');
+  pg.innerHTML=opts.map(id=>{
+    const rec=mx.main.includes(id)?' ★ основная':mx.allowed.includes(id)?' · допустимая':
+      mx.deny.some(d=>d[0]===id)?' ✕ запрещена':'';
+    return `<option value="${id}">${id}${rec}</option>`;}).join('');
+  pg.value=mx.main[0];
+  buildTZ();
+}
+function buildTZ(){
+  const mkid=document.getElementById('f-mk').value, mx=MX[mkid], ch=MKI[mkid];
+  const mkt=document.getElementById('f-mkt').value; // RU/AE
+  let lnd=document.getElementById('f-pg').value;
+  const nn=(document.getElementById('f-nn').value||'01').replace(/[^0-9]/g,'')||'01';
+  const cr=document.getElementById('f-cr').value||'cr01';
+  let bud=parseInt(document.getElementById('f-bud').value||'400',10); if(bud<400)bud=400;
+  // market-suffixed landing key for LST_
+  const lndKey = lnd.startsWith('LST_')? `${lnd}_${mkt}` : lnd;
+  const cell=`CELL_${mkShort(mkid)}_${lndShort(lnd)}_${mkt}_${nn.padStart(2,'0')}`;
+  const src=mkid.toLowerCase().replace('mk_','');
+  const ref = mx.needsRef? '&ref_id=REF_'+(mkid.includes('EXPERT')?'EXPERT':'USER')+'_<id>' : '';
+  const term = ch.medium==='cpc'||ch.medium==='seo'? '&utm_term=<keyword>':'';
+  const utm=`utm_source=${src}&utm_medium=${ch.medium}&utm_campaign=${cell}&utm_content=${cr}${term}${ref}`;
+  const url=`https://mainexperts.online${LNDI[lnd].slug}?${utm}`;
+  // validation
+  const denied=mx.deny.find(d=>d[0]===lnd);
+  let banner;
+  if(denied) banner=`<div class="banner b-err">✕ Запрещено: ${lnd} для ${mkid}. Причина: ${denied[1]}. Выбери другую посадочную.</div>`;
+  else if(mx.main.includes(lnd)) banner=`<div class="banner b-ok">✓ ${lnd} — основная посадочная для ${mkid}.</div>`;
+  else if(mx.allowed.includes(lnd)) banner=`<div class="banner b-ok">✓ ${lnd} — допустимая посадочная для ${mkid}.</div>`;
+  else banner=`<div class="banner b-warn">⚠ ${lnd} нет в матрице для ${mkid}. Проверь по вкладке «Матрица».</div>`;
+  const target = denied? '—' : LNDI[lnd].action;
+  // brief
+  const brief=
+`ТЗ на закупку трафика — ячейка ${cell}
+
+1. Канал (MK_):        ${mkid} (${ch.name})
+2. Рынок:              ${mkt==='RU'?'СНГ':'MENA'}
+3. Ячейка (CELL_):     ${cell}
+4. Посадочная:         ${url}
+                       ключ: ${lndKey}
+5. Целевое действие:   ${target}
+6. UTM-шаблон:
+     ${utm}
+7. Бюджет:             $${bud} (не менее $400 на ячейку)
+8. KPI и градация:
+     CPL:     ≤ $3 зелёный / $3–6 жёлтый / > $6 красный        [ЦЕЛЬ]
+     CR пос.: ≥ 40% зелёный / 25–40% жёлтый / < 25% красный
+     (ДРР считает заказчик по сшивке расход↔заказ; подрядчик — до CPL/CR посадочной)
+9. Запреты:
+     — НЕ менять посадочную (смена = новая ячейка);
+     — НЕ лить на главную (PG_HOME);
+     — НЕ вести холодный трафик на карточку LST_DIAG_*;
+     — НЕ упоминать названия методик (только рабочие);
+     — «одна кампания — одна посадочная».
+10. Отчёт:             ежедневно (расход, CPL) + еженедельно (CR посадочной)
+11. Критерий остановки: бюджет ячейки исчерпан при CPL > красного и 0 заказов → СТОП, разбор.`;
+  document.getElementById('out').innerHTML=`
+    ${banner}
+    <div class="card"><h3>Параметры ячейки</h3>
+      <div class="kv">
+        <span class="kk">CELL_</span><span class="vv">${cell}</span>
+        <span class="kk">Целевое действие</span><span class="vv">${esc(target)}</span>
+        <span class="kk">Посадочная</span><span class="vv">${lndKey}</span>
+        <span class="kk">Температура</span><span class="vv">${ch.temp}</span>
+        <span class="kk">Владелец</span><span class="vv">${ch.owner} · ${ch.cadence}</span>
+      </div>
+      ${mx.note?`<div class="note"><b>Заметка:</b> ${esc(mx.note)}</div>`:''}
+    </div>
+    <div class="card"><h3>UTM-шаблон</h3>
+      <pre class="brief" id="utmbox">${esc(utm)}</pre>
+      <button class="copy" onclick="cp('utmbox',this)">Копировать UTM</button>
+    </div>
+    <div class="card"><h3>Пороги решений (для этой ячейки)</h3>
+      <div class="thr">
+        <div class="row"><span>CPL</span><span><span class="g">≤$3</span> / <span class="y">$3–6</span> / <span class="r">&gt;$6</span></span></div>
+        <div class="row"><span>CR посадочной</span><span><span class="g">≥40%</span> / <span class="y">25–40%</span> / <span class="r">&lt;25%</span></span></div>
+        <div class="row"><span>CR рег→заказ [ГИПОТЕЗА]</span><span><span class="g">≥5%</span> / <span class="y">3–5%</span> / <span class="r">&lt;3%</span></span></div>
+        <div class="row"><span>ДРР (главный)</span><span><span class="g">≤20%</span> / <span class="y">20–35%</span> / <span class="r">&gt;35%</span></span></div>
+      </div>
+    </div>
+    <div class="card"><h3>Готовый бриф</h3>
+      <pre class="brief" id="briefbox">${esc(brief)}</pre>
+      <button class="copy" onclick="cp('briefbox',this)">Копировать ТЗ</button>
+    </div>`;
+}
+function cp(id,btn){
+  const t=document.getElementById(id).textContent;
+  navigator.clipboard&&navigator.clipboard.writeText(t).then(()=>{btn.textContent='Скопировано ✓';btn.classList.add('done');
+    setTimeout(()=>{btn.textContent=id==='utmbox'?'Копировать UTM':'Копировать ТЗ';btn.classList.remove('done')},1500);});
+}
+
+/* ==== ИСТОЧНИКИ ==== */
+function pillMkt(m){const c=m==='СНГ'?'p-cis':m==='MENA'?'p-mena':'p-both';return `<span class="pill ${c}">${m}</span>`;}
+function pillTemp(t){const map={cold:['t-cold','холод'],warm:['t-warm','тёпл'],hot:['t-hot','горяч']};return `<span class="pill ${map[t][0]}">${map[t][1]}</span>`;}
+function renderSources(){
+  const q=(document.getElementById('src-q').value||'').toLowerCase(), mkt=document.getElementById('src-mkt').value;
+  const rows=MK.filter(r=>(!q||(r[0]+r[1]).toLowerCase().includes(q))&&(!mkt||r[2]===mkt)).map(r=>{
+    const c=MKI[r[0]];
+    return `<tr><td class="k">${r[0]}</td><td>${r[1]}</td><td>${pillMkt(r[2])}</td><td>${r[3]}</td><td>${r[4]}</td><td>${r[5]}</td><td>${pillTemp(c.temp)}</td></tr>`;
+  }).join('');
+  document.getElementById('src-table').innerHTML=`<div class="tablewrap"><table><thead><tr>
+    <th class="k">MK-ключ</th><th>Канал</th><th>Рынок</th><th>Как формируется</th><th>Рычаг</th><th>Скорость</th><th>Темп.</th>
+    </tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+
+/* ==== ПОСАДОЧНЫЕ ==== */
+function renderLandings(){
+  const rows=LND.map(r=>`<tr><td class="k">${r[0]}</td><td>${r[1]}</td><td><code>${esc(r[2])}</code></td><td>${r[3]}</td></tr>`).join('');
+  document.getElementById('lnd-table').innerHTML=`<div class="tablewrap"><table><thead><tr>
+    <th class="k">Ключ</th><th>Тип</th><th>Целевое действие</th><th>Следующий шаг</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <div class="note"><b>Инвариант:</b> PG_HOME не бывает основной посадочной платного холодного трафика (нет одного действия).
+    LST_DIAG_* — только тёплый/горячий трафик (высокий чек).</div>`;
+}
+
+/* ==== МАТРИЦА ==== */
+function renderMatrix(sel){
+  document.getElementById('mxlist').innerHTML=MK.map(r=>{
+    const on=r[0]===sel?' on':'';const c=MKI[r[0]];
+    return `<div class="it${on}" onclick="renderMatrix('${r[0]}')"><span>${r[0]}</span>${pillTemp(c.temp)}</div>`;}).join('');
+  const mx=MX[sel],ch=MKI[sel];
+  const main=mx.main.map(id=>`<div class="ld ok"><span class="lk">★ ${id}</span> — основная · ${esc(LNDI[id].action)}</div>`).join('');
+  const al=mx.allowed.map(id=>`<div class="ld al"><span class="lk">${id}</span> — допустимая · ${esc(LNDI[id].action)}</div>`).join('');
+  const no=mx.deny.map(d=>`<div class="ld no"><span class="lk">✕ ${d[0]}</span> — запрещена: ${esc(d[1])}</div>`).join('');
+  document.getElementById('mxdetail').innerHTML=`
+    <div style="font-weight:800;color:${S};font-size:15px;margin-bottom:2px">${sel} · ${ch.name}</div>
+    <div class="sub" style="margin-bottom:10px">${pillTemp(ch.temp)} ${pillMkt(ch.market)} · целевое действие: <code>${esc(mx.target)}</code>${mx.needsRef?' · требует <code>ref_id</code>':''}</div>
+    ${main}${al}${no||''}
+    ${mx.note?`<div class="note"><b>Заметка:</b> ${esc(mx.note)}</div>`:''}`;
+}
+
+/* ==== УЧЁТ & РЕШЕНИЯ ==== */
+function chainSVG(){
+  const nodes=[["клик",M],["EVT_посадочной",P],["EVT_REG",A],["EVT_PROFILE10",IN],["ORDER_DIAG",S],["членство",A],["ORDER_RENEW",P]];
+  const W=112,g=8,xs=nodes.map((_,i)=>10+i*(W+g)),y=42,h=46;
+  let s=[`<svg viewBox="0 0 ${xs[6]+W+10} 120" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Arial">`];
+  nodes.forEach(([lab,c],i)=>{const x=xs[i];
+    s.push(`<rect x="${x}" y="${y}" width="${W}" height="${h}" rx="9" fill="#fff" stroke="${c}" stroke-width="2"/>`);
+    s.push(`<text x="${x+W/2}" y="${y+h/2+4}" fill="${S}" font-size="11" font-weight="bold" text-anchor="middle">${lab}</text>`);});
+  for(let i=0;i<6;i++){const ax=xs[i]+W;s.push(`<path d="M${ax},${y+h/2} H${xs[i+1]-3}" stroke="${M}" stroke-width="2"/><path d="M${xs[i+1]-3},${y+h/2-4} l6,4 l-6,4 Z" fill="${M}"/>`);}
+  // сшивка marker at EVT_REG
+  s.push(`<text x="${xs[2]+W/2}" y="${y-8}" fill="${A}" font-size="9" font-weight="bold" text-anchor="middle">★ сшивка client_id→user_id</text>`);
+  s.push(`<text x="${xs[1]+W/2}" y="${y+h+16}" fill="${M}" font-size="9" text-anchor="middle">до рег: Метрика/GA</text>`);
+  s.push(`<text x="${xs[4]+W/2}" y="${y+h+16}" fill="${M}" font-size="9" text-anchor="middle">после рег: платформа (факты)</text>`);
+  s.push('</svg>');return s.join('');
+}
+function renderCycle(){
+  const utm=[["utm_source","ключ MK_ в нижнем регистре (vk_ads, ya_direct…)","ровно один MK_ на кампанию"],
+    ["utm_medium","social · cpc · email · referral · seo · video · pr · affiliate · remarketing","закрытый список"],
+    ["utm_campaign","ключ ячейки CELL_ (кодирует посадочную + рынок + тест)","одна кампания = одна посадочная"],
+    ["utm_content","вариант креатива","для A/B"],["utm_term","ключевой запрос","только поиск"],
+    ["ref_id","REF_ → user_id реферера","обязателен для MK_REF_*"]];
+  const dec=[["Расход/день, CPL","кабинет + Метрика","CPL ≤$3 зел / $3–6 жёл / >$6 крас [ЦЕЛЬ]","мониторинг","—"],
+    ["CR посадочной","Метрика / платформа","≥40% / 25–40% / <25%","квалификация","<порога → чинить посадочную"],
+    ["CTR (креатив)","кабинет","по бенчмарку канала","качество креатива","низкий → чинить креатив"],
+    ["CR рег→заказ [ГИПОТЕЗА]","платформа","≥5% / 3–5% / <3%","подтверждение гипотезы скрининга","<порога → пауза, разбор оффера"],
+    ["ДРР (главный)","расход кабинета + выручка платформы (сшивка!)","≤20% / 20–35% / >35%","экономика канала","зел+объём → масштабировать; крас → остановить"],
+    ["Возвраты","платформа","> базового","доверие к автопродукту [ГИПОТЕЗА]","рост → разбор продукта"]];
+  const live=[["Клики, показы, сессии, CPL, CR посадочной","Метрика / GA (+пиксель)","до регистрации"],
+    ["Расход по кампаниям (для ДРР)","рекламные кабинеты","<b>не измеряется автоматически</b> — нужен импорт расхода"],
+    ["EVT_REG, ORDER_DIAG, членство, LTV","платформа (append-only)","после регистрации"],
+    ["Связка client_id → user_id","стык Метрика ↔ платформа","<b>не измеряется сейчас</b> — передавать client_id/UTM при рег."]];
+  const tbl=(head,rows)=>`<div class="tablewrap"><table><thead><tr>${head.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
+    <tbody>${rows.map(r=>`<tr>${r.map((c,i)=>`<td${i===0?' class="k"':''}>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  document.getElementById('cycle-body').innerHTML=`
+    <h3 style="color:${P};margin:6px 0 4px">Сквозная цепочка (через user_id)</h3>
+    <figure><div class="schema">${chainSVG()}<div style="font-size:8.7px;color:${M};margin-top:7px;border-top:1px dashed ${LN};padding-top:6px">
+      Точка сшивки — регистрация: анонимный client_id/ym:uid связывается с user_id, UTM/ref_id пишутся в атрибуцию заказа.</div></div></figure>
+    <h3 style="color:${P};margin:14px 0 4px">Словарь UTM · «одна кампания — одна посадочная»</h3>
+    ${tbl(["Параметр","Значение","Правило"],utm.map(r=>[`<code>${r[0]}</code>`,r[1],r[2]]))}
+    <h3 style="color:${P};margin:14px 0 4px">Где какие данные живут</h3>
+    ${tbl(["Данные","Где","Статус"],live)}
+    <h3 style="color:${P};margin:14px 0 4px">Д. Таблица решений (на ячейку CELL_)</h3>
+    ${tbl(["Метрика","Источник","Порог","Решение","Действие"],dec)}
+    <div class="note"><b>Порядок:</b> сначала CPL / CR посадочной (дни) → затем ДРР и CR рег→заказ (недели).
+    Масштабировать только по CPL нельзя — дешёвый лид ≠ оплата, пока гипотеза скрининга не подтверждена <b>[ГИПОТЕЗА]</b>.
+    Главный технический блокер — сшивка расход↔заказ; без неё истинный ДРР не считается.</div>`;
+}
+
+/* ==== INIT ==== */
+fillSelects(); renderSources(); renderLandings(); renderMatrix('MK_VK_ADS'); renderCycle();
+</script>
+</body>
+</html>
