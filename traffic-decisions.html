@@ -83,6 +83,14 @@
   .g2card h3{margin:0 0 2px;font-size:14.5px;color:var(--secondary)} .g2card .chek{color:var(--muted);font-size:12px;margin-bottom:6px}
   figure{margin:10px 0} .schema{border:1px solid var(--line);border-radius:10px;background:#fff;padding:12px}
   .schema svg{width:100%;height:auto;display:block}
+  /* glossary */
+  .gkey{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin:4px 0 14px}
+  .seg{border:1px solid var(--line);border-radius:7px;overflow:hidden;text-align:center;min-width:56px}
+  .seg .sv{background:#EFF4FF;color:var(--primary);font-weight:700;padding:5px 9px;font-size:12.5px;font-family:ui-monospace,Menlo,monospace}
+  .seg .sl{background:#fff;color:var(--muted);font-size:10px;padding:3px 6px;border-top:1px solid var(--line)}
+  .gsep{color:#94a3b8;font-weight:700;font-family:ui-monospace,Menlo,monospace}
+  .glegend{font-size:12.5px;color:var(--muted);margin:12px 0 2px}
+  h3.gh{color:var(--primary);margin:16px 0 4px;font-size:14px}
   .wgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:720px){.wgrid{grid-template-columns:1fr}}
   .box{background:#fff;border:1px solid var(--line);border-radius:10px;padding:13px 16px}
   .box h3{margin:0 0 7px;font-size:14px;color:var(--secondary)}
@@ -108,6 +116,7 @@
 
 <nav id="nav">
   <button data-s="builder" class="on">Конструктор ТЗ</button>
+  <button data-s="glossary">Словарь</button>
   <button data-s="sources">Каналы (21)</button>
   <button data-s="elements">Элементы</button>
   <button data-s="rule">Правило + скоринг</button>
@@ -135,6 +144,16 @@
       </div>
       <div class="out" id="out"></div>
     </div>
+  </section>
+
+  <!-- GLOSSARY -->
+  <section id="glossary">
+    <h2 class="st">Словарь идентификаторов</h2>
+    <p class="sub">Что означает любой ID: семейства префиксов, грамматика составных ключей, коды и события.
+      Поиск ниже находит любой идентификатор — канал, страницу, карточку, событие, medium.</p>
+    <div class="filters"><input id="gl-q" placeholder="найти идентификатор: MK_VK, DIAG, EVT_REG, cpc…" oninput="searchGloss()" style="min-width:360px"></div>
+    <div id="gl-search"></div>
+    <div id="gl-body"></div>
   </section>
 
   <!-- SOURCES -->
@@ -379,6 +398,83 @@ const TP=[
  ["8","CELL_REFUSER_ABC","реф-ссылка пользователя → карточка / квиз / PG_SHARED","~0 (механика)","вирусный коэффициент; конверсия в скрининг по трём веткам","механика шеринга и PG_SHARED"],
 ];
 
+/* ==== ДАННЫЕ: словарь ==== */
+const PREFIX=[
+ ["MK_","Источник трафика (канал)","MK_VK_ADS","закрытый словарь · вкладка «Каналы»"],
+ ["PG_","Воронковая / вирусная страница","PG_QUIZ","вкладка «Элементы»"],
+ ["LST_","Транзакционная карточка-листинг = SKU × канал × рынок","LST_WEB_RU_DIAG","вкладка «Элементы» · модель docs/10"],
+ ["REF_","Реф-ссылка (владелец → user_id)","REF_USER_<id>","параметр ref_id · каналы MK_REF_*"],
+ ["CELL_","Измерительная ячейка = источник × посадочная × рынок × вариант","CELL_VK_QUIZ_RU_01","минимальная единица теста / бюджета / решения"],
+ ["EVT_","Событие (append-only факт)","EVT_SCREENING_DONE","платформа · целевое действие страницы"],
+ ["ORDER_","Заказ (append-only факт)","ORDER_DIAG","платформа · целевое действие карточки"],
+ ["utm_","Параметры разметки трафика","utm_source, utm_campaign","вкладка «Учёт & решения»"],
+];
+const EVT=[
+ ["EVT_SCREENING_DONE","Завершён бесплатный скрининг (квиз пройден)","PG_QUIZ","событие"],
+ ["EVT_REG","Регистрация: создан user_id — точка сшивки client_id→user_id","при вводе e-mail","событие"],
+ ["EVT_PROFILE10_ACTIVATED","Активирован бесплатный Профиль 10 в кабинете","PG_PROFILE10","событие"],
+ ["EVT_WEBINAR_REG","Регистрация на вебинар","PG_WEBINAR","событие"],
+ ["EVT_GOTO_QUIZ","Переход в квиз с воронковой страницы","PG_HOME / PG_ART / PG_CAT_PROF / PG_SHARED","событие"],
+ ["EVT_VIEW_LISTING","Просмотр карточки-листинга","категория / карточка","событие"],
+ ["ORDER_DIAG","Заказ диагностики (50 000 ₽, годовое членство в подарок)","LST_WEB_*_DIAG","заказ"],
+ ["ORDER_RENEW","Заказ продления членства (2-й год+)","LST_WEB_*_RENEW","заказ"],
+ ["ORDER_EXP_SUB","Заказ подписки эксперта (сторона экспертов — не агрегировать)","LST_WEB_*_EXP_SUB","заказ"],
+];
+const MEDIUM=[
+ ["cpc","оплата за клик (таргет, контекст)","MK_VK_ADS · MK_META_ADS · MK_CTX"],
+ ["cpm","оплата за показы (ремаркетинг / медийка)","MK_RETARG"],
+ ["seed","посевы (закупка постов в каналах)","MK_TG_SEED"],
+ ["blog","платные интеграции у блогеров","MK_BLOG_PAID"],
+ ["email","email-рассылка","MK_EMAIL · MK_WEBINAR"],
+ ["msg","мессенджер-рассылка (бот)","MK_MSG"],
+ ["ref","реферальный переход","MK_REF_* · MK_PARTNER"],
+ ["organic","органика (SEO, соцсети, видео, нативка)","MK_SEO_* · MK_SMM_* · MK_VIDEO · MK_BLOG_ORG"],
+ ["pr","редакционные размещения","MK_PR"],
+];
+const CODES=[
+ ["Рынок","RU = СНГ · AE = MENA (ОАЭ/MENA). Сегмент рынка в ключах LST_ / CELL_."],
+ ["Температура","холод (не знает продукт) · тёпл (знаком / есть носитель доверия) · гор (сформирован спрос / свои). Определяет допустимую посадочную."],
+ ["Статус пары","ОСНОВНАЯ (балл ≥ 3,5) · ТЕСТОВАЯ (2,5–3,5 / спорно) · ЗАКРЫТАЯ (< 2,5, с условием переоткрытия)."],
+ ["Носитель доверия","переносит доверие на оффер и поднимает допустимый чек: авторитет эксперта, личная рекомендация, бренд, издание, намерение."],
+];
+function gtable(head,rows){return `<div class="tablewrap"><table><thead><tr>${head.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
+  <tbody>${rows.map(r=>`<tr>${r.map((c,i)=>`<td${i===0?' class="k"':''}>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;}
+function seg(v,l){return `<div class="seg"><div class="sv">${esc(v)}</div><div class="sl">${esc(l)}</div></div>`;}
+function keyRow(segs){return `<div class="gkey">${segs.map(s=>seg(s[0],s[1])).join('<span class="gsep">_</span>')}</div>`;}
+function renderGlossary(){
+  document.getElementById('gl-body').innerHTML=`
+    <h3 class="gh">Семейства префиксов</h3>
+    ${gtable(["Префикс","Что это","Пример","Где определён"],PREFIX.map(r=>[`<b>${esc(r[0])}</b>`,esc(r[1]),`<code>${esc(r[2])}</code>`,esc(r[3])]))}
+    <h3 class="gh">Грамматика составных ключей</h3>
+    <div class="glegend">Транзакционная карточка (модель docs/10):</div>
+    ${keyRow([["LST_","префикс"],["WEB","канал продаж"],["RU","рынок"],["DIAG","SKU"]])}
+    <div class="glegend">Измерительная ячейка:</div>
+    ${keyRow([["CELL_","префикс"],["VK","источник (MK_)"],["QUIZ","посадочная"],["RU","рынок"],["01","вариант (NN)"]])}
+    <div class="glegend">utm_campaign — ключ ячейки + дата запуска:</div>
+    ${keyRow([["cell_vk_quiz_ru_01","ключ ячейки"],["20260720","дата (ГГГГММДД)"]])}
+    <h3 class="gh">События и заказы (EVT_ / ORDER_)</h3>
+    ${gtable(["Ключ","Значение","Где фиксируется","Тип"],EVT.map(r=>[`<code>${esc(r[0])}</code>`,esc(r[1]),esc(r[2]),r[3]]))}
+    <h3 class="gh">utm_medium — закрытый список</h3>
+    ${gtable(["medium","Значение","Каналы"],MEDIUM.map(r=>[`<code>${esc(r[0])}</code>`,esc(r[1]),esc(r[2])]))}
+    <h3 class="gh">Коды и перечисления</h3>
+    ${gtable(["Код","Значения"],CODES.map(r=>[esc(r[0]),esc(r[1])]))}`;
+}
+function searchGloss(){
+  const q=(document.getElementById('gl-q').value||'').toLowerCase().trim();
+  const box=document.getElementById('gl-search');
+  if(!q){box.innerHTML='';return;}
+  const idx=[];
+  PREFIX.forEach(r=>idx.push([r[0],'префикс',r[1]]));
+  MK.forEach(r=>idx.push([r[0],'канал',MKI[r[0]].name+' · '+MKI[r[0]].market]));
+  LND.forEach(r=>idx.push([r[0],'элемент',LNDI[r[0]].name]));
+  EVT.forEach(r=>idx.push([r[0],r[3],r[1]]));
+  MEDIUM.forEach(r=>idx.push(['utm_medium='+r[0],'medium',r[1]]));
+  const hits=idx.filter(r=>(r[0]+' '+r[2]).toLowerCase().includes(q));
+  box.innerHTML = hits.length
+    ? gtable(["Идентификатор","Тип","Значение"],hits.map(r=>[`<code>${esc(r[0])}</code>`,r[1],esc(r[2])]))+`<div class="sub" style="margin-top:-10px">Найдено: ${hits.length}</div>`
+    : `<div class="note">Ничего не найдено по «${esc(q)}». Ищите по MK_/PG_/LST_/CELL_/REF_/EVT_/ORDER_/utm_.</div>`;
+}
+
 /* ==== ТАБЫ ==== */
 document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('on',x===b));
@@ -617,7 +713,7 @@ function renderCycle(){
 }
 
 /* ==== INIT ==== */
-fillSelects(); renderSources(); renderElements(); renderMatrix('MK_VK_ADS'); renderG2(); renderTestplan(); renderCycle();
+fillSelects(); renderGlossary(); renderSources(); renderElements(); renderMatrix('MK_VK_ADS'); renderG2(); renderTestplan(); renderCycle();
 </script>
 </body>
 </html>
