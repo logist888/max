@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>План адаптации Юли — 90 дней до самостоятельного маркетолога · MainExperts</title>
+<style>
+:root{
+  --paper:#FAF6F0;
+  --card:#FFFFFF;
+  --ink:#33261C;
+  --muted:#7A6A5C;
+  --line:#E6DCCF;
+  --accent:#A55E1B;
+  --accent-soft:#F5E7D4;
+  --red:#B4432F;
+  --red-soft:#F9ECE8;
+  --ok:#2E7D5B;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --paper:#1E1712; --card:#29201A; --ink:#EFE7DC; --muted:#B3A493;
+    --line:#453A30; --accent:#E0A860; --accent-soft:#3A2C1D;
+    --red:#E08A72; --red-soft:#3A2620; --ok:#6CBF9A;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#1E1712; --card:#29201A; --ink:#EFE7DC; --muted:#B3A493;
+  --line:#453A30; --accent:#E0A860; --accent-soft:#3A2C1D;
+  --red:#E08A72; --red-soft:#3A2620; --ok:#6CBF9A;
+}
+:root[data-theme="light"]{
+  --paper:#FAF6F0; --card:#FFFFFF; --ink:#33261C; --muted:#7A6A5C;
+  --line:#E6DCCF; --accent:#A55E1B; --accent-soft:#F5E7D4;
+  --red:#B4432F; --red-soft:#F9ECE8; --ok:#2E7D5B;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font:16px/1.62 -apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+main, header.hero, footer.foot{max-width:52rem; margin:0 auto; padding:0 1.25rem}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif; line-height:1.22; text-wrap:balance; font-weight:600}
+h1{font-size:2.2rem; margin:.4rem 0 .6rem}
+h2{font-size:1.5rem; margin:0 0 1rem}
+h3{font-size:1.1rem; margin:1.4rem 0 .5rem}
+p{margin:.6rem 0}
+a{color:var(--accent)}
+.eyebrow{
+  font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--muted); font-weight:600;
+}
+.hero{padding-top:3rem}
+.hero .sub{color:var(--muted); max-width:40rem; font-size:1.06rem}
+.meta-row{display:flex; flex-wrap:wrap; gap:.5rem; margin:1.1rem 0 0}
+.chip{
+  font-size:.8rem; padding:.28rem .7rem; border:1px solid var(--line);
+  border-radius:999px; color:var(--muted); background:var(--card);
+}
+.route{margin:1.8rem 0 0; overflow-x:auto; padding-bottom:.4rem}
+.route svg{display:block; min-width:660px; width:100%; height:74px}
+.route text{font:600 11px -apple-system,"Segoe UI",Roboto,sans-serif; fill:var(--muted)}
+.route .lbl-strong{fill:var(--ink)}
+.route line{stroke:var(--line); stroke-width:2}
+.route circle{fill:var(--card); stroke:var(--accent); stroke-width:2}
+.route .final{fill:var(--accent)}
+nav.toc{
+  border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  margin:2rem auto 0; max-width:52rem; padding:.8rem 1.25rem;
+  display:flex; flex-wrap:wrap; gap:.35rem 1.2rem; font-size:.88rem;
+}
+nav.toc a{color:var(--muted); text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+section{margin:3rem 0}
+.section-mark{color:var(--accent); font-family:Georgia,serif; font-style:italic; margin-right:.4rem}
+.tbl-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:10px; background:var(--card)}
+table{border-collapse:collapse; width:100%; font-size:.92rem}
+th,td{padding:.6rem .85rem; text-align:left; vertical-align:top; border-top:1px solid var(--line)}
+thead th{border-top:none; font-size:.75rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+td.num, th.num{font-variant-numeric:tabular-nums; white-space:nowrap}
+.callout{
+  border:1px solid var(--line); border-radius:10px; background:var(--card);
+  padding:.9rem 1.1rem; margin:1rem 0; font-size:.95rem;
+}
+.callout.accent{background:var(--accent-soft); border-color:transparent}
+.callout .callout-t{font-weight:700; font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:.3rem}
+/* словарик */
+.gloss{display:grid; grid-template-columns:repeat(auto-fill,minmax(21rem,1fr)); gap:.6rem .9rem}
+.gloss div{background:var(--card); border:1px solid var(--line); border-radius:8px; padding:.6rem .8rem; font-size:.92rem}
+.gloss b{color:var(--accent)}
+/* красные линии */
+.redlines{border:1px solid var(--red); border-radius:12px; overflow:hidden}
+.redlines-head{background:var(--red); color:var(--paper); padding:.7rem 1.1rem; font-weight:700; letter-spacing:.06em}
+.redlines ol{margin:0; padding:1rem 1.2rem 1.1rem 2.4rem; background:var(--red-soft)}
+.redlines li{margin:.45rem 0; font-size:.95rem}
+.redlines li b{color:var(--red)}
+.redlines-note{padding:.7rem 1.1rem; background:var(--card); border-top:1px solid var(--line); font-size:.88rem; color:var(--muted)}
+/* этапы, недели и дни */
+.stage-lbl{
+  font-size:.76rem; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--accent); font-weight:700; margin:2.6rem 0 .2rem;
+}
+.week{margin:1.4rem 0 2rem}
+.week-h{display:flex; align-items:baseline; gap:.7rem; border-bottom:2px solid var(--ink); padding-bottom:.35rem; margin-bottom:.8rem}
+.week-h .wk{font-family:Georgia,serif; font-style:italic; color:var(--accent); font-size:1rem; white-space:nowrap}
+.week-h h3{margin:0; font-size:1.15rem}
+details.day{border:1px solid var(--line); border-radius:10px; background:var(--card); margin:.45rem 0}
+details.day[open]{border-color:var(--accent)}
+details.day summary{
+  display:flex; align-items:center; gap:.8rem; padding:.65rem .9rem;
+  cursor:pointer; list-style:none; font-size:.95rem;
+}
+details.day summary::-webkit-details-marker{display:none}
+details.day summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:10px}
+.d-num{
+  flex:none; min-width:2.2rem; height:2.2rem; border-radius:1.1rem; padding:0 .4rem;
+  border:1.5px solid var(--accent); color:var(--accent);
+  display:flex; align-items:center; justify-content:center;
+  font-variant-numeric:tabular-nums; font-weight:700; font-size:.85rem;
+}
+.d-title{font-weight:600}
+.d-flag{
+  margin-left:auto; flex:none; font-size:.7rem; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--accent); border:1px solid var(--accent); border-radius:999px; padding:.15rem .55rem;
+}
+.d-body{padding:.2rem 1rem 1rem 3.9rem; font-size:.93rem}
+.d-body p{margin:.5rem 0}
+.d-body .lab{font-weight:700; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-right:.35rem}
+.d-accept{
+  border-left:3px solid var(--ok); padding:.4rem .7rem; background:var(--paper);
+  border-radius:0 8px 8px 0; margin-top:.7rem;
+}
+.d-accept .lab{color:var(--ok)}
+@media (max-width:640px){ .d-body{padding-left:1rem} }
+/* книги */
+.book{border:1px solid var(--line); border-radius:10px; background:var(--card); margin:.5rem 0; padding:.85rem 1rem; font-size:.93rem}
+.book .b-title{font-weight:700}
+.book .b-when{font-size:.75rem; letter-spacing:.09em; text-transform:uppercase; color:var(--accent); margin-left:.5rem}
+.book p{margin:.35rem 0}
+/* чекбоксы */
+label.ck{display:flex; gap:.55rem; align-items:flex-start; font-size:.92rem; cursor:pointer}
+label.ck input{margin-top:.25rem; accent-color:var(--accent); width:1rem; height:1rem; flex:none}
+label.ck input:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+label.ck:has(input:checked) span{color:var(--muted); text-decoration:line-through; text-decoration-color:var(--line)}
+.registry{border:1px solid var(--line); border-radius:12px; background:var(--card); padding:1rem 1.2rem}
+.registry ul{list-style:none; margin:.4rem 0 0; padding:0; columns:2; column-gap:2rem}
+.registry li{break-inside:avoid; margin:.4rem 0}
+@media (max-width:640px){ .registry ul{columns:1} }
+.progress-line{display:flex; align-items:center; gap:.8rem; margin-top:.9rem}
+.progress-track{flex:1; height:6px; border-radius:3px; background:var(--line); overflow:hidden}
+.progress-fill{height:100%; width:0%; background:var(--accent); border-radius:3px; transition:width .25s}
+@media (prefers-reduced-motion: reduce){ .progress-fill{transition:none} }
+.progress-num{font-variant-numeric:tabular-nums; font-size:.88rem; color:var(--muted); white-space:nowrap}
+.hint{font-size:.8rem; color:var(--muted)}
+footer.foot{
+  border-top:1px solid var(--line); margin-top:3.5rem; padding-top:1.2rem; padding-bottom:2.5rem;
+  font-size:.85rem; color:var(--muted);
+}
+@media print{
+  nav.toc,.hint,.progress-line{display:none}
+  body{background:#fff; color:#000}
+  details.day{border-color:#bbb}
+  .redlines-head{color:#fff}
+  section{break-inside:avoid-page}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="eyebrow">MainExperts · план адаптации</span>
+  <h1>Юля: 90 дней до самостоятельного маркетолога</h1>
+  <p class="sub">Как за 12 недель перейти из дизайна в маркетинг и соцсети MainExperts —
+  так, чтобы в конце у компании была работающая маркетинговая система, а у тебя —
+  профессия, в которой ты уверена. Сначала разбираемся в бизнесе и людях, потом строим
+  систему, и только потом — публикации.</p>
+  <div class="meta-row">
+    <span class="chip">12 недель</span>
+    <span class="chip">публикации — только с недели 3</span>
+    <span class="chip">экзамен каждую неделю</span>
+    <span class="chip">защита — неделя 12</span>
+    <span class="chip">версия от 10.07.2026</span>
+  </div>
+  <div class="route" aria-label="Маршрут: день 0 — калибровка; неделя 2 — фундамент принят; неделя 3 — первые публикации; неделя 8 — библиотека промптов; неделя 12 — защита">
+    <svg viewBox="0 0 680 74" role="img">
+      <line x1="30" y1="34" x2="650" y2="34"/>
+      <circle cx="30" cy="34" r="7"/>
+      <circle cx="185" cy="34" r="7"/>
+      <circle cx="340" cy="34" r="7"/>
+      <circle cx="495" cy="34" r="7"/>
+      <circle cx="650" cy="34" r="8" class="final"/>
+      <text x="30" y="14" text-anchor="middle">День 0</text>
+      <text x="30" y="58" text-anchor="middle">калибровка</text>
+      <text x="185" y="14" text-anchor="middle">Неделя 2</text>
+      <text x="185" y="58" text-anchor="middle">фундамент принят</text>
+      <text x="340" y="14" text-anchor="middle">Неделя 3</text>
+      <text x="340" y="58" text-anchor="middle">первые публикации</text>
+      <text x="495" y="14" text-anchor="middle">Неделя 8</text>
+      <text x="495" y="58" text-anchor="middle">100+ промптов</text>
+      <text x="650" y="14" text-anchor="middle" class="lbl-strong">Неделя 12</text>
+      <text x="650" y="58" text-anchor="middle">защита</text>
+    </svg>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Содержание">
+  <a href="#slova">Словарик</a>
+  <a href="#pravila">Правила</a>
+  <a href="#linii">Красные линии</a>
+  <a href="#start">Твой старт</a>
+  <a href="#plan">План по неделям</a>
+  <a href="#knigi">Книги</a>
+  <a href="#ai">AI-инструменты</a>
+  <a href="#prompty">Библиотека промптов</a>
+  <a href="#ekzameny">Экзамены</a>
+  <a href="#itog">Что будет готово</a>
+</nav>
+
+<main>
+
+<section id="slova">
+  <h2><span class="section-mark">I.</span>Словарик — семь слов, которые встретятся дальше</h2>
+  <div class="gloss">
+    <div><b>Платформа</b> — наш сайт mainexperts.online: бесплатный тест (квиз), бесплатный
+    короткий отчёт «Профиль 10», платный полный отчёт «Профиль 360» и подписки. Твоя работа —
+    приводить сюда людей и помогать им дойти до покупки.</div>
+    <div><b>Премиальное направление</b> — личные продажи основателя состоятельным семьям по
+    рекомендациям. Оно живёт отдельно: его цены, клиенты и механики <i>никогда</i> не попадают
+    в наш публичный контент.</div>
+    <div><b>Квиз</b> — бесплатный тест на сайте: родитель отвечает на вопросы и видит
+    «зоны риска» по своему ребёнку. Главная точка, куда ведёт почти весь наш контент.</div>
+    <div><b>Главная ставка</b> — наше предположение: бесплатный тест показывает родителю
+    тревожные зоны → родитель покупает полную диагностику, чтобы их закрыть. Это
+    <i>предположение, а не доказанный факт</i> — поэтому в контенте мы не обещаем того, что
+    ещё не подтвердилось цифрами.</div>
+    <div><b>UTM-метки</b> — «хвостики» в ссылках, по которым аналитика видит, откуда пришёл
+    человек: из какого поста, канала, объявления. Без метки переход теряется — поэтому метка
+    стоит в каждой ссылке.</div>
+    <div><b>ДРР</b> — доля рекламных расходов: сколько копеек рекламы в каждом рубле выручки.
+    Главная денежная метрика проекта. Всё остальное (клики, охваты, цена заявки) — только
+    промежуточные подсказки.</div>
+    <div><b>Конвейер</b> — цепочка шагов с ИИ, где из идеи получается готовый материал:
+    исследование → тезисы → черновик → редактура → оформление. Ты собираешь такие конвейеры
+    под свои задачи всю программу.</div>
+  </div>
+</section>
+
+<section id="pravila">
+  <h2><span class="section-mark">II.</span>Правила программы</h2>
+  <div class="callout accent">
+    <span class="callout-t">Главное правило</span>
+    Первые две недели — никаких постов, роликов, сторис и оформления. Сначала ты разбираешься
+    в бизнесе, продукте, людях и рынке и собираешь 17 рабочих документов. Публикации
+    открываются только после того, как этот фундамент принят на контрольной точке недели 2.
+    Это не формальность: контент без фундамента — красивый шум.
+  </div>
+  <p><b>1. Каждый день заканчивается рабочим результатом.</b> Не конспектом и не «домашкой»,
+  а документом, таблицей, шаблоном или публикацией, которые остаются жить в проекте.</p>
+  <p><b>2. Каждый день — практика с ИИ.</b> Минимум один промпт написан, проверен на реальной
+  задаче и положен в библиотеку карточкой: задача, версия, пример входа и выхода, критерий
+  качества, дата.</p>
+  <p><b>3. Каждая неделя заканчивается экзаменом</b> — практическим, с понятным порогом
+  (таблица в конце). Не сдала — день на исправление и пересдача; два провала подряд —
+  разговор с основателем о траектории.</p>
+  <p><b>4. Каждый факт наружу — с источником.</b> Любая цифра или утверждение в публичном
+  материале несёт источник, дату и ссылку. Нет источника — нет факта: оставляем пробел, не
+  придумываем.</p>
+  <p><b>5. Только Платформа.</b> Весь твой контент работает на Платформу. Премиальное
+  направление — вне твоей зоны, и его следов в публичном контенте быть не должно.</p>
+</section>
+
+<section id="linii">
+  <h2><span class="section-mark">III.</span>Красные линии</h2>
+  <p>Мы работаем с темой детей и психологических тестов — здесь ошибка стоит не лайков, а
+  проблем с законом и репутацией. Эти правила учатся на первой неделе и действуют всегда;
+  нарушение любого из них обнуляет экзамен недели.</p>
+  <div class="redlines">
+    <div class="redlines-head">Семь правил, которые не обсуждаются</div>
+    <ol>
+      <li><b>Названия тестов.</b> У оригинальных научных методик нет коммерческой лицензии —
+      в публичных материалах используем только наши рабочие названия.</li>
+      <li><b>Мы не ставим диагнозы.</b> Никаких медицинских и клинических слов, никаких
+      обещаний психологической помощи. Мы говорим об интересах, склонностях и выборе пути.
+      Сомневаешься в формулировке — отправь на проверку методологу (Вадим).</li>
+      <li><b>Дети.</b> Никаких имён, фото и реальных историй детей без оформленного согласия
+      родителей. По умолчанию — не используем вообще.</li>
+      <li><b>Выдуманные герои.</b> Истории реальных людей без их согласия запрещены. Можно —
+      собирательные образы с честной пометкой «собирательный пример».</li>
+      <li><b>Платная реклама в России</b> — только после заключения юриста об обязательной
+      маркировке интернет-рекламы. До этого платных размещений в РФ не запускаем.</li>
+      <li><b>Instagram и Facebook.</b> Компания Meta признана в России экстремистской —
+      обязательные дисклеймеры, реклама там — только на зарубежную аудиторию. Для России —
+      ВКонтакте и Telegram.</li>
+      <li><b>Главная ставка — не факт.</b> Пока предположение о покупке после теста не
+      подтверждено цифрами, в контенте не утверждаем недоказанное.</li>
+    </ol>
+    <div class="redlines-note">Твои инструменты: стоп-лист запрещённых формулировок + чек-лист перед каждой
+    публикацией + ИИ-проверяющий, который прогоняет каждый текст по этим правилам. Но отвечает
+    за публикацию всегда человек, не ИИ.</div>
+  </div>
+</section>
+
+<section id="start">
+  <h2><span class="section-mark">IV.</span>Твой старт: что уже есть и что добавим</h2>
+  <p>Твоя опора — дизайн (это уже сильный уровень, программа на нём экономит время) и
+  уверенное владение ИИ-инструментами. Добавить предстоит четыре больших блока: как маркетинг
+  зарабатывает деньги, как исследовать людей, как писать и как читать цифры.</p>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Навык</th><th>Сейчас</th><th>Цель к дню 90</th></tr></thead>
+    <tbody>
+      <tr><td>Визуальная коммуникация</td><td>Сильный уровень</td><td>Остаётся опорой — на ней строим шаблоны и бренд</td></tr>
+      <tr><td>ИИ-инструменты</td><td>Уверенный пользователь</td><td>Строишь конвейеры и проверки, автоматизируешь рутину</td></tr>
+      <tr><td>Промпты</td><td>Пишешь запросы</td><td>Ведёшь библиотеку 100+ карточек, собираешь цепочки</td></tr>
+      <tr><td>Тексты</td><td>Начальный</td><td>Пишешь ясно, коротко и без штампов — по стандарту проекта</td></tr>
+      <tr><td>Истории</td><td>Визуальные — да, текстовые — начальный</td><td>Строишь историю по структуре под площадку</td></tr>
+      <tr><td>Соцсети как система</td><td>Начальный</td><td>Ведёшь 3 площадки в ритме, по календарю и цифрам</td></tr>
+      <tr><td>Маркетинг</td><td>Начальный</td><td>Понимаешь воронку и экономику, считаешь конверсии</td></tr>
+      <tr><td>Продукт и ценность</td><td>Начальный</td><td>Умеешь объяснить, кому и зачем нужен каждый наш продукт</td></tr>
+      <tr><td>Позиционирование</td><td>Начальный</td><td>Знаешь, за какое место в голове родителя мы боремся</td></tr>
+      <tr><td>Исследования</td><td>Начальный</td><td>Собираешь живую речь аудитории и превращаешь в решения</td></tr>
+      <tr><td>Аналитика</td><td>Начальный</td><td>Ведёшь дашборд, пишешь отчёт «цифры → выводы → решения»</td></tr>
+      <tr><td>Бренд</td><td>Средний (визуально)</td><td>Держишь голос и стиль во всех точках</td></tr>
+      <tr><td>Психология покупателя</td><td>Начальный</td><td>Применяешь триггеры доверия — в этических границах</td></tr>
+      <tr><td>Системность</td><td>Начальный</td><td>Управляешь производством контента как процессом</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="callout">
+    <span class="callout-t">День 0 — калибровка, 2–3 часа</span>
+    До старта — три коротких задания: переписать неудачный пост, разобрать промптом пять
+    комментариев родителей, объяснить своими словами разницу между Профилем 10 и Профилем 360.
+    Это не экзамен — это настройка программы под тебя: где ты сильнее, чем мы думали, модуль
+    сожмётся; где сложнее — растянется за счёт запасных дней.
+  </div>
+</section>
+
+<section id="plan">
+  <h2><span class="section-mark">V.</span>План по неделям</h2>
+
+  <p class="stage-lbl">Фаза 1 · Фундамент · недели 1–2 · без публикаций</p>
+
+  <div class="week">
+    <div class="week-h"><span class="wk">Неделя 1</span><h3>Понять бизнес, людей и рынок — и собрать 17 документов</h3></div>
+    <p class="hint">Днём — разбираешься, вечером — собираешь документ дня с помощью ИИ-конвейера.
+    Все документы этой недели — первые версии: на следующей неделе они пройдут проверку живыми
+    данными. Параллельно читаешь первую книгу (раздел «Книги»).</p>
+
+    <details class="day">
+      <summary><span class="d-num">1</span><span class="d-title">Бизнес и продукт</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Разобраться</span>Как устроен бизнес: Платформа (квиз → Профиль 10 → Профиль 360 → подписки) и отдельное премиальное направление, которое мы в контенте не трогаем. Что такое цифровой профиль и почему он центр продукта. Какова главная ставка компании и почему это пока предположение. Плюс сверка: что изменилось в проекте к сегодняшнему дню — список вопросов основателю.</p>
+        <p><span class="lab">Собрать</span>Таблица продуктов (что → кому → какая польза → цена → место в воронке); карта бизнеса на одну страницу; лист вопросов основателю.</p>
+        <p class="d-accept"><span class="lab">Готово, когда</span>ты объясняешь бизнес своими словами без подглядывания, и наставник не находит ошибок.</p>
+      </div>
+    </details>
+
+    <details class="day">
+      <summary><span class="d-num">2</span><span class="d-title">Рынок и конкуренты</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Разобраться</span>Кто ещё решает задачу выбора пути для ребёнка: сервисы профориентации, репетиторы, консультанты по поступлению — и «ничего не делать» как главный конкурент. Как разбирать конкурента: предложение, цены, контент, воронка, реакция людей.</p>
+        <p><span class="lab">Собрать</span>Разбор 7–9 конкурентов; SWOT MainExperts (сильное, слабое, возможности, угрозы).</p>
+        <p class="d-accept"><span class="lab">Готово, когда</span>по каждому конкуренту есть вывод «что берём / что не повторяем / почему», а не пересказ.</p>
+      </div>
+    </details>
+
+    <details class="day">
+      <summary><span class="d-num">3</span><span class="d-title">Аудитория: кто наши люди</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Разобраться</span>Четыре типа родителей из наших интервью (основной — «Ольга-защитница», 42 года, тревожится за ребёнка, не доверяет ИИ, хочет подробностей — таких большинство). Их боли: страх потерянных лет, непонимание талантов ребёнка, страх навязать не тот путь. Метод «работы»: за каким результатом родитель на самом деле приходит к профориентации.</p>
+        <p><span class="lab">Собрать</span>Карта аудитории (сегменты × площадки × мотивы); портрет идеального клиента; 4 карточки-персонажа; список «работ» родителя, подростка и взрослого.</p>
+        <p class="d-accept"><span class="lab">Готово, когда</span>каждая боль в карточках подкреплена настоящей цитатой с указанием, откуда она.</p>
+      </div>
+    </details>
+
+    <details class="day">
+      <summary><span class="d-num">4</span><span class="d-title">Путь клиента: от первого касания до покупки</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Разобраться</span>Как родитель проходит путь: увидел → заинтересовался → прошёл квиз → получил отчёт → купил → остался. Ключевой факт из интервью: получив отчёт, клиент впечатляется и <i>не знает, что делать дальше</i> — здесь теряются деньги. Возражения (не доверяю ИИ, дорого, «сам разберётся») и триггеры доверия — с этическими границами.</p>
+        <p><span class="lab">Собрать</span>Карта пути клиента; карта болей; карта возражений (возражение → ответ → доказательство); карта триггеров (что срабатывает → где уместно → где граница).</p>
+      </div>
+    </details>
+
+    <details class="day">
+      <summary><span class="d-num">5</span><span class="d-title">Позиционирование и голос бренда</span><span class="d-flag">Экзамен</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Разобраться</span>Позиционирование: какое место мы хотим занять в голове родителя и против кого играем. Каким голосом говорит бренд. Почему контент — часть бизнеса, а не «ведение соцсетей».</p>
+        <p><span class="lab">Собрать</span>Карта позиционирования (для кого / против чего / почему мы / чем докажем); голос бренда с примерами «так — не так»; 4–6 смысловых опор контента (каждая — проверяемое предположение с метрикой); матрица «опора × формат × площадка»; таблица соцсетей (площадка → роль → аудитория → частота); воронка контента (увидел → поверил → прошёл квиз → купил); метрики контента по этажам этой воронки.</p>
+        <p class="d-accept"><span class="lab">Экзамен недели</span>Устная защита всех 17 документов: на каждый вопрос «почему так?» — ответ без подглядывания; красные линии — наизусть и без ошибок.</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="week">
+    <div class="week-h"><span class="wk">Неделя 2</span><h3>Проверить фундамент живыми данными</h3></div>
+
+    <details class="day">
+      <summary><span class="d-num">6</span><span class="d-title">Живая речь аудитории</span></summary>
+      <div class="d-body">
+        <p>Чаты родителей в Telegram, комментарии во ВКонтакте и на YouTube, отзывы на конкурентов. Итог: словарь из 50+ настоящих формулировок (как родители сами называют свои страхи) и проверка вчерашних карт цитатами.</p>
+      </div>
+    </details>
+    <details class="day">
+      <summary><span class="d-num">7</span><span class="d-title">Зарубежные источники и банк фактов</span></summary>
+      <div class="d-body">
+        <p>Reddit и англоязычные форумы родителей — проверка наших выводов на другом рынке. Банк фактов: 15 проверенных фактов о профессиях и рынке труда из надёжных баз (международные справочники профессий, данные hh.ru) — каждый с источником, датой и ссылкой.</p>
+      </div>
+    </details>
+    <details class="day">
+      <summary><span class="d-num">8</span><span class="d-title">Ревизия документов</span></summary>
+      <div class="d-body">
+        <p>Что живые данные подтвердили, что опровергли. Обновление всех документов до версии 2. Честный список «чего мы пока не знаем» — пробелы фиксируем, а не маскируем.</p>
+      </div>
+    </details>
+    <details class="day">
+      <summary><span class="d-num">9</span><span class="d-title">Красные линии на практике</span></summary>
+      <div class="d-body">
+        <p>Разбор нарушений на примерах. Стоп-лист запрещённых формулировок; чек-лист публикации; ИИ-проверяющий — промпт, который прогоняет любой текст по чек-листу.</p>
+        <p class="d-accept"><span class="lab">Готово, когда</span>на 5 тестовых текстах со спрятанными нарушениями вы с ИИ-проверяющим ловите все 5.</p>
+      </div>
+    </details>
+    <details class="day">
+      <summary><span class="d-num">10</span><span class="d-title">Сборка и защита фундамента</span><span class="d-flag">Контрольная точка</span></summary>
+      <div class="d-body">
+        <p>Все документы собираются в одну точку входа — место, где новый человек за 30 минут поймёт наш маркетинг.</p>
+        <p class="d-accept"><span class="lab">Контрольная точка</span>Защита фундамента перед основателем и наставником. Документы приняты, ИИ-проверяющий работает, стоп-лист усвоен. <b>Только после этого открываются публикации.</b></p>
+      </div>
+    </details>
+  </div>
+
+  <p class="stage-lbl">Фаза 2 · Система и ритм · недели 3–6</p>
+
+  <div class="week">
+    <details class="day">
+      <summary><span class="d-num">Н3</span><span class="d-title">Неделя 3 — контент-система и первые публикации</span></summary>
+      <div class="d-body">
+        <p>Редакционная политика (голос, правила, призывы к действию — мягкие мосты на квиз, без давления). Контент-стратегия из смысловых опор. Календарь на 2 недели. Шаблоны в Figma под все форматы — твоя сильная сторона, здесь ты быстрее всех. В конце недели — первые публикации: по чек-листу, с UTM-метками.</p>
+        <p class="d-accept"><span class="lab">Экзамен</span>Пост от идеи до готового — за 90 минут через конвейер, без нарушений чек-листа.</p>
+      </div>
+    </details>
+    <details class="day">
+      <summary><span class="d-num">Н4</span><span class="d-title">Неделя 4 — площадки и форматы</span></summary>
+      <div class="d-body">
+        <p>Как работают площадки: Telegram (канал как продукт, дайджесты), ВКонтакте (клипы, сообщества, алгоритмы), YouTube (Shorts, обложки, удержание). Вертикальные видео: сценарий → съёмка или генерация → монтаж → адаптация под ВК Клипы и Shorts (в Instagram — только для зарубежной аудитории, с дисклеймерами). Ритм: 4–5 публикаций в неделю.</p>
+        <p class="d-accept"><span class="lab">Экзамен</span>Неделя календаря исполнена в срок; по каждой публикации — разбор цифр.</p>
+      </div>
+    </details>
+    <details class="day">
+      <summary><span class="d-num">Н5</span><span class="d-title">Неделя 5 — исследования как привычка</span></summary>
+      <div class="d-body">
+        <p>Постоянный процесс: где слушать аудиторию (Reddit, YouTube, Telegram, форумы, отзывы), как отличать сигнал от шума, как оформлять находку (наблюдение → цитаты → предположение → проверка). Еженедельный дайджест «что говорит аудитория» — с выводами для контента и для продукта. Два учебных интервью по методике книги «Спроси маму» — с наставником.</p>
+        <p class="d-accept"><span class="lab">Экзамен</span>Мини-исследование заданной темы за 4 часа — с выводами, цитатами и источниками.</p>
+      </div>
+    </details>
+    <details class="day">
+      <summary><span class="d-num">Н6</span><span class="d-title">Неделя 6 — цифры и деньги</span></summary>
+      <div class="d-body">
+        <p>Инструменты: Яндекс Метрика (основная), Google Analytics 4 (для сверки), UTM-дисциплина, Microsoft Clarity (записи поведения людей на страницах квиза), Looker Studio (сборка дашборда). Amplitude и PostHog — на уровне знакомства: что умеют и когда понадобятся.</p>
+        <p>Метрики на наших цифрах: сколько стоит привлечь покупателя; сколько клиент приносит за всё время; окупается ли реклама; конверсии на каждом шаге (квиз → регистрация → покупка); возвращаемость в цифровой профиль. И главная — <b>ДРР</b>: доля рекламных расходов в выручке. Плюс честность: что цифры доказывают, а что мы только предполагаем.</p>
+        <p class="d-accept"><span class="lab">Экзамен</span>Защита недельного отчёта: по каждой цифре — «что я с этим сделаю».</p>
+      </div>
+    </details>
+  </div>
+
+  <p class="stage-lbl">Фаза 3 · Мастерство · недели 7–11</p>
+
+  <div class="week">
+    <details class="day">
+      <summary><span class="d-num">Н7</span><span class="d-title">Неделя 7 — глубокое погружение в 18 AI-инструментов</span></summary>
+      <div class="d-body">
+        <p>Каждый день — спринты «инструмент → реальная задача → готовый результат». Полный список с назначением и ограничениями — в разделе «AI-инструменты» ниже. Правило: инструмент, который за неделю не окупился результатом, выбывает из рабочего ядра.</p>
+        <p class="d-accept"><span class="lab">Экзамен</span>Одна единица контента полным конвейером за день: текст → визуал → адаптация под 3 площадки, с объяснением выбора инструментов.</p>
+      </div>
+    </details>
+    <details class="day">
+      <summary><span class="d-num">Н8</span><span class="d-title">Неделя 8 — промпты как дисциплина</span></summary>
+      <div class="d-body">
+        <p>Карточка промпта, итерации, цепочки, ИИ-проверяющий, отладка (где промпт привирает и почему). Цель недели — закрыть каталог библиотеки: 100+ рабочих промптов под наши задачи (каталог — ниже). Около половины к этому моменту уже накоплено из ежедневной практики.</p>
+        <p class="d-accept"><span class="lab">Экзамен</span>Слепой тест: наставник берёт 5 случайных карточек и запускает их без твоих пояснений — 4 из 5 дают пригодный результат.</p>
+      </div>
+    </details>
+    <details class="day">
+      <summary><span class="d-num">Н9</span><span class="d-title">Неделя 9 — автоматизация рутины</span></summary>
+      <div class="d-body">
+        <p>Знакомство с n8n, Make и Zapier (конструкторы, которые соединяют сервисы между собой) и с ИИ-агентами (цепочки, которые сами решают следующий шаг; граница доверия: агент готовит — публикует человек). Три обязательные автоматизации: утренний дайджест комментариев и упоминаний; черновики постов по рубрике из банка фактов; сборка недельной статистики в заготовку отчёта. Автоматизируем только то, что уже две недели отработано руками.</p>
+        <p class="d-accept"><span class="lab">Экзамен</span>Наставник запускает каждую автоматизацию по твоей инструкции — без тебя. Экономия времени посчитана в часах.</p>
+      </div>
+    </details>
+    <details class="day">
+      <summary><span class="d-num">Н10</span><span class="d-title">Неделя 10 — производственная система</span></summary>
+      <div class="d-body">
+        <p>Всё собирается в систему: статусы каждой единицы контента (идея → черновик → проверка → визуал → готов → опубликован → измерен), лимит незавершённых задач, календарь на месяц, ритм 5+ публикаций в неделю при цикле до 60 минут, пошаговые инструкции на каждый повторяющийся процесс.</p>
+        <p class="d-accept"><span class="lab">Экзамен</span>Неделя полностью самостоятельной работы — наставник только наблюдает и не вмешивается ни разу.</p>
+      </div>
+    </details>
+    <details class="day">
+      <summary><span class="d-num">Н11</span><span class="d-title">Неделя 11 — рост: магниты, реклама, вебинар</span></summary>
+      <div class="d-body">
+        <p>Два лид-магнита — полезные материалы, за которые родитель оставляет контакт («7 ошибок, из-за которых дети теряют годы», «5 вопросов, которые откроют таланты») — с мостом на квиз и проверкой меток до самой формы. 6–9 рекламных креативов (для России — ВКонтакте; зарубежная аудитория — после юридического заключения по маркировке). Поддержка вебинара: цепочка прогрева, анонсы, догоняющая реклама. Лучшее — переупаковать для английского аккаунта.</p>
+        <p class="d-accept"><span class="lab">Экзамен</span>Тестовый проход «объявление → магнит → квиз» корректно виден в аналитике.</p>
+      </div>
+    </details>
+  </div>
+
+  <p class="stage-lbl">Финал · неделя 12</p>
+
+  <div class="week">
+    <details class="day">
+      <summary><span class="d-num">Н12</span><span class="d-title">Неделя 12 — финальный проект и защита</span><span class="d-flag">Защита</span></summary>
+      <div class="d-body">
+        <p>Ты собираешь и защищаешь маркетинговую систему целиком (состав — в разделе «Что будет готово»).</p>
+        <p><span class="lab">Защита · 120 минут</span>Система целиком (40 мин) → разбор цифр и решений за 9 недель публикаций (30 мин) → вопросы на понимание: экономика воронки, ДРР, граница с премиальным направлением, статус главной ставки, красные линии (30 мин) → живое задание: единица контента с нуля полным конвейером (20 мин, параллельно).</p>
+        <p class="d-accept"><span class="lab">Порог готовности</span>5 последних публикаций подряд — без содержательных правок; 0 нарушений стоп-листа за месяц; цикл единицы контента ≤60 минут; отчёт без помощи; библиотека ≥100 карточек (слепой тест 4 из 5); 3 автоматизации с посчитанной экономией; все вопросы — без фактических ошибок.</p>
+        <p>После защиты — квартал самостоятельной работы с еженедельным отчётом основателю; через 30 дней — ретроспектива и решение о полной автономии.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section id="knigi">
+  <h2><span class="section-mark">VI.</span>Книги</h2>
+  <p>Ритм: недели 1–2 — час утром; дальше — 30 минут в день, не больше. Правило: конспект без
+  применения не засчитывается — каждая книга обязана оставить след в твоих рабочих документах.</p>
+
+  <div class="book"><span class="b-title">Эл Райс, Джек Траут — «Позиционирование: битва за умы»</span><span class="b-when">Неделя 1</span>
+    <p><b>Зачем:</b> без неё документ «Позиционирование» будет набором слов. <b>Обязательно:</b> главы о сути позиционирования, «лестнице» в голове клиента, игре против лидера. <b>Можно пропустить:</b> исторические кейсы американских корпораций. <b>Время:</b> 4–5 часов. <b>В конспект:</b> 10 принципов своими словами. <b>Применить:</b> карта позиционирования дня 5 — с кем мы реально конкурируем (включая «ничего не делать»).</p>
+  </div>
+  <div class="book"><span class="b-title">Роб Фицпатрик — «Спроси маму»</span><span class="b-when">Недели 1–2</span>
+    <p><b>Зачем:</b> учит слышать настоящие боли, а не вежливые комплименты — на этом стоят все документы аудитории. <b>Обязательно:</b> целиком, она короткая. <b>Время:</b> 3–4 часа. <b>В конспект:</b> признаки плохих вопросов; как выглядят данные, а не любезности. <b>Применить:</b> вопросы для чтения чатов (дни 6–7), учебные интервью недели 5.</p>
+  </div>
+  <div class="book"><span class="b-title">Максим Ильяхов, Людмила Сарычева — «Пиши, сокращай»</span><span class="b-when">Недели 3–4</span>
+    <p><b>Зачем:</b> стандарт рабочего текста проекта. <b>Обязательно:</b> разделы о штампах, оценках, структуре и заголовках. <b>Можно пропустить:</b> жанры, которые мы не используем (пресс-релизы). <b>Время:</b> 6–8 часов, как справочник. <b>В конспект:</b> личный стоп-лист штампов. <b>Применить:</b> редакционная политика недели 3 и каждый твой текст.</p>
+  </div>
+  <div class="book"><span class="b-title">Роберт Чалдини — «Психология влияния»</span><span class="b-when">Недели 4–5</span>
+    <p><b>Зачем:</b> карта триггеров без этой книги — список манипуляций без понимания механики и этики. <b>Обязательно:</b> главы о взаимности, социальном доказательстве, авторитете, дефиците, последовательности. <b>Время:</b> 6–7 часов. <b>В конспект:</b> каждый принцип + где он работает в нашей воронке + где этическая граница. <b>Применить:</b> карта триггеров, чек-лист этики рекламы (неделя 11).</p>
+  </div>
+  <div class="book"><span class="b-title">Анн Хэндли — «Пишут все!»</span><span class="b-when">Недели 6–7</span>
+    <p><b>Зачем:</b> мост от «правильного текста» к живому производству контента. <b>Обязательно:</b> части о процессе письма, историях и полезности. <b>Можно пропустить:</b> юридические нюансы США, устаревшие сервисы. <b>Время:</b> 5–6 часов. <b>В конспект:</b> процесс «плохой первый черновик → редактура». <b>Применить:</b> инструкция производства текста (неделя 10).</p>
+  </div>
+  <div class="book"><span class="b-title">Байрон Шарп — «Как растут бренды»</span><span class="b-when">Недели 8–9</span>
+    <p><b>Зачем:</b> прививка от маркетинговых мифов на данных: почему решают охват и узнаваемость. <b>Обязательно:</b> главы о законах роста, ментальной и физической доступности. <b>Можно пропустить:</b> плотную статистику потребительских категорий. <b>Время:</b> 6–7 часов. <b>В конспект (важно!):</b> что из законов Шарпа применимо на нашем нишевом рынке, а что — нет. <b>Применить:</b> аргументы стратегии на защите.</p>
+  </div>
+  <div class="book"><span class="b-title">Нир Эяль — «На крючке»</span><span class="b-when">Недели 10–11</span>
+    <p><b>Зачем:</b> возвращаемость в цифровой профиль — продуктовая задача, в которой контент участвует. <b>Обязательно:</b> модель «триггер → действие → переменная награда → вклад». <b>Время:</b> 4–5 часов. <b>В конспект:</b> модель крючка для нашего профиля. <b>Применить:</b> контентные серии-возвраты; сигналы продукту.</p>
+  </div>
+  <p class="hint">Справочник по задаче (не читать подряд): Максим Ильяхов — «Ясно, понятно». Книг про ИИ в
+  списке нет сознательно: бумажные руководства устаревают быстрее, чем печатаются, — твой источник
+  это свежие руководства разработчиков моделей и собственная библиотека промптов.</p>
+</section>
+
+<section id="ai">
+  <h2><span class="section-mark">VII.</span>AI-инструменты: 18 позиций</h2>
+  <p>Жирным — рабочее ядро, остальное — знать и уметь запустить. Доступность и оплату каждого
+  проверяем в день 0, а не предполагаем.</p>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Инструмент</th><th>Когда использовать</th><th>Ограничения</th><th>Твоя практика в программе</th></tr></thead>
+    <tbody>
+      <tr><td><b>Claude</b></td><td>Основная модель: тексты, разборы, конвейеры, проверки</td><td>Факты перепроверять; длинные сессии дробить</td><td>Вся библиотека промптов; ИИ-проверяющий чек-листа</td></tr>
+      <tr><td><b>ChatGPT</b></td><td>Вторая модель: кросс-проверка, быстрые итерации</td><td>Свои сильные и слабые стороны — сверяй на своих задачах</td><td>Тот же пост в двух моделях — сравнение по критериям</td></tr>
+      <tr><td>Gemini</td><td>Работа с YouTube и очень длинными материалами</td><td>Качество русского текста проверять</td><td>Разбор комментариев YouTube-конкурентов</td></tr>
+      <tr><td><b>Perplexity</b></td><td>Поиск с источниками, быстрые справки</td><td>Источники всё равно открывать руками — правило фактов</td><td>Пополнение банка фактов со ссылками и датами</td></tr>
+      <tr><td><b>NotebookLM</b></td><td>Вопросы к загруженным документам, конспекты</td><td>Знает только то, что загрузили; не для нового контента</td><td>Твоя вторая память: база знаний проекта и книги</td></tr>
+      <tr><td>Cursor</td><td>Мелкие скрипты, правка HTML-шаблонов</td><td>Не для кода платформы — это зона разработки</td><td>Скрипт сборки отчёта из выгрузок статистики</td></tr>
+      <tr><td><b>Gamma</b></td><td>Быстрые презентации и одностраничники</td><td>Шаблонный вид — дорабатывать в Figma</td><td>Презентация фундамента к контрольной точке</td></tr>
+      <tr><td>Napkin</td><td>Схемы из текста</td><td>Простые диаграммы, слабое брендирование</td><td>Схема воронки контента</td></tr>
+      <tr><td>Midjourney</td><td>Художественные обложки, метафоры</td><td>Стиль плавает; <b>фотореалистичных детей не генерируем — красная линия</b></td><td>Серия обложек Telegram в едином стиле</td></tr>
+      <tr><td>Flux</td><td>Изображения с надписями и контролем</td><td>Сложнее в запуске; проверить доступ</td><td>Подложки с кириллическими надписями</td></tr>
+      <tr><td>Ideogram</td><td>Картинки с текстом</td><td>Кириллицу проверять</td><td>Карточки-цитаты</td></tr>
+      <tr><td>Runway</td><td>Видеогенерация, эффекты</td><td>Дорого на потоке; короткие фрагменты</td><td>Анимированные заставки для клипов</td></tr>
+      <tr><td>ElevenLabs</td><td>Озвучка роликов</td><td><b>Клонировать голос — только с письменного согласия владельца</b></td><td>Озвучка ролика о квизе легальным дикторским голосом</td></tr>
+      <tr><td>HeyGen</td><td>Видео с виртуальным ведущим</td><td><b>Аватары реальных людей — только с согласия</b>; синтетика — с пометкой</td><td>Тест аватар-формата для рубрики «вопрос-ответ»</td></tr>
+      <tr><td>Figma AI</td><td>Ускорение вёрстки, варианты макетов</td><td>Помощник, не замена дизайн-системе</td><td>Варианты сеток для шаблонов</td></tr>
+      <tr><td>Notion AI</td><td>Конспекты, база инструкций, поиск по базе</td><td>Не хранить персональные данные клиентов</td><td>База инструкций и журнал результатов</td></tr>
+      <tr><td>Lovable</td><td>Прототипы лендингов</td><td>Прототип, не боевая страница — передавать разработке (Александр)</td><td>Прототип страницы лид-магнита</td></tr>
+      <tr><td>Bolt</td><td>Быстрые веб-прототипы с логикой</td><td>То же: не боевой код</td><td>Интерактивный прототип мини-квиза для анонсов</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="prompty">
+  <h2><span class="section-mark">VIII.</span>Библиотека промптов: каталог из 102 позиций</h2>
+  <p>Библиотеку ты собираешь сама — по карточке в день с первой недели, неделя 8 закрывает
+  каталог целиком. Готовые чужие промпты не работают: живёт только промпт, написанный под свою
+  задачу. Формат карточки один для всех: задача, версия, контекст, вход, шаги, формат выхода,
+  критерий качества, анти-пример.</p>
+
+  <details class="day"><summary><span class="d-num">12</span><span class="d-title">Исследования</span></summary>
+    <div class="d-body"><p>1. Разбор ветки форума → боли, цитаты, частота. 2. Дайджест Telegram-чата за неделю. 3. Комментарии YouTube → возражения. 4. Ветка Reddit → «работы» родителей. 5. Отзывы конкурента → причины недовольства. 6. Сравнение «язык аудитории — наш словарь». 7. Карта вопросов родителей по возрастам ребёнка. 8. Сигналы по главной ставке из живой речи. 9. Обновление словаря аудитории. 10. Быстрая проверка факта с источниками. 11. Пополнение банка фактов по профессии. 12. Недельный дайджест «что говорит аудитория».</p></div>
+  </details>
+  <details class="day"><summary><span class="d-num">8</span><span class="d-title">Анализ конкурентов</span></summary>
+    <div class="d-body"><p>1. Разбор аккаунта по 8 параметрам. 2. Сравнение предложений. 3. Разбор воронки от объявления до оплаты. 4. Анализ контент-сетки за месяц. 5. Разбор лучших постов ниши. 6. Карта отличий «мы против X». 7. Мониторинг изменений конкурента. 8. Разбор зарубежного аналога с переносом приёмов.</p></div>
+  </details>
+  <details class="day"><summary><span class="d-num">8</span><span class="d-title">Контент-планы</span></summary>
+    <div class="d-body"><p>1. Месячный план из смысловых опор. 2. Неделя под событие (вебинар). 3. План серии «разбор профессий». 4. Балансировка форматов по воронке. 5. План прогрева к запуску. 6. Темы из дайджеста аудитории. 7. Сезонный план (экзамены, поступление). 8. Ревизия плана по метрикам.</p></div>
+  </details>
+  <details class="day"><summary><span class="d-num">12</span><span class="d-title">Посты</span></summary>
+    <div class="d-body"><p>1. Разбор профессии на данных. 2. Ответ на возражение. 3. Пост по боли с собирательным примером (с пометкой). 4. Закулисье продукта. 5. Пост-опрос. 6. Подборка. 7. Экспертный разбор без диагнозов. 8. Анонс вебинара. 9. Мост на квиз. 10. Переупаковка длинного материала. 11. Адаптация поста под вторую площадку. 12. Серия-цепочка из трёх постов.</p></div>
+  </details>
+  <details class="day"><summary><span class="d-num">8</span><span class="d-title">Вертикальные видео</span></summary>
+    <div class="d-body"><p>1. Сценарий 30–45 секунд по боли. 2. Десять вариантов первых трёх секунд. 3. Раскадровка под съёмку. 4. Сценарий без лица (текст + видеоряд). 5. Пост → видео. 6. Серия из 5 роликов по одной опоре. 7. Сценарий с виртуальным ведущим (с пометкой). 8. Разбор удержания готового ролика.</p></div>
+  </details>
+  <details class="day"><summary><span class="d-num">6</span><span class="d-title">Stories</span></summary>
+    <div class="d-body"><p>1. Цепочка прогрева на 5–7 экранов. 2. Опрос-вовлечение. 3. Экраны «вопрос-ответ». 4. Анонс с обратным отсчётом. 5. Закулисье дня. 6. Цепочка к лид-магниту.</p></div>
+  </details>
+  <details class="day"><summary><span class="d-num">8</span><span class="d-title">Telegram</span></summary>
+    <div class="d-body"><p>1. Лонгрид канала. 2. Дайджест недели. 3. Пост с голосованием. 4. Структура закрепа. 5. Серия «вопрос родителя — разбор». 6. Кросс-анонс из ВК. 7. Подводка к квизу. 8. Правка тона под канал.</p></div>
+  </details>
+  <details class="day"><summary><span class="d-num">8</span><span class="d-title">Сценарии видео</span></summary>
+    <div class="d-body"><p>1. Сценарий YouTube на 5–7 минут. 2. Структура вебинарного блока. 3. Обучающий ролик о продукте. 4. Вопросы для интервью с экспертом. 5. Конспект видео в статью. 6. Описание и тезисы к видео. 7. Shorts из длинного видео. 8. Титры-крючки.</p></div>
+  </details>
+  <details class="day"><summary><span class="d-num">8</span><span class="d-title">Редактирование</span></summary>
+    <div class="d-body"><p>1. Сжать без потери смысла. 2. Проверка по стоп-листу. 3. Проверка по голосу бренда. 4. Упрощение для широкой аудитории. 5. Десять вариантов заголовка. 6. Сверка фактов с банком фактов. 7. Адаптация тона на английский. 8. Финальный прогон ИИ-проверяющим.</p></div>
+  </details>
+  <details class="day"><summary><span class="d-num">8</span><span class="d-title">Аналитика</span></summary>
+    <div class="d-body"><p>1. Недельный отчёт из выгрузок. 2. Аномалии в метриках и версии причин. 3. Разбор «почему пост сработал». 4. Динамика подписчиков по когортам. 5. Сводка переходов на квиз по меткам. 6. Подготовка данных к дашборду. 7. Выводы «цифра → решение». 8. Проверка честности выводов.</p></div>
+  </details>
+  <details class="day"><summary><span class="d-num">8</span><span class="d-title">Генерация идей</span></summary>
+    <div class="d-body"><p>1. Двадцать тем из одной боли. 2. Идеи под новую смысловую опору. 3. Штурм форматов под площадку. 4. Переворот темы конкурента. 5. Сезонные активации. 6. Идеи для английского аккаунта. 7. Идеи коллабораций. 8. Анти-идеи: что не делать и почему.</p></div>
+  </details>
+  <details class="day"><summary><span class="d-num">8</span><span class="d-title">Продукт и ценность</span></summary>
+    <div class="d-body"><p>1. Ценность Профиля 10 по сегментам. 2. Предложение Профиля 360. 3. Сравнение «сам / репетитор / мы». 4. FAQ из живых вопросов. 5. Описание функции профиля языком пользы. 6. Текст страницы лид-магнита. 7. Письма-цепочка после квиза. 8. Сигналы продукту из контента.</p></div>
+  </details>
+
+  <div class="callout">
+    <span class="callout-t">Образец карточки — «Пост: разбор профессии на данных»</span>
+    Роль: редактор образовательного проекта о выборе профессии. Контекст: голос бренда и
+    редполитика приложены; факты — только из банка фактов с источниками. Вход: название
+    профессии, 3 факта с источниками, сегмент (родитель подростка 14–17). Шаги: тезис →
+    структура из 4 блоков (крючок словами аудитории; данные с источником; что это значит для
+    ребёнка; мягкий мост на квиз) → черновик → самопроверка по стоп-листу. Выход: 900–1200
+    знаков, без клише и диагнозов, источник в конце. Критерий качества: факт с датой и
+    ссылкой; ноль слов из стоп-листа; призыв без давления. Анти-пример: «эта профессия умрёт —
+    спасайте ребёнка» (страх без данных).
+  </div>
+</section>
+
+<section id="ekzameny">
+  <h2><span class="section-mark">IX.</span>Экзамены — можно отмечать сданные</h2>
+  <div class="registry">
+    <ul>
+      <li><label class="ck"><input type="checkbox" data-k="e01"><span>Нед. 1 — устная защита 17 документов</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="e02"><span>Нед. 2 — контрольная точка: фундамент принят</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="e03"><span>Нед. 3 — пост через конвейер за 90 минут</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="e04"><span>Нед. 4 — неделя календаря исполнена, цифры разобраны</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="e05"><span>Нед. 5 — мини-исследование за 4 часа</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="e06"><span>Нед. 6 — защита отчёта: «цифра → решение»</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="e07"><span>Нед. 7 — контент полным AI-конвейером за день</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="e08"><span>Нед. 8 — слепой тест библиотеки: 4 из 5</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="e09"><span>Нед. 9 — автоматизации запускаются без автора</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="e10"><span>Нед. 10 — неделя без вмешательства наставника</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="e11"><span>Нед. 11 — связка до квиза видна в аналитике</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="e12"><span>Нед. 12 — финальная защита по всем порогам</span></label></li>
+    </ul>
+    <div class="progress-line">
+      <div class="progress-track"><div class="progress-fill" id="pfill-e"></div></div>
+      <span class="progress-num" id="pnum-e">0 из 12</span>
+    </div>
+  </div>
+  <p class="hint">Провал — день на исправление и пересдача. Два провала подряд — разговор с основателем
+  о траектории. Экзамены нельзя «простить» — иначе весь план превращается в декорацию.</p>
+</section>
+
+<section id="itog">
+  <h2><span class="section-mark">X.</span>Что будет готово к защите</h2>
+  <p>Финальный проект — маркетинговая система MainExperts из семи частей:</p>
+  <div class="registry">
+    <ul>
+      <li><label class="ck"><input type="checkbox" data-k="f01"><span>Маркетинговая стратегия соцсетей: цели, площадки, аудитории, экономика</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="f02"><span>Контентная стратегия: смысловые опоры, форматы, воронка контента</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="f03"><span>Контент-календарь на следующий месяц — заполненный</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="f04"><span>Система метрик: по этажам воронки, с ДРР и честными границами</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="f05"><span>Система аналитики: дашборд, карта меток, недельный отчёт</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="f06"><span>Библиотека 100+ промптов — рабочих, проверенных слепым тестом</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="f07"><span>Три автоматизации с инструкциями и посчитанной экономией</span></label></li>
+    </ul>
+    <div class="progress-line">
+      <div class="progress-track"><div class="progress-fill" id="pfill-f"></div></div>
+      <span class="progress-num" id="pnum-f">0 из 7</span>
+    </div>
+  </div>
+  <p>Плюс всё созданное по пути: 17 документов фундамента, редакционная политика, брендкит и
+  шаблоны, банк фактов, конвейер прослушивания аудитории, регламент ответов на комментарии и
+  кризисная памятка, 30+ вышедших публикаций с метками и выводами. И главное — ты, уверенно
+  управляющая всей этой системой.</p>
+</section>
+
+</main>
+
+<footer class="foot">
+  MainExperts · план адаптации: AI-native Growth Marketing Specialist · 90 дней · версия от 10.07.2026.<br>
+  Полная версия для команды: vault/40-reports/2026-07-10-plan-adaptacii-yuli.md.
+  Вопросы — к наставнику направления маркетинга.
+</footer>
+
+<script>
+(function(){
+  var KEY='me-adapt-90';
+  var boxes=document.querySelectorAll('input[type=checkbox][data-k]');
+  var state={};
+  try{ state=JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){ state={}; }
+  function refreshGroup(section,fillId,numId){
+    var items=document.querySelectorAll(section+' input[data-k]');
+    var done=0;
+    items.forEach(function(b){ if(b.checked) done++; });
+    var fill=document.getElementById(fillId), num=document.getElementById(numId);
+    if(fill) fill.style.width=(items.length?done/items.length*100:0)+'%';
+    if(num) num.textContent=done+' из '+items.length;
+  }
+  function refresh(){
+    refreshGroup('#ekzameny','pfill-e','pnum-e');
+    refreshGroup('#itog','pfill-f','pnum-f');
+  }
+  boxes.forEach(function(b){
+    if(state[b.dataset.k]) b.checked=true;
+    b.addEventListener('change',function(){
+      state[b.dataset.k]=b.checked;
+      try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){}
+      refresh();
+    });
+  });
+  refresh();
+  window.addEventListener('beforeprint',function(){
+    document.querySelectorAll('details').forEach(function(d){ d.setAttribute('open',''); });
+  });
+})();
+</script>
+</body>
+</html>
