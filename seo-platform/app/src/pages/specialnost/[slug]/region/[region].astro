@@ -1,0 +1,80 @@
+---
+import Base from '../../../../layouts/Base.astro';
+import Breadcrumbs from '../../../../components/Breadcrumbs.astro';
+import OrgRow from '../../../../components/OrgRow.astro';
+import { db } from '../../../../lib/data.ts';
+import { ldBreadcrumbs, plural } from '../../../../lib/text.ts';
+
+export function getStaticPaths() {
+  const { combosRegion, regionByKey, directionByOkso } = db();
+  return combosRegion
+    .filter((c) => c.indexable)
+    .map((c) => {
+      const dir = directionByOkso.get(c.okso)!;
+      const region = regionByKey.get(c.regionKey)!;
+      return {
+        params: { slug: dir.slug, region: region.slug },
+        props: { okso: c.okso, regionKey: c.regionKey, orgIds: c.orgIds },
+      };
+    });
+}
+
+const { okso, regionKey, orgIds } = Astro.props;
+const { directionByOkso, regionByKey, rowById, cityByKey, combosCity, meta } = db();
+const dir = directionByOkso.get(okso)!;
+const region = regionByKey.get(regionKey)!;
+const rows = orgIds.map((id) => rowById.get(id)!)
+  .sort((a, b) => b.directionsCount - a.directionsCount);
+const code = dir.okso.replace(/^\d+\./, '');
+
+// Разбивка по городам региона; города с индексируемым комбо — со ссылкой.
+const byCity = new Map<string, { name: string; slug: string; count: number; indexable: boolean }>();
+for (const row of rows) {
+  const entry = byCity.get(row.cityKey);
+  if (entry) { entry.count += 1; continue; }
+  const city = cityByKey.get(row.cityKey)!;
+  const combo = combosCity.find((c) => c.okso === okso && c.cityKey === row.cityKey);
+  byCity.set(row.cityKey, {
+    name: city.displayName, slug: city.slug, count: 1,
+    indexable: combo?.indexable ?? false,
+  });
+}
+const cityList = [...byCity.values()].sort((a, b) => b.count - a.count);
+
+const title = `${dir.name} — ${region.displayName}: ${rows.length} ${plural(rows.length, 'вуз', 'вуза', 'вузов')} | ${meta.campaignYear}`;
+const description = `«${dir.name}» (${code}, ${dir.level.toLowerCase()}) в регионе ${region.displayName}: ${rows.length} ${plural(rows.length, 'вуз', 'вуза', 'вузов')} в ${cityList.length} ${plural(cityList.length, 'городе', 'городах', 'городах')}. Приём ${meta.campaignYear}.`;
+
+const crumbs = [
+  { name: 'Главная', url: '/' },
+  { name: 'Специальности', url: '/specialnosti/' },
+  { name: dir.name, url: `/specialnost/${dir.slug}/` },
+  { name: region.displayName },
+];
+const jsonLd = [ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
+  name: c.name, url: new URL(c.url!, Astro.site).href,
+})))];
+---
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <Breadcrumbs items={crumbs} />
+  <h1>{dir.name}: {region.displayName}</h1>
+  <p class="meta">{code} · {dir.level}</p>
+
+  <h2>По городам региона</h2>
+  <ul>
+    {cityList.map((c) => (
+      <li>
+        {c.indexable
+          ? <a href={`/specialnost/${dir.slug}/${c.slug}/`}>{c.name}</a>
+          : c.name}
+        {' '}— {c.count} {plural(c.count, 'вуз', 'вуза', 'вузов')}
+      </li>
+    ))}
+  </ul>
+
+  <h2>Вузы</h2>
+  <ul class="card-list">
+    {rows.map((row) => <OrgRow row={row} />)}
+  </ul>
+
+  <p><a href={`/specialnost/${dir.slug}/`}>«{dir.name}» во всех регионах →</a></p>
+</Base>

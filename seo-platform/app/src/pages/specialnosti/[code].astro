@@ -1,0 +1,51 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { db } from '../../lib/data.ts';
+import { plural } from '../../lib/text.ts';
+
+export function getStaticPaths() {
+  return db().ugs.map((g) => ({ params: { code: g.code }, props: { code: g.code } }));
+}
+
+const { code } = Astro.props;
+const { directions, meta } = db();
+// Название группы — только из кураторского справочника с источником;
+// пока он не заполнен, страница живёт под кодом (не выдумывать).
+const dirs = directions.filter((d) => d.ugsCode === code)
+  .sort((a, b) => b.orgCount - a.orgCount);
+const byLevel = new Map<string, typeof dirs>();
+for (const d of dirs) {
+  const arr = byLevel.get(d.level) ?? [];
+  arr.push(d);
+  byLevel.set(d.level, arr);
+}
+
+const title = `Группа направлений ${code}: ${dirs.length} ${plural(dirs.length, 'направление', 'направления', 'направлений')} | ${meta.campaignYear}`;
+const description = `Укрупнённая группа ${code}: ${dirs.length} ${plural(dirs.length,
+  'направление', 'направления', 'направлений')} — ${dirs.slice(0, 4).map((d) => d.name).join(', ')}. Приём ${meta.campaignYear}.`;
+---
+<Base title={title} description={description}>
+  <Breadcrumbs items={[
+    { name: 'Главная', url: '/' },
+    { name: 'Специальности', url: '/specialnosti/' },
+    { name: `Группа ${code}` },
+  ]} />
+  <h1>Группа направлений {code}</h1>
+
+  {[...byLevel.entries()].map(([level, list]) => (
+    <>
+      <h2>{level}</h2>
+      <ul class="card-list">
+        {list.map((d) => (
+          <li class="card">
+            <h3><a href={`/specialnost/${d.slug}/`}>{d.name}</a></h3>
+            <p class="meta">{d.okso.replace(/^\d+\./, '')} · {d.orgCount} {plural(d.orgCount,
+              'вуз', 'вуза', 'вузов')} · {d.cityCount} {plural(d.cityCount,
+              'город', 'города', 'городов')}</p>
+          </li>
+        ))}
+      </ul>
+    </>
+  ))}
+</Base>

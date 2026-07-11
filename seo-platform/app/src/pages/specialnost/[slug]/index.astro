@@ -1,0 +1,91 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import OrgRow from '../../../components/OrgRow.astro';
+import { db } from '../../../lib/data.ts';
+import { costPhrase, ldBreadcrumbs, plural } from '../../../lib/text.ts';
+
+export function getStaticPaths() {
+  return db().directions.map((dir) => ({ params: { slug: dir.slug }, props: { dir } }));
+}
+
+const { dir } = Astro.props;
+const { rowsByOkso, combosCity, cityByKey, directions, meta } = db();
+const rows = rowsByOkso.get(dir.okso) ?? [];
+const code = dir.okso.replace(/^\d+\./, '');
+const cost = costPhrase(dir.costRange);
+
+// Города, где направление индексируемо (≥2 вузов) — спицы.
+const comboLinks = combosCity
+  .filter((c) => c.okso === dir.okso && c.indexable)
+  .map((c) => ({ city: cityByKey.get(c.cityKey)!, count: c.orgIds.length }))
+  .sort((a, b) => b.count - a.count);
+
+// Другие уровни той же предметной линии: совпадает пятизначная часть кода
+// без уровня (XX.__.YY): 09.03.01 ↔ 09.04.01.
+const line = /^(\d+\.\d{2})\.\d{2}\.(\d{2})$/.exec(dir.okso);
+const related = line
+  ? directions.filter((d) => d.okso !== dir.okso &&
+      d.okso.startsWith(line[1] + '.') && d.okso.endsWith('.' + line[2]))
+  : [];
+
+const title = `${dir.name} (${dir.level.toLowerCase()}): ${dir.orgCount} ${plural(dir.orgCount, 'вуз', 'вуза', 'вузов')} | ${meta.campaignYear}`;
+const descParts = [
+  `Направление ${code} «${dir.name}», ${dir.level.toLowerCase()}`,
+  `${dir.orgCount} ${plural(dir.orgCount, 'вуз', 'вуза', 'вузов')} в ${dir.cityCount} ${plural(dir.cityCount, 'городе', 'городах', 'городах')}`,
+];
+if (dir.hasBudget) descParts.push('есть бюджетные места');
+if (cost) descParts.push(`платно ${cost}`);
+const description = descParts.join('. ') + '.';
+
+const crumbs = [
+  { name: 'Главная', url: '/' },
+  { name: 'Специальности', url: '/specialnosti/' },
+  { name: `Группа ${dir.ugsCode}`, url: `/specialnosti/${dir.ugsCode}/` },
+  { name: dir.name },
+];
+const jsonLd = [ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
+  name: c.name, url: new URL(c.url!, Astro.site).href,
+})))];
+---
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <Breadcrumbs items={crumbs} />
+  <h1>{dir.name} — {code}</h1>
+  <p class="meta">{dir.level}</p>
+
+  <ul class="facts">
+    <li><span class="label">Вузов с направлением</span> {dir.orgCount}</li>
+    <li><span class="label">Городов</span> {dir.cityCount}</li>
+    <li><span class="label">Бюджетные места</span>
+      {dir.hasBudget ? 'есть' : `в выгрузке от ${meta.snapshotDate} не указаны`}</li>
+    <li><span class="label">Стоимость платного обучения</span>
+      {cost ?? <span class="missing">Информация отсутствует</span>}</li>
+  </ul>
+
+  {related.length > 0 && (
+    <p>Эта же предметная линия на других уровнях:
+      {related.map((r, i) => (
+        <>{i > 0 && ', '}<a href={`/specialnost/${r.slug}/`}>{r.level.toLowerCase()}</a></>
+      ))}.
+    </p>
+  )}
+
+  {comboLinks.length > 0 && (
+    <>
+      <h2>Где учиться по городам</h2>
+      <ul class="card-list">
+        {comboLinks.slice(0, 12).map((c) => (
+          <li class="card">
+            <h3><a href={`/specialnost/${dir.slug}/${c.city.slug}/`}>{c.city.displayName}</a></h3>
+            <p class="meta">{c.count} {plural(c.count, 'вуз', 'вуза', 'вузов')}</p>
+          </li>
+        ))}
+      </ul>
+    </>
+  )}
+
+  <h2>Все вузы направления</h2>
+  <ul class="card-list">
+    {rows.map((row) => <OrgRow row={row} />)}
+  </ul>
+</Base>

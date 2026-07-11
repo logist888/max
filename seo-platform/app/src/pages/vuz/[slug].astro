@@ -120,7 +120,7 @@ const links = Object.entries(LINK_LABELS)
               {group.directions.flatMap((dir) =>
                 dir.offers.map((off, j) => (
                   <tr>
-                    <td>{j === 0 ? <>{dir.okso.replace(/^\d+\./, '')} {dir.name}</> : ''}</td>
+                    <td>{j === 0 ? <>{dir.okso.replace(/^\d+\./, '')} <a href={`/specialnost/${dir.slug}/`}>{dir.name}</a></> : ''}</td>
                     <td>{off.form}</td>
                     <td>{off.placeType}</td>
                     <td class="num">{off.places ?? '—'}</td>

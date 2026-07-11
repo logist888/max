@@ -1,0 +1,35 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { db } from '../../lib/data.ts';
+import { plural } from '../../lib/text.ts';
+
+const { directions, ugs, meta } = db();
+const groups = ugs.map((g) => {
+  const dirs = directions.filter((d) => d.ugsCode === g.code);
+  const orgTotal = new Set<string>();
+  return {
+    code: g.code,
+    count: dirs.length,
+    top: [...dirs].sort((a, b) => b.orgCount - a.orgCount).slice(0, 3),
+  };
+}).sort((a, b) => a.code.localeCompare(b.code));
+
+const title = `Специальности и направления подготовки: ${directions.length} | ${meta.campaignYear}`;
+const description = `Все направления подготовки из данных «ВУЗ-навигатора»: ${directions.length} направлений в ${ugs.length} укрупнённых группах. Приём ${meta.campaignYear}.`;
+---
+<Base title={title} description={description}>
+  <Breadcrumbs items={[{ name: 'Главная', url: '/' }, { name: 'Специальности' }]} />
+  <h1>Специальности и направления</h1>
+  <p class="meta">{directions.length} направлений подготовки в {ugs.length} укрупнённых группах.</p>
+
+  <ul class="card-list">
+    {groups.map((g) => (
+      <li class="card">
+        <h3><a href={`/specialnosti/${g.code}/`}>Группа {g.code}</a></h3>
+        <p class="meta">{g.count} {plural(g.count, 'направление', 'направления', 'направлений')} ·
+          например: {g.top.map((d) => d.name).join(', ')}</p>
+      </li>
+    ))}
+  </ul>
+</Base>
