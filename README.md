@@ -23,7 +23,8 @@
   `00-audit.md` — аудит задачи и базы вузов; `01-model-ia.md` — модель данных
   и информационная архитектура; `02-pseo.md` — Programmatic SEO и индексация;
   `03-search.md` — поиск; `04-product.md` — карточки, фильтры, конверсия, AI;
-  `audit_csv.py`, `audit_json.py`, `inventory.py` — воспроизводимые расчёты.
+  `05-tech.md` — стек, база, API, админка; `audit_csv.py`, `audit_json.py`,
+  `inventory.py` — воспроизводимые расчёты.
 - `.claude/skills/` — `boot`, `ingest`, `report`.
 
 ## Два рабочих действия
