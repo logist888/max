@@ -1,0 +1,22 @@
+{
+  "_комментарий": "Реестр конверсионных целей (этап 1, Р2). Поле url заполняет владелец вручную — любой адрес любого сайта. Пока url пуст, цель держать неактивной (active: false); CTA на сайте не рендерятся. Метки из utm подставляются к url автоматически; {page_type} заменяется типом страницы.",
+  "goals": [
+    {
+      "code": "diagnostic",
+      "title": "Диагностика MainExperts",
+      "url": "",
+      "utm": {
+        "utm_source": "eduplatform",
+        "utm_medium": "referral",
+        "utm_campaign": "{page_type}"
+      },
+      "active": false
+    }
+  ],
+  "placements": [
+    { "pageType": "org-card", "zone": "after-programs", "goal": "diagnostic" },
+    { "pageType": "org-card", "zone": "sticky", "goal": "diagnostic" },
+    { "pageType": "quiz", "zone": "final", "goal": "diagnostic" },
+    { "pageType": "catalog", "zone": "after-row-10", "goal": "diagnostic" }
+  ]
+}
