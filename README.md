@@ -19,6 +19,8 @@
   `10-sources`, `20-notes`, `30-entities`, `40-reports`, `_templates`.
 - `scripts/` — `extract.py` (файл → текст), `pdf_ru.py` (отчёт → кириллический PDF),
   `setup.sh`, `requirements.txt`.
+- `seo-platform/` — проектирование SEO-платформы по выбору образования (Поток 2):
+  `00-audit.md` — аудит задачи и базы вузов, `audit_csv.py` — воспроизводимая проверка выгрузки.
 - `.claude/skills/` — `boot`, `ingest`, `report`.
 
 ## Два рабочих действия
