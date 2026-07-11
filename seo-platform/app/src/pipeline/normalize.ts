@@ -21,11 +21,21 @@ function normCityName(raw: string): string {
   return raw.replace(CITY_PREFIX, '').replace(/\s+/g, ' ').trim();
 }
 
+// Ключ сущности «город»: регистр, ё/е и дефис/пробел не различаются
+// («Орел»/«Орёл», «Сергиев Посад»/«Сергиев-Посад» — один город).
+function cityKeyName(raw: string): string {
+  return normCityName(raw)
+    .toLowerCase()
+    .replace(/ё/g, 'е')
+    .replace(/[-\s]+/g, ' ');
+}
+
 // Города федерального значения сами определяют свой субъект: запись
 // «Москва / Московская область» — противоречие источника, не факт.
+// Ключи — в свёрнутой форме cityKeyName (дефис → пробел).
 const FEDERAL_CITY_REGION: Record<string, string> = {
   'москва': 'г. Москва',
-  'санкт-петербург': 'г. Санкт-Петербург',
+  'санкт петербург': 'г. Санкт-Петербург',
   'севастополь': 'г. Севастополь',
 };
 
@@ -50,7 +60,7 @@ function fixedRegion(
     });
     return fix.region;
   }
-  const federal = FEDERAL_CITY_REGION[normCityName(o.city).toLowerCase()];
+  const federal = FEDERAL_CITY_REGION[cityKeyName(o.city)];
   if (federal && federal !== source) {
     sanitation.push({
       orgId: o.id, field: 'region', raw: source,
@@ -125,7 +135,7 @@ export function buildModel(
     const region = regionOf.get(o.id)!;
     if (region.includes('иностранного')) continue;
     const norm = normCityName(o.city);
-    const key = `${region}::${norm.toLowerCase()}`;
+    const key = `${region}::${cityKeyName(o.city)}`;
     const entry = cityRaw.get(key) ?? { regionKey: region, variants: new Map() };
     entry.variants.set(norm, (entry.variants.get(norm) ?? 0) + 1);
     cityRaw.set(key, entry);
@@ -177,7 +187,6 @@ export function buildModel(
     const exportedLevels = new Set(offers.map((x) => x.level));
     const dormRaw = o.indicators?.['Мест в общежитии'];
     const dormPlaces = dormRaw && /^\d+$/.test(dormRaw) ? Number(dormRaw) : null;
-    const norm = normCityName(o.city);
     const region = regionOf.get(o.id)!;
 
     const org: Org = {
@@ -188,7 +197,7 @@ export function buildModel(
       name: o.name.trim(),
       fullName: o.fullName.trim(),
       regionKey: region,
-      cityKey: `${region}::${norm.toLowerCase()}`,
+      cityKey: `${region}::${cityKeyName(o.city)}`,
       address: o.address?.trim() || null,
       phones: o.phones ?? [],
       emails: o.emails ?? [],

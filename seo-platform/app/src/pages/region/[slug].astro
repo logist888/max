@@ -1,0 +1,46 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { db } from '../../lib/data.ts';
+import { ldBreadcrumbs, plural } from '../../lib/text.ts';
+
+export function getStaticPaths() {
+  return db().regions.map((region) => ({ params: { slug: region.slug }, props: { region } }));
+}
+
+const { region } = Astro.props;
+const { meta } = db();
+const cities = [...region.cities].sort((a, b) => b.orgCount - a.orgCount);
+
+const title = `Вузы региона ${region.displayName}: ${region.orgCount} ${plural(region.orgCount, 'вуз', 'вуза', 'вузов')} | ${meta.campaignYear}`;
+const description = `${region.displayName}: ${region.orgCount} ${plural(region.orgCount,
+  'вуз', 'вуза', 'вузов')} в ${cities.length} ${plural(cities.length,
+  'населённом пункте', 'населённых пунктах', 'населённых пунктах')}. Приём ${meta.campaignYear}.`;
+
+const crumbs = [
+  { name: 'Главная', url: '/' },
+  { name: 'Регионы', url: '/regiony/' },
+  { name: region.displayName },
+];
+const jsonLd = [ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
+  name: c.name, url: new URL(c.url!, Astro.site).href,
+})))];
+---
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <Breadcrumbs items={crumbs} />
+  <h1>Вузы: {region.displayName}</h1>
+  <ul class="facts">
+    <li><span class="label">Вузов в регионе</span> {region.orgCount}</li>
+    <li><span class="label">Городов с вузами</span> {cities.length}</li>
+  </ul>
+
+  <h2>Города региона</h2>
+  <ul class="card-list">
+    {cities.map((c) => (
+      <li class="card">
+        <h3><a href={`/gorod/${c.slug}/`}>{c.name}</a></h3>
+        <p class="meta">{c.orgCount} {plural(c.orgCount, 'вуз', 'вуза', 'вузов')}</p>
+      </li>
+    ))}
+  </ul>
+</Base>

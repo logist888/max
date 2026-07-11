@@ -1,0 +1,24 @@
+---
+import type { CatalogRow } from '../lib/data.ts';
+import { costPhrase, plural } from '../lib/text.ts';
+
+interface Props { row: CatalogRow }
+const { row } = Astro.props;
+const cost = costPhrase(row.costRange);
+---
+<li class="card">
+  <h3><a href={`/vuz/${row.slug}/`}>{row.shortName}</a></h3>
+  <p class="meta">
+    {row.cityName}, {row.regionKey}
+    {row.kind === 'филиал' && ' · филиал'}
+  </p>
+  <p class="meta">
+    {row.directionsCount > 0
+      ? `${row.directionsCount} ${plural(row.directionsCount, 'направление', 'направления', 'направлений')}`
+      : 'программы источником не выгружены'}
+    {row.hasBudget && ' · есть бюджетные места'}
+    {cost ? ` · платно ${cost}` : ''}
+    {row.dormitory && ' · общежитие'}
+    {row.militaryDept && ' · военная кафедра'}
+  </p>
+</li>

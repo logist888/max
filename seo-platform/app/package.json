@@ -3,10 +3,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "pipeline": "tsx src/pipeline/run.ts"
+    "pipeline": "tsx src/pipeline/run.ts",
+    "build": "astro build",
+    "dev": "astro dev"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
+    "astro": "^7.0.7",
     "tsx": "^4.19.0",
     "typescript": "^5.7.0"
   }

@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import { db } from '../lib/data.ts';
+import { plural } from '../lib/text.ts';
+
+const { catalogRows, cities, regions, meta } = db();
+const topCities = [...cities].sort((a, b) => b.orgCount - a.orgCount).slice(0, 12);
+const title = 'Выбор вуза по данным, а не по слухам — каталог вузов России';
+const description = `${catalogRows.length} вузов России с программами, стоимостью и бюджетными местами. Данные «ВУЗ-навигатора» Госуслуг, приём ${meta.campaignYear}.`;
+const jsonLd = [{
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Куда поступать',
+  url: new URL('/', Astro.site).href,
+}];
+---
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <h1>Выбор вуза — по данным</h1>
+  <p>{catalogRows.length} {plural(catalogRows.length, 'вуз', 'вуза', 'вузов')} России:
+    программы, бюджетные места, стоимость, общежития. Только факты официальной
+    выгрузки — без рейтингов «из воздуха». Чего нет в данных — того нет на сайте.</p>
+
+  <ul class="facts">
+    <li><span class="label">Вузов</span> {catalogRows.length}</li>
+    <li><span class="label">Регионов</span> {regions.length}</li>
+    <li><span class="label">Городов</span> {cities.length}</li>
+    <li><span class="label">Приёмная кампания</span> {meta.campaignYear}</li>
+  </ul>
+
+  <p><a href="/vuzy/">Смотреть весь каталог →</a></p>
+
+  <h2>Крупнейшие города</h2>
+  <ul class="card-list">
+    {topCities.map((c) => (
+      <li class="card">
+        <h3><a href={`/gorod/${c.slug}/`}>{c.displayName}</a></h3>
+        <p class="meta">{c.orgCount} {plural(c.orgCount, 'вуз', 'вуза', 'вузов')} ·
+          {c.directionCount} {plural(c.directionCount, 'направление', 'направления', 'направлений')}</p>
+      </li>
+    ))}
+  </ul>
+</Base>

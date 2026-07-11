@@ -1,0 +1,51 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import OrgRow from '../../components/OrgRow.astro';
+import { db } from '../../lib/data.ts';
+import { costPhrase, ldBreadcrumbs, plural } from '../../lib/text.ts';
+
+export function getStaticPaths() {
+  return db().cities.map((city) => ({ params: { slug: city.slug }, props: { city } }));
+}
+
+const { city } = Astro.props;
+const { catalogRows, regions, meta } = db();
+const region = regions.find((r) => r.key === city.regionKey)!;
+const rows = catalogRows.filter((r) => r.cityKey === city.key);
+const cost = costPhrase(city.costRange);
+
+const title = `Вузы ${city.displayName === 'Москва' ? 'Москвы' : `— ${city.displayName}`}: ${city.orgCount} ${plural(city.orgCount, 'вуз', 'вуза', 'вузов')} | ${meta.campaignYear}`;
+const descParts = [
+  `Высшее образование: ${city.displayName} (${city.regionKey})`,
+  `${city.orgCount} ${plural(city.orgCount, 'вуз', 'вуза', 'вузов')}`,
+  `${city.directionCount} ${plural(city.directionCount, 'направление', 'направления', 'направлений')}`,
+];
+if (cost) descParts.push(`платное обучение ${cost}`);
+const description = descParts.join('. ') + '.';
+
+const crumbs = [
+  { name: 'Главная', url: '/' },
+  { name: region.displayName, url: `/region/${region.slug}/` },
+  { name: city.displayName },
+];
+const jsonLd = [ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
+  name: c.name, url: new URL(c.url!, Astro.site).href,
+})))];
+---
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <Breadcrumbs items={crumbs} />
+  <h1>Вузы: {city.displayName}</h1>
+  <ul class="facts">
+    <li><span class="label">Вузов в городе</span> {city.orgCount}</li>
+    <li><span class="label">Направлений подготовки</span> {city.directionCount}</li>
+    <li><span class="label">Стоимость платного обучения</span>
+      {cost ?? <span class="missing">Информация отсутствует</span>}</li>
+    <li><span class="label">Регион</span>
+      <a href={`/region/${region.slug}/`}>{region.displayName}</a></li>
+  </ul>
+
+  <ul class="card-list">
+    {rows.map((row) => <OrgRow row={row} />)}
+  </ul>
+</Base>

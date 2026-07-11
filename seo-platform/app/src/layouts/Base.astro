@@ -1,0 +1,54 @@
+---
+import '../styles/main.css';
+import { db } from '../lib/data.ts';
+
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+  jsonLd?: object[];
+}
+const { title, description, noindex = false, jsonLd = [] } = Astro.props;
+const { meta } = db();
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  {noindex && <meta name="robots" content="noindex, follow" />}
+  <link rel="canonical" href={canonical} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+  {jsonLd.map((ld) => (
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+  ))}
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="/">Куда поступать</a>
+      <nav aria-label="Основная навигация">
+        <a href="/vuzy/">Вузы</a>
+        <a href="/regiony/">Регионы</a>
+        <a href="/o-dannyh/">О данных</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <slot />
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <p>Источник данных: «ВУЗ-навигатор» Госуслуг, выгрузка от {meta.snapshotDate}.
+        Приёмная кампания {meta.campaignYear}. Если сведения отсутствуют в источнике,
+        на странице явно указано «Информация отсутствует» — данные не достраиваются.</p>
+    </div>
+  </footer>
+</body>
+</html>

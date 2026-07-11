@@ -1,0 +1,167 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { db } from '../../lib/data.ts';
+import {
+  costPhrase, ldBreadcrumbs, ldFaq, ldOrg, orgDescription, orgFaq, orgTitle, plural, rub,
+} from '../../lib/text.ts';
+
+export function getStaticPaths() {
+  return db().orgCards.map((card) => ({ params: { slug: card.slug }, props: { card } }));
+}
+
+const { card } = Astro.props;
+const { meta, orgCards } = db();
+
+const crumbs = [
+  { name: 'Главная', url: '/' },
+  { name: card.regionKey, url: `/region/${card.regionSlug}/` },
+  { name: card.cityName, url: `/gorod/${card.citySlug}/` },
+  { name: card.shortName },
+];
+const faq = orgFaq(card, meta.snapshotDate);
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const jsonLd = [
+  ldOrg(card, pageUrl),
+  ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
+    name: c.name, url: new URL(c.url!, Astro.site).href,
+  }))),
+  ldFaq(faq),
+];
+
+// «Рядом и похоже»: вузы того же города с пересечением по УГСН.
+const myUgs = new Set(card.programsByLevel.flatMap((l) => l.directions.map((d) => d.ugs)));
+const similar = orgCards
+  .filter((o) => o.cityKey === card.cityKey && o.id !== card.id)
+  .map((o) => ({
+    org: o,
+    overlap: o.programsByLevel.flatMap((l) => l.directions)
+      .filter((d) => myUgs.has(d.ugs)).length,
+  }))
+  .sort((a, b) => b.overlap - a.overlap)
+  .slice(0, 5)
+  .map((x) => x.org);
+
+const cost = costPhrase(card.costRange);
+const LINK_LABELS: Record<string, string> = {
+  urlUniversityAdmissionRulesBase: 'Правила приёма (бакалавриат, специалитет)',
+  urlUniversityAdmissionRulesSpec: 'Правила приёма (магистратура)',
+  urlUniversityAdmissionRulesAsp: 'Правила приёма (аспирантура)',
+  urlProcedureAppealBase: 'Порядок апелляции (бакалавриат, специалитет)',
+  urlProcedureAppealSpec: 'Порядок апелляции (магистратура)',
+  urlProcedureAppealAsp: 'Порядок апелляции (аспирантура)',
+  urlListAchievementsBase: 'Индивидуальные достижения (бакалавриат)',
+  urlListAchievementsSpec: 'Индивидуальные достижения (магистратура)',
+  urlListAchievementsAsp: 'Индивидуальные достижения (аспирантура)',
+  urlOlympiadsSpecialtiesBase: 'Олимпиады: специальности',
+  urlOlympiadsSubjectsBase: 'Олимпиады: предметы',
+  urlGrantingSpecialRightsBase: 'Особые права при приёме',
+  urlRulesAdmissionMilitaryDepartment: 'Приём в военный учебный центр',
+  urlSpecialScholarShips: 'Специальные стипендии',
+};
+const links = Object.entries(LINK_LABELS)
+  .filter(([key]) => card.usefulLinks[key])
+  .map(([key, label]) => ({ label, url: card.usefulLinks[key]! }));
+---
+<Base title={orgTitle(card)} description={orgDescription(card, meta.campaignYear)} jsonLd={jsonLd}>
+  <Breadcrumbs items={crumbs} />
+  <h1>{card.shortName}</h1>
+  <p class="meta">{card.fullName}</p>
+
+  <div class="badges">
+    {card.hasBudget && <span class="badge badge--ok">Есть бюджетные места</span>}
+    {card.dormitory && <span class="badge">Общежитие</span>}
+    {card.militaryDept && <span class="badge">Военная кафедра</span>}
+    {card.kind === 'филиал' && <span class="badge">Филиал</span>}
+  </div>
+
+  <ul class="facts">
+    <li><span class="label">Направлений подготовки</span>
+      {card.directionsCount > 0 ? card.directionsCount : <span class="missing">Информация отсутствует</span>}
+    </li>
+    <li><span class="label">Стоимость платного обучения</span>
+      {cost ?? <span class="missing">Информация отсутствует</span>}
+    </li>
+    <li><span class="label">Мест в общежитии</span>
+      {card.dormPlaces ?? <span class="missing">Информация отсутствует</span>}
+    </li>
+    <li><span class="label">Город</span>
+      <a href={`/gorod/${card.citySlug}/`}>{card.cityName}</a>, {card.regionKey}
+    </li>
+    {card.websites[0] && (
+      <li><span class="label">Официальный сайт</span>
+        <a href={card.websites[0]} rel="nofollow noopener">{card.websites[0]}</a>
+      </li>
+    )}
+    {card.address && <li><span class="label">Адрес</span> {card.address}</li>}
+  </ul>
+
+  {card.levelsNotExported.length > 0 && (
+    <p class="notice">Уровни «{card.levelsNotExported.join('», «')}» заявлены вузом,
+      но программы этих уровней источником не выгружаются — показать их состав
+      невозможно.</p>
+  )}
+
+  <h2>Программы {meta.campaignYear}</h2>
+  {card.programsByLevel.length === 0 ? (
+    <p class="missing">Программы источником не выгружены.</p>
+  ) : (
+    card.programsByLevel.map((group, i) => (
+      <details class="level-group" open={i === 0}>
+        <summary>{group.level} — {group.directions.length} {plural(group.directions.length,
+          'направление', 'направления', 'направлений')}</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Направление</th><th>Форма</th><th>Тип мест</th>
+                <th class="num">Мест</th><th class="num">Стоимость/год</th></tr>
+            </thead>
+            <tbody>
+              {group.directions.flatMap((dir) =>
+                dir.offers.map((off, j) => (
+                  <tr>
+                    <td>{j === 0 ? <>{dir.okso.replace(/^\d+\./, '')} {dir.name}</> : ''}</td>
+                    <td>{off.form}</td>
+                    <td>{off.placeType}</td>
+                    <td class="num">{off.places ?? '—'}</td>
+                    <td class="num">{off.placeType === 'Платные места'
+                      ? (off.cost !== null ? rub(off.cost) : 'нет данных')
+                      : '—'}</td>
+                  </tr>
+                )))}
+            </tbody>
+          </table>
+        </div>
+      </details>
+    ))
+  )}
+
+  {links.length > 0 && (
+    <>
+      <h2>Приёмная кампания: документы вуза</h2>
+      <ul>
+        {links.map((l) => <li><a href={l.url} rel="nofollow noopener">{l.label}</a></li>)}
+      </ul>
+    </>
+  )}
+
+  <h2>Вопросы и ответы</h2>
+  <dl class="faq">
+    {faq.map((f) => (<><dt>{f.q}</dt><dd>{f.a}</dd></>))}
+  </dl>
+
+  {similar.length > 0 && (
+    <>
+      <h2>Вузы рядом</h2>
+      <ul class="card-list">
+        {similar.map((o) => (
+          <li class="card">
+            <h3><a href={`/vuz/${o.slug}/`}>{o.shortName}</a></h3>
+            <p class="meta">{o.cityName} · {o.directionsCount} {plural(o.directionsCount,
+              'направление', 'направления', 'направлений')}</p>
+          </li>
+        ))}
+      </ul>
+    </>
+  )}
+</Base>
