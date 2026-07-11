@@ -91,5 +91,20 @@ const report = {
     indexableComboCity + indexableComboRegion,
 };
 write('report.json', report);
+
+// Компактный индекс для клиентского острова поиска (локальная фаза R3;
+// при выходе на хостинг заменяется Meilisearch — модель документа та же).
+// Алиасы длиннее 80 знаков (полные юридические имена) не попадают в индекс:
+// их никто не печатает в строку поиска.
+const compact = v.searchExport.map((d) => ({
+  t: d.type, n: d.title, s: d.subtitle, u: d.url, p: d.popularity,
+  a: [...new Set(d.aliases)]
+    .filter((al) => al && al.length <= 80 && al !== d.title)
+    .map((al) => al.toLowerCase().replace(/ё/g, 'е')),
+}));
+mkdirSync(join(APP, 'public'), { recursive: true });
+writeFileSync(join(APP, 'public/search-index.json'), JSON.stringify(compact));
+console.log(`Поисковый индекс: ${compact.length} документов, ` +
+  `${Math.round(JSON.stringify(compact).length / 1024)} КБ`);
 console.log('Отчёт:', JSON.stringify(report, null, 2));
 console.log(`Витрины собраны в ${BUILD}`);

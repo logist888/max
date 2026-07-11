@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Cta from '../../components/Cta.astro';
 import { db } from '../../lib/data.ts';
 import {
   costPhrase, ldBreadcrumbs, ldFaq, ldOrg, orgDescription, orgFaq, orgTitle, plural, rub,
@@ -144,6 +145,8 @@ const links = Object.entries(LINK_LABELS)
       </ul>
     </>
   )}
+
+  <Cta pageType="org-card" zone="after-programs" />
 
   <h2>Вопросы и ответы</h2>
   <dl class="faq">

@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import OrgRow from '../../components/OrgRow.astro';
+import Cta from '../../components/Cta.astro';
 import { db } from '../../lib/data.ts';
 
 export function getStaticPaths() {
@@ -38,6 +39,8 @@ const window = [...new Set([1, pageNum - 1, pageNum, pageNum + 1, pageCount]
   <ul class="card-list">
     {rows.map((row) => <OrgRow row={row} />)}
   </ul>
+
+  <Cta pageType="catalog" zone="after-row-10" />
 
   <nav class="pagination" aria-label="Страницы каталога">
     {window.map((n, i) => (

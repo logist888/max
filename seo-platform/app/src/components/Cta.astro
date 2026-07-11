@@ -1,0 +1,66 @@
+---
+// Конверсионная вставка (этап 4). Цель берётся из config/goals.json —
+// поле владельца. Пока цель неактивна или url пуст, блок не рендерится
+// вовсе: страницы не обещают того, куда некуда вести.
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+interface Props {
+  pageType: string;
+  zone: string;
+}
+const { pageType, zone } = Astro.props;
+
+interface Goal {
+  code: string; title: string; url: string;
+  utm: Record<string, string>; active: boolean;
+}
+interface Config {
+  goals: Goal[];
+  placements: { pageType: string; zone: string; goal: string }[];
+}
+const config = JSON.parse(
+  readFileSync(resolve(process.cwd(), 'config/goals.json'), 'utf8'),
+) as Config;
+
+const placement = config.placements.find(
+  (p) => p.pageType === pageType && p.zone === zone,
+);
+const goal = placement
+  ? config.goals.find((g) => g.code === placement.goal && g.active && g.url)
+  : undefined;
+
+let href = '';
+if (goal) {
+  const url = new URL(goal.url);
+  for (const [k, v] of Object.entries(goal.utm)) {
+    url.searchParams.set(k, v.replace('{page_type}', pageType));
+  }
+  href = url.href;
+}
+---
+{goal && (
+  <aside class="cta-block">
+    <p class="cta-lead">Факты собраны. Но какой вуз подходит именно вам —
+      факты не скажут: сначала стоит понять свои сильные стороны.</p>
+    <a class="cta-button" href={href} rel="noopener"
+      data-goal={goal.code} data-zone={zone} data-page-type={pageType}>
+      {goal.title}
+    </a>
+  </aside>
+)}
+
+<style>
+  .cta-block {
+    margin: var(--space-8) 0; padding: var(--space-6);
+    background: var(--surface); border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+  .cta-lead { margin: 0 0 var(--space-3); }
+  .cta-button {
+    display: inline-block; padding: 12px 20px; min-height: 44px;
+    background: var(--accent-cta); color: #fff; border-radius: var(--radius);
+    font-weight: 600;
+  }
+  .cta-button:hover { text-decoration: none; opacity: .92; }
+</style>

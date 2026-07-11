@@ -1,5 +1,6 @@
 ---
 import '../styles/main.css';
+import Search from '../components/Search.astro';
 import { db } from '../lib/data.ts';
 
 interface Props {
@@ -39,6 +40,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
         <a href="/regiony/">Регионы</a>
         <a href="/o-dannyh/">О данных</a>
       </nav>
+      <Search />
     </div>
   </header>
   <main class="container">

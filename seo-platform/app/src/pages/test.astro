@@ -1,0 +1,109 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Cta from '../components/Cta.astro';
+
+const title = 'Тест: насколько вы определились с выбором вуза';
+const description = 'Пять вопросов без регистрации: где вы сейчас в выборе — и какой следующий шаг даст больше всего ясности.';
+---
+<Base title={title} description={description}>
+  <Breadcrumbs items={[{ name: 'Главная', url: '/' }, { name: 'Тест' }]} />
+  <h1>Насколько вы определились?</h1>
+  <p>Пять вопросов, без регистрации и персональных данных. Ответы остаются
+    в вашем браузере.</p>
+
+  <form id="quiz">
+    <fieldset data-step="1">
+      <legend>1. Кто отвечает?</legend>
+      <label><input type="radio" name="who" value="student" required /> Школьник или студент</label>
+      <label><input type="radio" name="who" value="parent" /> Родитель</label>
+    </fieldset>
+    <fieldset data-step="2">
+      <legend>2. В каком вы (ваш ребёнок) классе?</legend>
+      <label><input type="radio" name="grade" value="9" required /> 9 класс или раньше</label>
+      <label><input type="radio" name="grade" value="10" /> 10 класс</label>
+      <label><input type="radio" name="grade" value="11" /> 11 класс</label>
+      <label><input type="radio" name="grade" value="other" /> Колледж / выпуск прошлых лет</label>
+    </fieldset>
+    <fieldset data-step="3">
+      <legend>3. Что уже решено?</legend>
+      <label><input type="radio" name="known" value="prof" required /> Знаю профессию или направление</label>
+      <label><input type="radio" name="known" value="vuz" /> Знаю вуз, выбираю программу</label>
+      <label><input type="radio" name="known" value="city" /> Знаю только город</label>
+      <label><input type="radio" name="known" value="nothing" /> Пока ничего не решено</label>
+    </fieldset>
+    <fieldset data-step="4">
+      <legend>4. Насколько уверенно звучит ваш выбор?</legend>
+      <label><input type="radio" name="sure" value="sure" required /> Уверен(а), осталось сравнить варианты</label>
+      <label><input type="radio" name="sure" value="doubt" /> Есть вариант, но сомневаюсь</label>
+      <label><input type="radio" name="sure" value="lost" /> Каждую неделю мнение меняется</label>
+    </fieldset>
+    <fieldset data-step="5">
+      <legend>5. Что сейчас важнее всего?</legend>
+      <label><input type="radio" name="need" value="list" required /> Список вузов под мой запрос</label>
+      <label><input type="radio" name="need" value="compare" /> Сравнить два-три конкретных вуза</label>
+      <label><input type="radio" name="need" value="self" /> Понять, что мне вообще подходит</label>
+    </fieldset>
+    <button type="submit" class="quiz-submit">Показать результат</button>
+  </form>
+
+  <section id="result-known" hidden>
+    <h2>Вы ближе к выбору, чем большинство</h2>
+    <p>Решение почти собрано — осталось проверить его фактами:</p>
+    <ul>
+      <li><a href="/specialnosti/">Найдите своё направление</a> и посмотрите все
+        вузы, где оно есть, с бюджетными местами и ценами.</li>
+      <li>Откройте карточки двух-трёх вузов и сравните программы, места и
+        стоимость.</li>
+      <li>Если сомнение вернётся — вернитесь сюда: сомнение обычно не про вузы,
+        а про то, что решение принято не из своих сильных сторон.</li>
+    </ul>
+  </section>
+
+  <section id="result-unknown" hidden>
+    <h2>Честный результат: выбирать вуз пока рано</h2>
+    <p>Каталоги и рейтинги не помогут, пока не ясно, из чего выбирать.
+      Порядок обратный: сначала — сильные стороны и склонности, потом —
+      направление, и только затем — вуз. Это нормальный этап, и он проходится
+      быстрее всего с диагностикой, которая оцифровывает сильные стороны.</p>
+    <Cta pageType="quiz" zone="final" />
+    <p>Параллельно можно смотреть <a href="/specialnosti/">группы направлений</a> —
+      не выбирать, а замечать, что цепляет.</p>
+  </section>
+
+  <style>
+    fieldset { border: 1px solid var(--border); border-radius: var(--radius);
+      margin: 0 0 var(--space-4); padding: var(--space-4); }
+    legend { font-weight: 600; padding: 0 var(--space-2); }
+    label { display: block; padding: var(--space-2) 0; cursor: pointer; }
+    .quiz-submit { padding: 12px 20px; min-height: 44px; font: inherit; font-weight: 600;
+      background: var(--accent); color: #fff; border: 0; border-radius: var(--radius);
+      cursor: pointer; }
+  </style>
+
+  <script>
+    const form = document.getElementById('quiz') as HTMLFormElement;
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const known = data.get('known');
+      const sure = data.get('sure');
+      const need = data.get('need');
+      // Ветка «не знаю»: ничего не решено, выбор шатается или явный запрос
+      // «понять себя». Иначе — маршрут по платформе.
+      const unknown = known === 'nothing' || sure === 'lost' || need === 'self';
+      document.getElementById('result-known')!.hidden = unknown;
+      document.getElementById('result-unknown')!.hidden = !unknown;
+      form.hidden = true;
+      try {
+        localStorage.setItem('quiz-result', JSON.stringify({
+          branch: unknown ? 'unknown' : 'known',
+          at: new Date().toISOString(),
+        }));
+      } catch { /* приватный режим — результат просто не сохраняется */ }
+      (unknown
+        ? document.getElementById('result-unknown')
+        : document.getElementById('result-known'))!.scrollIntoView();
+    });
+  </script>
+</Base>
