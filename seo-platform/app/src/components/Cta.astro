@@ -1,7 +1,10 @@
 ---
-// Конверсионная вставка (этап 4). Цель берётся из config/goals.json —
-// поле владельца. Пока цель неактивна или url пуст, блок не рендерится
-// вовсе: страницы не обещают того, куда некуда вести.
+// Конверсионная вставка (этап 4, обновление 11.07.2026 по замечанию
+// владельца): слой всегда видим. Пока внешняя цель из config/goals.json
+// неактивна, CTA ведёт на внутренний мост — квиз /test/. Как только
+// владелец вписывает url и active: true, кнопка начинает вести на цель
+// с UTM-метками. На самой странице квиза внутренний фолбэк не рендерится
+// (квиз не может звать сам себя).
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -31,21 +34,29 @@ const goal = placement
   : undefined;
 
 let href = '';
+let label = '';
+let external = false;
 if (goal) {
   const url = new URL(goal.url);
   for (const [k, v] of Object.entries(goal.utm)) {
     url.searchParams.set(k, v.replace('{page_type}', pageType));
   }
   href = url.href;
+  label = goal.title;
+  external = true;
+} else if (pageType !== 'quiz') {
+  href = '/test/';
+  label = 'Пройти тест — 5 вопросов, 2 минуты';
 }
 ---
-{goal && (
+{href && (
   <aside class="cta-block">
+    <p class="cta-kicker">Следующий шаг</p>
     <p class="cta-lead">Факты собраны. Но какой вуз подходит именно вам —
       факты не скажут: сначала стоит понять свои сильные стороны.</p>
-    <a class="cta-button" href={href} rel="noopener"
-      data-goal={goal.code} data-zone={zone} data-page-type={pageType}>
-      {goal.title}
+    <a class="btn btn-primary" href={href} rel={external ? 'noopener' : undefined}
+      data-goal={goal?.code ?? 'quiz'} data-zone={zone} data-page-type={pageType}>
+      {label}
     </a>
   </aside>
 )}
@@ -53,14 +64,14 @@ if (goal) {
 <style>
   .cta-block {
     margin: var(--space-8) 0; padding: var(--space-6);
-    background: var(--surface); border-radius: var(--radius);
-    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, var(--accent-soft), transparent 70%), var(--surface);
+    border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border));
+    box-shadow: var(--shadow-1);
   }
-  .cta-lead { margin: 0 0 var(--space-3); }
-  .cta-button {
-    display: inline-block; padding: 12px 20px; min-height: 44px;
-    background: var(--accent-cta); color: #fff; border-radius: var(--radius);
-    font-weight: 600;
+  .cta-kicker {
+    margin: 0 0 var(--space-1); font-size: .78rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .06em; color: var(--accent);
   }
-  .cta-button:hover { text-decoration: none; opacity: .92; }
+  .cta-lead { margin: 0 0 var(--space-4); max-width: 60ch; }
 </style>

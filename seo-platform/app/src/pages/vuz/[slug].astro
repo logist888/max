@@ -120,7 +120,7 @@ const links = Object.entries(LINK_LABELS)
             <tbody>
               {group.directions.flatMap((dir) =>
                 dir.offers.map((off, j) => (
-                  <tr>
+                  <tr class={j === 0 ? 'dir-start' : undefined}>
                     <td>{j === 0 ? <>{dir.okso.replace(/^\d+\./, '')} <a href={`/specialnost/${dir.slug}/`}>{dir.name}</a></> : ''}</td>
                     <td>{off.form}</td>
                     <td>{off.placeType}</td>
@@ -153,6 +153,11 @@ const links = Object.entries(LINK_LABELS)
     {faq.map((f) => (<><dt>{f.q}</dt><dd>{f.a}</dd></>))}
   </dl>
 
+  <div class="sticky-cta" id="sticky-cta" hidden>
+    <span class="sticky-text">Не уверены, что {card.shortName} — ваш вуз?</span>
+    <a class="btn btn-primary" href="/test/">Проверить за 2 минуты</a>
+  </div>
+
   {similar.length > 0 && (
     <>
       <h2>Вузы рядом</h2>
@@ -167,4 +172,27 @@ const links = Object.entries(LINK_LABELS)
       </ul>
     </>
   )}
+
+  <style>
+    .sticky-cta {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+      display: flex; align-items: center; justify-content: center;
+      gap: var(--space-4); flex-wrap: wrap;
+      padding: var(--space-3) var(--space-4);
+      background: color-mix(in srgb, var(--surface) 92%, transparent);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid var(--border); box-shadow: 0 -6px 24px rgba(16,24,40,.08);
+    }
+    .sticky-text { font-weight: 500; }
+    @media (max-width: 600px) { .sticky-text { display: none; } }
+  </style>
+
+  <script>
+    const bar = document.getElementById('sticky-cta')!;
+    let shown = false;
+    window.addEventListener('scroll', () => {
+      const deep = window.scrollY > document.documentElement.scrollHeight * 0.35;
+      if (deep !== shown) { shown = deep; bar.hidden = !deep; }
+    }, { passive: true });
+  </script>
 </Base>

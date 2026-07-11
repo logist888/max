@@ -18,6 +18,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#4f46e5" />
+  <link rel="preload" href="/fonts/inter-cyr.woff2" as="font" type="font/woff2" crossorigin />
   <title>{title}</title>
   <meta name="description" content={description} />
   {noindex && <meta name="robots" content="noindex, follow" />}
@@ -33,7 +35,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 <body>
   <header class="site-header">
     <div class="container">
-      <a class="brand" href="/">Куда поступать</a>
+      <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">К</span>Куда поступать</a>
       <nav aria-label="Основная навигация">
         <a href="/vuzy/">Вузы</a>
         <a href="/specialnosti/">Специальности</a>

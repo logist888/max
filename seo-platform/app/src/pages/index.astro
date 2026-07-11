@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import { db } from '../lib/data.ts';
 import { plural } from '../lib/text.ts';
 
-const { catalogRows, cities, regions, meta } = db();
+const { catalogRows, cities, regions, directions, meta } = db();
 const topCities = [...cities].sort((a, b) => b.orgCount - a.orgCount).slice(0, 12);
 const title = 'Выбор вуза по данным, а не по слухам — каталог вузов России';
 const description = `${catalogRows.length} вузов России с программами, стоимостью и бюджетными местами. Данные «ВУЗ-навигатора» Госуслуг, приём ${meta.campaignYear}.`;
@@ -15,22 +15,48 @@ const jsonLd = [{
 }];
 ---
 <Base title={title} description={description} jsonLd={jsonLd}>
-  <h1>Выбор вуза — по данным</h1>
-  <p>{catalogRows.length} {plural(catalogRows.length, 'вуз', 'вуза', 'вузов')} России:
-    программы, бюджетные места, стоимость, общежития. Только факты официальной
-    выгрузки — без рейтингов «из воздуха». Чего нет в данных — того нет на сайте.</p>
+  <section class="hero">
+    <h1>Сначала — понять себя.<br />Потом — выбирать вуз.</h1>
+    <p>Каталоги отвечают на вопрос «где учиться». Мы начинаем с вопроса
+      «что вам подходит» — а уже потом показываем все {catalogRows.length} {plural(catalogRows.length, 'вуз', 'вуза', 'вузов')} России:
+      программы, бюджетные места, цены. Только факты официальных данных.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="/test/">Узнать, насколько я определился</a>
+      <a class="btn btn-secondary" href="/vuzy/">Смотреть каталог вузов</a>
+    </div>
+    <div class="chips">
+      <span class="chip">{catalogRows.length} вузов</span>
+      <span class="chip">{directions.length} направлений</span>
+      <span class="chip">{cities.length} {plural(cities.length, 'город', 'города', 'городов')}</span>
+      <span class="chip">Приём {meta.campaignYear}</span>
+      <span class="chip">Без выдуманных рейтингов</span>
+    </div>
+  </section>
 
-  <ul class="facts">
-    <li><span class="label">Вузов</span> {catalogRows.length}</li>
-    <li><span class="label">Регионов</span> {regions.length}</li>
-    <li><span class="label">Городов</span> {cities.length}</li>
-    <li><span class="label">Приёмная кампания</span> {meta.campaignYear}</li>
+  <h2>Как это работает</h2>
+  <ul class="card-list grid-3">
+    <li class="card">
+      <h3>1. Поймите, где вы</h3>
+      <p class="meta">Тест из 5 вопросов покажет, что уже решено, а где выбор
+        держится на чужих ожиданиях.</p>
+      <p><a href="/test/">Пройти тест →</a></p>
+    </li>
+    <li class="card">
+      <h3>2. Сузьте поле</h3>
+      <p class="meta">894 направления в 57 группах: где учат, сколько стоит,
+        есть ли бюджет — по каждому.</p>
+      <p><a href="/specialnosti/">Смотреть направления →</a></p>
+    </li>
+    <li class="card">
+      <h3>3. Сравните вузы</h3>
+      <p class="meta">Карточки всех вузов России с программами и ценами
+        приёмной кампании {meta.campaignYear}.</p>
+      <p><a href="/vuzy/">Открыть каталог →</a></p>
+    </li>
   </ul>
 
-  <p><a href="/vuzy/">Смотреть весь каталог →</a> · <a href="/test/">Насколько вы определились? Тест из 5 вопросов →</a></p>
-
   <h2>Крупнейшие города</h2>
-  <ul class="card-list">
+  <ul class="card-list grid-3">
     {topCities.map((c) => (
       <li class="card">
         <h3><a href={`/gorod/${c.slug}/`}>{c.displayName}</a></h3>
@@ -39,4 +65,6 @@ const jsonLd = [{
       </li>
     ))}
   </ul>
+
+  <p class="meta">Все {regions.length} регионов — <a href="/regiony/">на одной странице</a>.</p>
 </Base>
