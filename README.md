@@ -21,8 +21,8 @@
   `setup.sh`, `requirements.txt`.
 - `seo-platform/` — проектирование SEO-платформы по выбору образования (Поток 2):
   `00-audit.md` — аудит задачи и базы вузов; `01-model-ia.md` — модель данных
-  и информационная архитектура; `audit_csv.py`, `audit_json.py` —
-  воспроизводимые проверки выгрузок.
+  и информационная архитектура; `02-pseo.md` — Programmatic SEO и индексация;
+  `audit_csv.py`, `audit_json.py`, `inventory.py` — воспроизводимые расчёты.
 - `.claude/skills/` — `boot`, `ingest`, `report`.
 
 ## Два рабочих действия
