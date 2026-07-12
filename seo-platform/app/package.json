@@ -5,7 +5,8 @@
   "scripts": {
     "pipeline": "tsx src/pipeline/run.ts",
     "build": "astro build",
-    "dev": "astro dev"
+    "dev": "astro dev",
+    "site": "npm run pipeline && astro build"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
