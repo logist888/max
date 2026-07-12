@@ -113,6 +113,10 @@
   `dms/03-classification.md` · `dms/04-registry.md` · `dms/05-cards.md` · `dms/06-matrices.md` ·
   `dms/07-trees.md` · `dms/08-roadmap.md` · `dms/09-automation.md` · `dms/10-ai-governance.md` ·
   `dms/11-data-governance.md` · `dms/90-audit.md`.
+- Материализованные документы: `dms/documents/` — фактические файлы тех документов реестра,
+  содержание которых **уже существует в каноне** (перенос, не сочинение); индекс статуса всех
+  152 — `dms/documents/00-index.md`. Правило: материализуется только существующее, пробелы
+  помечаются, а не выдумываются.
 - Существующий канон: `08-board-system.md` (решения) · `10-data-model.md` (данные) ·
   `05-risk-compliance.md` (комплаенс) · `12-traffic-platform-decisions.md` (словари) ·
   `01-strategy.md` · `02-product.md` · `06-data-tools-payments.md` · `07-principles-open-questions.md`.
