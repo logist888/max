@@ -9,6 +9,7 @@
     "site": "npm run pipeline && astro build"
   },
   "devDependencies": {
+    "@astrojs/sitemap": "^3.7.3",
     "@types/node": "^22.10.0",
     "astro": "^7.0.7",
     "playwright-core": "^1.61.1",
