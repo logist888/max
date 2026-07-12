@@ -8,7 +8,8 @@
 
 - `seo-platform/app/package.json` → скрипт `npm run site` (генерация витрин
   из снимка базы + сборка Astro одной командой).
-- `seo-platform/app/.nvmrc` → Node 20 (Cloudflare подхватит автоматически).
+- `seo-platform/app/.nvmrc` → Node 22.12.0 (Astro 7 требует ≥22.12; Cloudflare
+  читает `.nvmrc` из root directory автоматически).
 - Снимок базы `seo-platform/data/universities_2026-07-10.json.gz` — в репозитории,
   поэтому сборка на стороне Cloudflare самодостаточна.
 
