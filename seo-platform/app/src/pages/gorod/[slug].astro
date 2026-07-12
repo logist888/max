@@ -10,10 +10,38 @@ export function getStaticPaths() {
 }
 
 const { city } = Astro.props;
-const { catalogRows, regions, meta } = db();
+const { catalogRows, regions, meta, combosCity, directionByOkso, ugs } = db();
 const region = regions.find((r) => r.key === city.regionKey)!;
 const rows = catalogRows.filter((r) => r.cityKey === city.key);
 const cost = costPhrase(city.costRange);
+
+// Специальности города по укрупнённым группам (УГСН). Спицы графа: где
+// направление индексируемо в городе (≥2 вузов) — ведём на комбо-страницу
+// «направление × город», иначе на страницу направления. Всё из данных.
+const ugsName = new Map(ugs.map((u) => [u.code, u.name]));
+type DirLink = { name: string; url: string; orgCount: number };
+const dirGroups = new Map<string, { code: string; name: string | null; dirs: DirLink[] }>();
+const sciDirs: DirLink[] = [];
+for (const c of combosCity) {
+  if (c.cityKey !== city.key) continue;
+  const dir = directionByOkso.get(c.okso)!;
+  const link: DirLink = {
+    name: dir.name,
+    url: c.indexable ? `/specialnost/${dir.slug}/${city.slug}/` : `/specialnost/${dir.slug}/`,
+    orgCount: c.orgIds.length,
+  };
+  if (dir.scientific || !dir.ugsCode) { sciDirs.push(link); continue; }
+  const g = dirGroups.get(dir.ugsCode)
+    ?? { code: dir.ugsCode, name: ugsName.get(dir.ugsCode) ?? null, dirs: [] };
+  g.dirs.push(link);
+  dirGroups.set(dir.ugsCode, g);
+}
+const byOrgThenName = (a: DirLink, b: DirLink) =>
+  b.orgCount - a.orgCount || a.name.localeCompare(b.name, 'ru');
+const groupList = [...dirGroups.values()]
+  .map((g) => ({ ...g, dirs: g.dirs.sort(byOrgThenName) }))
+  .sort((a, b) => b.dirs.length - a.dirs.length || a.code.localeCompare(b.code));
+sciDirs.sort(byOrgThenName);
 
 const title = `Вузы ${city.displayName === 'Москва' ? 'Москвы' : `— ${city.displayName}`}: ${city.orgCount} ${plural(city.orgCount, 'вуз', 'вуза', 'вузов')} | ${meta.campaignYear}`;
 const descParts = [
@@ -48,4 +76,46 @@ const jsonLd = [ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
   <ul class="card-list">
     {rows.map((row) => <OrgRow row={row} />)}
   </ul>
+
+  {groupList.length > 0 && (
+    <section class="dir-section">
+      <h2>Специальности в городе</h2>
+      <p class="meta">Направления подготовки в вузах города — по укрупнённым
+        группам. Число рядом с направлением — сколько вузов города его ведут
+        (по выгрузке от {meta.snapshotDate}); где их два и больше, ссылка ведёт
+        на страницу направления в городе.</p>
+      {groupList.map((g) => (
+        <div class="dir-group">
+          <h3><a href={`/specialnosti/${g.code}/`}>{g.name ?? `Группа ${g.code}`}</a><span
+            class="dir-count"> · {g.dirs.length} {plural(g.dirs.length, 'направление', 'направления', 'направлений')}</span></h3>
+          <div class="columns">
+            <ul>
+              {g.dirs.map((d) => (
+                <li><a href={d.url}>{d.name}</a> <span class="dir-count">{d.orgCount}</span></li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ))}
+      {sciDirs.length > 0 && (
+        <details class="level-group">
+          <summary>Аспирантура и научные специальности ({sciDirs.length})</summary>
+          <div class="columns">
+            <ul>
+              {sciDirs.map((d) => (
+                <li><a href={d.url}>{d.name}</a> <span class="dir-count">{d.orgCount}</span></li>
+              ))}
+            </ul>
+          </div>
+        </details>
+      )}
+    </section>
+  )}
+
+  <style>
+    .dir-section { margin-top: var(--space-8); }
+    .dir-group { margin-bottom: var(--space-6); }
+    .dir-group h3 { margin-bottom: var(--space-2); }
+    .dir-count { color: var(--text-muted); font-weight: 400; font-size: 0.8125rem; font-variant-numeric: tabular-nums; }
+  </style>
 </Base>
