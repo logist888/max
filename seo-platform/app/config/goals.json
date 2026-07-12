@@ -22,6 +22,7 @@
     { "pageType": "combo-city", "zone": "after-vuzy", "goal": "diagnostic" },
     { "pageType": "combo-region", "zone": "after-vuzy", "goal": "diagnostic" },
     { "pageType": "city", "zone": "after-vuzy", "goal": "diagnostic" },
-    { "pageType": "region", "zone": "after-cities", "goal": "diagnostic" }
+    { "pageType": "region", "zone": "after-cities", "goal": "diagnostic" },
+    { "pageType": "ugs", "zone": "after-list", "goal": "diagnostic" }
   ]
 }

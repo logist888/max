@@ -1,8 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Cta from '../../components/Cta.astro';
 import { db } from '../../lib/data.ts';
-import { plural } from '../../lib/text.ts';
+import { ldBreadcrumbs, plural } from '../../lib/text.ts';
 
 export function getStaticPaths() {
   return db().ugs.map((g) => ({ params: { code: g.code }, props: { group: g } }));
@@ -30,13 +31,18 @@ const title = `${groupName}: ${dirs.length} ${plural(dirs.length, 'направ�
 const description = `Укрупнённая группа «${groupName}» (${group.code}): ${dirs.length} ${plural(dirs.length,
   'направление', 'направления', 'направлений')} в ${group.orgCount} ${plural(group.orgCount,
   'вузе', 'вузах', 'вузах')}. ${dirs.slice(0, 4).map((d) => d.name).join(', ')}. Приём ${meta.campaignYear}.`;
+
+const crumbs = [
+  { name: 'Главная', url: '/' },
+  { name: 'Специальности', url: '/specialnosti/' },
+  { name: groupName },
+];
+const jsonLd = [ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
+  name: c.name, url: new URL(c.url!, Astro.site).href,
+})))];
 ---
-<Base title={title} description={description}>
-  <Breadcrumbs items={[
-    { name: 'Главная', url: '/' },
-    { name: 'Специальности', url: '/specialnosti/' },
-    { name: groupName },
-  ]} />
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <Breadcrumbs items={crumbs} />
   <h1>{groupName}</h1>
   <p class="meta">Укрупнённая группа {group.code} · {dirs.length}&nbsp;{plural(dirs.length, 'направление', 'направления', 'направлений')}
     {group.orgCount > 0 && ` · ${group.orgCount} ${plural(group.orgCount, 'вуз', 'вуза', 'вузов')}`}</p>
@@ -56,4 +62,6 @@ const description = `Укрупнённая группа «${groupName}» (${gro
       </ul>
     </>
   ))}
+
+  <Cta pageType="ugs" zone="after-list" />
 </Base>

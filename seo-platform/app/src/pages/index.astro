@@ -5,6 +5,10 @@ import { plural } from '../lib/text.ts';
 
 const { catalogRows, cities, regions, directions, meta } = db();
 const topCities = [...cities].sort((a, b) => b.orgCount - a.orgCount).slice(0, 12);
+// Направления с самым широким выбором вузов — метрика «в скольких вузах есть»
+// (охват предложения), НЕ спрос и не популярность: их в данных нет.
+const fgosDirections = directions.filter((d) => !d.scientific);
+const topDirections = [...fgosDirections].sort((a, b) => b.orgCount - a.orgCount).slice(0, 12);
 const title = 'Выбор вуза по данным, а не по слухам — каталог вузов России';
 const description = `${catalogRows.length} вузов России с программами, стоимостью и бюджетными местами. Данные «ВУЗ-навигатора» Госуслуг, приём ${meta.campaignYear}.`;
 const jsonLd = [{
@@ -12,6 +16,8 @@ const jsonLd = [{
   '@type': 'WebSite',
   name: 'Куда поступать',
   url: new URL('/', Astro.site).href,
+  description,
+  inLanguage: 'ru-RU',
 }];
 ---
 <Base title={title} description={description} jsonLd={jsonLd}>
@@ -54,6 +60,20 @@ const jsonLd = [{
       <p><a href="/vuzy/">Открыть каталог →</a></p>
     </li>
   </ul>
+
+  <h2>Направления с самым широким выбором вузов</h2>
+  <p class="meta">Отсортированы по числу вузов, где направление представлено
+    в выгрузке, — это охват предложения, а не рейтинг и не спрос.</p>
+  <ul class="card-list grid-3">
+    {topDirections.map((d) => (
+      <li class="card">
+        <h3><a href={`/specialnost/${d.slug}/`}>{d.name}</a></h3>
+        <p class="meta">{d.orgCount} {plural(d.orgCount, 'вуз', 'вуза', 'вузов')} ·
+          {d.cityCount} {plural(d.cityCount, 'город', 'города', 'городов')}</p>
+      </li>
+    ))}
+  </ul>
+  <p class="meta">Все {fgosDirections.length} направлений — <a href="/specialnosti/">по группам</a>.</p>
 
   <h2>Крупнейшие города</h2>
   <ul class="card-list grid-3">
