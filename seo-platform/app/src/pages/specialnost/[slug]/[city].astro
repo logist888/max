@@ -3,7 +3,7 @@ import Base from '../../../layouts/Base.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import OrgRow from '../../../components/OrgRow.astro';
 import { db } from '../../../lib/data.ts';
-import { costPhrase, ldBreadcrumbs, plural } from '../../../lib/text.ts';
+import { costPhrase, ldBreadcrumbs, ldFaq, placeDirectionFaq, plural } from '../../../lib/text.ts';
 import type { CostRange } from '../../../lib/data.ts';
 
 export function getStaticPaths() {
@@ -62,6 +62,8 @@ const crumbs = [
   { name: dir.name, url: `/specialnost/${dir.slug}/` },
   { name: city.displayName },
 ];
+const faq = placeDirectionFaq(dir.name, `в городе ${city.displayName}`,
+  rows.length, budget, range, meta.snapshotDate);
 const jsonLd = [
   ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
     name: c.name, url: new URL(c.url!, Astro.site).href,
@@ -74,6 +76,7 @@ const jsonLd = [
       url: new URL(`/vuz/${r.slug}/`, Astro.site).href,
     })),
   },
+  ldFaq(faq),
 ];
 ---
 <Base title={title} description={description} jsonLd={jsonLd}>
@@ -94,6 +97,11 @@ const jsonLd = [
   <ul class="card-list">
     {rows.map((row) => <OrgRow row={row} />)}
   </ul>
+
+  <h2>Вопросы и ответы</h2>
+  <dl class="faq">
+    {faq.map((f) => (<><dt>{f.q}</dt><dd>{f.a}</dd></>))}
+  </dl>
 
   <p><a href={`/specialnost/${dir.slug}/`}>«{dir.name}» во всех городах →</a></p>
 </Base>

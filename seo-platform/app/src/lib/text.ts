@@ -71,6 +71,48 @@ export function orgFaq(card: OrgCard, snapshotDate: string): FaqItem[] {
   return faq;
 }
 
+export function directionFaq(
+  d: { name: string; orgCount: number; cityCount: number; hasBudget: boolean; costRange: CostRange | null },
+  snapshotDate: string,
+): FaqItem[] {
+  const faq: FaqItem[] = [];
+  faq.push({
+    q: `В скольких вузах есть направление «${d.name}»?`,
+    a: `По выгрузке — ${d.orgCount} ${plural(d.orgCount, 'вуз', 'вуза', 'вузов')} в ${d.cityCount} ${plural(d.cityCount, 'городе', 'городах', 'городах')}.`,
+  });
+  faq.push({
+    q: 'Есть ли бюджетные места по этому направлению?',
+    a: d.hasBudget
+      ? 'Да, в выгрузке заявлены бюджетные места хотя бы в одном вузе.'
+      : `В выгрузке от ${snapshotDate} бюджетные места не указаны.`,
+  });
+  const cost = costPhrase(d.costRange);
+  if (cost) faq.push({ q: 'Сколько стоит платное обучение?', a: `По данным выгрузки — ${cost}.` });
+  return faq;
+}
+
+// FAQ для комбо «направление × город/регион»: place — уже склонённое имя
+// места («в Москве», «в Московской области»), считанное из данных.
+export function placeDirectionFaq(
+  dirName: string, placeQuestion: string, orgCount: number,
+  budget: boolean, range: CostRange | null, snapshotDate: string,
+): FaqItem[] {
+  const faq: FaqItem[] = [];
+  faq.push({
+    q: `Сколько вузов по направлению «${dirName}» ${placeQuestion}?`,
+    a: `${orgCount} ${plural(orgCount, 'вуз', 'вуза', 'вузов')} по выгрузке.`,
+  });
+  faq.push({
+    q: 'Есть ли бюджетные места?',
+    a: budget
+      ? 'Да, бюджетные места заявлены хотя бы в одном вузе.'
+      : `В выгрузке от ${snapshotDate} бюджетные места не указаны.`,
+  });
+  const cost = costPhrase(range);
+  if (cost) faq.push({ q: 'Сколько стоит платное обучение?', a: `По данным выгрузки — ${cost}.` });
+  return faq;
+}
+
 // ---- JSON-LD
 
 export function ldBreadcrumbs(items: { name: string; url: string }[]): object {

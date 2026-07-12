@@ -3,7 +3,8 @@ import Base from '../../../../layouts/Base.astro';
 import Breadcrumbs from '../../../../components/Breadcrumbs.astro';
 import OrgRow from '../../../../components/OrgRow.astro';
 import { db } from '../../../../lib/data.ts';
-import { ldBreadcrumbs, plural } from '../../../../lib/text.ts';
+import { ldBreadcrumbs, ldFaq, placeDirectionFaq, plural } from '../../../../lib/text.ts';
+import type { CostRange } from '../../../../lib/data.ts';
 
 export function getStaticPaths() {
   const { combosRegion, regionByKey, directionByOkso } = db();
@@ -20,12 +21,30 @@ export function getStaticPaths() {
 }
 
 const { okso, regionKey, orgIds } = Astro.props;
-const { directionByOkso, regionByKey, rowById, cityByKey, combosCity, meta } = db();
+const { directionByOkso, regionByKey, rowById, cardById, cityByKey, combosCity, meta } = db();
 const dir = directionByOkso.get(okso)!;
 const region = regionByKey.get(regionKey)!;
 const rows = orgIds.map((id) => rowById.get(id)!)
   .sort((a, b) => b.directionsCount - a.directionsCount);
 const code = dir.okso.replace(/^\d+\./, '');
+
+// Вилка стоимости и наличие бюджета по направлению в регионе — из карточек.
+const costs: number[] = [];
+let budget = false;
+for (const id of orgIds) {
+  const card = cardById.get(id)!;
+  for (const group of card.programsByLevel) {
+    for (const d of group.directions) {
+      if (d.okso !== okso) continue;
+      for (const off of d.offers) {
+        if (off.cost !== null) costs.push(off.cost);
+        if (off.placeType !== 'Платные места') budget = true;
+      }
+    }
+  }
+}
+const range: CostRange | null = costs.length
+  ? { min: Math.min(...costs), max: Math.max(...costs) } : null;
 
 // Разбивка по городам региона; города с индексируемым комбо — со ссылкой.
 const byCity = new Map<string, { name: string; slug: string; count: number; indexable: boolean }>();
@@ -50,9 +69,14 @@ const crumbs = [
   { name: dir.name, url: `/specialnost/${dir.slug}/` },
   { name: region.displayName },
 ];
-const jsonLd = [ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
-  name: c.name, url: new URL(c.url!, Astro.site).href,
-})))];
+const faq = placeDirectionFaq(dir.name, `в регионе ${region.displayName}`,
+  rows.length, budget, range, meta.snapshotDate);
+const jsonLd = [
+  ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
+    name: c.name, url: new URL(c.url!, Astro.site).href,
+  }))),
+  ldFaq(faq),
+];
 ---
 <Base title={title} description={description} jsonLd={jsonLd}>
   <Breadcrumbs items={crumbs} />
@@ -75,6 +99,11 @@ const jsonLd = [ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
   <ul class="card-list">
     {rows.map((row) => <OrgRow row={row} />)}
   </ul>
+
+  <h2>Вопросы и ответы</h2>
+  <dl class="faq">
+    {faq.map((f) => (<><dt>{f.q}</dt><dd>{f.a}</dd></>))}
+  </dl>
 
   <p><a href={`/specialnost/${dir.slug}/`}>«{dir.name}» во всех регионах →</a></p>
 </Base>
