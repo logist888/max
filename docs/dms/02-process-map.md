@@ -200,6 +200,7 @@ Division, подпроцессы, входы/выходы, обслуживаю�
 
 ## Связи
 
+- Визуальный компаньон: `02a-process-flowchart.md` — блок-схемы всех процессов P01–P12 (Mermaid).
 - Вверх: `00-architecture.md`, `01-divisions.md`, `13-document-system.md`.
 - Дальше: `04-registry.md` (документы процессов), `06-matrices.md` (Документ→Процесс).
 - Канон: `../boards/03-decision-loop.md` (цикл решений), `../12-traffic-platform-decisions.md`
