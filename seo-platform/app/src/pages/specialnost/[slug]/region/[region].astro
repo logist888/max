@@ -2,6 +2,7 @@
 import Base from '../../../../layouts/Base.astro';
 import Breadcrumbs from '../../../../components/Breadcrumbs.astro';
 import OrgRow from '../../../../components/OrgRow.astro';
+import Cta from '../../../../components/Cta.astro';
 import { db } from '../../../../lib/data.ts';
 import { ldBreadcrumbs, ldFaq, placeDirectionFaq, plural } from '../../../../lib/text.ts';
 import type { CostRange } from '../../../../lib/data.ts';
@@ -99,6 +100,8 @@ const jsonLd = [
   <ul class="card-list">
     {rows.map((row) => <OrgRow row={row} />)}
   </ul>
+
+  <Cta pageType="combo-region" zone="after-vuzy" />
 
   <h2>Вопросы и ответы</h2>
   <dl class="faq">

@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Cta from '../../components/Cta.astro';
 import { db } from '../../lib/data.ts';
 import { ldBreadcrumbs, plural } from '../../lib/text.ts';
 
@@ -71,6 +72,8 @@ const jsonLd = [ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
       </li>
     ))}
   </ul>
+
+  <Cta pageType="region" zone="after-cities" />
 
   {groupList.length > 0 && (
     <section class="dir-section">

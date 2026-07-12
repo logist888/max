@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import OrgRow from '../../components/OrgRow.astro';
+import Cta from '../../components/Cta.astro';
 import { db } from '../../lib/data.ts';
 import { costPhrase, ldBreadcrumbs, plural } from '../../lib/text.ts';
 
@@ -76,6 +77,8 @@ const jsonLd = [ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
   <ul class="card-list">
     {rows.map((row) => <OrgRow row={row} />)}
   </ul>
+
+  <Cta pageType="city" zone="after-vuzy" />
 
   {groupList.length > 0 && (
     <section class="dir-section">

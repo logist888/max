@@ -17,6 +17,11 @@
     { "pageType": "org-card", "zone": "after-programs", "goal": "diagnostic" },
     { "pageType": "org-card", "zone": "sticky", "goal": "diagnostic" },
     { "pageType": "quiz", "zone": "final", "goal": "diagnostic" },
-    { "pageType": "catalog", "zone": "after-row-10", "goal": "diagnostic" }
+    { "pageType": "catalog", "zone": "after-row-10", "goal": "diagnostic" },
+    { "pageType": "direction", "zone": "after-vuzy", "goal": "diagnostic" },
+    { "pageType": "combo-city", "zone": "after-vuzy", "goal": "diagnostic" },
+    { "pageType": "combo-region", "zone": "after-vuzy", "goal": "diagnostic" },
+    { "pageType": "city", "zone": "after-vuzy", "goal": "diagnostic" },
+    { "pageType": "region", "zone": "after-cities", "goal": "diagnostic" }
   ]
 }
