@@ -10,32 +10,36 @@
   <ul id="search-results" role="listbox" hidden></ul>
 </div>
 
-<style>
-  .search { position: relative; flex: 1; min-width: 220px; max-width: 480px; }
-  .search input {
+<!-- Стили глобальные (is:global), потому что элементы выдачи создаются в
+     браузере через JS и не получают scoped-атрибут Astro. Якорим всё на
+     #site-search / #search-results, чтобы правила не утекали на другие узлы. -->
+<style is:global>
+  #site-search { position: relative; flex: 1; min-width: 220px; max-width: 480px; }
+  #site-search input {
     width: 100%; padding: 8px 12px; font: inherit;
     border: 1px solid var(--border); border-radius: var(--radius);
     background: var(--surface); color: var(--text);
   }
-  .search ul {
+  #search-results {
     position: absolute; z-index: 10; top: calc(100% + 4px); left: 0; right: 0;
     margin: 0; padding: 4px; list-style: none;
     background: var(--bg); border: 1px solid var(--border);
     border-radius: var(--radius); box-shadow: 0 8px 24px rgba(0,0,0,.12);
     max-height: 70vh; overflow-y: auto;
   }
-  .search li { border-radius: 6px; }
-  .search li.group {
+  #search-results li { border-radius: 6px; }
+  #search-results li.group {
     font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;
-    letter-spacing: .04em; padding: 8px 10px 2px;
+    letter-spacing: .04em; padding: 10px 10px 2px; font-weight: 600;
   }
-  .search li a { display: block; padding: 8px 10px; color: var(--text); }
-  .search li a:hover, .search li[aria-selected="true"] a {
-    background: var(--surface); text-decoration: none;
+  #search-results li a { display: block; padding: 8px 10px; color: var(--text); }
+  #search-results li a:hover, #search-results li[aria-selected="true"] a {
+    background: var(--surface-2); text-decoration: none;
   }
-  .search .sub { display: block; font-size: 0.8125rem; color: var(--text-muted); }
-  .search mark { background: none; color: var(--accent); font-weight: 600; }
-  .search li.empty { padding: 10px; color: var(--text-muted); }
+  #search-results .title { display: block; }
+  #search-results .sub { display: block; font-size: 0.8125rem; color: var(--text-muted); margin-top: 1px; }
+  #search-results mark { background: none; color: var(--accent); font-weight: 600; }
+  #search-results li.empty { padding: 10px; color: var(--text-muted); }
 </style>
 
 <script>
@@ -123,6 +127,7 @@
         const a = document.createElement('a');
         a.href = doc.u;
         const name = document.createElement('span');
+        name.className = 'title';
         const idx = doc.n.toLowerCase().replace(/ё/g, 'е').indexOf(q);
         if (idx >= 0) {
           name.append(doc.n.slice(0, idx));
