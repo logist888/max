@@ -16,28 +16,29 @@
   unicode-range: U+0000-00FF, U+2000-206F, U+20AC, U+2122, U+2212;
 }
 
-/* Дизайн-токены (этап 6, обновление по замечанию владельца 11.07.2026).
-   Пары «текст/фон» проходят WCAG AA. Тёмная тема — через prefers-color-scheme. */
+/* Дизайн-токены (этап 6). Корпоративная коричнево-карамельная палитра
+   (обновление по запросу владельца 12.07.2026). Пары «текст/фон» проходят
+   WCAG AA. Тёмная тема — через prefers-color-scheme. */
 :root {
-  --bg: #f6f7fb;
+  --bg: #faf6f0;
   --surface: #ffffff;
-  --surface-2: #eef1f8;
-  --text: #0f1320;
-  --text-muted: #5a6374;
-  --accent: #4f46e5;
-  --accent-strong: #4338ca;
-  --accent-soft: #eef0ff;
-  --grad-a: #4f46e5;
-  --grad-b: #9333ea;
-  --cta: #4f46e5;
-  --ok: #15803d;
-  --ok-soft: #e8f7ee;
-  --info-soft: #e8f0fe;
-  --warn: #92610c;
-  --warn-soft: #fdf3e0;
-  --border: #e3e7f0;
-  --shadow-1: 0 1px 2px rgba(16, 24, 40, .05);
-  --shadow-2: 0 10px 30px rgba(16, 24, 40, .10);
+  --surface-2: #f4ece0;
+  --text: #2a2018;
+  --text-muted: #6d5d4c;
+  --accent: #9a5a1c;
+  --accent-strong: #7a4413;
+  --accent-soft: #f7e9d5;
+  --grad-a: #a86a2c;
+  --grad-b: #6f3f1c;
+  --cta: #9a5a1c;
+  --ok: #3f7a2e;
+  --ok-soft: #ecf3e4;
+  --info-soft: #f6ecdb;
+  --warn: #8a5a12;
+  --warn-soft: #fbf0da;
+  --border: #e8dccb;
+  --shadow-1: 0 1px 2px rgba(74, 47, 19, .06);
+  --shadow-2: 0 10px 30px rgba(74, 47, 19, .12);
   --radius: 14px;
   --radius-s: 9px;
   --space-1: 4px; --space-2: 8px; --space-3: 12px;
@@ -45,21 +46,21 @@
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0c101c;
-    --surface: #141a2b;
-    --surface-2: #1a2136;
-    --text: #e9edf6;
-    --text-muted: #a0aabd;
-    --accent: #8b9dff;
-    --accent-strong: #a5b3ff;
-    --accent-soft: #1d2440;
-    --cta: #6366f1;
-    --ok: #4ade80;
-    --ok-soft: #12291c;
-    --info-soft: #16233c;
-    --warn: #eab308;
-    --warn-soft: #2b2210;
-    --border: #26304a;
+    --bg: #1b1510;
+    --surface: #241d16;
+    --surface-2: #2d251b;
+    --text: #f2e8db;
+    --text-muted: #b7a893;
+    --accent: #e0a463;
+    --accent-strong: #eebd85;
+    --accent-soft: #33271a;
+    --cta: #cf8f4f;
+    --ok: #7cc16a;
+    --ok-soft: #1e2814;
+    --info-soft: #2b2114;
+    --warn: #e0b25e;
+    --warn-soft: #2b2110;
+    --border: #3a3025;
     --shadow-1: 0 1px 2px rgba(0, 0, 0, .4);
     --shadow-2: 0 10px 30px rgba(0, 0, 0, .5);
   }
@@ -97,9 +98,9 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 }
 .btn-primary {
   background: linear-gradient(135deg, var(--grad-a), var(--grad-b));
-  color: #fff; box-shadow: 0 6px 20px rgba(79, 70, 229, .35);
+  color: #fff; box-shadow: 0 6px 20px rgba(122, 68, 19, .35);
 }
-.btn-primary:hover { color: #fff; transform: translateY(-1px); box-shadow: 0 10px 26px rgba(79, 70, 229, .45); }
+.btn-primary:hover { color: #fff; transform: translateY(-1px); box-shadow: 0 10px 26px rgba(122, 68, 19, .45); }
 .btn-secondary {
   background: var(--surface); color: var(--text);
   border: 1px solid var(--border); box-shadow: var(--shadow-1);
@@ -143,9 +144,9 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   padding: clamp(28px, 6vw, 64px) clamp(20px, 5vw, 56px);
   border-radius: 24px; color: #fff;
   background:
-    radial-gradient(900px 380px at 85% -10%, rgba(147, 51, 234, .55), transparent 60%),
-    radial-gradient(700px 420px at -10% 110%, rgba(59, 130, 246, .5), transparent 55%),
-    linear-gradient(135deg, #312e81, #4f46e5 55%, #7c3aed);
+    radial-gradient(900px 380px at 85% -10%, rgba(210, 150, 82, .5), transparent 60%),
+    radial-gradient(700px 420px at -10% 110%, rgba(120, 72, 34, .55), transparent 55%),
+    linear-gradient(135deg, #3a2413, #8a531f 55%, #b5793c);
 }
 .hero h1 { margin: 0 0 var(--space-3); color: #fff; font-size: clamp(1.8rem, 4.5vw, 3rem); }
 .hero p { margin: 0 0 var(--space-6); max-width: 46ch; font-size: 1.08rem; color: rgba(255, 255, 255, .88); }
