@@ -7,4 +7,7 @@ export default defineConfig({
   site: process.env.SITE_URL || 'http://localhost:4321',
   trailingSlash: 'always',
   build: { format: 'directory' },
+  // Панель разработчика Astro (Dev Toolbar) — в продакшн-сборке её нет,
+  // но и локально в dev она не нужна: выключаем, чтобы не мешала просмотру.
+  devToolbar: { enabled: false },
 });
