@@ -56,10 +56,18 @@ export interface Meta { snapshotDate: string; campaignYear: string }
 
 export interface DirectionAgg {
   okso: string; slug: string; name: string; level: string; ugsCode: string;
+  scientific: boolean;
   orgCount: number; cityCount: number; costRange: CostRange | null; hasBudget: boolean;
 }
 
-export interface UgsAgg { code: string; directions: string[] }
+export interface UgsAgg {
+  code: string; name: string | null;
+  directionCount: number; orgCount: number; sample: string[];
+}
+
+export interface ScientificAgg {
+  okso: string; slug: string; name: string; level: string; orgCount: number;
+}
 
 export interface ComboCity {
   okso: string; cityKey: string; orgIds: string[]; indexable: boolean;
@@ -85,7 +93,7 @@ function assertUniqueSlugs(items: { slug: string }[], what: string): void {
 let cache: {
   orgCards: OrgCard[]; catalogRows: CatalogRow[]; cities: CityAgg[];
   regions: RegionAgg[]; meta: Meta;
-  directions: DirectionAgg[]; ugs: UgsAgg[];
+  directions: DirectionAgg[]; ugs: UgsAgg[]; scientific: ScientificAgg[];
   combosCity: ComboCity[]; combosRegion: ComboRegion[];
   rowById: Map<string, CatalogRow>;
   cardById: Map<string, OrgCard>;
@@ -105,6 +113,7 @@ export function db() {
   const meta = load<Meta>('meta.json');
   const directions = load<DirectionAgg[]>('directions.json');
   const ugs = load<UgsAgg[]>('ugs.json');
+  const scientific = load<ScientificAgg[]>('scientific.json');
   const combosCity = load<ComboCity[]>('combos-city.json');
   const combosRegion = load<ComboRegion[]>('combos-region.json');
   assertUniqueSlugs(orgCards, 'вуз');
@@ -135,7 +144,7 @@ export function db() {
     }
   }
   cache = {
-    orgCards, catalogRows, cities, regions, meta, directions, ugs,
+    orgCards, catalogRows, cities, regions, meta, directions, ugs, scientific,
     combosCity, combosRegion, rowById, cardById, cityByKey, directionByOkso, regionByKey, rowsByOkso,
   };
   return cache;

@@ -39,7 +39,12 @@ const geoFixes = (JSON.parse(readFileSync(join(APP, 'config/geo-fixes.json'), 'u
   fixes: { orgId: string; region: string; evidence: string }[];
 }).fixes;
 const model = buildModel(raw as never, SNAPSHOT_DATE, CAMPAIGN, geoFixes);
-const v = buildVitrines(model);
+const ugsNames = (JSON.parse(readFileSync(join(APP, 'config/ugs-names.json'), 'utf8')) as {
+  names: Record<string, string>;
+}).names;
+const v = buildVitrines(model, ugsNames);
+const missingUgs = v.ugsAgg.filter((g) => !g.name).map((g) => g.code);
+if (missingUgs.length) console.warn(`  предупреждение: нет названия УГСН для групп ${missingUgs.join(', ')}`);
 
 // Проверка целей (поле ручного ввода владельца)
 const goals = JSON.parse(readFileSync(join(APP, 'config/goals.json'), 'utf8')) as {
@@ -59,6 +64,7 @@ write('cities.json', v.cityAgg);
 write('regions.json', v.regionAgg);
 write('directions.json', v.directionAgg);
 write('ugs.json', v.ugsAgg);
+write('scientific.json', v.scientificAgg);
 write('combos-city.json', v.comboCity);
 write('combos-region.json', v.comboRegion);
 write('search-export.json', v.searchExport);

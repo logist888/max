@@ -5,14 +5,14 @@ import { db } from '../../lib/data.ts';
 import { plural } from '../../lib/text.ts';
 
 export function getStaticPaths() {
-  return db().ugs.map((g) => ({ params: { code: g.code }, props: { code: g.code } }));
+  return db().ugs.map((g) => ({ params: { code: g.code }, props: { group: g } }));
 }
 
-const { code } = Astro.props;
+const { group } = Astro.props;
 const { directions, meta } = db();
-// Название группы — только из кураторского справочника с источником;
-// пока он не заполнен, страница живёт под кодом (не выдумывать).
-const dirs = directions.filter((d) => d.ugsCode === code)
+const groupName = group.name ?? `Группа ${group.code}`;
+const dirs = directions
+  .filter((d) => d.ugsCode === group.code)
   .sort((a, b) => b.orgCount - a.orgCount);
 const byLevel = new Map<string, typeof dirs>();
 for (const d of dirs) {
@@ -20,23 +20,31 @@ for (const d of dirs) {
   arr.push(d);
   byLevel.set(d.level, arr);
 }
+// Порядок уровней от массового к редкому.
+const LEVEL_ORDER = ['Бакалавриат', 'Специалитет', 'Магистратура',
+  'Базовое высшее образование', 'Специализированное высшее образование', 'Аспирантура'];
+const levels = [...byLevel.entries()].sort(
+  (a, b) => (LEVEL_ORDER.indexOf(a[0]) + 99) % 99 - (LEVEL_ORDER.indexOf(b[0]) + 99) % 99);
 
-const title = `Группа направлений ${code}: ${dirs.length} ${plural(dirs.length, 'направление', 'направления', 'направлений')} | ${meta.campaignYear}`;
-const description = `Укрупнённая группа ${code}: ${dirs.length} ${plural(dirs.length,
-  'направление', 'направления', 'направлений')} — ${dirs.slice(0, 4).map((d) => d.name).join(', ')}. Приём ${meta.campaignYear}.`;
+const title = `${groupName}: ${dirs.length} ${plural(dirs.length, 'направление', 'направления', 'направлений')} | ${meta.campaignYear}`;
+const description = `Укрупнённая группа «${groupName}» (${group.code}): ${dirs.length} ${plural(dirs.length,
+  'направление', 'направления', 'направлений')} в ${group.orgCount} ${plural(group.orgCount,
+  'вузе', 'вузах', 'вузах')}. ${dirs.slice(0, 4).map((d) => d.name).join(', ')}. Приём ${meta.campaignYear}.`;
 ---
 <Base title={title} description={description}>
   <Breadcrumbs items={[
     { name: 'Главная', url: '/' },
     { name: 'Специальности', url: '/specialnosti/' },
-    { name: `Группа ${code}` },
+    { name: groupName },
   ]} />
-  <h1>Группа направлений {code}</h1>
+  <h1>{groupName}</h1>
+  <p class="meta">Укрупнённая группа {group.code} · {dirs.length}&nbsp;{plural(dirs.length, 'направление', 'направления', 'направлений')}
+    {group.orgCount > 0 && ` · ${group.orgCount} ${plural(group.orgCount, 'вуз', 'вуза', 'вузов')}`}</p>
 
-  {[...byLevel.entries()].map(([level, list]) => (
+  {levels.map(([level, list]) => (
     <>
       <h2>{level}</h2>
-      <ul class="card-list">
+      <ul class="card-list grid-2">
         {list.map((d) => (
           <li class="card">
             <h3><a href={`/specialnost/${d.slug}/`}>{d.name}</a></h3>

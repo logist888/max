@@ -4,32 +4,54 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { db } from '../../lib/data.ts';
 import { plural } from '../../lib/text.ts';
 
-const { directions, ugs, meta } = db();
-const groups = ugs.map((g) => {
-  const dirs = directions.filter((d) => d.ugsCode === g.code);
-  const orgTotal = new Set<string>();
-  return {
-    code: g.code,
-    count: dirs.length,
-    top: [...dirs].sort((a, b) => b.orgCount - a.orgCount).slice(0, 3),
-  };
-}).sort((a, b) => a.code.localeCompare(b.code));
+const { ugs, scientific, directions, meta } = db();
+const groups = [...ugs].sort((a, b) => a.code.localeCompare(b.code));
+const fgosCount = directions.filter((d) => !d.scientific).length;
 
-const title = `Специальности и направления подготовки: ${directions.length} | ${meta.campaignYear}`;
-const description = `Все направления подготовки из данных «ВУЗ-навигатора»: ${directions.length} направлений в ${ugs.length} укрупнённых группах. Приём ${meta.campaignYear}.`;
+const title = `Специальности и направления подготовки: ${groups.length} укрупнённых групп | ${meta.campaignYear}`;
+const description = `${fgosCount} направлений высшего образования в ${groups.length} укрупнённых группах Минобрнауки. Родственные специальности собраны вместе. Приём ${meta.campaignYear}.`;
 ---
 <Base title={title} description={description}>
   <Breadcrumbs items={[{ name: 'Главная', url: '/' }, { name: 'Специальности' }]} />
   <h1>Специальности и направления</h1>
-  <p class="meta">{directions.length} направлений подготовки в {ugs.length} укрупнённых группах.</p>
+  <p>Направления сгруппированы по <strong>укрупнённым группам (УГСН)</strong> —
+    официальной классификации Минобрнауки. В одной группе собраны родственные
+    специальности: например, «Экономика и управление» или «Информатика и
+    вычислительная техника». Это помогает идти от широкой области к конкретному
+    направлению. Всего {fgosCount}&nbsp;{plural(fgosCount, 'направление', 'направления', 'направлений')}
+    {' '}в {groups.length}&nbsp;{plural(groups.length, 'группе', 'группах', 'группах')}.</p>
 
-  <ul class="card-list">
+  <p class="notice">Группа — это ещё не выбор. Понять, какая область
+    действительно ваша, помогает не каталог, а понимание своих сильных сторон.
+    <a href="/test/">Пройдите тест из 5 вопросов →</a></p>
+
+  <ul class="card-list grid-2">
     {groups.map((g) => (
       <li class="card">
-        <h3><a href={`/specialnosti/${g.code}/`}>Группа {g.code}</a></h3>
-        <p class="meta">{g.count} {plural(g.count, 'направление', 'направления', 'направлений')} ·
-          например: {g.top.map((d) => d.name).join(', ')}</p>
+        <h3><a href={`/specialnosti/${g.code}/`}>{g.name ?? `Группа ${g.code}`}</a></h3>
+        <p class="meta">{g.directionCount} {plural(g.directionCount, 'направление', 'направления', 'направлений')}
+          {g.orgCount > 0 && ` · ${g.orgCount} ${plural(g.orgCount, 'вуз', 'вуза', 'вузов')}`}</p>
+        <p class="meta">{g.sample.join(' · ')}</p>
       </li>
     ))}
   </ul>
+
+  {scientific.length > 0 && (
+    <>
+      <h2>Аспирантура и ординатура</h2>
+      <p class="meta">Научные специальности послевузовского образования —
+        отдельная классификация, не входит в укрупнённые группы. {scientific.length}
+        {plural(scientific.length, ' специальность', ' специальности', ' специальностей')}.</p>
+      <details class="level-group">
+        <summary>Показать научные специальности</summary>
+        <div class="columns">
+          <ul>
+            {scientific.map((s) => (
+              <li><a href={`/specialnost/${s.slug}/`}>{s.name}</a></li>
+            ))}
+          </ul>
+        </div>
+      </details>
+    </>
+  )}
 </Base>

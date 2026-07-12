@@ -38,10 +38,14 @@ if (dir.hasBudget) descParts.push('есть бюджетные места');
 if (cost) descParts.push(`платно ${cost}`);
 const description = descParts.join('. ') + '.';
 
+const ugsName = db().ugs.find((g) => g.code === dir.ugsCode)?.name;
 const crumbs = [
   { name: 'Главная', url: '/' },
   { name: 'Специальности', url: '/specialnosti/' },
-  { name: `Группа ${dir.ugsCode}`, url: `/specialnosti/${dir.ugsCode}/` },
+  // Группа УГСН — только для ФГОС-направлений; у научных специальностей её нет.
+  ...(dir.ugsCode
+    ? [{ name: ugsName ?? `Группа ${dir.ugsCode}`, url: `/specialnosti/${dir.ugsCode}/` }]
+    : []),
   { name: dir.name },
 ];
 const jsonLd = [ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({

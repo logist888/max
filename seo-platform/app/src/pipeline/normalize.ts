@@ -154,14 +154,21 @@ export function buildModel(
     }
   }
 
-  // Направления и УГСН
+  // Направления и УГСН. В базе две системы кодов:
+  //  • ФГОС ВО — формат «область.УГСН.уровень.номер» (напр. 2.21.03.02):
+  //    вторая группа — укрупнённая группа (УГСН).
+  //  • Номенклатура научных специальностей (аспирантура, ординатура) —
+  //    формат «5.1.4»: к УГСН отношения не имеет.
+  // Смешивать их в одну группу нельзя (иначе «Уголовно-правовые науки»
+  // попадают к математике). УГСН присваивается только ФГОС-кодам.
+  const FGOS = /^\d+\.(\d{2})\.\d{2}\.\d{2}$/;
   const directions = new Map<string, Direction>();
   const ugsCodes = new Set<string>();
   for (const o of raw) {
     for (const p of o.programs ?? []) {
-      const m = /^\d+\.(\d{2})\.\d{2}\.\d{2}$/.exec(p.okso) ?? /^\d+\.(\d{1,2})/.exec(p.okso);
-      const ugs = m?.[1]?.padStart(2, '0') ?? '00';
-      ugsCodes.add(ugs);
+      const m = FGOS.exec(p.okso);
+      const ugs = m ? m[1]! : '';
+      if (ugs) ugsCodes.add(ugs);
       if (!directions.has(p.okso)) {
         directions.set(p.okso, {
           okso: p.okso,
@@ -169,6 +176,7 @@ export function buildModel(
           name: p.name,
           level: p.level,
           ugsCode: ugs,
+          scientific: !m,
         });
       }
     }

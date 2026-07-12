@@ -86,7 +86,8 @@ export interface Direction {
   slug: string;
   name: string;
   level: string;
-  ugsCode: string;
+  ugsCode: string; // '' у научных специальностей аспирантуры/ординатуры
+  scientific: boolean; // код номенклатуры научных специальностей (формат 5.1.4), не ФГОС
 }
 
 export interface SanitationEntry {

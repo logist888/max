@@ -22,7 +22,7 @@ function hasBudget(offers: Offer[]): boolean {
   return offers.some((o) => o.placeType !== 'Платные места');
 }
 
-export function buildVitrines(model: Model) {
+export function buildVitrines(model: Model, ugsNames: Record<string, string> = {}) {
   const cityByKey = new Map(model.cities.map((c) => [c.key, c]));
   const regionByKey = new Map(model.regions.map((r) => [r.key, r]));
   const dirByOkso = new Map(model.directions.map((d) => [d.okso, d]));
@@ -109,12 +109,41 @@ export function buildVitrines(model: Model) {
       hasBudget: entries.some((e) => e.offer.placeType !== 'Платные места'),
     };
   });
-  const ugsAgg = model.ugsCodes.map((code) => ({
-    code,
-    // Название УГСН — из кураторского справочника (config/ugs-names.json);
-    // пока не заполнен, сайт показывает «УГСН {код}» — не выдумывать.
-    directions: model.directions.filter((d) => d.ugsCode === code).map((d) => d.okso),
-  }));
+  // Число вузов на каждую УГСН — по всем ФГОС-направлениям группы.
+  const orgsByUgs = new Map<string, Set<string>>();
+  for (const { org, offer } of offerIndex) {
+    const d = dirByOkso.get(offer.okso);
+    if (!d || !d.ugsCode) continue;
+    const set = orgsByUgs.get(d.ugsCode) ?? new Set<string>();
+    set.add(org.id);
+    orgsByUgs.set(d.ugsCode, set);
+  }
+  const ugsAgg = model.ugsCodes.sort().map((code) => {
+    const dirs = model.directions.filter((d) => d.ugsCode === code);
+    return {
+      code,
+      // Название — из кураторского справочника config/ugs-names.json
+      // (перечень УГСН Минобрнауки). Нет названия — показываем «Группа {код}».
+      name: ugsNames[code] ?? null,
+      directionCount: dirs.length,
+      orgCount: (orgsByUgs.get(code) ?? new Set()).size,
+      // до трёх реальных примеров направлений группы (для превью), без дублей
+      sample: [...new Set(dirs.map((d) => d.name))]
+        .sort((a, b) => a.localeCompare(b, 'ru'))
+        .slice(0, 3),
+    };
+  });
+
+  // Научные специальности (аспирантура/ординатура) — вне УГСН, отдельно.
+  const sciByOkso = groupBy(offerIndex.filter((x) => dirByOkso.get(x.offer.okso)?.scientific),
+    (x) => x.offer.okso);
+  const scientificAgg = model.directions
+    .filter((d) => d.scientific)
+    .map((d) => ({
+      okso: d.okso, slug: d.slug, name: d.name, level: d.level,
+      orgCount: new Set((sciByOkso.get(d.okso) ?? []).map((e) => e.org.id)).size,
+    }))
+    .sort((a, b) => b.orgCount - a.orgCount || a.name.localeCompare(b.name, 'ru'));
 
   // ---- Комбинации с порогами этапа 2
   const comboCity: {
@@ -167,7 +196,7 @@ export function buildVitrines(model: Model) {
   ];
 
   return {
-    orgCards, catalogRows, cityAgg, regionAgg, directionAgg, ugsAgg,
+    orgCards, catalogRows, cityAgg, regionAgg, directionAgg, ugsAgg, scientificAgg,
     comboCity, comboRegion, searchExport,
   };
 }
