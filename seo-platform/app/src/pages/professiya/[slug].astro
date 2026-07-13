@@ -1,0 +1,119 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Cta from '../../components/Cta.astro';
+import { graph } from '../../lib/graph.ts';
+import { ldBreadcrumbs, ldFaq, plural } from '../../lib/text.ts';
+
+export function getStaticPaths() {
+  return graph().professions.map((p) => ({ params: { slug: p.slug }, props: { p } }));
+}
+const { p } = Astro.props;
+
+// Русское название укрупнённой группы ISCO-08 (по ОКЗ) — для навигации/контекста.
+const MAJOR: Record<string, string> = {
+  '0': 'Военнослужащие', '1': 'Руководители',
+  '2': 'Специалисты высшего уровня квалификации',
+  '3': 'Специалисты среднего уровня квалификации',
+  '4': 'Служащие, занятые подготовкой информации',
+  '5': 'Работники сферы обслуживания и торговли',
+  '6': 'Квалифицированные работники сельского и лесного хозяйства',
+  '7': 'Квалифицированные рабочие промышленности и строительства',
+  '8': 'Операторы установок и машин, сборщики',
+  '9': 'Неквалифицированные рабочие',
+};
+const major = MAJOR[p.isco[0]] ?? '';
+const essential = p.competencies.filter((c) => c.kind === 'essential').slice(0, 12);
+
+const title = `${p.nameRu} — профессия: компетенции, куда поступать | Профориентация`;
+const descParts = [`Профессия «${p.nameRu}» (ISCO-08 ${p.isco})`];
+if (p.routes.length) descParts.push(`сопоставленные направления подготовки: ${p.routes.length}`);
+if (essential.length) descParts.push(`${essential.length} ключевых компетенций по ESCO`);
+const description = descParts.join('. ') + '.';
+
+const crumbs = [
+  { name: 'Главная', url: '/' },
+  { name: 'Профессии', url: '/professiya/' },
+  { name: p.nameRu },
+];
+const faq = [
+  {
+    q: `Где учиться на профессию «${p.nameRu}»?`,
+    a: p.routes.length
+      ? `Сопоставленные направления подготовки: ${p.routes.map((r) => `«${r.name}»`).join(', ')}. Это экспертное сопоставление по профилю, а не официальная связь.`
+      : 'Сопоставление с направлениями подготовки пока уточняется — данные добавляются по мере курирования.',
+  },
+  {
+    q: `Какие компетенции нужны для профессии «${p.nameRu}»?`,
+    a: essential.length
+      ? `По международной классификации ESCO ключевых компетенций: ${essential.length}. Полный перечень — на странице.`
+      : 'Перечень компетенций по этой профессии в источниках графа отсутствует.',
+  },
+  {
+    q: `Сколько зарабатывает «${p.nameRu}»?`,
+    a: 'Данных о зарплате в источниках графа пока нет — раздел появится после подключения проверенного источника рынка труда.',
+  },
+];
+const jsonLd = [
+  ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({ name: c.name, url: new URL(c.url!, Astro.site).href }))),
+  ldFaq(faq),
+];
+---
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <Breadcrumbs items={crumbs} />
+  <h1>{p.nameRu}</h1>
+  <p class="meta">ISCO-08 {p.isco}{p.nameEn && ` · ${p.nameEn}`}{major && ` · ${major}`}</p>
+
+  <ul class="facts">
+    <li><span class="label">Классификация</span> ISCO-08, группа {p.isco}</li>
+    {p.escoOccupationCount > 0 && (
+      <li><span class="label">Специализаций (ESCO)</span> {p.escoOccupationCount}</li>
+    )}
+    <li><span class="label">Зарплата</span> <span class="missing">Информация отсутствует</span></li>
+  </ul>
+
+  <h2>Куда поступать</h2>
+  {p.routes.length ? (
+    <>
+      <p class="notice">Сопоставление профессии с направлениями подготовки —
+        экспертное, <strong>по профилю, а не официальная связь</strong>. Проверяйте
+        по правилам приёма конкретного вуза.</p>
+      <ul class="card-list">
+        {p.routes.map((r) => (
+          <li class="card">
+            <h3><a href={`/specialnost/${r.slug}/`}>{r.name}</a></h3>
+            <p class="meta">Сопоставление MainExperts · уверенность {Math.round(r.confidence * 100)}%</p>
+          </li>
+        ))}
+      </ul>
+    </>
+  ) : (
+    <p class="missing">Информация уточняется — сопоставление с направлениями подготовки
+      добавляется по мере курирования.</p>
+  )}
+
+  <Cta pageType="profession" zone="after-routes" />
+
+  {essential.length > 0 && (
+    <>
+      <h2>Компетенции профессии</h2>
+      <p class="meta">Ключевые компетенции по международной классификации ESCO
+        (оригинал на английском). Приведены как справка; русская локализация —
+        в работе.</p>
+      <div class="columns">
+        <ul>
+          {essential.map((c) => <li>{c.label}</li>)}
+        </ul>
+      </div>
+    </>
+  )}
+
+  <h2>Вопросы и ответы</h2>
+  <dl class="faq">
+    {faq.map((f) => (<><dt>{f.q}</dt><dd>{f.a}</dd></>))}
+  </dl>
+
+  <p class="meta">Классификация профессий — ISCO-08 (МОТ) и ОКЗ ОК 010-2014;
+    компетенции — ESCO © European Union. Все связи с образованием помечены как
+    сопоставление и не являются официальными.</p>
+</Base>

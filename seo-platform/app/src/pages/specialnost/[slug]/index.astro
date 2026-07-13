@@ -4,6 +4,7 @@ import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import OrgRow from '../../../components/OrgRow.astro';
 import Cta from '../../../components/Cta.astro';
 import { db } from '../../../lib/data.ts';
+import { graph } from '../../../lib/graph.ts';
 import { costPhrase, directionFaq, ldBreadcrumbs, ldFaq, plural } from '../../../lib/text.ts';
 
 export function getStaticPaths() {
@@ -56,6 +57,9 @@ const jsonLd = [
   }))),
   ldFaq(faq),
 ];
+
+// Профессии, сопоставленные с направлением (курируемо — сопоставление, не факт).
+const professions = graph().byDirectionOkso.get(dir.okso) ?? [];
 ---
 <Base title={title} description={description} jsonLd={jsonLd}>
   <Breadcrumbs items={crumbs} />
@@ -70,6 +74,14 @@ const jsonLd = [
     <li><span class="label">Стоимость платного обучения</span>
       {cost ?? <span class="missing">Информация отсутствует</span>}</li>
   </ul>
+
+  {professions.length > 0 && (
+    <p class="notice">Кем можно работать (сопоставление по профилю, не официальная связь):
+      {professions.map((pr, i) => (
+        <>{i > 0 && ', '}<a href={`/professiya/${pr.slug}/`}>{pr.nameRu}</a></>
+      ))}.
+    </p>
+  )}
 
   {related.length > 0 && (
     <p>Эта же предметная линия на других уровнях:

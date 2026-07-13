@@ -7,7 +7,7 @@
     "graph": "tsx src/graph/build.ts",
     "build": "astro build",
     "dev": "astro dev",
-    "site": "npm run pipeline && astro build"
+    "site": "npm run pipeline && npm run graph && astro build"
   },
   "devDependencies": {
     "@astrojs/sitemap": "^3.7.3",

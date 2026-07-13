@@ -1,0 +1,63 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { graph } from '../../lib/graph.ts';
+import { plural } from '../../lib/text.ts';
+
+const { professions } = graph();
+const MAJOR: Record<string, string> = {
+  '1': 'Руководители',
+  '2': 'Специалисты высшего уровня квалификации',
+  '3': 'Специалисты среднего уровня квалификации',
+  '4': 'Служащие, занятые подготовкой информации',
+  '5': 'Работники сферы обслуживания и торговли',
+  '6': 'Квалифицированные работники сельского и лесного хозяйства',
+  '7': 'Квалифицированные рабочие промышленности и строительства',
+  '8': 'Операторы установок и машин, сборщики',
+  '9': 'Неквалифицированные рабочие',
+  '0': 'Военнослужащие',
+};
+// Группировка по укрупнённым группам ISCO-08 (первая цифра кода).
+const groups = Object.keys(MAJOR).sort().map((d) => ({
+  digit: d, name: MAJOR[d],
+  items: professions.filter((p) => p.isco[0] === d),
+})).filter((g) => g.items.length);
+
+const withRoutes = professions.filter((p) => p.routes.length).length;
+const title = `Профессии: ${professions.length} по классификации ISCO-08 | Профориентация`;
+const description = `${professions.length} профессий по международной классификации занятий ISCO-08 с русскими названиями (ОКЗ). Компетенции по ESCO, сопоставление с направлениями подготовки.`;
+---
+<Base title={title} description={description}>
+  <Breadcrumbs items={[{ name: 'Главная', url: '/' }, { name: 'Профессии' }]} />
+  <h1>Профессии</h1>
+  <p>{professions.length}&nbsp;{plural(professions.length, 'профессия', 'профессии', 'профессий')}
+    по международной классификации занятий <strong>ISCO-08</strong> с русскими
+    названиями из ОКЗ. По каждой — компетенции (ESCO) и, где сопоставлено,
+    направления подготовки. Связь профессии с образованием — экспертное
+    сопоставление, не официальная связь.</p>
+
+  <p class="notice">Профессия — ещё не выбор. Понять, что подходит именно вам,
+    помогает не список, а сильные стороны. <a href="/test/">Пройдите тест из 5 вопросов →</a></p>
+
+  {groups.map((g) => (
+    <>
+      <h2>{g.name}</h2>
+      <div class="columns">
+        <ul>
+          {g.items.map((p) => (
+            <li><a href={`/professiya/${p.slug}/`}>{p.nameRu}</a>
+              {p.routes.length > 0 && <span class="sub-note"> · есть направления</span>}</li>
+          ))}
+        </ul>
+      </div>
+    </>
+  ))}
+
+  <p class="meta">Классификация — ISCO-08 (МОТ) и ОКЗ ОК 010-2014.
+    Профессий с сопоставленными направлениями: {withRoutes} из {professions.length}
+    (посев по УГСН, расширяется).</p>
+
+  <style>
+    .sub-note { color: var(--text-muted); font-size: 0.8125rem; }
+  </style>
+</Base>
