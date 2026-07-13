@@ -10,6 +10,21 @@ updated: 2026-07-13
 («Open folder as vault»), синхронизация — через git. Эта заметка — точка входа; полная карта
 содержания — [[MOC]].
 
+## ▶️ Первый запуск (1 минута)
+
+1. Получи папку репозитория одним из способов:
+   - **Проще всего (без git):** GitHub → ветка `claude/mainexperts-docs-architecture-pm08hn`
+     → кнопка **Code → Download ZIP** → распакуй.
+   - **С git (для синхронизации):**
+     `git clone -b claude/mainexperts-docs-architecture-pm08hn https://github.com/logist888/max.git mainexperts`
+   - **GitHub Desktop:** Clone → выбрать репозиторий → сверху переключить branch на
+     `claude/mainexperts-docs-architecture-pm08hn`.
+2. Obsidian → **Open folder as vault** → выбери эту папку. На вопрос про доверие плагинам —
+   можно оставить core-плагины (community не требуются).
+3. Слева в панели **«Закладки»** уже есть 🏠 HOME · 🗺 MOC · 🧠 memory · 📄 DMS — начни оттуда.
+4. Синхронизация: `git pull` (забрать мои правки) / `git commit && git push` (отправить свои).
+   По желанию — community-плагин **Obsidian Git** для авто-синхронизации без терминала.
+
 > Живого коннектора Obsidian у ассистента нет (Obsidian — локальное приложение, облачного API
 > для подключения нет). «Подключение» работает так: ассистент пишет память как Obsidian-заметки
 > (frontmatter + вики-ссылки) прямо в этот репозиторий, ты открываешь папку в Obsidian, git

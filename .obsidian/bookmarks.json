@@ -1,0 +1,8 @@
+{
+  "items": [
+    { "type": "file", "path": "HOME.md", "title": "🏠 HOME — память и знания" },
+    { "type": "file", "path": "vault/00-index/MOC.md", "title": "🗺 MOC — карта содержания" },
+    { "type": "file", "path": "memory/memory.md", "title": "🧠 memory — снимок памяти" },
+    { "type": "file", "path": "docs/13-document-system.md", "title": "📄 Система документации (DMS)" }
+  ]
+}
