@@ -4,6 +4,9 @@
 // curation. Порядок важен: сначала опорные узлы (Occupation/Direction), потом связи.
 
 import type { GraphEdge, GraphNode } from '../types.ts';
+import { ingestEducation } from './education.ts';
+import { ingestOccupations } from './occupations.ts';
+import { ingestCuration } from './curation.ts';
 
 export interface Staged { nodes: GraphNode[]; edges: GraphEdge[]; sources: { source: string; localFile?: string; records?: number }[] }
 
@@ -16,8 +19,13 @@ export interface IngestContext {
   buildDir: string;
 }
 
-// Фаза 1 наполнит этот список. Пока пусто — сборка валидирует пустой граф.
-export const INGESTORS: Ingestor[] = [];
+// Порядок: сначала опорные узлы (направления, профессии, компетенции), затем
+// курируемые связи между ними.
+export const INGESTORS: Ingestor[] = [
+  ingestEducation,
+  ingestOccupations,
+  ingestCuration,
+];
 
 export async function ingestAll(ctx: IngestContext): Promise<Staged> {
   const all: Staged = { nodes: [], edges: [], sources: [] };
