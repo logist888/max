@@ -1,0 +1,87 @@
+{
+  "_комментарий": "Реестр лицензий источников графа. Лицензионный гейт: источник с publicOutput=false не попадает в публичный вывод (страницы/отчёт), даже если данные загружены. attribution — обязательная строка атрибуции на страницах, где показываются данные источника. status: ok | verify | blocked.",
+  "licenses": {
+    "edu-snapshot": {
+      "source": "ВУЗ-навигатор, Госуслуги",
+      "terms": "Публичные данные приёмной кампании; снимок в репозитории",
+      "publicOutput": true,
+      "attribution": "Источник: «ВУЗ-навигатор» Госуслуг",
+      "status": "ok"
+    },
+    "minobr-ugs": {
+      "source": "Минобрнауки России, Перечень УГСН (ОКСО)",
+      "terms": "Публичный норматив",
+      "publicOutput": true,
+      "attribution": "Классификация УГСН — Минобрнауки России",
+      "status": "ok"
+    },
+    "esco-1.2.1": {
+      "source": "ESCO v1.2.1",
+      "terms": "European Union open data — свободное повторное использование с атрибуцией",
+      "publicOutput": true,
+      "attribution": "Данные ESCO © European Union, 2024 (esco.ec.europa.eu)",
+      "status": "ok",
+      "notes": "Русских меток нет — для рус. названий использовать ОКЗ/профстандарты или пометить требует-проверки"
+    },
+    "onet-30.3": {
+      "source": "O*NET 30.3 Database",
+      "terms": "O*NET Database, публичные данные с атрибуцией; O*NET® — товарный знак",
+      "publicOutput": true,
+      "attribution": "Использованы данные O*NET® 30.3 (Национальный центр развития O*NET, Минтруд США)",
+      "status": "ok",
+      "notes": "RIASEC/интересы — переименовать в клиентских материалах (нет коммерческой лицензии на название), как BFAS/Big Five"
+    },
+    "isco-08": {
+      "source": "ISCO-08 (ILO)",
+      "terms": "Международная классификация занятий, публичная",
+      "publicOutput": true,
+      "attribution": "Классификация ISCO-08, Международная организация труда",
+      "status": "ok"
+    },
+    "okz-2014": {
+      "source": "ОКЗ ОК 010-2014 (МСКЗ-08)",
+      "terms": "Публичный норматив РФ",
+      "publicOutput": true,
+      "attribution": "ОКЗ ОК 010-2014 (МСКЗ-08)",
+      "status": "ok"
+    },
+    "profstandard": {
+      "source": "Реестр профстандартов, Минтруд России",
+      "terms": "Публичный норматив РФ",
+      "publicOutput": true,
+      "attribution": "Профессиональные стандарты, Минтруд России",
+      "status": "ok"
+    },
+    "okpdtr-016-94": {
+      "source": "ОКПДТР ОК 016-94",
+      "terms": "Публичный норматив РФ",
+      "publicOutput": true,
+      "attribution": "ОКПДТР ОК 016-94",
+      "status": "ok"
+    },
+    "cip-soc": {
+      "source": "CIP → O*NET-SOC 2019 crosswalk",
+      "terms": "US public — референс модели программа→профессия (не публикуем как факт для РФ)",
+      "publicOutput": false,
+      "attribution": "",
+      "status": "ok",
+      "notes": "Только как вспомогательный сигнал для вывода; на страницах не показывается"
+    },
+    "hh-api": {
+      "source": "hh.ru API",
+      "terms": "ToS ограничивает коммерческое использование и хранение — НЕ ПРОВЕРЕНО",
+      "publicOutput": false,
+      "attribution": "",
+      "status": "blocked",
+      "notes": "Зарплаты/рынок труда: до проверки ToS и наличия источника — «Информация отсутствует»"
+    },
+    "internal-curated": {
+      "source": "Экспертное курирование MainExperts",
+      "terms": "Внутреннее",
+      "publicOutput": true,
+      "attribution": "Сопоставление MainExperts",
+      "status": "ok",
+      "notes": "method=curated: показывается только как помеченная рекомендация, не факт"
+    }
+  }
+}

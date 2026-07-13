@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mainexperts/graph/node.schema.json",
+  "title": "GraphNode",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "localIds", "labels", "status", "confidence", "validAsOf", "provenance", "version", "attrs"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^me:[a-z]+:[^\\s]+$" },
+    "type": {
+      "type": "string",
+      "enum": ["Country", "EducationSystem", "University", "Faculty", "EducationDirection", "EducationProgram", "ProgramProfile", "Qualification", "Competency", "Knowledge", "Skill", "Tool", "Technology", "Occupation", "JobRole", "Industry", "Employer", "ProfessionalStandard", "CareerOutcome", "CareerTransition", "LearningResource", "Certification", "License", "Assessment", "Salary", "LabourMarket"]
+    },
+    "localIds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["scheme", "value"],
+        "properties": { "scheme": { "type": "string" }, "value": { "type": "string" } }
+      }
+    },
+    "labels": {
+      "type": "object",
+      "properties": { "ru": { "type": "string" }, "en": { "type": "string" } }
+    },
+    "status": { "type": "string", "enum": ["факт", "гипотеза", "требует-проверки"] },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "validAsOf": { "type": "string" },
+    "provenance": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/provenance" }
+    },
+    "version": { "type": "integer", "minimum": 1 },
+    "attrs": { "type": "object" }
+  },
+  "$defs": {
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "license", "method"],
+      "properties": {
+        "source": { "type": "string" },
+        "sourceId": { "type": "string" },
+        "sourceUrl": { "type": "string" },
+        "sourceDate": { "type": "string" },
+        "license": { "type": "string" },
+        "method": { "type": "string", "enum": ["authoritative", "crosswalk", "inferred", "curated"] },
+        "retrievedAt": { "type": "string" }
+      }
+    }
+  }
+}

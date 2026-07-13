@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "pipeline": "tsx src/pipeline/run.ts",
+    "graph": "tsx src/graph/build.ts",
     "build": "astro build",
     "dev": "astro dev",
     "site": "npm run pipeline && astro build"
