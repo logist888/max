@@ -17,11 +17,21 @@ const MAJOR: Record<string, string> = {
   '9': 'Неквалифицированные рабочие',
   '0': 'Военнослужащие',
 };
-// Группировка по укрупнённым группам ISCO-08 (первая цифра кода).
+// Вид 1 — по укрупнённым группам ISCO-08 (первая цифра кода).
 const groups = Object.keys(MAJOR).sort().map((d) => ({
   digit: d, name: MAJOR[d],
   items: professions.filter((p) => p.isco[0] === d),
 })).filter((g) => g.items.length);
+
+// Вид 2 — по алфавиту (professions уже отсортированы по nameRu).
+const byLetter = new Map<string, typeof professions>();
+for (const p of professions) {
+  const L = (p.nameRu[0] || '#').toUpperCase();
+  const arr = byLetter.get(L) ?? [];
+  arr.push(p);
+  byLetter.set(L, arr);
+}
+const letters = [...byLetter.entries()].sort((a, b) => a[0].localeCompare(b[0], 'ru'));
 
 const withRoutes = professions.filter((p) => p.routes.length).length;
 const title = `Профессии: ${professions.length} по классификации ISCO-08 | Профориентация`;
@@ -39,19 +49,42 @@ const description = `${professions.length} профессий по междун�
   <p class="notice">Профессия — ещё не выбор. Понять, что подходит именно вам,
     помогает не список, а сильные стороны. <a href="/test/">Пройдите тест из 5 вопросов →</a></p>
 
-  {groups.map((g) => (
-    <>
-      <h2>{g.name}</h2>
-      <div class="columns">
-        <ul>
-          {g.items.map((p) => (
-            <li><a href={`/professiya/${p.slug}/`}>{p.nameRu}</a>
-              {p.routes.length > 0 && <span class="sub-note"> · есть направления</span>}</li>
-          ))}
-        </ul>
-      </div>
-    </>
-  ))}
+  <div class="tabs" role="tablist" aria-label="Способ группировки">
+    <button class="tab is-active" data-view="groups" role="tab" aria-selected="true">По группам</button>
+    <button class="tab" data-view="alpha" role="tab" aria-selected="false">По алфавиту</button>
+  </div>
+
+  <div id="view-groups">
+    {groups.map((g) => (
+      <>
+        <h2>{g.name}</h2>
+        <div class="columns">
+          <ul>
+            {g.items.map((p) => (
+              <li><a href={`/professiya/${p.slug}/`}>{p.nameRu}</a>
+                {p.routes.length > 0 && <span class="sub-note"> · есть направления</span>}</li>
+            ))}
+          </ul>
+        </div>
+      </>
+    ))}
+  </div>
+
+  <div id="view-alpha" hidden>
+    {letters.map(([letter, items]) => (
+      <>
+        <h2 class="alpha-letter">{letter}</h2>
+        <div class="columns">
+          <ul>
+            {items.map((p) => (
+              <li><a href={`/professiya/${p.slug}/`}>{p.nameRu}</a>
+                {p.routes.length > 0 && <span class="sub-note"> · есть направления</span>}</li>
+            ))}
+          </ul>
+        </div>
+      </>
+    ))}
+  </div>
 
   <p class="meta">Классификация — ISCO-08 (МОТ) и ОКЗ ОК 010-2014.
     Профессий с сопоставленными направлениями: {withRoutes} из {professions.length}
@@ -59,5 +92,36 @@ const description = `${professions.length} профессий по междун�
 
   <style>
     .sub-note { color: var(--text-muted); font-size: 0.8125rem; }
+    .tabs {
+      display: flex; gap: var(--space-2);
+      margin: var(--space-6) 0 var(--space-4);
+      border-bottom: 1px solid var(--border);
+    }
+    .tab {
+      appearance: none; background: none; border: 0; font: inherit; cursor: pointer;
+      padding: var(--space-3) var(--space-4); color: var(--text-muted);
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+      transition: color .15s ease, border-color .15s ease;
+    }
+    .tab:hover { color: var(--text); }
+    .tab.is-active { color: var(--accent-strong); border-bottom-color: var(--accent); font-weight: 600; }
+    .alpha-letter { color: var(--accent-strong); }
   </style>
+
+  <script>
+    const tabs = [...document.querySelectorAll<HTMLButtonElement>('.tab')];
+    const views: Record<string, HTMLElement | null> = {
+      groups: document.getElementById('view-groups'),
+      alpha: document.getElementById('view-alpha'),
+    };
+    tabs.forEach((t) => t.addEventListener('click', () => {
+      const view = t.dataset.view!;
+      tabs.forEach((x) => {
+        const on = x === t;
+        x.classList.toggle('is-active', on);
+        x.setAttribute('aria-selected', String(on));
+      });
+      for (const [k, el] of Object.entries(views)) if (el) el.hidden = k !== view;
+    }));
+  </script>
 </Base>
