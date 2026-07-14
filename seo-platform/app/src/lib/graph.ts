@@ -23,13 +23,11 @@ export interface RouteLevel { level: string; slug: string; }
 // Направление, ведущее к профессии; уровни (бакалавриат/специалитет/…) собраны
 // в одну карточку — одноимённые коды разных уровней не дублируются.
 export interface RouteDirection { name: string; confidence: number; note: string; levels: RouteLevel[]; }
-// Зарплата — оценка на базе Росстата (окт-2023), индексирована к текущему уровню РФ;
-// Москва — по офиц. коэффициенту. Помеченная оценка, не точный факт по группе.
+// Зарплата — средняя по группе занятий ОКЗ (Росстат, окт-2025). avgMoscow — по
+// фактической региональной надбавке майор-группы. Помеченная оценка по группе, не факт по должности.
 export interface Salary {
   avgRF: number | null; avgMoscow: number | null;
-  avgBase: number | null; baseDate: string | null;
-  indexedTo: string | null; indexFactor: number | null; moscowCoef: number | null;
-  matchLevel: string | null;
+  baseDate: string | null; matchLevel: string | null; moscowRatio: number | null;
 }
 export interface Profession {
   isco: string; slug: string; nameRu: string; nameEn: string; hasRuName: boolean;
@@ -118,12 +116,9 @@ export function graph() {
     const salary: Salary | null = sNode ? {
       avgRF: (sNode.attrs.avgRF as number) ?? null,
       avgMoscow: (sNode.attrs.avgMoscow as number) ?? null,
-      avgBase: (sNode.attrs.avgBase as number) ?? null,
       baseDate: (sNode.attrs.baseDate as string) ?? null,
-      indexedTo: (sNode.attrs.indexedTo as string) ?? null,
-      indexFactor: (sNode.attrs.indexFactor as number) ?? null,
-      moscowCoef: (sNode.attrs.moscowCoef as number) ?? null,
       matchLevel: (sNode.attrs.matchLevel as string) ?? null,
+      moscowRatio: (sNode.attrs.moscowRatio as number) ?? null,
     } : null;
 
     return {

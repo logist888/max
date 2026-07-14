@@ -1,10 +1,11 @@
 // Ингест зарплат из подготовленного salary.json (собран graph_salary.py на базе
-// Росстата: средняя по проф. группам ОКЗ, окт-2023, индексирована к текущему уровню
-// РФ и с коэффициентом Москвы). Узел Salary на занятие + ребро HAS_SALARY.
+// Росстата: обследование ЗП по группам занятий ОКЗ, ОКТЯБРЬ 2025). Узел Salary на
+// занятие + ребро HAS_SALARY.
 //
-// База — авторитетный Росстат; avgRF/avgMoscow — ПОМЕЧЕННАЯ ОЦЕНКА (индексация и
-// коэф. Москвы единые для всех групп). hh.ru и «Работа России» не используются
-// (licenses: hh-api=blocked; trudvsem — unused, системно занижает).
+// avgRF — средняя по группе занятий на самом детальном уровне (3→2→1 знак ОКЗ), 2025.
+// avgMoscow — avgRF × фактическая надбавка Москва/РФ по майор-группе (лист 31 Росстата),
+// не плоский коэффициент. Это ПОМЕЧЕННАЯ ОЦЕНКА по группе, не факт по конкретной должности.
+// hh.ru и «Работа России» не используются (licenses: hh-api=blocked; trudvsem — unused).
 
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -13,10 +14,10 @@ import type { Staged } from './index.ts';
 import { SRC, edge, node } from './helpers.ts';
 
 interface RosstatFig {
-  avgBase: number; baseDate: string; avgRF: number; avgMoscow: number;
-  indexedTo: string; indexFactor: number; moscowCoef: number;
-  matchLevel: string; matchCode: string; currency: string;
-  source: string; retrievedAt: string;
+  avgRF: number; avgMoscow: number | null; baseDate: string;
+  matchLevel: string; matchCode: string;
+  moscowRatio: number | null; moscowMajor: string;
+  currency: string; source: string; retrievedAt: string;
 }
 type SalaryRec = { rosstat?: RosstatFig };
 
@@ -32,7 +33,7 @@ export function ingestSalary(ctx: { appDir: string }): Staged {
   for (const [isco, rec] of Object.entries(data)) {
     const r = rec.rosstat;
     if (!r) continue;
-    // Провенанс: авторитетный Росстат, дата базы = период обследования.
+    // Провенанс: авторитетный Росстат, дата = период обследования (окт-2025).
     const provenance: Provenance[] = [{
       source: SRC.rosstat.source, license: SRC.rosstat.license, method: SRC.rosstat.method,
       sourceUrl: SRC.rosstat.sourceUrl, sourceId: r.matchCode, sourceDate: r.baseDate,
@@ -47,25 +48,22 @@ export function ingestSalary(ctx: { appDir: string }): Staged {
       provenance,
       attrs: {
         currency: 'RUB',
-        avgBase: r.avgBase, baseDate: r.baseDate,
-        avgRF: r.avgRF, avgMoscow: r.avgMoscow,
-        indexedTo: r.indexedTo, indexFactor: r.indexFactor, moscowCoef: r.moscowCoef,
-        matchLevel: r.matchLevel,
-        // Явная пометка: avgRF/avgMoscow — оценка, не точный факт по группе.
+        avgRF: r.avgRF, avgMoscow: r.avgMoscow, baseDate: r.baseDate,
+        matchLevel: r.matchLevel, moscowRatio: r.moscowRatio,
+        // Явная пометка: это оценка по группе занятий, не точный факт по должности.
         estimate: true,
       },
     }));
+    const mos = r.avgMoscow ? `; Москва ~${rub(r.avgMoscow)} ₽/мес (надбавка ×${r.moscowRatio})` : '';
     edges.push(edge({
       type: 'HAS_SALARY',
       from: `me:occupation:${isco}`,
       to: `me:salary:${key}`,
       weight: null, confidence: 0.8, method: 'authoritative', status: 'факт',
       provenance,
-      explanation: `Оценка зарплаты: база Росстат (${r.matchLevel}, ${r.baseDate}) `
-        + `${rub(r.avgBase)} ₽ × индекс ${r.indexFactor} → по РФ ~${rub(r.avgRF)} ₽/мес; `
-        + `Москва ×${r.moscowCoef} → ~${rub(r.avgMoscow)} ₽/мес (${r.indexedTo}). `
-        + `Коэффициенты единые для всех групп — это помеченная оценка, не точный факт.`,
+      explanation: `Средняя ЗП по группе занятий (${r.matchLevel}), Росстат ${r.baseDate}: `
+        + `по РФ ~${rub(r.avgRF)} ₽/мес${mos}. Оценка по группе, не гарантированный доход по должности.`,
     }));
   }
-  return { nodes, edges, sources: nodes.length ? [{ source: 'Зарплаты (Росстат, индексировано)', records: nodes.length }] : [] };
+  return { nodes, edges, sources: nodes.length ? [{ source: 'Зарплаты (Росстат, окт-2025)', records: nodes.length }] : [] };
 }

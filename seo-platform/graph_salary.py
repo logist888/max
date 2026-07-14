@@ -1,202 +1,149 @@
 #!/usr/bin/env python3
-"""Зарплаты в раздел профессий — из авторитетного публикуемого госисточника.
+"""Зарплаты в раздел профессий — из авторитетного публикуемого госисточника (Росстат).
 
-Источник: **Росстат**, обследование заработной платы по профессиональным группам
-ОКЗ ОК 010-2014 (окт-2023) — средняя начисленная по группе, по РФ. Ложится на наши
-группы ОКЗ. К последнему опубликованному уровню приводим официальной индексацией
-(рост средней зарплаты РФ), Москву — официальным коэффициентом Москва/РФ. Параметры —
-в app/config/graph/salary-params.json (прозрачно, обновляемо).
+Источник: **Росстат**, обследование заработной платы работников по группам занятий
+ОКЗ ОК 010-2014, **октябрь 2025** (Статбюлетень 2025.xlsx в data/graph/raw/). Берём:
+- лист 6 — средняя ЗП по группам занятий, все формы собственности (1 и 2 знака ОКЗ);
+- лист 9 — «составные группы ОКЗ» (3 знака) — детальный уровень;
+- лист 31 — ЗП по группам занятий × субъектам РФ → строка «г. Москва» по 9 майор-группам.
 
-Итоговые avgRF/avgMoscow — ПОМЕЧЕННАЯ ОЦЕНКА (источник+метод+дата), не точный факт по
-каждой группе: оба коэффициента единые для всех групп. Правило проекта «не выдумывать»
-соблюдено — база авторитетна, метод раскрыт, где данных нет → запись не создаётся.
+Строки Росстата даны только русскими названиями (кодов нет) → сопоставляем имя→код
+курируемым кроссволком app/config/graph/rosstat-okz-crosswalk.json (по стандарту ISCO-08).
 
-hh.ru не используется (соглашение запрещает хранить/показывать данные на стороннем
-коммерческом сайте — licenses: hh-api=blocked). «Работа России» (trudvsem) убрана:
-портал центров занятости системно занижает (даже Москва в ~3 раза ниже рынка).
+По каждой из 436 профессий:
+- avgRF = средняя по её группе занятий на самом детальном доступном уровне (3→2→1 знак), 2025;
+- avgMoscow = avgRF × фактическая надбавка Москва/РФ по её майор-группе (из листа 31).
+Индексация НЕ нужна (данные уже 2025). Итог — помеченная ОЦЕНКА по группе, не факт по должности.
+
+hh.ru не используется (соглашение запрещает). «Работа России» (trudvsem) убрана (занижает).
+Где группы нет в обследовании (военные 0xxx) — запись не создаётся → «Информация отсутствует».
 
 Пишет data/graph/prepared/salary.json: {код ОКЗ (4 знака): {rosstat:{...}}}.
-
-Запуск: python3 seo-platform/graph_salary.py <RETRIEVED_DATE> [RAW_DIR]
-  RETRIEVED_DATE — дата выгрузки (ISO), напр. 2026-07-14 (для провенанса).
-  RAW_DIR — каталог с файлом Росстата (по умолчанию data/graph/raw). Нет файла → пусто.
+Запуск: python3 seo-platform/graph_salary.py <RETRIEVED_DATE>
 """
-import csv
 import json
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).parent
 PREP = ROOT / "data" / "graph" / "prepared"
-PARAMS_PATH = ROOT / "app" / "config" / "graph" / "salary-params.json"
-DEFAULT_RAW = ROOT / "data" / "graph" / "raw"
-SANITY_MIN = 10000     # ₽/мес; ниже — мусор/ошибка единиц
-SANITY_MAX = 2_000_000
-
-LEVEL_NAME = {4: "4-знак ОКЗ", 3: "3-знак ОКЗ", 2: "2-знак ОКЗ", 1: "1-знак ОКЗ"}
-
-
-def load_params():
-    return json.load(open(PARAMS_PATH, encoding="utf-8"))
+XLSX = ROOT / "data" / "graph" / "raw" / "rosstat_srzpl_2025.xlsx"
+CROSSWALK = ROOT / "app" / "config" / "graph" / "rosstat-okz-crosswalk.json"
+PARAMS = ROOT / "app" / "config" / "graph" / "salary-params.json"
+SANITY_MIN, SANITY_MAX = 10000, 3_000_000
+LEVEL_NAME = {3: "составная группа ОКЗ (3 знака)", 2: "подгруппа ОКЗ (2 знака)", 1: "укрупнённая группа ОКЗ"}
 
 
-def _norm_code(raw):
-    """Код ОКЗ из ячейки: только цифры, без точек/пробелов; иначе None."""
-    s = "".join(ch for ch in str(raw) if ch.isdigit())
-    return s if 1 <= len(s) <= 4 else None
+def norm(s):
+    return " ".join(str(s).split()).strip()
 
 
-def _norm_avg(raw):
-    """Средняя зарплата из ячейки → float в разумных пределах, иначе None."""
-    if raw is None:
-        return None
-    s = str(raw).replace("\xa0", "").replace(" ", "").replace(",", ".")
-    try:
-        v = float(s)
-    except ValueError:
-        return None
-    return v if SANITY_MIN <= v <= SANITY_MAX else None
-
-
-def load_rosstat_base(raw_dir):
-    """Средняя по группам ОКЗ из файла Росстата → {код ОКЗ: avg}.
-
-    Порядок предпочтения (первый найденный):
-    1. rosstat_okz.json — нормализованный {код: avg} или {код: {avg, ...}} (я контролирую);
-    2. rosstat_okz.csv  — строки code,avg[,...] (заголовок допускается);
-    3. rosstat_okz.xlsx — исходник Росстата, best-effort через openpyxl (эвристика:
-       столбец кодов ОКЗ + соседний числовой столбец средней зарплаты).
-    Нет файла — {} (Шаг 1: зарплата на страницах = «Информация отсутствует»).
-    """
-    d = Path(raw_dir) if raw_dir else DEFAULT_RAW
-    if not d.exists():
-        return {}, None
-
-    js = sorted(d.glob("rosstat_okz*.json"))
-    if js:
-        raw = json.load(open(js[0], encoding="utf-8"))
-        out = {}
-        for k, v in raw.items():
-            code = _norm_code(k)
-            avg = _norm_avg(v.get("avg") if isinstance(v, dict) else v)
-            if code and avg:
-                out[code] = avg
-        print(f"  Росстат: {js[0].name} → {len(out)} групп")
-        return out, js[0].name
-
-    cs = sorted(d.glob("rosstat_okz*.csv"))
-    if cs:
-        out = {}
-        with open(cs[0], encoding="utf-8-sig", newline="") as f:
-            for row in csv.reader(f):
-                if len(row) < 2:
-                    continue
-                code, avg = _norm_code(row[0]), _norm_avg(row[1])
-                if code and avg:
-                    out[code] = avg
-        print(f"  Росстат: {cs[0].name} → {len(out)} групп")
-        return out, cs[0].name
-
-    xl = sorted(d.glob("rosstat_okz*.xlsx"))
-    if xl:
-        try:
-            import openpyxl  # noqa: F401
-        except ImportError:
-            print(f"  Росстат: найден {xl[0].name}, но нет openpyxl — "
-                  f"нормализуйте в rosstat_okz.json/.csv")
-            return {}, xl[0].name
-        out = _parse_xlsx(xl[0])
-        print(f"  Росстат: {xl[0].name} → {len(out)} групп (best-effort xlsx)")
-        return out, xl[0].name
-
-    return {}, None
-
-
-def _parse_xlsx(path):
-    """Эвристический разбор исходника Росстата: в каждой строке ищем ячейку-код ОКЗ
-    и первую числовую ячейку-зарплату правее неё. Формат подтверждается по факту
-    получения файла; при сомнении — нормализовать вручную в rosstat_okz.json."""
-    from openpyxl import load_workbook
-    wb = load_workbook(path, read_only=True, data_only=True)
+def sheet_name_wage(ws):
+    """{нормализованное имя группы: средняя ЗП (столбец C)}."""
     out = {}
-    for ws in wb.worksheets:
-        for row in ws.iter_rows(values_only=True):
-            code = avg = code_i = None
-            for i, cell in enumerate(row):
-                if code is None:
-                    c = _norm_code(cell)
-                    # код ОКЗ: чистая числовая строка длиной 1..4, не сама зарплата
-                    if c and cell is not None and str(cell).strip() == c:
-                        code, code_i = c, i
-                    continue
-                if i > code_i:
-                    a = _norm_avg(cell)
-                    if a:
-                        avg = a
-                        break
-            if code and avg and (code not in out):
-                out[code] = avg
-    wb.close()
+    for r in ws.iter_rows(values_only=True):
+        nm = r[0]
+        w = r[2] if len(r) > 2 else None
+        if nm is None or not isinstance(w, (int, float)):
+            continue
+        if SANITY_MIN <= w <= SANITY_MAX:
+            out[norm(nm)] = round(w)
     return out
 
 
-def match_code(isco4, base):
-    """Самый специфичный код Росстата для нашей 4-значной группы: 4→3→2→1 по префиксу."""
-    for n in (4, 3, 2, 1):
-        pref = isco4[:n]
-        if pref in base:
-            return pref, n
-    return None, 0
-
-
-def build_salary(occupations, base, params, when):
-    idx = params["indexFactor"]["value"]
-    mos = params["moscowCoef"]["value"]
-    indexed_to = params["indexFactor"]["targetPeriod"]
-    base_date = params["base"]["period"]
-    salary = {}
-    for o in occupations:
-        isco4 = o["isco4"]
-        code, level = match_code(isco4, base)
-        if not code:
+def moscow_ratios(ws):
+    """Из листа 31: надбавка Москва/РФ по майор-группам 1..9 (первое число — Всего)."""
+    rf = mos = None
+    for r in ws.iter_rows(values_only=True):
+        if not r or r[0] is None:
             continue
-        avg_base = round(base[code])
-        avg_rf = round(avg_base * idx)
-        salary[isco4] = {
-            "rosstat": {
-                "avgBase": avg_base,
-                "baseDate": base_date,
-                "avgRF": avg_rf,
-                "avgMoscow": round(avg_rf * mos),
-                "indexedTo": indexed_to,
-                "indexFactor": idx,
-                "moscowCoef": mos,
-                "matchLevel": LEVEL_NAME[level],
-                "matchCode": code,
-                "currency": "RUB",
-                "source": "Росстат, обследование по проф. группам ОКЗ (ОК 010-2014)",
-                "retrievedAt": when,
-            }
-        }
-    return salary
+        name = norm(r[0])
+        nums = [x for x in r[1:] if isinstance(x, (int, float))]
+        if name == "Российская Федерация":
+            rf = nums
+        elif name.replace("г.", "").strip() == "Москва":
+            mos = nums
+    if not rf or not mos:
+        raise SystemExit("лист 31: не найдены строки РФ/Москва")
+    # nums[0] = Всего, далее майоры 1..9
+    return {str(i): mos[i] / rf[i] for i in range(1, 10)}
 
 
 def main():
     when = sys.argv[1] if len(sys.argv) > 1 else "unknown"
-    raw_dir = sys.argv[2] if len(sys.argv) > 2 else None
     occupations = json.load(open(PREP / "occupations.json", encoding="utf-8"))
-    params = load_params()
-    base, fname = load_rosstat_base(raw_dir)
-    if not base:
-        print("Файла Росстата нет — salary.json пуст (зарплата = «Информация отсутствует»). "
-              "Залейте rosstat_okz.json/.csv/.xlsx в data/graph/raw и перезапустите.")
+    cw = json.load(open(CROSSWALK, encoding="utf-8"))
+    params = json.load(open(PARAMS, encoding="utf-8"))
+    base_date = params["base"]["period"]
+    src = params["base"]["source"]
 
-    salary = build_salary(occupations, base, params, when) if base else {}
+    if not XLSX.exists():
+        (PREP / "salary.json").write_text("{}", encoding="utf-8")
+        print(f"Нет {XLSX.name} — salary.json пуст (зарплата = «Информация отсутствует»).")
+        return
+
+    from openpyxl import load_workbook
+    wb = load_workbook(XLSX, read_only=True, data_only=True)
+    w6 = sheet_name_wage(wb["6"])
+    w9 = sheet_name_wage(wb["9"])
+    ratios = moscow_ratios(wb["31"])
+    wb.close()
+
+    # base{код ОКЗ: средняя ЗП РФ 2025}. 3 знака (л.9) приоритетнее; 2 и 1 знак — из л.6.
+    base = {}
+    miss = []
+    for nm, code in cw["major"].items():
+        if norm(nm) in w6: base[code] = w6[norm(nm)]
+        else: miss.append(("major", nm))
+    for nm, code in cw["sub2"].items():
+        if norm(nm) in w6: base[code] = w6[norm(nm)]
+        else: miss.append(("sub2", nm))
+    for nm, code in cw["min3"].items():
+        if norm(nm) in w9: base[code] = w9[norm(nm)]
+        else: miss.append(("min3", nm))
+    if miss:
+        print(f"ВНИМАНИЕ: {len(miss)} имён кроссволка не найдено в листах:")
+        for lvl, nm in miss[:15]:
+            print(f"  [{lvl}] {nm}")
+
+    def match(isco4):
+        for n in (3, 2, 1):
+            if isco4[:n] in base:
+                return isco4[:n], n
+        return None, 0
+
+    salary = {}
+    lvl_count = {1: 0, 2: 0, 3: 0, 0: 0}
+    for o in occupations:
+        isco4 = o["isco4"]
+        code, n = match(isco4)
+        lvl_count[n] += 1
+        if not code:
+            continue
+        rf = base[code]
+        major = isco4[0]
+        ratio = ratios.get(major)
+        moscow = round(rf * ratio) if ratio else None
+        salary[isco4] = {
+            "rosstat": {
+                "avgRF": rf,
+                "avgMoscow": moscow,
+                "baseDate": base_date,
+                "matchLevel": LEVEL_NAME[n],
+                "matchCode": code,
+                "moscowRatio": round(ratio, 3) if ratio else None,
+                "moscowMajor": major,
+                "currency": "RUB",
+                "source": src,
+                "retrievedAt": when,
+            }
+        }
+
     PREP.mkdir(parents=True, exist_ok=True)
     (PREP / "salary.json").write_text(json.dumps(salary, ensure_ascii=False), encoding="utf-8")
-    print(f"salary.json: {len(salary)} занятий с зарплатой "
-          f"(источник Росстат{f', файл {fname}' if fname else ''}; "
-          f"индекс ×{params['indexFactor']['value']}, Москва ×{params['moscowCoef']['value']})")
+    print(f"salary.json: {len(salary)} занятий с зарплатой (Росстат окт-{base_date}). "
+          f"Уровни: 3зн {lvl_count[3]}, 2зн {lvl_count[2]}, майор {lvl_count[1]}, нет данных {lvl_count[0]}.")
+    print("Надбавки Москвы по майор-группам:", {k: round(v, 3) for k, v in ratios.items()})
 
 
 if __name__ == "__main__":
