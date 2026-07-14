@@ -22,6 +22,8 @@ CATALOG = ROOT / "app" / "build" / "catalog-rows.json"
 ORGCARDS = ROOT / "app" / "build" / "org-cards.json"  # полное описательное название вуза
 BUDGET = HSE / "rating_102338950.html"   # вузы × бюджет
 PAID = HSE / "rating_102338975.html"     # вузы × платно (+ балл бюджета в кол.5)
+GBUDGET = HSE / "rating_102339002.html"  # вуз × укрупнённая группа × бюджет
+GPAID = HSE / "rating_102339030.html"    # вуз × укрупнённая группа × платно
 YEAR = 2025
 
 # Аббревиатуры раскрываем ТОЛЬКО с обязательной точкой — иначе «гос.»-паттерн
@@ -90,36 +92,41 @@ def name_wo_city(hse_name):
     return re.sub(r',\s*г\.?\s*[А-Яа-яЁё\- ]+$', '', hse_name)
 
 
-def main():
-    budget = parse_table(BUDGET, 1, 3)
-    paid = parse_table(PAID, 1, 3)
-    # объединяем вузы
-    hse = {}
-    for name, d in budget.items():
-        hse[name] = {"budget": d["score"], "nBudget": d["n"], "paid": None}
-    for name, d in paid.items():
-        hse.setdefault(name, {"budget": None, "nBudget": None, "paid": None})
-        hse[name]["paid"] = d["score"]
-    print(f"ВШЭ: вузов с баллом — бюджет {len(budget)}, платно {len(paid)}, объединённо {len(hse)}")
+def parse_group(path, score_col, n_col=None):
+    """[(группа, вузName, балл, n)] из таблицы вуз×укрупнённая группа."""
+    h = path.read_text(encoding="utf-8", errors="replace")
+    big = max(re.findall(r'<table.*?</table>', h, re.S), key=len)
+    out = []
+    for r in re.findall(r'<tr.*?</tr>', big, re.S):
+        cells = [html.unescape(re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', c)).strip())
+                 for c in re.findall(r'<t[dh].*?</t[dh]>', r, re.S)]
+        if len(cells) <= score_col:
+            continue
+        group, vuz = cells[0], cells[1]
+        try:
+            score = float(cells[score_col].replace(',', '.'))
+        except ValueError:
+            continue
+        if not group or not vuz or not (30 <= score <= 100):
+            continue
+        n = None
+        if n_col is not None and len(cells) > n_col:
+            try:
+                n = int(re.sub(r'\D', '', cells[n_col]) or 0)
+            except ValueError:
+                n = None
+        out.append((group, vuz, score, n))
+    return out
 
-    catalog = json.load(open(CATALOG, encoding="utf-8"))
-    # Полное описательное название вуза — из org-cards (shortName у нас часто акроним
-    # «АГУ», HSE даёт описательное «Адыгейский гос. ун-т.» → матч только по полному имени).
-    orgname = {}
-    for o in json.load(open(ORGCARDS, encoding="utf-8")):
-        orgname[o["id"]] = o.get("name") or o.get("fullName") or o.get("shortName", "")
-    ours = []
-    for c in catalog:
-        full = orgname.get(c["id"], c.get("shortName", ""))
-        ours.append({
-            "slug": c["slug"], "name": full,
-            "city": norm(c.get("cityName", "")), "tok": tokens(full),
-        })
 
-    scores, report = {}, {"matched": [], "unmatched": []}
-    for hname, d in hse.items():
-        hcity = city_of(hname)
-        htok = tokens(name_wo_city(hname))
+def build_matcher(ours):
+    """Мемоизированный матч имени вуза ВШЭ → (slug, name, jaccard) или None."""
+    memo = {}
+
+    def match(hname):
+        if hname in memo:
+            return memo[hname]
+        hcity, htok = city_of(hname), tokens(name_wo_city(hname))
         best, best_j = None, 0.0
         for o in ours:
             if hcity and o["city"] and hcity != o["city"]:
@@ -129,25 +136,72 @@ def main():
             j = len(htok & o["tok"]) / len(htok | o["tok"])
             if j > best_j:
                 best_j, best = j, o
-        if best and best_j >= 0.5:   # высококонфидентно
-            scores[best["slug"]] = {
-                "budget": d["budget"], "paid": d["paid"], "nBudget": d["nBudget"],
-                "year": YEAR, "hseName": hname,
-            }
-            report["matched"].append({"hse": hname, "our": best["name"], "j": round(best_j, 2)})
-        else:
-            report["unmatched"].append({"hse": hname, "bestJ": round(best_j, 2)})
+        res = (best["slug"], best["name"], round(best_j, 2)) if best and best_j >= 0.5 else None
+        memo[hname] = res
+        return res
 
-    # дедуп: если два ВШЭ-вуза сматчились в один slug, оставляем лучший по Jaccard
+    return match
+
+
+def main():
+    catalog = json.load(open(CATALOG, encoding="utf-8"))
+    # Полное описательное название вуза — из org-cards (shortName у нас часто акроним
+    # «АГУ», HSE даёт описательное «Адыгейский гос. ун-т.» → матч только по полному имени).
+    orgname = {}
+    for o in json.load(open(ORGCARDS, encoding="utf-8")):
+        orgname[o["id"]] = o.get("name") or o.get("fullName") or o.get("shortName", "")
+    ours = [{
+        "slug": c["slug"], "name": orgname.get(c["id"], c.get("shortName", "")),
+        "city": norm(c.get("cityName", "")), "tok": tokens(orgname.get(c["id"], c.get("shortName", ""))),
+    } for c in catalog]
+    match = build_matcher(ours)
+
+    # --- Уровень вуза (бюджет + платно) ---
+    budget, paid = parse_table(BUDGET, 1, 3), parse_table(PAID, 1, 3)
+    hse = {}
+    for name, d in budget.items():
+        hse[name] = {"budget": d["score"], "nBudget": d["n"], "paid": None}
+    for name, d in paid.items():
+        hse.setdefault(name, {"budget": None, "nBudget": None, "paid": None})
+        hse[name]["paid"] = d["score"]
+
+    scores, report = {}, {"matched": [], "unmatched": []}
+    for hname, d in hse.items():
+        m = match(hname)
+        if m:
+            scores[m[0]] = {"budget": d["budget"], "paid": d["paid"], "nBudget": d["nBudget"],
+                            "year": YEAR, "hseName": hname}
+            report["matched"].append({"hse": hname, "our": m[1], "j": m[2]})
+        else:
+            report["unmatched"].append({"hse": hname, "bestJ": 0})
+
+    # --- Уровень вуз × укрупнённая группа (классификация ВШЭ) ---
+    bygroup = {}   # slug -> {группа: {budget, paid, nBudget}}
+    for group, vuz, score, n in parse_group(GBUDGET, 2, 4):
+        m = match(vuz)
+        if not m:
+            continue
+        g = bygroup.setdefault(m[0], {}).setdefault(group, {"budget": None, "paid": None, "nBudget": None})
+        g["budget"], g["nBudget"] = score, n
+    for group, vuz, score, n in parse_group(GPAID, 2):
+        m = match(vuz)
+        if not m:
+            continue
+        g = bygroup.setdefault(m[0], {}).setdefault(group, {"budget": None, "paid": None, "nBudget": None})
+        g["paid"] = score
+    by_group_out = {
+        slug: sorted(
+            [{"group": g, **v} for g, v in gs.items()],
+            key=lambda x: -(x["budget"] or x["paid"] or 0),
+        ) for slug, gs in bygroup.items()
+    }
+
     (HSE / "hse-scores.json").write_text(json.dumps(scores, ensure_ascii=False, indent=1), encoding="utf-8")
+    (HSE / "hse-scores-by-group.json").write_text(json.dumps(by_group_out, ensure_ascii=False), encoding="utf-8")
     (HSE / "match-report.json").write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
-    print(f"Сматчено высококонфидентно: {len(scores)} наших вузов; не сматчено ВШЭ-строк: {len(report['unmatched'])}")
-    print("Примеры матчей:")
-    for m in report["matched"][:8]:
-        print(f"  [{m['j']}] ВШЭ «{m['hse'][:40]}» → наш «{m['our'][:40]}»")
-    print("Примеры НЕ сматченных ВШЭ:")
-    for u in report["unmatched"][:6]:
-        print(f"  [{u['bestJ']}] {u['hse'][:60]}")
+    print(f"Уровень вуза: сматчено {len(scores)} (не сматчено {len(report['unmatched'])}).")
+    print(f"Уровень вуз×группа: {len(by_group_out)} вузов, "
+          f"{sum(len(v) for v in by_group_out.values())} строк вуз-группа.")
 
 
 if __name__ == "__main__":

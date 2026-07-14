@@ -16,7 +16,16 @@ export interface VuzScore {
   hseName: string;
 }
 
+// Детальный срез: средний балл по укрупнённым группам направлений (классификация ВШЭ).
+export interface GroupScore {
+  group: string;
+  budget: number | null;
+  paid: number | null;
+  nBudget: number | null;
+}
+
 let cache: Record<string, VuzScore> | null = null;
+let cacheByGroup: Record<string, GroupScore[]> | null = null;
 
 export function vuzScores(): Record<string, VuzScore> {
   if (cache) return cache;
@@ -26,4 +35,14 @@ export function vuzScores(): Record<string, VuzScore> {
     cache = {};
   }
   return cache!;
+}
+
+export function vuzScoresByGroup(): Record<string, GroupScore[]> {
+  if (cacheByGroup) return cacheByGroup;
+  try {
+    cacheByGroup = JSON.parse(readFileSync(resolve(process.cwd(), '../data/hse/hse-scores-by-group.json'), 'utf8'));
+  } catch {
+    cacheByGroup = {};
+  }
+  return cacheByGroup!;
 }

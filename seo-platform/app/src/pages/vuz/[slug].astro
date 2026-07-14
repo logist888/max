@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Cta from '../../components/Cta.astro';
 import { db } from '../../lib/data.ts';
-import { vuzScores } from '../../lib/scores.ts';
+import { vuzScores, vuzScoresByGroup } from '../../lib/scores.ts';
 import {
   costPhrase, ldBreadcrumbs, ldFaq, ldOrg, orgDescription, orgFaq, orgTitle, plural, rub,
 } from '../../lib/text.ts';
@@ -47,6 +47,7 @@ const similar = orgCards
 const cost = costPhrase(card.costRange);
 // Средний балл ЕГЭ зачисленных (ВШЭ, 2025) — НЕ проходной; где нет матча, записи нет.
 const score = vuzScores()[card.slug];
+const groupScores = vuzScoresByGroup()[card.slug] ?? [];
 const LINK_LABELS: Record<string, string> = {
   urlUniversityAdmissionRulesBase: 'Правила приёма (бакалавриат, специалитет)',
   urlUniversityAdmissionRulesSpec: 'Правила приёма (магистратура)',
@@ -107,6 +108,26 @@ const links = Object.entries(LINK_LABELS)
     )}
     {card.address && <li><span class="label">Адрес</span> {card.address}</li>}
   </ul>
+
+  {groupScores.length > 0 && (
+    <details class="scores-groups">
+      <summary>Средний балл ЕГЭ по группам направлений ({groupScores.length}) — ВШЭ, {score?.year ?? 2025}</summary>
+      <p class="meta">Средний балл ЕГЭ зачисленных по укрупнённым группам (классификация и данные
+        ВШЭ, Мониторинг качества приёма). Это средний балл, <strong>не проходной</strong>.</p>
+      <table class="scores-tbl">
+        <thead><tr><th>Группа направлений</th><th>Бюджет</th><th>Платно</th></tr></thead>
+        <tbody>
+          {groupScores.map((g) => (
+            <tr>
+              <td>{g.group}</td>
+              <td class="val">{g.budget ?? '—'}</td>
+              <td class="val">{g.paid ?? '—'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </details>
+  )}
 
   {card.levelsNotExported.length > 0 && (
     <p class="notice">Уровни «{card.levelsNotExported.join('», «')}» заявлены вузом,
@@ -196,6 +217,11 @@ const links = Object.entries(LINK_LABELS)
     }
     .sticky-text { font-weight: 500; }
     @media (max-width: 600px) { .sticky-text { display: none; } }
+    .scores-groups { margin: var(--space-4) 0; border: 1px solid var(--border); border-radius: 8px; padding: var(--space-3) var(--space-4); }
+    .scores-groups summary { cursor: pointer; font-weight: 600; color: var(--accent-strong); }
+    .scores-tbl { width: 100%; border-collapse: collapse; margin-top: var(--space-3); font-size: 0.9375rem; }
+    .scores-tbl th, .scores-tbl td { text-align: left; padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--border); }
+    .scores-tbl th:nth-child(2), .scores-tbl th:nth-child(3), .scores-tbl td.val { text-align: right; white-space: nowrap; }
   </style>
 
   <script>
