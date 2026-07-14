@@ -50,11 +50,11 @@ const description = `${professions.length} профессий по междун�
     помогает не список, а сильные стороны. <a href="/test/">Пройдите тест из 5 вопросов →</a></p>
 
   <div class="tabs" role="tablist" aria-label="Способ группировки">
-    <button class="tab is-active" data-view="groups" role="tab" aria-selected="true">По группам</button>
-    <button class="tab" data-view="alpha" role="tab" aria-selected="false">По алфавиту</button>
+    <button class="tab is-active" data-view="alpha" role="tab" aria-selected="true">По алфавиту</button>
+    <button class="tab" data-view="groups" role="tab" aria-selected="false">По группам</button>
   </div>
 
-  <div id="view-groups">
+  <div id="view-groups" hidden>
     {groups.map((g) => (
       <>
         <h2>{g.name}</h2>
@@ -70,7 +70,7 @@ const description = `${professions.length} профессий по междун�
     ))}
   </div>
 
-  <div id="view-alpha" hidden>
+  <div id="view-alpha">
     {letters.map(([letter, items]) => (
       <>
         <h2 class="alpha-letter">{letter}</h2>
