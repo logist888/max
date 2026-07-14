@@ -6,6 +6,7 @@ import Cta from '../../../components/Cta.astro';
 import { db } from '../../../lib/data.ts';
 import { graph } from '../../../lib/graph.ts';
 import { costPhrase, directionFaq, ldBreadcrumbs, ldFaq, plural } from '../../../lib/text.ts';
+import { ege, EGE_SUBJECTS } from '../../../lib/ege.ts';
 
 export function getStaticPaths() {
   return db().directions.map((dir) => ({ params: { slug: dir.slug }, props: { dir } }));
@@ -60,6 +61,11 @@ const jsonLd = [
 
 // Профессии, сопоставленные с направлением (курируемо — сопоставление, не факт).
 const professions = graph().byDirectionOkso.get(dir.okso) ?? [];
+
+// Предметы ЕГЭ по направлению (перечень Минобрнауки) — только для бак/спец с данными.
+// Русский обязателен всегда и выводится отдельно; различающие предметы — со ссылками.
+const egeLink = new Map(EGE_SUBJECTS.map((e) => [e.key, e]));
+const egeSubs = (ege().bySlug.get(dir.slug) ?? []).filter((k) => k !== 'русский язык');
 ---
 <Base title={title} description={description} jsonLd={jsonLd}>
   <Breadcrumbs items={crumbs} />
@@ -73,6 +79,14 @@ const professions = graph().byDirectionOkso.get(dir.okso) ?? [];
       {dir.hasBudget ? 'есть' : `в выгрузке от ${meta.snapshotDate} не указаны`}</li>
     <li><span class="label">Стоимость платного обучения</span>
       {cost ?? <span class="missing">Информация отсутствует</span>}</li>
+    {egeSubs.length > 0 && (
+      <li><span class="label">Предметы ЕГЭ</span>
+        русский язык{egeSubs.map((k) => {
+          const e = egeLink.get(k);
+          return <>, {e ? <a href={`/kuda-postupat-s-${e.slug}/`}>{k}</a> : k}</>;
+        })}
+        {' '}<span class="missing" style="color:var(--text-muted)">— по перечню Минобрнауки; точный набор в правилах приёма вуза</span></li>
+    )}
   </ul>
 
   {professions.length > 0 && (
