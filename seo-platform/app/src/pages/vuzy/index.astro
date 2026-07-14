@@ -1,0 +1,148 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import OrgRow from '../../components/OrgRow.astro';
+import Cta from '../../components/Cta.astro';
+import { db } from '../../lib/data.ts';
+import type { CatalogRow } from '../../lib/data.ts';
+
+const { catalogRows, meta } = db();
+
+// Правовая форма / статус / «филиал» — не различительная часть имени вуза.
+// В shortName у 38% вузов имя начинается с «ФГБОУ ВО…», «АНОО ВО…», «Филиал…» —
+// по такому первому символу алфавит бесполезен (680 вузов под «Ф»). Срезаем
+// ведущие форменные токены, пока не дойдём до собственно названия/акронима
+// (СГПИ, УГНТУ, ЦАГИ, НИЯК), и по нему берём букву.
+// Форменные/статусные токены. НИУ/НИЯУ/НИТУ — статус-акронимы («Национальный
+// исследовательский [ядерный/технологический] университет»), сами по себе не
+// различительны (МИФИ хранится как «НИЯУ МИФИ» → буква М, а не Н).
+const FORM = new Set([
+  'фгбоу', 'фгаоу', 'фгкоу', 'фгбну', 'фгау', 'фгбу', 'фгку', 'фкоу', 'фгбвоу', 'фгквоу',
+  'фау', 'фбу', 'фгуп', 'фано', 'гоу', 'гбоу', 'гаоу', 'ноу', 'аноо', 'аноово', 'ано',
+  'оано', 'чоу', 'очу', 'чу', 'поу', 'пооу', 'во', 'впо', 'филиал', 'предст',
+  'представительство', 'ниу', 'нияу', 'ниту', 'иу',
+]);
+const GENERIC = new Set(['университет', 'институт', 'академия']);
+const TRIM = /^[.,()«»"“”\-\s]+|[.,()«»"“”\-\s]+$/g;
+const norm = (t: string) => (t ?? '').toLowerCase().replace(TRIM, '');
+
+function sortName(name: string): string {
+  const toks = name.replace(/[«»"“”]/g, ' ').trim().split(/\s+/);
+  let i = 0;
+  while (i < toks.length && (norm(toks[i]) === '' || FORM.has(norm(toks[i])))) i += 1;
+  // Статус-фраза «Национальный исследовательский …» — только эта пара (не одиночное
+  // «Национальный», иначе «Национальный институт бизнеса» уехал бы не под Н).
+  if (norm(toks[i]) === 'национальный' && norm(toks[i + 1]) === 'исследовательский') {
+    i += 2;
+    if (GENERIC.has(norm(toks[i]))) i += 1;   // «…университет МИЭТ» → МИЭТ
+  }
+  return (i < toks.length ? toks[i] : (toks[0] ?? '')).replace(TRIM, '');
+}
+
+function firstLetter(name: string): string {
+  let ch = sortName(name).slice(0, 1).toUpperCase() || '#';
+  if (ch === 'Ё') ch = 'Е';
+  return /[А-ЯЁ]/.test(ch) ? ch : '#';
+}
+
+const groups: Record<string, CatalogRow[]> = {};
+for (const row of catalogRows) (groups[firstLetter(row.shortName)] ??= []).push(row);
+for (const l of Object.keys(groups)) {
+  groups[l].sort((a, b) =>
+    sortName(a.shortName).localeCompare(sortName(b.shortName), 'ru', { sensitivity: 'base' }));
+}
+
+const ORDER = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ';
+const letters = Object.keys(groups).sort((a, b) => {
+  if (a === '#') return 1;
+  if (b === '#') return -1;
+  return ORDER.indexOf(a) - ORDER.indexOf(b);
+});
+
+const title = `Каталог вузов России по алфавиту: ${catalogRows.length} организаций | ${meta.campaignYear}`;
+const description = `Все вузы России из данных «ВУЗ-навигатора» Госуслуг по алфавиту: ${catalogRows.length} организаций, приём ${meta.campaignYear}. Выберите первую букву названия.`;
+---
+<Base title={title} description={description}>
+  <Breadcrumbs items={[{ name: 'Главная', url: '/' }, { name: 'Вузы' }]} />
+  <h1>Каталог вузов России по алфавиту</h1>
+  <p class="meta">{catalogRows.length} организаций. Выберите первую букву названия — по акрониму
+    или ключевому слову (правовая форма «ФГБОУ ВО», «АНОО ВО», «Филиал» при сортировке не учитывается).</p>
+
+  <div class="az-catalog">
+    <div class="az-tabs" role="tablist" aria-label="Буквы алфавита">
+      {letters.map((l) => (
+        <a class="az-tab" href={`#az-${l}`} data-letter={l} role="tab" aria-selected="false">
+          {l === '#' ? '#' : l}<span class="az-count">{groups[l].length}</span>
+        </a>
+      ))}
+    </div>
+
+    {letters.map((l) => (
+      <section class="az-group" data-letter={l} id={`az-${l}`}>
+        <h2 class="az-heading">{l === '#' ? 'Прочие' : l}</h2>
+        <ul class="card-list">
+          {groups[l].map((row) => <OrgRow row={row} />)}
+        </ul>
+      </section>
+    ))}
+  </div>
+
+  <Cta pageType="catalog" zone="after-row-10" />
+
+  <style>
+    /* Табы прокручиваются к началу каталога при клике (см. scroll-margin ниже),
+       поэтому не делаем их sticky — sticky-под-sticky ломается на разной высоте
+       шапки между десктопом и мобильным. */
+    .az-catalog { scroll-margin-top: 76px; }
+    @media (max-width: 1023px) { .az-catalog { scroll-margin-top: 128px; } }
+    .az-tabs {
+      display: flex; flex-wrap: wrap; gap: var(--space-1);
+      margin: var(--space-4) 0 var(--space-6);
+      padding: var(--space-2);
+      background: var(--surface-2);
+      border: 1px solid var(--border); border-radius: var(--radius);
+    }
+    .az-tab {
+      display: inline-flex; align-items: baseline; gap: 4px;
+      min-width: 2.1em; justify-content: center;
+      padding: 6px 9px; border-radius: 7px; font-weight: 600;
+      color: var(--text); background: transparent; border: 1px solid transparent;
+    }
+    .az-tab:hover { background: var(--surface-2); text-decoration: none; }
+    .az-tab .az-count { font-size: .7rem; font-weight: 500; color: var(--text-muted); }
+    .az-tab[aria-selected="true"] {
+      background: var(--accent); color: #fff; border-color: var(--accent);
+    }
+    .az-tab[aria-selected="true"] .az-count { color: rgba(255, 255, 255, .8); }
+    .az-heading {
+      margin: var(--space-6) 0 var(--space-3); font-size: 1.6rem;
+      color: var(--accent-strong); scroll-margin-top: 110px;
+    }
+    /* JS-режим табов: показываем только активную группу. Без JS — все видны (см. ниже). */
+    .js-tabs .az-group { display: none; }
+    .js-tabs .az-group.active { display: block; }
+    .js-tabs .az-heading { display: none; }
+  </style>
+
+  <script>
+    const wrap = document.querySelector<HTMLElement>('.az-catalog');
+    if (wrap) {
+      wrap.classList.add('js-tabs');
+      const tabs = [...wrap.querySelectorAll<HTMLElement>('.az-tab')];
+      const groupEls = [...wrap.querySelectorAll<HTMLElement>('.az-group')];
+      const activate = (letter: string) => {
+        groupEls.forEach((g) => g.classList.toggle('active', g.dataset.letter === letter));
+        tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.letter === letter)));
+      };
+      tabs.forEach((t) => t.addEventListener('click', (e) => {
+        e.preventDefault();
+        const l = t.dataset.letter!;
+        activate(l);
+        history.replaceState(null, '', `#az-${l}`);
+        wrap.scrollIntoView({ block: 'start' });
+      }));
+      const fromHash = decodeURIComponent(location.hash.replace('#az-', ''));
+      activate(tabs.some((t) => t.dataset.letter === fromHash) ? fromHash : tabs[0].dataset.letter!);
+    }
+  </script>
+</Base>
