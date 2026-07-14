@@ -115,9 +115,10 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   border-bottom: 1px solid var(--border);
 }
 .site-header .container {
-  display: flex; align-items: center; gap: var(--space-6);
+  display: flex; align-items: center; gap: var(--space-4) var(--space-6);
   min-height: 60px; flex-wrap: wrap; padding-top: 6px; padding-bottom: 6px;
 }
+.header-top { display: flex; align-items: center; gap: 10px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; color: var(--text); font-size: 1.05rem; }
 .brand:hover { color: var(--text); text-decoration: none; }
 .brand-mark {
@@ -126,9 +127,41 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   color: #fff; display: inline-flex; align-items: center; justify-content: center;
   font-size: .95rem; font-weight: 800;
 }
-.site-header nav { display: flex; gap: var(--space-4); flex-wrap: wrap; }
-.site-header nav a { color: var(--text-muted); font-weight: 500; padding: 6px 2px; }
-.site-header nav a:hover { color: var(--text); text-decoration: none; }
+.site-nav { display: flex; gap: var(--space-4); flex-wrap: wrap; }
+.site-nav a { color: var(--text-muted); font-weight: 500; padding: 6px 2px; }
+.site-nav a:hover { color: var(--text); text-decoration: none; }
+.nav-toggle { display: none; }
+
+/* ---------- Мобильное меню (бургер) до 1024px: 8 пунктов не помещаются в строку */
+@media (max-width: 1023px) {
+  .header-top { flex: 1 1 100%; justify-content: space-between; order: 0; }
+  .nav-toggle {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; flex: none; cursor: pointer; color: var(--text);
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  }
+  .nav-toggle-bars, .nav-toggle-bars::before, .nav-toggle-bars::after {
+    content: ''; display: block; width: 20px; height: 2px; border-radius: 2px;
+    background: currentColor; transition: transform .2s ease, opacity .2s ease;
+  }
+  .nav-toggle-bars { position: relative; }
+  .nav-toggle-bars::before { position: absolute; left: 0; top: -6px; }
+  .nav-toggle-bars::after { position: absolute; left: 0; top: 6px; }
+  .nav-open .nav-toggle-bars { background: transparent; }
+  .nav-open .nav-toggle-bars::before { transform: translateY(6px) rotate(45deg); }
+  .nav-open .nav-toggle-bars::after { transform: translateY(-6px) rotate(-45deg); }
+
+  #site-search { order: 1; flex-basis: 100%; max-width: none; }
+  .site-nav {
+    order: 2; width: 100%; display: none; flex-direction: column; gap: 0;
+    margin: 0 calc(-1 * var(--space-4));
+  }
+  .nav-open .site-nav { display: flex; }
+  .site-nav a {
+    padding: var(--space-3) var(--space-4); font-size: 1.05rem;
+    border-top: 1px solid var(--border);
+  }
+}
 
 /* ---------- Подвал */
 .site-footer {

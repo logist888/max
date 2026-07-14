@@ -31,21 +31,53 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   {jsonLd.map((ld) => (
     <script type="application/ld+json" set:html={JSON.stringify(ld)} />
   ))}
+  <noscript>
+    <style>
+      @media (max-width: 1023px) {
+        .nav-toggle { display: none !important; }
+        .site-nav { display: flex !important; }
+      }
+    </style>
+  </noscript>
 </head>
 <body>
   <header class="site-header">
     <div class="container">
-      <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">К</span>Куда поступать</a>
-      <nav aria-label="Основная навигация">
+      <div class="header-top">
+        <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">К</span>Куда поступать</a>
+        <button class="nav-toggle" type="button" aria-label="Меню"
+          aria-expanded="false" aria-controls="site-nav">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
+      </div>
+      <nav id="site-nav" class="site-nav" aria-label="Основная навигация">
+        <a href="/">Главная</a>
+        <a href="/kuda-postupat-posle-11-klassa/">Куда поступать</a>
+        <a href="/proforientaciya/">Профориентация</a>
         <a href="/vuzy/">Вузы</a>
         <a href="/specialnosti/">Специальности</a>
         <a href="/professiya/">Профессии</a>
-        <a href="/proforientaciya/">Профориентация</a>
         <a href="/regiony/">Регионы</a>
         <a href="/o-dannyh/">О данных</a>
       </nav>
       <Search />
     </div>
+    <script>
+      // Мобильное меню: тумблер класса .nav-open + синхронизация aria-expanded.
+      // Прогрессивное улучшение — без JS меню раскрыто (см. <noscript> в <head>).
+      const hdr = document.querySelector('.site-header');
+      const btn = hdr?.querySelector('.nav-toggle');
+      if (hdr && btn) {
+        btn.addEventListener('click', () => {
+          const open = hdr.classList.toggle('nav-open');
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.site-nav a').forEach((a) => a.addEventListener('click', () => {
+          hdr.classList.remove('nav-open');
+          btn.setAttribute('aria-expanded', 'false');
+        }));
+      }
+    </script>
   </header>
   <main class="container">
     <slot />
