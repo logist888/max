@@ -114,27 +114,19 @@ const facets: Facet[] = [
   { key: 'cost', label: 'Стоимость платного', type: 'range', unit: '₽/год', min: 0, step: 10000 },
 ];
 
-const title = `Каталог вузов России по алфавиту: ${catalogRows.length} организаций | ${meta.campaignYear}`;
+const title = `Каталог вузов России: ${catalogRows.length} организаций с фильтрами | ${meta.campaignYear}`;
 const description = `Все вузы России из данных «ВУЗ-навигатора» Госуслуг: ${catalogRows.length} организаций. Фильтры по региону, городу, направлению, уровню, форме обучения, бюджету, общежитию и стоимости. Приём ${meta.campaignYear}.`;
 ---
 <Base title={title} description={description}>
   <Breadcrumbs items={[{ name: 'Главная', url: '/' }, { name: 'Вузы' }]} />
   <h1>Каталог вузов России</h1>
-  <p class="meta">{catalogRows.length} организаций. Отфильтруйте по параметрам или выберите первую букву
-    названия — по акрониму или ключевому слову (правовая форма «ФГБОУ ВО», «Филиал» при сортировке не учитывается).</p>
+  <p class="meta">{catalogRows.length} организаций. Отфильтруйте по региону, городу, направлению, уровню,
+    форме обучения, наличию бюджета и другим параметрам, либо найдите вуз через поиск.</p>
 
   <Filters facets={facets} target="[data-filter-item]" itemNoun={['вуз', 'вуза', 'вузов']} />
   <p class="filters-empty" data-filters-empty hidden>По заданным фильтрам вузов не найдено. Снимите часть условий.</p>
 
   <div class="az-catalog">
-    <div class="az-tabs" role="tablist" aria-label="Буквы алфавита">
-      {letters.map((l) => (
-        <a class="az-tab" href={`#az-${l}`} data-letter={l} role="tab" aria-selected="false">
-          {l === '#' ? '#' : l}<span class="az-count">{groups[l].length}</span>
-        </a>
-      ))}
-    </div>
-
     {letters.map((l) => (
       <section class="az-group" data-letter={l} id={`az-${l}`}>
         <h2 class="az-heading">{l === '#' ? 'Прочие' : l}</h2>
@@ -148,67 +140,23 @@ const description = `Все вузы России из данных «ВУЗ-н�
   <Cta pageType="catalog" zone="after-row-10" />
 
   <style>
-    .az-catalog { scroll-margin-top: 76px; }
-    @media (max-width: 1023px) { .az-catalog { scroll-margin-top: 128px; } }
-    .az-tabs {
-      display: flex; flex-wrap: wrap; gap: var(--space-1);
-      margin: var(--space-4) 0 var(--space-6); padding: var(--space-2);
-      background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius);
-    }
-    .az-tab {
-      display: inline-flex; align-items: baseline; gap: 4px;
-      min-width: 2.1em; justify-content: center;
-      padding: 6px 9px; border-radius: 7px; font-weight: 600;
-      color: var(--text); background: transparent; border: 1px solid transparent;
-    }
-    .az-tab:hover { background: var(--surface-2); text-decoration: none; }
-    .az-tab .az-count { font-size: .7rem; font-weight: 500; color: var(--text-muted); }
-    .az-tab[aria-selected="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
-    .az-tab[aria-selected="true"] .az-count { color: rgba(255, 255, 255, .8); }
-    .az-heading { margin: var(--space-6) 0 var(--space-3); font-size: 1.6rem; color: var(--accent-strong); scroll-margin-top: 110px; }
-    /* JS-режим табов: показываем только активную группу. Без JS — все видны. */
-    .js-tabs .az-group { display: none; }
-    .js-tabs .az-group.active { display: block; }
-    .js-tabs .az-heading { display: none; }
-    /* Режим фильтрации: буквенные табы прячем, показываем все совпавшие группы с заголовками,
-       пустые группы скрываем. */
-    .az-catalog.filtering .az-tabs { display: none; }
-    .az-catalog.filtering .az-group { display: block; }
-    .az-catalog.filtering .az-heading { display: block; }
-    .az-catalog.filtering .az-group.group-empty { display: none; }
+    .az-heading { margin: var(--space-6) 0 var(--space-3); font-size: 1.6rem; color: var(--accent-strong); }
+    .az-group.group-empty { display: none; }
   </style>
 
   <script>
+    // Алфавитный указатель убран; список — сплошной, сгруппирован по буквам-разделителям.
+    // Скрипт только прячет пустые буквенные группы при активном фильтре.
     const wrap = document.querySelector<HTMLElement>('.az-catalog');
     if (wrap) {
-      wrap.classList.add('js-tabs');
-      const tabs = [...wrap.querySelectorAll<HTMLElement>('.az-tab')];
       const groupEls = [...wrap.querySelectorAll<HTMLElement>('.az-group')];
-      const activate = (letter: string) => {
-        groupEls.forEach((g) => g.classList.toggle('active', g.dataset.letter === letter));
-        tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.letter === letter)));
-      };
-      tabs.forEach((t) => t.addEventListener('click', (e) => {
-        e.preventDefault();
-        const l = t.dataset.letter!;
-        activate(l);
-        history.replaceState(null, '', `#az-${l}`);
-        wrap.scrollIntoView({ block: 'start' });
-      }));
-      const fromHash = decodeURIComponent(location.hash.replace('#az-', ''));
-      activate(tabs.some((t) => t.dataset.letter === fromHash) ? fromHash : tabs[0].dataset.letter!);
-
-      // Координация с фильтрами: при активном фильтре — режим результатов
-      // (все группы видимы, пустые скрыты, буквенные табы спрятаны).
       const syncAz = (active: boolean) => {
-        wrap.classList.toggle('filtering', active);
         groupEls.forEach((g) => {
           const has = active && g.querySelector('[data-filter-item]:not(.filtered-out)');
           g.classList.toggle('group-empty', active ? !has : false);
         });
       };
       document.addEventListener('filters:change', (e) => syncAz((e as CustomEvent).detail.activeCount > 0));
-      // Начальное состояние (напр. открыли по ссылке с фильтром) — после того, как фильтр применился.
       setTimeout(() => syncAz(new URLSearchParams(location.search).toString().length > 0), 0);
     }
   </script>
