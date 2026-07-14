@@ -1,16 +1,26 @@
-// Ингест зарплат (легальные госисточники) из подготовленного salary.json
-// (собран graph_salary.py: Росстат по проф. группам ОКЗ + медиана по вакансиям
-// «Работа России»). Узел Salary на занятие + ребро HAS_SALARY (Occupation→Salary).
-// hh.ru не используется — запрещён его соглашением (licenses: hh-api=blocked).
+// Ингест зарплат из подготовленного salary.json (собран graph_salary.py на базе
+// Росстата: средняя по проф. группам ОКЗ, окт-2023, индексирована к текущему уровню
+// РФ и с коэффициентом Москвы). Узел Salary на занятие + ребро HAS_SALARY.
+//
+// База — авторитетный Росстат; avgRF/avgMoscow — ПОМЕЧЕННАЯ ОЦЕНКА (индексация и
+// коэф. Москвы единые для всех групп). hh.ru и «Работа России» не используются
+// (licenses: hh-api=blocked; trudvsem — unused, системно занижает).
 
 import { readFileSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { resolve } from 'node:path';
+import type { Provenance } from '../types.ts';
 import type { Staged } from './index.ts';
-import { SRC, edge, node, prov } from './helpers.ts';
+import { SRC, edge, node } from './helpers.ts';
 
-interface RosstatFig { avg: number; currency: string; date: string; level?: string; }
-interface TrudvsemFig { median: number; p25: number; p75: number; count: number; currency: string; retrievedAt: string; }
-type SalaryRec = { rosstat?: RosstatFig; trudvsem?: TrudvsemFig };
+interface RosstatFig {
+  avgBase: number; baseDate: string; avgRF: number; avgMoscow: number;
+  indexedTo: string; indexFactor: number; moscowCoef: number;
+  matchLevel: string; matchCode: string; currency: string;
+  source: string; retrievedAt: string;
+}
+type SalaryRec = { rosstat?: RosstatFig };
+
+const rub = (n: number) => n.toLocaleString('ru-RU');
 
 export function ingestSalary(ctx: { appDir: string }): Staged {
   const path = resolve(ctx.appDir, '../data/graph/prepared/salary.json');
@@ -20,40 +30,42 @@ export function ingestSalary(ctx: { appDir: string }): Staged {
   const nodes = [];
   const edges = [];
   for (const [isco, rec] of Object.entries(data)) {
-    if (!rec.rosstat && !rec.trudvsem) continue;
-    const provenance = [];
-    if (rec.rosstat) provenance.push(prov(SRC.rosstat, isco));
-    if (rec.trudvsem) provenance.push(prov(SRC.trudvsem, isco));
+    const r = rec.rosstat;
+    if (!r) continue;
+    // Провенанс: авторитетный Росстат, дата базы = период обследования.
+    const provenance: Provenance[] = [{
+      source: SRC.rosstat.source, license: SRC.rosstat.license, method: SRC.rosstat.method,
+      sourceUrl: SRC.rosstat.sourceUrl, sourceId: r.matchCode, sourceDate: r.baseDate,
+      retrievedAt: r.retrievedAt,
+    }];
     const key = `${isco}`;
     nodes.push(node({
       type: 'Salary', key,
-      localIds: [{ scheme: 'isco08', value: isco }],
+      localIds: [{ scheme: 'okz', value: isco }],
       labels: { ru: `Зарплата — ${isco}` },
-      status: 'факт', confidence: 0.9,
+      status: 'факт', confidence: 0.8,
       provenance,
       attrs: {
         currency: 'RUB',
-        rosstatAvg: rec.rosstat?.avg ?? null,
-        rosstatDate: rec.rosstat?.date ?? null,
-        rosstatLevel: rec.rosstat?.level ?? null,
-        trudvsemMedian: rec.trudvsem?.median ?? null,
-        trudvsemP25: rec.trudvsem?.p25 ?? null,
-        trudvsemP75: rec.trudvsem?.p75 ?? null,
-        trudvsemCount: rec.trudvsem?.count ?? null,
-        trudvsemDate: rec.trudvsem?.retrievedAt ?? null,
+        avgBase: r.avgBase, baseDate: r.baseDate,
+        avgRF: r.avgRF, avgMoscow: r.avgMoscow,
+        indexedTo: r.indexedTo, indexFactor: r.indexFactor, moscowCoef: r.moscowCoef,
+        matchLevel: r.matchLevel,
+        // Явная пометка: avgRF/avgMoscow — оценка, не точный факт по группе.
+        estimate: true,
       },
     }));
-    const parts = [];
-    if (rec.rosstat) parts.push(`средняя по Росстату ${rec.rosstat.avg.toLocaleString('ru-RU')} ₽ (${rec.rosstat.date})`);
-    if (rec.trudvsem) parts.push(`медиана по вакансиям ${rec.trudvsem.median.toLocaleString('ru-RU')} ₽ (Работа России, ${rec.trudvsem.count} вак.)`);
     edges.push(edge({
       type: 'HAS_SALARY',
       from: `me:occupation:${isco}`,
       to: `me:salary:${key}`,
-      weight: null, confidence: 0.9, method: 'authoritative', status: 'факт',
+      weight: null, confidence: 0.8, method: 'authoritative', status: 'факт',
       provenance,
-      explanation: `Зарплата: ${parts.join('; ')}. Источники государственные, открытые.`,
+      explanation: `Оценка зарплаты: база Росстат (${r.matchLevel}, ${r.baseDate}) `
+        + `${rub(r.avgBase)} ₽ × индекс ${r.indexFactor} → по РФ ~${rub(r.avgRF)} ₽/мес; `
+        + `Москва ×${r.moscowCoef} → ~${rub(r.avgMoscow)} ₽/мес (${r.indexedTo}). `
+        + `Коэффициенты единые для всех групп — это помеченная оценка, не точный факт.`,
     }));
   }
-  return { nodes, edges, sources: nodes.length ? [{ source: 'Зарплаты (Росстат + Работа России)', records: nodes.length }] : [] };
+  return { nodes, edges, sources: nodes.length ? [{ source: 'Зарплаты (Росстат, индексировано)', records: nodes.length }] : [] };
 }

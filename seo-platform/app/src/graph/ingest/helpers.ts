@@ -13,7 +13,6 @@ export const SRC = {
   ugs: { source: 'Минобрнауки России, Перечень УГСН', license: 'minobr-ugs', method: 'authoritative' as Method },
   curated: { source: 'Экспертное курирование MainExperts', license: 'internal-curated', method: 'curated' as Method },
   rosstat: { source: 'Росстат (обследование по проф. группам ОКЗ)', license: 'rosstat', method: 'authoritative' as Method, sourceUrl: 'https://rosstat.gov.ru/labour_costs' },
-  trudvsem: { source: 'Работа России (trudvsem.ru)', license: 'trudvsem', method: 'authoritative' as Method, sourceUrl: 'https://trudvsem.ru' },
 } as const;
 
 export function prov(preset: { source: string; license: string; method: Method; sourceUrl?: string }, sourceId?: string): Provenance {

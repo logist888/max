@@ -23,10 +23,13 @@ export interface RouteLevel { level: string; slug: string; }
 // Направление, ведущее к профессии; уровни (бакалавриат/специалитет/…) собраны
 // в одну карточку — одноимённые коды разных уровней не дублируются.
 export interface RouteDirection { name: string; confidence: number; note: string; levels: RouteLevel[]; }
+// Зарплата — оценка на базе Росстата (окт-2023), индексирована к текущему уровню РФ;
+// Москва — по офиц. коэффициенту. Помеченная оценка, не точный факт по группе.
 export interface Salary {
-  rosstatAvg: number | null; rosstatDate: string | null;
-  trudvsemMedian: number | null; trudvsemP25: number | null; trudvsemP75: number | null;
-  trudvsemCount: number | null; trudvsemDate: string | null;
+  avgRF: number | null; avgMoscow: number | null;
+  avgBase: number | null; baseDate: string | null;
+  indexedTo: string | null; indexFactor: number | null; moscowCoef: number | null;
+  matchLevel: string | null;
 }
 export interface Profession {
   isco: string; slug: string; nameRu: string; nameEn: string; hasRuName: boolean;
@@ -113,13 +116,14 @@ export function graph() {
 
     const sNode = salaryByOcc.get(o.id);
     const salary: Salary | null = sNode ? {
-      rosstatAvg: (sNode.attrs.rosstatAvg as number) ?? null,
-      rosstatDate: (sNode.attrs.rosstatDate as string) ?? null,
-      trudvsemMedian: (sNode.attrs.trudvsemMedian as number) ?? null,
-      trudvsemP25: (sNode.attrs.trudvsemP25 as number) ?? null,
-      trudvsemP75: (sNode.attrs.trudvsemP75 as number) ?? null,
-      trudvsemCount: (sNode.attrs.trudvsemCount as number) ?? null,
-      trudvsemDate: (sNode.attrs.trudvsemDate as string) ?? null,
+      avgRF: (sNode.attrs.avgRF as number) ?? null,
+      avgMoscow: (sNode.attrs.avgMoscow as number) ?? null,
+      avgBase: (sNode.attrs.avgBase as number) ?? null,
+      baseDate: (sNode.attrs.baseDate as string) ?? null,
+      indexedTo: (sNode.attrs.indexedTo as string) ?? null,
+      indexFactor: (sNode.attrs.indexFactor as number) ?? null,
+      moscowCoef: (sNode.attrs.moscowCoef as number) ?? null,
+      matchLevel: (sNode.attrs.matchLevel as string) ?? null,
     } : null;
 
     return {

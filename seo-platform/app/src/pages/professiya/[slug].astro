@@ -36,18 +36,21 @@ const crumbs = [
   { name: 'Профессии', url: '/professiya/' },
   { name: p.nameRu },
 ];
-// Зарплата — только из легальных госисточников (Росстат авторитетно; Работа
-// России — медиана предлагаемой по вакансиям). Нет данных → «Информация отсутствует».
+// Зарплата — оценка на базе Росстата (обследование по проф. группам ОКЗ, окт-2023),
+// индексирована к текущему уровню РФ; Москва — по офиц. коэффициенту. Это помеченная
+// оценка (источник+метод+дата), не точный факт по группе. Нет данных → «Информация отсутствует».
 const rub = (n: number) => `${n.toLocaleString('ru-RU')} ₽`;
-const salaryLines: string[] = [];
-if (p.salary?.rosstatAvg) {
-  salaryLines.push(`Средняя по группе (Росстат, ${p.salary.rosstatDate}): ${rub(p.salary.rosstatAvg)}/мес`);
-}
-if (p.salary?.trudvsemMedian) {
-  const spread = p.salary.trudvsemP25 && p.salary.trudvsemP75
-    ? ` (${rub(p.salary.trudvsemP25)}–${rub(p.salary.trudvsemP75)}, ${p.salary.trudvsemCount} вак.)` : '';
-  salaryLines.push(`Медиана предлагаемой по вакансиям (Работа России, ${p.salary.trudvsemDate}): ${rub(p.salary.trudvsemMedian)}/мес${spread}`);
-}
+const s = p.salary;
+const hasSalary = !!(s && (s.avgRF || s.avgMoscow));
+const salaryNote = s
+  ? `Оценка на базе Росстата (обследование по проф. группам ОКЗ, ${s.baseDate}), `
+    + `индексирована к ${s.indexedTo} по офиц. росту зарплат РФ (×${s.indexFactor}); Москва ×${s.moscowCoef}. `
+    + `Коэффициенты единые для всех групп — это ориентир, не гарантированный доход.`
+  : '';
+const salaryShort = hasSalary
+  ? [s!.avgRF ? `по РФ ~${rub(s!.avgRF)}/мес` : null,
+     s!.avgMoscow ? `Москва ~${rub(s!.avgMoscow)}/мес` : null].filter(Boolean).join('; ')
+  : '';
 
 const faq = [
   {
@@ -64,9 +67,9 @@ const faq = [
   },
   {
     q: `Сколько зарабатывает «${p.nameRu}»?`,
-    a: salaryLines.length
-      ? `${salaryLines.join('. ')}. Данные из открытых государственных источников; предлагаемая зарплата по вакансиям отличается от фактической.`
-      : 'Данных о зарплате по этой группе в открытых государственных источниках (Росстат, Работа России) пока нет.',
+    a: hasSalary
+      ? `Ориентир: ${salaryShort}. ${salaryNote}`
+      : 'Данных о зарплате по этой группе в открытых государственных источниках (Росстат) пока нет.',
   },
 ];
 const jsonLd = [
@@ -85,8 +88,8 @@ const jsonLd = [
       <li><span class="label">Специализаций (ESCO)</span> {p.escoOccupationCount}</li>
     )}
     <li><span class="label">Зарплата</span>
-      {salaryLines.length
-        ? salaryLines.map((s, i) => (<>{i > 0 && <br />}{s}</>))
+      {hasSalary
+        ? (<>{salaryShort}<br /><span class="meta">{salaryNote}</span></>)
         : <span class="missing">Информация отсутствует</span>}</li>
   </ul>
 
