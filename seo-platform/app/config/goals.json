@@ -26,6 +26,8 @@
     { "pageType": "ugs", "zone": "after-list", "goal": "diagnostic" },
     { "pageType": "profession", "zone": "after-routes", "goal": "diagnostic" },
     { "pageType": "ranking", "zone": "after-list", "goal": "diagnostic" },
-    { "pageType": "profession-catalog", "zone": "after-intro", "goal": "diagnostic" }
+    { "pageType": "profession-catalog", "zone": "after-intro", "goal": "diagnostic" },
+    { "pageType": "guide", "zone": "after-intro", "goal": "diagnostic" },
+    { "pageType": "guide", "zone": "after-content", "goal": "diagnostic" }
   ]
 }
