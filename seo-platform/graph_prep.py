@@ -156,7 +156,7 @@ def main():
         if meta["level"] != 4:
             continue
         agg = occ_by_isco.get(code)
-        esco_labels = sorted(set(agg["escoLabels"]))[:12] if agg else []
+        esco_labels = sorted(set(agg["escoLabels"]))[:60] if agg else []
         occupations.append({
             "isco4": code,
             "titleEn": meta["titleEn"],

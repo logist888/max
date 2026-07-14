@@ -94,6 +94,19 @@ const jsonLd = [
 
   <Cta pageType="profession" zone="after-routes" />
 
+  {p.escoLabelsEn.length > 0 && (
+    <>
+      <h2>Специализации в этой группе</h2>
+      <p class="meta">Конкретные профессии внутри группы по международной
+        классификации ESCO (оригинал на английском; русская локализация — в работе).</p>
+      <div class="columns">
+        <ul>
+          {p.escoLabelsEn.map((s) => <li>{s}</li>)}
+        </ul>
+      </div>
+    </>
+  )}
+
   {essential.length > 0 && (
     <>
       <h2>Компетенции профессии</h2>
