@@ -8,7 +8,7 @@ import type { Facet } from '../../components/Filters.astro';
 import { db } from '../../lib/data.ts';
 import type { CatalogRow } from '../../lib/data.ts';
 
-const { catalogRows, cardById, regions, cities, ugs, meta } = db();
+const { catalogRows, cardById, regions, ugs, meta } = db();
 
 // Правовая форма / статус / «филиал» — не различительная часть имени вуза.
 // В shortName у 38% вузов имя начинается с «ФГБОУ ВО…», «АНОО ВО…», «Филиал…» —
@@ -42,23 +42,26 @@ function firstLetter(name: string): string {
   return /[А-ЯЁ]/.test(ch) ? ch : '#';
 }
 
-const groups: Record<string, CatalogRow[]> = {};
-for (const row of catalogRows) (groups[firstLetter(row.shortName)] ??= []).push(row);
-for (const l of Object.keys(groups)) {
-  groups[l].sort((a, b) =>
-    sortName(a.shortName).localeCompare(sortName(b.shortName), 'ru', { sensitivity: 'base' }));
-}
-
+// catalogRows уже отсортированы db() по числу направлений (desc) — это порядок DOM
+// и вид «По количеству направлений» (дефолт). Вид «По алфавиту» — через CSS order,
+// без пере-рендера: считаем алфавитный ранг каждого вуза.
 const ORDER = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ';
-const letters = Object.keys(groups).sort((a, b) => {
-  if (a === '#') return 1;
-  if (b === '#') return -1;
-  return ORDER.indexOf(a) - ORDER.indexOf(b);
+const letterRank = (l: string) => (l === '#' ? 999 : ORDER.indexOf(l));
+const alphaSorted = [...catalogRows].sort((a, b) => {
+  const d = letterRank(firstLetter(a.shortName)) - letterRank(firstLetter(b.shortName));
+  return d || sortName(a.shortName).localeCompare(sortName(b.shortName), 'ru', { sensitivity: 'base' });
 });
+const alphaRank = new Map<string, number>();
+const letterFirstRank = new Map<string, number>();
+alphaSorted.forEach((r, i) => {
+  alphaRank.set(r.id, i);
+  const l = firstLetter(r.shortName);
+  if (!letterFirstRank.has(l)) letterFirstRank.set(l, i);
+});
+const letters = [...letterFirstRank.keys()].sort((a, b) => letterRank(a) - letterRank(b));
 
-// data-* фасеты для клиентского фильтра. Форму обучения и укрупнённые группы вуза
-// агрегируем на билд-тайме из org-cards (offers.form и programsByLevel.directions.ugs) —
-// пайплайн не трогаем.
+// data-* фасеты + позиция для алфавитного вида. Форму обучения и укрупнённые группы
+// агрегируем из org-cards на билд-тайме (пайплайн не трогаем).
 function vuzFacet(row: CatalogRow): Record<string, string> {
   const card = cardById.get(row.id);
   const forms = new Set<string>();
@@ -68,8 +71,9 @@ function vuzFacet(row: CatalogRow): Record<string, string> {
     for (const g of card.programsByLevel) for (const d of g.directions) if (d.ugs) ugsCodes.add(d.ugs);
   }
   return {
+    'data-letter': firstLetter(row.shortName),
+    style: `--o:${2 * alphaRank.get(row.id)! + 1}`,
     'data-region': row.regionKey,
-    'data-city': row.cityKey,
     'data-kind': row.kind,
     'data-levels': (row.levels ?? []).join(','),
     'data-forms': [...forms].join(','),
@@ -85,16 +89,14 @@ function vuzFacet(row: CatalogRow): Record<string, string> {
 const regionOptions = [...regions]
   .sort((a, b) => a.displayName.localeCompare(b.displayName, 'ru'))
   .map((r) => ({ value: r.key, label: r.displayName }));
-const cityOptions = [...cities]
-  .sort((a, b) => a.displayName.localeCompare(b.displayName, 'ru'))
-  .map((c) => ({ value: c.key, label: c.displayName, parent: c.regionKey }));
 const ugsOptions = [...ugs]
   .sort((a, b) => a.code.localeCompare(b.code))
   .map((g) => ({ value: g.code, label: `${g.code} — ${g.name ?? ''}` }));
 
+// Город убран: нативный select-пикер iOS игнорирует option.hidden, зависимый список
+// город←регион там не сужался. Оставлен регион; вернём город позже (пере-создавая опции).
 const facets: Facet[] = [
   { key: 'region', label: 'Регион', type: 'select', placeholder: '— любой регион —', options: regionOptions },
-  { key: 'city', label: 'Город', type: 'select', placeholder: '— любой город —', options: cityOptions, dependsOn: 'region' },
   { key: 'ugs', label: 'Направление (укрупнённая группа)', type: 'select', placeholder: '— любая группа —', options: ugsOptions },
   { key: 'levels', label: 'Уровень', type: 'chip', chips: [
     { value: 'Бакалавриат', label: 'Бакалавриат' }, { value: 'Специалитет', label: 'Специалитет' },
@@ -115,49 +117,57 @@ const facets: Facet[] = [
 ];
 
 const title = `Каталог вузов России: ${catalogRows.length} организаций с фильтрами | ${meta.campaignYear}`;
-const description = `Все вузы России из данных «ВУЗ-навигатора» Госуслуг: ${catalogRows.length} организаций. Фильтры по региону, городу, направлению, уровню, форме обучения, бюджету, общежитию и стоимости. Приём ${meta.campaignYear}.`;
+const description = `Все вузы России из данных «ВУЗ-навигатора» Госуслуг: ${catalogRows.length} организаций. Фильтры по региону, направлению, уровню, форме обучения, бюджету, общежитию и стоимости; сортировка по числу направлений или алфавиту. Приём ${meta.campaignYear}.`;
 ---
 <Base title={title} description={description}>
   <Breadcrumbs items={[{ name: 'Главная', url: '/' }, { name: 'Вузы' }]} />
   <h1>Каталог вузов России</h1>
-  <p class="meta">{catalogRows.length} организаций. Отфильтруйте по региону, городу, направлению, уровню,
+  <p class="meta">{catalogRows.length} организаций. Отфильтруйте по региону, направлению, уровню,
     форме обучения, наличию бюджета и другим параметрам, либо найдите вуз через поиск.</p>
 
   <Filters facets={facets} target="[data-filter-item]" itemNoun={['вуз', 'вуза', 'вузов']} />
   <p class="filters-empty" data-filters-empty hidden>По заданным фильтрам вузов не найдено. Снимите часть условий.</p>
 
-  <div class="az-catalog">
-    {letters.map((l) => (
-      <section class="az-group" data-letter={l} id={`az-${l}`}>
-        <h2 class="az-heading">{l === '#' ? 'Прочие' : l}</h2>
-        <ul class="card-list">
-          {groups[l].map((row) => <OrgRow row={row} facet={vuzFacet(row)} />)}
-        </ul>
-      </section>
-    ))}
+  <div class="tabs" role="tablist" aria-label="Вид списка">
+    <button class="tab is-active" data-view="count" role="tab" aria-selected="true">По количеству направлений</button>
+    <button class="tab" data-view="alpha" role="tab" aria-selected="false">По алфавиту</button>
   </div>
+
+  <ul class="card-list vuz-list">
+    {catalogRows.map((row) => <OrgRow row={row} facet={vuzFacet(row)} />)}
+    {letters.map((l) => (
+      <li class="az-head" data-letter={l} style={`--o:${2 * letterFirstRank.get(l)!}`}>{l === '#' ? 'Прочие' : l}</li>
+    ))}
+  </ul>
 
   <Cta pageType="catalog" zone="after-row-10" />
 
-  <style>
-    .az-heading { margin: var(--space-6) 0 var(--space-3); font-size: 1.6rem; color: var(--accent-strong); }
-    .az-group.group-empty { display: none; }
-  </style>
-
   <script>
-    // Алфавитный указатель убран; список — сплошной, сгруппирован по буквам-разделителям.
-    // Скрипт только прячет пустые буквенные группы при активном фильтре.
-    const wrap = document.querySelector<HTMLElement>('.az-catalog');
-    if (wrap) {
-      const groupEls = [...wrap.querySelectorAll<HTMLElement>('.az-group')];
-      const syncAz = (active: boolean) => {
-        groupEls.forEach((g) => {
-          const has = active && g.querySelector('[data-filter-item]:not(.filtered-out)');
-          g.classList.toggle('group-empty', active ? !has : false);
-        });
+    // Два вида: «По количеству направлений» (DOM-порядок, дефолт) и «По алфавиту»
+    // (CSS order + буквы-разделители). Фильтр прячет карточки в обоих видах.
+    const list = document.querySelector<HTMLElement>('.vuz-list');
+    const tabs = [...document.querySelectorAll<HTMLButtonElement>('.tab')];
+    if (list && tabs.length) {
+      const heads = [...list.querySelectorAll<HTMLElement>('.az-head')];
+      const syncHeads = () => {
+        const alpha = list.classList.contains('alpha');
+        const seen = new Set<string>();
+        if (alpha) list.querySelectorAll<HTMLElement>('.card[data-letter]:not(.filtered-out)')
+          .forEach((c) => seen.add(c.dataset.letter!));
+        heads.forEach((h) => h.classList.toggle('head-empty', alpha && !seen.has(h.dataset.letter!)));
       };
-      document.addEventListener('filters:change', (e) => syncAz((e as CustomEvent).detail.activeCount > 0));
-      setTimeout(() => syncAz(new URLSearchParams(location.search).toString().length > 0), 0);
+      tabs.forEach((t) => t.addEventListener('click', () => {
+        const alpha = t.dataset.view === 'alpha';
+        tabs.forEach((x) => {
+          const on = x === t;
+          x.classList.toggle('is-active', on);
+          x.setAttribute('aria-selected', String(on));
+        });
+        list.classList.toggle('alpha', alpha);
+        syncHeads();
+      }));
+      document.addEventListener('filters:change', syncHeads);
+      setTimeout(syncHeads, 0);
     }
   </script>
 </Base>

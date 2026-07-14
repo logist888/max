@@ -384,6 +384,28 @@ details.level-group > div { padding: 0 var(--space-6) var(--space-4); }
   }
 }
 
+/* ---------- Переключатель видов (табы) — /professiya/, /vuzy/ */
+.tabs {
+  display: flex; gap: var(--space-2); flex-wrap: wrap;
+  margin: var(--space-6) 0 var(--space-4); border-bottom: 1px solid var(--border);
+}
+.tab {
+  appearance: none; background: none; border: 0; font: inherit; cursor: pointer;
+  padding: var(--space-3) var(--space-4); color: var(--text-muted);
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  transition: color .15s ease, border-color .15s ease;
+}
+.tab:hover { color: var(--text); }
+.tab.is-active { color: var(--accent-strong); border-bottom-color: var(--accent); font-weight: 600; }
+
+/* Каталог вузов: вид «По алфавиту» — буквы-разделители + порядок через CSS order.
+   Правила глобальные: карточки рендерит компонент OrgRow (другой scope), поэтому
+   scoped-стиль страницы до них не достаёт. */
+.az-head { display: none; margin: var(--space-4) 0 0; font-size: 1.5rem; font-weight: 700; color: var(--accent-strong); }
+.vuz-list.alpha .az-head { display: block; }
+.vuz-list.alpha .az-head.head-empty { display: none; }
+.vuz-list.alpha > li { order: var(--o, 0); }
+
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
   html { scroll-behavior: auto; }
