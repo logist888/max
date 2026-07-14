@@ -19,7 +19,10 @@ interface RawEdge {
 }
 
 export interface Competency { label: string; kind: 'essential' | 'optional'; weight: number | null; }
-export interface RouteDirection { okso: string; name: string; slug: string; confidence: number; note: string; }
+export interface RouteLevel { level: string; slug: string; }
+// Направление, ведущее к профессии; уровни (бакалавриат/специалитет/…) собраны
+// в одну карточку — одноимённые коды разных уровней не дублируются.
+export interface RouteDirection { name: string; confidence: number; note: string; levels: RouteLevel[]; }
 export interface Profession {
   isco: string; slug: string; nameRu: string; nameEn: string; hasRuName: boolean;
   definitionEn: string; tasksEn: string; escoLabelsEn: string[];
@@ -73,16 +76,28 @@ export function graph() {
       }))
       .filter((c) => c.label)
       .sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0));
-    const routes: RouteDirection[] = (routesByOcc.get(o.id) ?? []).map((e) => {
+    // Группируем направления по названию: одно и то же поле на разных уровнях
+    // (бакалавриат/специалитет/магистратура/зонтичный код) — одна карточка,
+    // внутри — доступные уровни ссылками. Иначе одноимённые карточки дублируются.
+    const LEVEL_ORDER = ['Бакалавриат', 'Специалитет', 'Магистратура',
+      'Базовое высшее образование', 'Специализированное высшее образование', 'Аспирантура'];
+    const grp = new Map<string, { name: string; confidence: number; note: string; levels: Map<string, string> }>();
+    for (const e of routesByOcc.get(o.id) ?? []) {
       const d = dirById.get(e.from);
-      return {
-        okso: d?.localIds.find((l) => l.scheme === 'okso')?.value ?? '',
-        name: d?.labels.ru ?? '',
-        slug: (d?.attrs.slug as string) ?? '',
-        confidence: e.confidence,
-        note: e.explanation,
-      };
-    }).filter((r) => r.name && r.slug).sort((a, b) => b.confidence - a.confidence);
+      const name = d?.labels.ru ?? '';
+      const slug = (d?.attrs.slug as string) ?? '';
+      const level = (d?.attrs.level as string) ?? '';
+      if (!name || !slug) continue;
+      const g = grp.get(name) ?? { name, confidence: e.confidence, note: e.explanation, levels: new Map() };
+      g.confidence = Math.max(g.confidence, e.confidence);
+      if (level && !g.levels.has(level)) g.levels.set(level, slug);
+      grp.set(name, g);
+    }
+    const routes: RouteDirection[] = [...grp.values()].map((g) => ({
+      name: g.name, confidence: g.confidence, note: g.note,
+      levels: [...g.levels.entries()].map(([level, slug]) => ({ level, slug }))
+        .sort((a, b) => ((LEVEL_ORDER.indexOf(a.level) + 99) % 99) - ((LEVEL_ORDER.indexOf(b.level) + 99) % 99)),
+    })).sort((a, b) => b.confidence - a.confidence || a.name.localeCompare(b.name, 'ru'));
 
     return {
       isco, slug: `${slugify(nameRu).slice(0, 60)}-${isco}`,
@@ -98,13 +113,18 @@ export function graph() {
   }).sort((a, b) => a.nameRu.localeCompare(b.nameRu, 'ru'));
 
   const bySlug = new Map(professions.map((p) => [p.slug, p]));
+  // Обратная карта: ОКСО направления → профессии. Строим прямо из рёбер LEADS_TO
+  // (routes схлопнуты по названию и не хранят okso).
+  const profByIsco = new Map(professions.map((p) => [p.isco, p]));
   const byDirectionOkso = new Map<string, { slug: string; nameRu: string; confidence: number }[]>();
-  for (const p of professions) {
-    for (const r of p.routes) {
-      const arr = byDirectionOkso.get(r.okso) ?? [];
-      arr.push({ slug: p.slug, nameRu: p.nameRu, confidence: r.confidence });
-      byDirectionOkso.set(r.okso, arr);
-    }
+  for (const e of edges) {
+    if (e.type !== 'LEADS_TO') continue;
+    const okso = e.from.replace('me:educationdirection:', '');
+    const p = profByIsco.get(e.to.replace('me:occupation:', ''));
+    if (!p) continue;
+    const arr = byDirectionOkso.get(okso) ?? [];
+    arr.push({ slug: p.slug, nameRu: p.nameRu, confidence: e.confidence });
+    byDirectionOkso.set(okso, arr);
   }
   for (const arr of byDirectionOkso.values()) arr.sort((a, b) => b.confidence - a.confidence);
   cache = { professions, bySlug, byDirectionOkso };

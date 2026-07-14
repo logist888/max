@@ -81,7 +81,10 @@ const jsonLd = [
       <ul class="card-list">
         {p.routes.map((r) => (
           <li class="card">
-            <h3><a href={`/specialnost/${r.slug}/`}>{r.name}</a></h3>
+            <h3>{r.name}</h3>
+            <p class="meta">Уровни: {r.levels.map((lv, i) => (
+              <>{i > 0 && ', '}<a href={`/specialnost/${lv.slug}/`}>{lv.level.toLowerCase()}</a></>
+            ))}</p>
             <p class="meta">Сопоставление MainExperts · уверенность {Math.round(r.confidence * 100)}%</p>
           </li>
         ))}
