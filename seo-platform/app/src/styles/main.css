@@ -121,13 +121,10 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 .header-top { display: flex; align-items: center; gap: 10px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; color: var(--text); font-size: 1.05rem; }
 .brand:hover { color: var(--text); text-decoration: none; }
-.brand-mark {
-  width: 30px; height: 30px; border-radius: 9px; flex: none;
-  background: linear-gradient(135deg, var(--grad-a), var(--grad-b));
-  color: #fff; display: inline-flex; align-items: center; justify-content: center;
-  font-size: .95rem; font-weight: 800;
-}
+.brand-mark { height: 30px; width: auto; flex: none; display: block; }
 .site-nav { display: flex; gap: var(--space-4); flex-wrap: wrap; }
+/* «Главная» дублирует клик по логотипу — на десктопе прячем, в бургере оставляем */
+@media (min-width: 1024px) { .site-nav a.nav-home { display: none; } }
 .site-nav a { color: var(--text-muted); font-weight: 500; padding: 6px 2px; }
 .site-nav a:hover { color: var(--text); text-decoration: none; }
 .nav-toggle { display: none; }

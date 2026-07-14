@@ -19,6 +19,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#8a531f" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
   <link rel="preload" href="/fonts/inter-cyr.woff2" as="font" type="font/woff2" crossorigin />
   <title>{title}</title>
   <meta name="description" content={description} />
@@ -44,14 +46,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   <header class="site-header">
     <div class="container">
       <div class="header-top">
-        <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">К</span>Куда поступать</a>
+        <a class="brand" href="/"><img class="brand-mark" src="/logo.png" alt="" width="41" height="30" />Куда поступать</a>
         <button class="nav-toggle" type="button" aria-label="Меню"
           aria-expanded="false" aria-controls="site-nav">
           <span class="nav-toggle-bars" aria-hidden="true"></span>
         </button>
       </div>
       <nav id="site-nav" class="site-nav" aria-label="Основная навигация">
-        <a href="/">Главная</a>
+        <a href="/" class="nav-home">Главная</a>
         <a href="/kuda-postupat-posle-11-klassa/">Куда поступать</a>
         <a href="/proforientaciya/">Профориентация</a>
         <a href="/vuzy/">Вузы</a>
