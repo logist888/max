@@ -252,7 +252,7 @@ details.level-group > div { padding: 0 var(--space-6) var(--space-4); }
 .columns { columns: 2; column-gap: var(--space-8); }
 @media (min-width: 768px) { .columns { columns: 3; } }
 .columns ul { margin: 0; padding-left: 1.2em; }
-.columns li { margin-bottom: 6px; }
+.columns li { margin-bottom: 6px; break-inside: avoid; -webkit-column-break-inside: avoid; }
 
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
