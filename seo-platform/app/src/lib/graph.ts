@@ -23,6 +23,7 @@ export interface RouteDirection { okso: string; name: string; slug: string; conf
 export interface Profession {
   isco: string; slug: string; nameRu: string; nameEn: string; hasRuName: boolean;
   definitionEn: string; tasksEn: string; escoLabelsEn: string[];
+  okzExamples: string[];
   parentIsco3: string; escoOccupationCount: number;
   competencies: Competency[];      // авторитетно (ESCO)
   routes: RouteDirection[];        // курируемо (гипотеза) — сопоставление, не факт
@@ -89,6 +90,7 @@ export function graph() {
       definitionEn: (o.attrs.definitionEn as string) ?? '',
       tasksEn: (o.attrs.tasksEn as string) ?? '',
       escoLabelsEn: (o.attrs.escoLabelsEn as string[]) ?? [],
+      okzExamples: (o.attrs.okzExamples as string[]) ?? [],
       parentIsco3: (o.attrs.parentIsco3 as string) ?? isco.slice(0, 3),
       escoOccupationCount: (o.attrs.escoOccupationCount as number) ?? 0,
       competencies, routes,

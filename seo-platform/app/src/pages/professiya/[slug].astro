@@ -94,7 +94,20 @@ const jsonLd = [
 
   <Cta pageType="profession" zone="after-routes" />
 
-  {p.escoLabelsEn.length > 0 && (
+  {p.okzExamples.length > 0 && (
+    <>
+      <h2>Примеры профессий в этой группе</h2>
+      <p class="meta">Конкретные профессии внутри группы — примеры занятий по
+        ОКЗ ОК 010-2014 (Общероссийский классификатор занятий).</p>
+      <div class="columns">
+        <ul>
+          {p.okzExamples.map((s) => <li>{s}</li>)}
+        </ul>
+      </div>
+    </>
+  )}
+
+  {false && p.escoLabelsEn.length > 0 && (
     <>
       <h2>Специализации в этой группе</h2>
       <p class="meta">Конкретные профессии внутри группы по международной

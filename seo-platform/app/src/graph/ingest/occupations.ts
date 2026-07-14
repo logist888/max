@@ -10,7 +10,8 @@ import { SRC, edge, escoSkillKey, node, prov } from './helpers.ts';
 
 interface PrepOcc {
   isco4: string; titleEn: string; definitionEn: string; tasksEn: string;
-  labelRu: string | null; escoOccupationCount: number; escoLabelsEn: string[]; parent3: string;
+  labelRu: string | null; escoOccupationCount: number; escoLabelsEn: string[];
+  okzExamples: string[]; parent3: string;
 }
 interface PrepComp { uri: string; labelEn: string; skillType: string; }
 interface PrepOC { isco4: string; skill: string; kind: 'essential' | 'optional'; weight: number; }
@@ -39,6 +40,7 @@ export function ingestOccupations(ctx: { appDir: string }): Staged {
       attrs: {
         definitionEn: o.definitionEn, tasksEn: o.tasksEn,
         escoOccupationCount: o.escoOccupationCount, escoLabelsEn: o.escoLabelsEn,
+        okzExamples: o.okzExamples,
         parentIsco3: o.parent3,
       },
     }));

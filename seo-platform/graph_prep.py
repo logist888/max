@@ -82,6 +82,50 @@ def load_okz_labels(pdf):
     return labels
 
 
+def load_okz_examples(pdf):
+    """«Примеры занятий» из ОКЗ ОК 010-2014 по каждой начальной группе (4 знака).
+    Это авторитетные русские названия профессий внутри группы, из того же
+    классификатора, что и сами группы — связь точная, без кроссволка."""
+    import pypdf
+    r = pypdf.PdfReader(pdf)
+    lines = []
+    for p in r.pages:
+        lines += (p.extract_text() or "").split("\n")
+    hdr = re.compile(r"^\s*(\d{4})\s+[А-ЯЁ]")
+    headers = [(i, hdr.match(l).group(1)) for i, l in enumerate(lines) if hdr.match(l)]
+    examples = {}
+    for k, (idx, code) in enumerate(headers):
+        end = headers[k + 1][0] if k + 1 < len(headers) else len(lines)
+        block = lines[idx:end]
+        pi = next((j for j, l in enumerate(block) if "Примеры занятий" in l), None)
+        if pi is None:
+            continue
+        items = []
+        for l in block[pi + 1:]:
+            s = l.strip()
+            if not s:
+                continue
+            # хвост «Некоторые родственные занятия…» и перекрёстные ссылки — не наши
+            if "родственные занятия" in s or "отнесенные к другим" in s:
+                break
+            if re.match(r"^\d{4}\s", s):
+                break
+            if not re.search("[А-Яа-яЁё]", s):
+                continue
+            if s[0].islower() and items:  # склейка перенесённой строки
+                items[-1] += " " + s
+            else:
+                items.append(s)
+        # дедуп с сохранением порядка
+        seen = []
+        for x in items:
+            if x not in seen:
+                seen.append(x)
+        if seen:
+            examples[code] = seen[:40]
+    return examples
+
+
 def load_esco(jsonld):
     data = json.load(open(jsonld, "r", encoding="utf-8"))
     g = data["@graph"]
@@ -145,6 +189,7 @@ def main():
 
     isco = load_isco(raw / "isco08.xlsx")
     okz = load_okz_labels(raw / "okz.pdf")
+    okz_examples = load_okz_examples(raw / "okz.pdf")
     esco_file = next((raw / "esco_x").glob("*.json-ld"))
     skills, occ_by_isco = load_esco(esco_file)
 
@@ -165,6 +210,7 @@ def main():
             "labelRu": okz.get(code),  # может быть None
             "escoOccupationCount": (agg["occCount"] if agg else 0),
             "escoLabelsEn": esco_labels,
+            "okzExamples": okz_examples.get(code, []),
             "parent3": code[:3],
         })
         if not agg or agg["occCount"] == 0:
