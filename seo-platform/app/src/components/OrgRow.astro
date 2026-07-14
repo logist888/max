@@ -2,11 +2,14 @@
 import type { CatalogRow } from '../lib/data.ts';
 import { costPhrase, plural } from '../lib/text.ts';
 
-interface Props { row: CatalogRow }
-const { row } = Astro.props;
+// facet — необязательные data-* атрибуты для клиентского фильтра (см. Filters.astro).
+// Передаётся страницей каталога; при наличии карточка становится [data-filter-item].
+interface Props { row: CatalogRow; facet?: Record<string, string> }
+const { row, facet } = Astro.props;
 const cost = costPhrase(row.costRange);
+const attrs = facet ? { 'data-filter-item': '', ...facet } : {};
 ---
-<li class="card">
+<li class="card" {...attrs}>
   <h3><a href={`/vuz/${row.slug}/`}>{row.shortName}</a></h3>
   <p class="meta">
     {row.cityName}, {row.regionKey}

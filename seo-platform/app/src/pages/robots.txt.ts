@@ -7,7 +7,10 @@ import type { APIRoute } from 'astro';
 // подстраивается сам, править ничего не нужно.
 export const GET: APIRoute = ({ site }) => {
   const real = site && site.hostname !== 'localhost';
-  const lines = ['User-agent: *', 'Allow: /', ''];
+  // Состояние фильтров каталога живёт в query-параметрах (?region=…&level=…).
+  // Canonical в Base.astro срезает query, но для экономии краул-бюджета запрещаем
+  // обход любых URL с параметрами — контент и так весь доступен по чистым путям.
+  const lines = ['User-agent: *', 'Disallow: /*?', 'Allow: /$', 'Allow: /', ''];
   if (real) lines.push(`Sitemap: ${new URL('sitemap-index.xml', site).href}`, '');
   return new Response(lines.join('\n'), {
     headers: { 'Content-Type': 'text/plain; charset=utf-8' },
