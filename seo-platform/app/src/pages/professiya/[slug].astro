@@ -36,6 +36,19 @@ const crumbs = [
   { name: 'Профессии', url: '/professiya/' },
   { name: p.nameRu },
 ];
+// Зарплата — только из легальных госисточников (Росстат авторитетно; Работа
+// России — медиана предлагаемой по вакансиям). Нет данных → «Информация отсутствует».
+const rub = (n: number) => `${n.toLocaleString('ru-RU')} ₽`;
+const salaryLines: string[] = [];
+if (p.salary?.rosstatAvg) {
+  salaryLines.push(`Средняя по группе (Росстат, ${p.salary.rosstatDate}): ${rub(p.salary.rosstatAvg)}/мес`);
+}
+if (p.salary?.trudvsemMedian) {
+  const spread = p.salary.trudvsemP25 && p.salary.trudvsemP75
+    ? ` (${rub(p.salary.trudvsemP25)}–${rub(p.salary.trudvsemP75)}, ${p.salary.trudvsemCount} вак.)` : '';
+  salaryLines.push(`Медиана предлагаемой по вакансиям (Работа России, ${p.salary.trudvsemDate}): ${rub(p.salary.trudvsemMedian)}/мес${spread}`);
+}
+
 const faq = [
   {
     q: `Где учиться на профессию «${p.nameRu}»?`,
@@ -51,7 +64,9 @@ const faq = [
   },
   {
     q: `Сколько зарабатывает «${p.nameRu}»?`,
-    a: 'Данных о зарплате в источниках графа пока нет — раздел появится после подключения проверенного источника рынка труда.',
+    a: salaryLines.length
+      ? `${salaryLines.join('. ')}. Данные из открытых государственных источников; предлагаемая зарплата по вакансиям отличается от фактической.`
+      : 'Данных о зарплате по этой группе в открытых государственных источниках (Росстат, Работа России) пока нет.',
   },
 ];
 const jsonLd = [
@@ -69,7 +84,10 @@ const jsonLd = [
     {p.escoOccupationCount > 0 && (
       <li><span class="label">Специализаций (ESCO)</span> {p.escoOccupationCount}</li>
     )}
-    <li><span class="label">Зарплата</span> <span class="missing">Информация отсутствует</span></li>
+    <li><span class="label">Зарплата</span>
+      {salaryLines.length
+        ? salaryLines.map((s, i) => (<>{i > 0 && <br />}{s}</>))
+        : <span class="missing">Информация отсутствует</span>}</li>
   </ul>
 
   <h2>Куда поступать</h2>

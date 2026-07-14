@@ -23,6 +23,11 @@ export interface RouteLevel { level: string; slug: string; }
 // Направление, ведущее к профессии; уровни (бакалавриат/специалитет/…) собраны
 // в одну карточку — одноимённые коды разных уровней не дублируются.
 export interface RouteDirection { name: string; confidence: number; note: string; levels: RouteLevel[]; }
+export interface Salary {
+  rosstatAvg: number | null; rosstatDate: string | null;
+  trudvsemMedian: number | null; trudvsemP25: number | null; trudvsemP75: number | null;
+  trudvsemCount: number | null; trudvsemDate: string | null;
+}
 export interface Profession {
   isco: string; slug: string; nameRu: string; nameEn: string; hasRuName: boolean;
   definitionEn: string; tasksEn: string; escoLabelsEn: string[];
@@ -30,6 +35,7 @@ export interface Profession {
   parentIsco3: string; escoOccupationCount: number;
   competencies: Competency[];      // авторитетно (ESCO)
   routes: RouteDirection[];        // курируемо (гипотеза) — сопоставление, не факт
+  salary: Salary | null;           // авторитетно (Росстат / Работа России)
 }
 
 function loadJsonl<T>(name: string): T[] {
@@ -52,15 +58,21 @@ export function graph() {
   const occ = nodes.filter((n) => n.type === 'Occupation');
   const compById = new Map(nodes.filter((n) => n.type === 'Competency').map((n) => [n.id, n]));
   const dirById = new Map(nodes.filter((n) => n.type === 'EducationDirection').map((n) => [n.id, n]));
+  const salaryById = new Map(nodes.filter((n) => n.type === 'Salary').map((n) => [n.id, n]));
 
-  // REQUIRES: профессия → компетенция; LEADS_TO: направление → профессия
+  // REQUIRES: профессия → компетенция; LEADS_TO: направление → профессия;
+  // HAS_SALARY: профессия → зарплата
   const reqByOcc = new Map<string, RawEdge[]>();
   const routesByOcc = new Map<string, RawEdge[]>();
+  const salaryByOcc = new Map<string, RawNode>();
   for (const e of edges) {
     if (e.type === 'REQUIRES') {
       (reqByOcc.get(e.from) ?? reqByOcc.set(e.from, []).get(e.from)!).push(e);
     } else if (e.type === 'LEADS_TO') {
       (routesByOcc.get(e.to) ?? routesByOcc.set(e.to, []).get(e.to)!).push(e);
+    } else if (e.type === 'HAS_SALARY') {
+      const s = salaryById.get(e.to);
+      if (s) salaryByOcc.set(e.from, s);
     }
   }
 
@@ -99,6 +111,17 @@ export function graph() {
         .sort((a, b) => ((LEVEL_ORDER.indexOf(a.level) + 99) % 99) - ((LEVEL_ORDER.indexOf(b.level) + 99) % 99)),
     })).sort((a, b) => b.confidence - a.confidence || a.name.localeCompare(b.name, 'ru'));
 
+    const sNode = salaryByOcc.get(o.id);
+    const salary: Salary | null = sNode ? {
+      rosstatAvg: (sNode.attrs.rosstatAvg as number) ?? null,
+      rosstatDate: (sNode.attrs.rosstatDate as string) ?? null,
+      trudvsemMedian: (sNode.attrs.trudvsemMedian as number) ?? null,
+      trudvsemP25: (sNode.attrs.trudvsemP25 as number) ?? null,
+      trudvsemP75: (sNode.attrs.trudvsemP75 as number) ?? null,
+      trudvsemCount: (sNode.attrs.trudvsemCount as number) ?? null,
+      trudvsemDate: (sNode.attrs.trudvsemDate as string) ?? null,
+    } : null;
+
     return {
       isco, slug: `${slugify(nameRu).slice(0, 60)}-${isco}`,
       nameRu, nameEn, hasRuName: !!o.labels.ru,
@@ -108,7 +131,7 @@ export function graph() {
       okzExamples: (o.attrs.okzExamples as string[]) ?? [],
       parentIsco3: (o.attrs.parentIsco3 as string) ?? isco.slice(0, 3),
       escoOccupationCount: (o.attrs.escoOccupationCount as number) ?? 0,
-      competencies, routes,
+      competencies, routes, salary,
     };
   }).sort((a, b) => a.nameRu.localeCompare(b.nameRu, 'ru'));
 

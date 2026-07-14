@@ -7,6 +7,7 @@ import type { GraphEdge, GraphNode } from '../types.ts';
 import { ingestEducation } from './education.ts';
 import { ingestOccupations } from './occupations.ts';
 import { ingestCuration } from './curation.ts';
+import { ingestSalary } from './salary.ts';
 
 export interface Staged { nodes: GraphNode[]; edges: GraphEdge[]; sources: { source: string; localFile?: string; records?: number }[] }
 
@@ -25,6 +26,7 @@ export const INGESTORS: Ingestor[] = [
   ingestEducation,
   ingestOccupations,
   ingestCuration,
+  ingestSalary,
 ];
 
 export async function ingestAll(ctx: IngestContext): Promise<Staged> {
