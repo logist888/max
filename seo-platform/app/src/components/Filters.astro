@@ -11,7 +11,7 @@
 //   toggle — булев тумблер (item data-<key>="1")
 //   range  — диапазон «от/до» (item data-<key>-min / data-<key>-max; пересечение)
 
-export interface FacetChip { value: string; label: string }
+export interface FacetChip { value: string; label: string; parent?: string }
 export interface Facet {
   key: string;
   label: string;
@@ -22,6 +22,7 @@ export interface Facet {
   unit?: string;               // для range
   min?: number; max?: number; step?: number;
   placeholder?: string;        // для select («— Все —»)
+  dependsOn?: string;          // select зависит от другого select (город ← регион)
 }
 interface Props {
   facets: Facet[];
@@ -67,9 +68,9 @@ for (const f of facets) {
             </div>
           )}
           {f.type === 'select' && (
-            <select class="filter-select" data-facet={f.key} aria-label={f.label}>
+            <select class="filter-select" data-facet={f.key} data-depends={f.dependsOn ?? ''} aria-label={f.label}>
               <option value="">{f.placeholder ?? '— любой —'}</option>
-              {f.options!.map((o) => <option value={o.value}>{o.label}</option>)}
+              {f.options!.map((o) => <option value={o.value} data-parent={o.parent ?? ''}>{o.label}</option>)}
             </select>
           )}
           {f.type === 'toggle' && (
@@ -188,7 +189,27 @@ for (const f of facets) {
       history.replaceState(null, '', qs ? '?' + qs + location.hash : location.pathname + location.hash);
     }
 
+    // Зависимые списки: город показывает только города выбранного региона; если
+    // текущий город не из региона — сбрасываем. Идемпотентно, зовём в начале apply().
+    function syncDependents() {
+      selects.forEach((sel) => {
+        const dep = sel.dataset.depends;
+        if (!dep) return;
+        const parent = selects.find((s) => s.dataset.facet === dep);
+        const pv = parent ? parent.value : '';
+        let hideCurrent = false;
+        Array.from(sel.options).forEach((opt) => {
+          if (opt.value === '') { opt.hidden = false; return; }
+          const hide = pv !== '' && opt.dataset.parent !== pv;
+          opt.hidden = hide;
+          if (hide && opt.value === sel.value) hideCurrent = true;
+        });
+        if (hideCurrent) sel.value = '';
+      });
+    }
+
     function apply() {
+      syncDependents();
       const state = readState();
       const activeCount = Object.keys(state).length;
       let shown = 0;

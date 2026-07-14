@@ -87,14 +87,14 @@ const regionOptions = [...regions]
   .map((r) => ({ value: r.key, label: r.displayName }));
 const cityOptions = [...cities]
   .sort((a, b) => a.displayName.localeCompare(b.displayName, 'ru'))
-  .map((c) => ({ value: c.key, label: c.displayName }));
+  .map((c) => ({ value: c.key, label: c.displayName, parent: c.regionKey }));
 const ugsOptions = [...ugs]
   .sort((a, b) => a.code.localeCompare(b.code))
   .map((g) => ({ value: g.code, label: `${g.code} — ${g.name ?? ''}` }));
 
 const facets: Facet[] = [
   { key: 'region', label: 'Регион', type: 'select', placeholder: '— любой регион —', options: regionOptions },
-  { key: 'city', label: 'Город', type: 'select', placeholder: '— любой город —', options: cityOptions },
+  { key: 'city', label: 'Город', type: 'select', placeholder: '— любой город —', options: cityOptions, dependsOn: 'region' },
   { key: 'ugs', label: 'Направление (укрупнённая группа)', type: 'select', placeholder: '— любая группа —', options: ugsOptions },
   { key: 'levels', label: 'Уровень', type: 'chip', chips: [
     { value: 'Бакалавриат', label: 'Бакалавриат' }, { value: 'Специалитет', label: 'Специалитет' },
