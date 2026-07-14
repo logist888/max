@@ -7,18 +7,18 @@
   "hseName": "Адыгейский гос. ун-т., г. Майкоп"
  },
  "fgbou-vo-altayskiy-gau-1213": {
-  "budget": 64.9,
-  "paid": 55.4,
-  "nBudget": 875,
+  "budget": 59.7,
+  "paid": 48.7,
+  "nBudget": 447,
   "year": 2025,
-  "hseName": "Саратовский гос. аграрный ун-т. им. Н.И. Вавилова"
+  "hseName": "Алтайский гос. аграрный ун-т., г. Барнаул"
  },
- "fgbou-vo-altayskiy-gosudarstvennyy-universitet-altgu-4": {
-  "budget": 70.8,
-  "paid": 58.1,
-  "nBudget": 1423,
+ "fgbou-vo-agmu-minzdrava-rossii-1204": {
+  "budget": 64.3,
+  "paid": 55.0,
+  "nBudget": 701,
   "year": 2025,
-  "hseName": "Алтайский гос. ун-т., г. Барнаул"
+  "hseName": "Алтайский гос. медицинский ун-т., г. Барнаул"
  },
  "fgbou-vo-altgpu-1034": {
   "budget": 62.4,
@@ -33,6 +33,20 @@
   "nBudget": 965,
   "year": 2025,
   "hseName": "Алтайский гос. техн. ун-т. им. И.И. Ползунова, г. Барнаул"
+ },
+ "fgbou-vo-altayskiy-gosudarstvennyy-universitet-altgu-4": {
+  "budget": 70.8,
+  "paid": 58.1,
+  "nBudget": 1423,
+  "year": 2025,
+  "hseName": "Алтайский гос. ун-т., г. Барнаул"
+ },
+ "altayskiy-filial-ranhigs-1864": {
+  "budget": 74.6,
+  "paid": 59.9,
+  "nBudget": 56,
+  "year": 2025,
+  "hseName": "Алтайский филиал РАНХиГС"
  },
  "gaou-vo-agtu-vshn-1373": {
   "budget": 69.5,
@@ -54,13 +68,6 @@
   "nBudget": 180,
   "year": 2025,
   "hseName": "Амурский гуманитарно-педагогический гос. ун-т., г. Комсомольск-на-Амуре"
- },
- "amizht-filial-dvgups-v-g-svobodnom-1343": {
-  "budget": 59.9,
-  "paid": null,
-  "nBudget": 33,
-  "year": 2025,
-  "hseName": "Амурский ин-т. железнодорожного транспорта - филиал Дальневосточного государственного ун-т.а путей сообщения в г. Свободном"
  },
  "fgbou-vo-angtu-1169": {
   "budget": 66.5,
@@ -84,18 +91,18 @@
   "hseName": "Армавирский гос. педагогический ун-т."
  },
  "fgbou-vo-agtu-132": {
+  "budget": 57.5,
+  "paid": 49.4,
+  "nBudget": 618,
+  "year": 2025,
+  "hseName": "Астраханский гос. техн. ун-т."
+ },
+ "fgbou-vo-astrahanskiy-gosudarstvennyy-universitet-im-v-n-tat-171": {
   "budget": 63.5,
   "paid": 58.0,
   "nBudget": 759,
   "year": 2025,
   "hseName": "Астраханский гос. ун-т."
- },
- "bamizht-filial-dvgups-v-g-tynde-1345": {
-  "budget": 55.1,
-  "paid": null,
-  "nBudget": 28,
-  "year": 2025,
-  "hseName": "Байкало-Амурский ин-т. железнодорожного транспорта - филиал Дальневосточного государственного ун-т.а путей сообщения в г. Тынде"
  },
  "fgbou-vo-bgu-1075": {
   "budget": 70.6,
@@ -119,6 +126,13 @@
   "hseName": "Балтийский федеральный ун-т. им. И. Канта"
  },
  "fgbou-vo-bashkirskiy-gau-1023": {
+  "budget": 59.0,
+  "paid": 53.2,
+  "nBudget": 727,
+  "year": 2025,
+  "hseName": "Башкирский гос. аграрный ун-т., г. Уфа"
+ },
+ "fgbou-vo-bgmu-minzdrava-rossii-147": {
   "budget": 70.1,
   "paid": 65.1,
   "nBudget": 1127,
@@ -153,19 +167,19 @@
   "year": 2025,
   "hseName": "Белгородский гос. технол. ун-т. им. В.Г. Шухова"
  },
+ "birskiy-filial-fgbou-vo-ufimskiy-universitet-nauki-i-tehnolo-1997": {
+  "budget": 60.2,
+  "paid": 77.5,
+  "nBudget": 227,
+  "year": 2025,
+  "hseName": "Бирский филиал Уфимского ун-т.а науки и технологий"
+ },
  "fgbou-vo-bgpu-1168": {
   "budget": 57.8,
   "paid": 54.8,
   "nBudget": 437,
   "year": 2025,
   "hseName": "Благовещенский гос. педагогический ун-т."
- },
- "boksitogorskiy-institut-filial-gaou-vo-lo-lgu-im-a-s-pushkin-2086": {
-  "budget": 58.1,
-  "paid": null,
-  "nBudget": 15,
-  "year": 2025,
-  "hseName": "Бокситогорский ин-т. (филиал) Ленинградского государственного ун-т.а им. А.С. Пушкина"
  },
  "fgbou-vo-brgu-1100": {
   "budget": 57.8,
@@ -202,6 +216,13 @@
   "year": 2025,
   "hseName": "Брянский гос. ун-т. им. И.Г. Петровского"
  },
+ "bryanskiy-filial-ranhigs-1868": {
+  "budget": 75.8,
+  "paid": 63.0,
+  "nBudget": 23,
+  "year": 2025,
+  "hseName": "Брянский филиал РАНХиГС"
+ },
  "fgbou-vo-buryatskaya-gsha-1138": {
   "budget": 49.5,
   "paid": 44.9,
@@ -215,20 +236,6 @@
   "nBudget": 908,
   "year": 2025,
   "hseName": "Бурятский гос. ун-т., г. Улан-Удэ"
- },
- "biik-sibguti-1451": {
-  "budget": 50.3,
-  "paid": 42.6,
-  "nBudget": 34,
-  "year": 2025,
-  "hseName": "Бурятский ин-т. инфокоммуникаций (филиал) Сибирского государственного ун-т.а телекоммуникаций и информатики в г. Улан-Удэ"
- },
- "fgbou-vo-velikolukskaya-gsha-1083": {
-  "budget": 45.3,
-  "paid": 49.8,
-  "nBudget": 198,
-  "year": 2025,
-  "hseName": "Великолукская гос. сельскохозяйственная академия"
  },
  "fgbou-vo-verhnevolzhskiy-gau-1116": {
   "budget": 56.4,
@@ -244,12 +251,19 @@
   "year": 2025,
   "hseName": "Владивостокский гос. ун-т."
  },
- "fgaou-vo-volgogradskiy-gosudarstvennyy-universitet-volgu-49": {
-  "budget": 64.2,
-  "paid": 59.7,
-  "nBudget": 1375,
+ "vladivostokskiy-filial-rossiyskoy-tamozhennoy-akademii-1311": {
+  "budget": 73.3,
+  "paid": 56.7,
+  "nBudget": 53,
   "year": 2025,
-  "hseName": "Волгоградский гос. ун-т."
+  "hseName": "Владивостокский филиал Российской таможенной академии"
+ },
+ "vladimirskiy-filial-ranhigs-1869": {
+  "budget": 74.2,
+  "paid": 59.3,
+  "nBudget": 100,
+  "year": 2025,
+  "hseName": "Владимирский филиал РАНХиГС"
  },
  "fgbou-vo-volgogradskiy-gau-141": {
   "budget": 55.6,
@@ -272,6 +286,20 @@
   "year": 2025,
   "hseName": "Волгоградский гос. техн. ун-т."
  },
+ "fgaou-vo-volgogradskiy-gosudarstvennyy-universitet-volgu-49": {
+  "budget": 64.2,
+  "paid": 59.7,
+  "nBudget": 1375,
+  "year": 2025,
+  "hseName": "Волгоградский гос. ун-т."
+ },
+ "volgogradskiy-institut-upravleniya-filial-ranhigs-1870": {
+  "budget": 73.2,
+  "paid": 59.1,
+  "nBudget": 179,
+  "year": 2025,
+  "hseName": "Волгоградский ин-т. управления - филиал РАНХиГС"
+ },
  "fgbou-vo-volzhskiy-gosudarstvennyy-universitet-vodnogo-trans-6": {
   "budget": 54.2,
   "paid": 50.0,
@@ -286,13 +314,6 @@
   "year": 2025,
   "hseName": "Волжский ин-т. экономики, педагогики и права"
  },
- "fgbou-vo-vologodskaya-gmha-1076": {
-  "budget": 46.4,
-  "paid": 45.7,
-  "nBudget": 409,
-  "year": 2025,
-  "hseName": "Вологодская гос. молочнохозяйственная академия им. Н.В. Верещагина"
- },
  "vogu-193": {
   "budget": 67.2,
   "paid": 58.6,
@@ -300,12 +321,12 @@
   "year": 2025,
   "hseName": "Вологодский гос. ун-т."
  },
- "filial-ugtu-v-g-usinske-1805": {
-  "budget": 59.8,
-  "paid": null,
-  "nBudget": 15,
+ "vologodskiy-filial-ranhigs-1871": {
+  "budget": 72.1,
+  "paid": 54.3,
+  "nBudget": 10,
   "year": 2025,
-  "hseName": "Филиал Ухтинского государственного технического ун-т.а в г.Усинске"
+  "hseName": "Вологодский филиал РАНХиГС"
  },
  "fgbou-vo-voronezhskiy-gosudarstvennyy-agrarnyy-universitet-i-7": {
   "budget": 58.1,
@@ -321,13 +342,6 @@
   "year": 2025,
   "hseName": "Воронежский гос. лесотехн. ун-т. им. Г.Ф. Морозова"
  },
- "fgbou-vo-vgu-1030": {
-  "budget": 70.4,
-  "paid": 61.1,
-  "nBudget": 1583,
-  "year": 2025,
-  "hseName": "Воронежский гос. ун-т."
- },
  "fgbou-vo-vgpu-1049": {
   "budget": 67.6,
   "paid": 54.0,
@@ -342,6 +356,13 @@
   "year": 2025,
   "hseName": "Воронежский гос. техн. ун-т."
  },
+ "fgbou-vo-vgu-1030": {
+  "budget": 70.4,
+  "paid": 61.1,
+  "nBudget": 1583,
+  "year": 2025,
+  "hseName": "Воронежский гос. ун-т."
+ },
  "fgbou-vo-vguit-1080": {
   "budget": 62.5,
   "paid": 53.7,
@@ -349,12 +370,12 @@
   "year": 2025,
   "hseName": "Воронежский гос. ун-т. инженерных технологий"
  },
- "vivt-anoo-vo-1916": {
-  "budget": 72.7,
-  "paid": 63.1,
-  "nBudget": 50,
+ "voronezhskiy-filial-ranhigs-1872": {
+  "budget": 73.2,
+  "paid": 60.7,
+  "nBudget": 25,
   "year": 2025,
-  "hseName": "Воронежский ин-т. высоких технологий"
+  "hseName": "Воронежский филиал РАНХиГС"
  },
  "vsgutu-1003": {
   "budget": 61.9,
@@ -370,19 +391,19 @@
   "year": 2025,
   "hseName": "Всероссийский гос. ун-т. юстиции (РПА Минюста России), г. Москва"
  },
+ "fgbou-vo-vyatskiy-gatu-1005": {
+  "budget": 60.2,
+  "paid": 55.7,
+  "nBudget": 382,
+  "year": 2025,
+  "hseName": "Вятский гос. агротехнол. ун-т., г. Киров"
+ },
  "fgbou-vo-vyatskiy-gosudarstvennyy-universitet-vyatgu-10": {
   "budget": 66.1,
   "paid": 57.8,
   "nBudget": 1565,
   "year": 2025,
   "hseName": "Вятский гос. ун-т., г. Киров"
- },
- "gaou-vo-lo-ggu-1433": {
-  "budget": 67.6,
-  "paid": 59.7,
-  "nBudget": 359,
-  "year": 2025,
-  "hseName": "Гатчинский гос. ун-т."
  },
  "fgbou-vo-gipu-163": {
   "budget": 64.3,
@@ -475,13 +496,6 @@
   "year": 2025,
   "hseName": "Грозненский гос. нефтяной техн. ун-т. им. академика М.Д. Миллионщикова"
  },
- "gumanitarno-pedagogicheskaya-akademiya-filial-fgaou-vo-kfu-i-1820": {
-  "budget": 59.5,
-  "paid": 49.7,
-  "nBudget": 120,
-  "year": 2025,
-  "hseName": "Гуманитарно-педагогическая академия (филиал) Крымского федерального ун-т.а им. В.И. Вернадского в г. Ялте"
- },
  "fgbou-vo-dagestanskiy-gau-1134": {
   "budget": 48.3,
   "paid": 43.7,
@@ -489,12 +503,12 @@
   "year": 2025,
   "hseName": "Дагестанский гос. аграрный ун-т., г. Махачкала"
  },
- "fgbou-vo-dgu-1122": {
-  "budget": 63.8,
-  "paid": 57.0,
-  "nBudget": 846,
+ "fgbou-vo-dgmu-minzdrava-rossii-1185": {
+  "budget": 73.9,
+  "paid": 65.7,
+  "nBudget": 621,
   "year": 2025,
-  "hseName": "Дагестанский гос. ун-т., г. Махачкала"
+  "hseName": "Дагестанский гос. медицинский ун-т., г. Махачкала"
  },
  "dgpu-im-r-gamzatova-1172": {
   "budget": 59.8,
@@ -509,6 +523,13 @@
   "nBudget": 420,
   "year": 2025,
   "hseName": "Дагестанский гос. техн. ун-т., г. Махачкала"
+ },
+ "fgbou-vo-dgu-1122": {
+  "budget": 63.8,
+  "paid": 57.0,
+  "nBudget": 846,
+  "year": 2025,
+  "hseName": "Дагестанский гос. ун-т., г. Махачкала"
  },
  "dgunh-205": {
   "budget": 52.5,
@@ -539,11 +560,18 @@
   "hseName": "Дальневосточный гос. техн. рыбохозяйственный ун-т., г. Владивосток"
  },
  "dvgups-135": {
-  "budget": 64.6,
-  "paid": 48.9,
-  "nBudget": 755,
+  "budget": 61.8,
+  "paid": 52.0,
+  "nBudget": 930,
   "year": 2025,
-  "hseName": "Самарский гос. ун-т. путей сообщения"
+  "hseName": "Дальневосточный гос. ун-т. путей сообщения, г. Хабаровск"
+ },
+ "dalnevostochnyy-institut-upravleniya-filial-ranhigs-1874": {
+  "budget": 70.5,
+  "paid": 56.4,
+  "nBudget": 161,
+  "year": 2025,
+  "hseName": "Дальневосточный ин-т. управления - филиал РАНХиГС, г. Хабаровск"
  },
  "fgaou-vo-dalnevostochnyy-federalnyy-universitet-dvfu-8": {
   "budget": 71.5,
@@ -552,26 +580,12 @@
   "year": 2025,
   "hseName": "Дальневосточный федеральный ун-т."
  },
- "fgbou-vo-donskoy-gau-1085": {
-  "budget": 51.3,
-  "paid": 49.7,
-  "nBudget": 406,
-  "year": 2025,
-  "hseName": "Донской гос. аграрный ун-т., пос. Персиановский"
- },
  "fgbou-vo-donskoy-gosudarstvennyy-tehnicheskiy-universitet-dg-69": {
   "budget": 66.5,
   "paid": 58.1,
   "nBudget": 2908,
   "year": 2025,
   "hseName": "Донской гос. техн. ун-т., г. Ростов-на-Дону"
- },
- "evpatoriyskiy-institut-sotsialnyh-nauk-filial-fgaou-vo-kfu-i-1819": {
-  "budget": 60.6,
-  "paid": 49.3,
-  "nBudget": 35,
-  "year": 2025,
-  "hseName": "Евпаторийский ин-т. социальных наук (филиал) Крымского федерального ун-т.а им. В.И. Вернадского"
  },
  "fgbou-vo-eletskiy-gosudarstvennyy-universitet-im-i-a-bunina-1119": {
   "budget": 60.4,
@@ -587,12 +601,12 @@
   "year": 2025,
   "hseName": "Забайкальский гос. ун-т."
  },
- "zabizht-irgups-1226": {
-  "budget": 52.2,
-  "paid": 57.4,
-  "nBudget": 138,
+ "zapadnyy-filial-ranhigs-1892": {
+  "budget": 73.8,
+  "paid": 59.9,
+  "nBudget": 23,
   "year": 2025,
-  "hseName": "Забайкальский ин-т. железнодорожного транспорта – филиал Иркутского государственного ун-т.а путей сообщения"
+  "hseName": "Западный филиал РАНХиГС"
  },
  "fgbou-vo-zgu-2004": {
   "budget": 68.2,
@@ -600,6 +614,13 @@
   "nBudget": 285,
   "year": 2025,
   "hseName": "Заполярный гос. ун-т. им. Н.М. Федоровского"
+ },
+ "fgbou-vo-ivgpu-1383": {
+  "budget": 60.8,
+  "paid": 54.0,
+  "nBudget": 280,
+  "year": 2025,
+  "hseName": "Ивановский гос. политехн. ун-т."
  },
  "fgbou-vo-ivgu-122": {
   "budget": 65.6,
@@ -622,6 +643,13 @@
   "year": 2025,
   "hseName": "Ивановский гос. энергетический ун-т."
  },
+ "ivanovskiy-filial-ranhigs-1876": {
+  "budget": 73.3,
+  "paid": 59.7,
+  "nBudget": 23,
+  "year": 2025,
+  "hseName": "Ивановский филиал РАНХиГС"
+ },
  "fgbou-vo-izhgtu-imeni-m-t-kalashnikova-9": {
   "budget": 65.9,
   "paid": 59.0,
@@ -642,20 +670,6 @@
   "nBudget": 22,
   "year": 2025,
   "hseName": "Ин-т. кино и телевидения (ГИТР), г. Москва"
- },
- "iptd-1945": {
-  "budget": 61.3,
-  "paid": 49.2,
-  "nBudget": 163,
-  "year": 2025,
-  "hseName": "Ин-т. пищевых технологий и дизайна - филиал Нижегородского государственного инженерно-экономического ун-т.а"
- },
- "iyae-spbpu-1781": {
-  "budget": 70.9,
-  "paid": 55.1,
-  "nBudget": 20,
-  "year": 2025,
-  "hseName": "Ин-т. ядерной энергетики (филиал) Санкт-Петербургского политехнического ун-т.а Петра Великого в г. Сосновый Бор"
  },
  "fgbou-vo-irkutskiy-gau-129": {
   "budget": 50.9,
@@ -685,13 +699,6 @@
   "year": 2025,
   "hseName": "Иркутский национальный исследовательский техн. ун-т."
  },
- "ipi-im-p-p-ershova-filial-tyumgu-1340": {
-  "budget": 57.8,
-  "paid": null,
-  "nBudget": 222,
-  "year": 2025,
-  "hseName": "Ишимский педагогический ин-т. им. П.П. Ершова (филиал) Тюменского государственного ун-т.а"
- },
  "fgbou-vo-kabardino-balkarskiy-gau-1077": {
   "budget": 48.2,
   "paid": 49.2,
@@ -707,11 +714,11 @@
   "hseName": "Кабардино-Балкарский гос. ун-т. им. Х.М. Бербекова, г. Нальчик"
  },
  "fgbou-vo-kazanskiy-gosudarstvennyy-agrarnyy-universitet-kaza-11": {
-  "budget": 80.8,
-  "paid": 72.1,
-  "nBudget": 509,
+  "budget": 57.3,
+  "paid": 51.9,
+  "nBudget": 811,
   "year": 2025,
-  "hseName": "Казанский гос. медицинский ун-т."
+  "hseName": "Казанский гос. аграрный ун-т."
  },
  "fgbou-vo-kgasu-1057": {
   "budget": 74.0,
@@ -726,13 +733,6 @@
   "nBudget": 1676,
   "year": 2025,
   "hseName": "Казанский гос. энергетический ун-т."
- },
- "kiu-1199": {
-  "budget": 61.2,
-  "paid": 56.1,
-  "nBudget": 50,
-  "year": 2025,
-  "hseName": "Казанский инновационный ун-т. им. В.Г. Тимирясова"
  },
  "knitu-kai-im-a-n-tupoleva-196": {
   "budget": 72.7,
@@ -776,6 +776,13 @@
   "year": 2025,
   "hseName": "Калужский гос. ун-т. им. К.Э. Циолковского"
  },
+ "kaluzhskiy-filial-ranhigs-1877": {
+  "budget": 69.5,
+  "paid": 53.7,
+  "nBudget": 55,
+  "year": 2025,
+  "hseName": "Калужский филиал РАНХиГС"
+ },
  "fgbou-vo-kamchatgtu-117": {
   "budget": 51.4,
   "paid": 56.1,
@@ -797,12 +804,12 @@
   "year": 2025,
   "hseName": "Карачаево-Черкесский гос. ун-т. им. У.Д. Алиева"
  },
- "kaspiyskiy-institut-morskogo-i-rechnogo-transporta-im-gen-ad-1294": {
-  "budget": 51.5,
-  "paid": 42.8,
-  "nBudget": 96,
+ "karelskiy-filial-ranhigs-1878": {
+  "budget": 72.7,
+  "paid": 58.8,
+  "nBudget": 26,
   "year": 2025,
-  "hseName": "Каспийский ин-т. морского и речного транспорта - филиал Волжского государственного ун-т.а водного транспорта"
+  "hseName": "Карельский филиал РАНХиГС"
  },
  "kemgu-1105": {
   "budget": 66.3,
@@ -818,27 +825,6 @@
   "year": 2025,
   "hseName": "Керченский гос. морской технол. ун-т."
  },
- "fgbou-vo-kirovskiy-gmu-minzdrava-rossii-1118": {
-  "budget": 72.1,
-  "paid": 71.7,
-  "nBudget": 415,
-  "year": 2025,
-  "hseName": "Кировский гос. медицинский ун-т."
- },
- "fgbou-vo-knagu-1043": {
-  "budget": 60.5,
-  "paid": 55.9,
-  "nBudget": 379,
-  "year": 2025,
-  "hseName": "Комсомольский-на-Амуре гос. техн. ун-т."
- },
- "fgbou-vo-kostromskaya-gsha-1127": {
-  "budget": 52.3,
-  "paid": null,
-  "nBudget": 339,
-  "year": 2025,
-  "hseName": "Костромская гос. сельскохозяйственная академия"
- },
  "kostromskoy-gosudarstvennyy-universitet-kgu-198": {
   "budget": 63.8,
   "paid": 57.3,
@@ -853,26 +839,12 @@
   "year": 2025,
   "hseName": "Красноярский гос. аграрный ун-т."
  },
- "fgbou-vo-krasgmu-im-prof-v-f-voyno-yasenetskogo-minzdrava-ro-1000": {
-  "budget": 69.5,
-  "paid": 60.7,
-  "nBudget": 532,
-  "year": 2025,
-  "hseName": "Красноярский гос. медицинский ун-т. им. В.Ф. Войно-Ясенецкого"
- },
  "kgpu-im-v-p-astafeva-1028": {
   "budget": 63.7,
   "paid": 52.7,
   "nBudget": 777,
   "year": 2025,
   "hseName": "Красноярский гос. педагогический ун-т. им. В.П. Астафьева"
- },
- "krizht-irgups-1227": {
-  "budget": 55.5,
-  "paid": 46.3,
-  "nBudget": 125,
-  "year": 2025,
-  "hseName": "Красноярский ин-т. железнодорожного транспорта – филиал Иркутского государственного ун-т.а путей сообщения"
  },
  "gbouvo-rk-kipu-imeni-fevzi-yakubova-1425": {
   "budget": 54.4,
@@ -895,12 +867,12 @@
   "year": 2025,
   "hseName": "Кубанский гос. аграрный ун-т. им. И.Т. Трубилина, г. Краснодар"
  },
- "fgbou-vo-kubgu-1029": {
-  "budget": 73.5,
-  "paid": 65.4,
-  "nBudget": 1614,
+ "fgbou-vo-kubgmu-minzdrava-rossii-1216": {
+  "budget": 75.5,
+  "paid": 67.3,
+  "nBudget": 606,
   "year": 2025,
-  "hseName": "Кубанский гос. ун-т., г. Краснодар"
+  "hseName": "Кубанский гос. медицинский ун-т., г. Краснодар"
  },
  "fgbou-vo-kubgtu-96": {
   "budget": 68.3,
@@ -909,12 +881,12 @@
   "year": 2025,
   "hseName": "Кубанский гос. технол. ун-т., г. Краснодар"
  },
- "kkgipib-filial-fgbou-vo-mgutu-im-k-g-razumovskogo-pku-1801": {
-  "budget": 60.2,
-  "paid": 49.1,
-  "nBudget": 54,
+ "fgbou-vo-kubgu-1029": {
+  "budget": 73.5,
+  "paid": 65.4,
+  "nBudget": 1614,
   "year": 2025,
-  "hseName": "Кубанский казачий гос. ин-т. пищевой индустрии и бизнеса (филиал) Московского государственного ун-т.а технологий и управления им. К.Г. Разумовского"
+  "hseName": "Кубанский гос. ун-т., г. Краснодар"
  },
  "kuzbasskiy-gau-48": {
   "budget": 60.5,
@@ -944,13 +916,6 @@
   "year": 2025,
   "hseName": "Курганский гос. ун-т."
  },
- "kizht-urgups-1248": {
-  "budget": 47.4,
-  "paid": null,
-  "nBudget": 20,
-  "year": 2025,
-  "hseName": "Курганский ин-т. железнодорожного транспорта - филиал Уральского государственного ун-т.а путей сообщения"
- },
  "akademiya-gossluzhby-1392": {
   "budget": 73.4,
   "paid": 61.0,
@@ -979,13 +944,6 @@
   "year": 2025,
   "hseName": "Ленинградский гос. ун-т. им. А.С. Пушкина, г. Санкт-Петербург"
  },
- "urgpu-1069": {
-  "budget": 66.0,
-  "paid": 54.9,
-  "nBudget": 1279,
-  "year": 2025,
-  "hseName": "Уральский гос. педагогический ун-т., г. Екатеринбург"
- },
  "fgbou-vo-lgtu-1165": {
   "budget": 67.9,
   "paid": 57.7,
@@ -993,12 +951,12 @@
   "year": 2025,
   "hseName": "Липецкий гос. техн. ун-т."
  },
- "lkitiu-filial-fgbou-vo-mgutu-im-k-g-razumovskogo-pku-1802": {
-  "budget": 54.7,
-  "paid": null,
-  "nBudget": 14,
+ "lipetskiy-filial-ranhigs-1881": {
+  "budget": 74.0,
+  "paid": 60.5,
+  "nBudget": 30,
   "year": 2025,
-  "hseName": "Липецкий казачий ин-т. технологий и управления (филиал) Московского государственного ун-т.а технологий и управления им. К.Г. Разумовского"
+  "hseName": "Липецкий филиал РАНХиГС"
  },
  "fgbou-vo-literaturnyy-institut-imeni-a-m-gorkogo-77": {
   "budget": 85.1,
@@ -1006,20 +964,6 @@
   "nBudget": 74,
   "year": 2025,
   "hseName": "Литературный ин-т. им. А.М. Горького, г. Москва"
- },
- "lomonosovskiy-institut-filial-gaou-vo-lo-lgu-im-a-s-pushkina-2085": {
-  "budget": 63.2,
-  "paid": 55.0,
-  "nBudget": 80,
-  "year": 2025,
-  "hseName": "Ломоносовский ин-т. (филиал) Ленинградского государственного ун-т.а им. А.С. Пушкина"
- },
- "luzhskiy-institut-filial-gaou-vo-lo-lgu-im-a-s-pushkina-2084": {
-  "budget": 70.3,
-  "paid": 50.3,
-  "nBudget": 19,
-  "year": 2025,
-  "hseName": "Лужский ин-т. (филиал) Ленинградского государственного ун-т.а им. А.С. Пушкина"
  },
  "fgbou-vo-mgtu-im-g-i-nosova-1047": {
   "budget": 63.7,
@@ -1099,11 +1043,11 @@
   "hseName": "Моск. гос. академия ветеринарной медицины и биотехнологии им. К.И. Скрябина"
  },
  "fgaou-vo-moskovskiy-aviatsionnyy-institut-natsionalnyy-issle-19": {
-  "budget": 77.4,
-  "paid": 62.3,
-  "nBudget": 2141,
+  "budget": 79.8,
+  "paid": 66.1,
+  "nBudget": 2416,
   "year": 2025,
-  "hseName": "Национальный исследовательский ун-т. \"Моск. энергетический ин-т.\""
+  "hseName": "Моск. авиационный ин-т. (национальный исследовательский ун-т.)"
  },
  "fgbou-vo-madi-1187": {
   "budget": 66.2,
@@ -1175,7 +1119,28 @@
   "year": 2025,
   "hseName": "Моск. гос. юридический ун-т. им. О.Е. Кутафина"
  },
- "chou-vo-spi-2005": {
+ "moskovskiy-oblastnoy-filial-ranhigs-1863": {
+  "budget": 77.5,
+  "paid": 58.4,
+  "nBudget": 20,
+  "year": 2025,
+  "hseName": "Моск. областной филиал РАНХиГС, г. Красногорск"
+ },
+ "fgbou-vo-mpgu-1132": {
+  "budget": 76.8,
+  "paid": 61.4,
+  "nBudget": 1345,
+  "year": 2025,
+  "hseName": "Моск. педагогический гос. ун-т."
+ },
+ "fgaou-vo-moskovskiy-politehnicheskiy-universitet-moskovskiy-21": {
+  "budget": 78.1,
+  "paid": 65.6,
+  "nBudget": 2360,
+  "year": 2025,
+  "hseName": "Моск. политехн. ун-т."
+ },
+ "nou-vo-mspi-2191": {
   "budget": 73.2,
   "paid": 56.0,
   "nBudget": 30,
@@ -1195,13 +1160,6 @@
   "nBudget": 640,
   "year": 2025,
   "hseName": "Мурманский арктический ун-т."
- },
- "mi-vlgu-1357": {
-  "budget": 59.7,
-  "paid": 55.5,
-  "nBudget": 200,
-  "year": 2025,
-  "hseName": "Муромский ин-т. (филиал) Владимирского государственного ун-т.а им. Александра Григорьевича и Николая Григорьевича Столетовых"
  },
  "fgbou-vo-ngpu-g-naberezhnye-chelny-1061": {
   "budget": 64.9,
@@ -1247,6 +1205,13 @@
  },
  "natsionalnyy-issledovatelskiy-tomskiy-gosudarstvennyy-univer-123": {
   "budget": 73.3,
+  "paid": 61.5,
+  "nBudget": 2444,
+  "year": 2025,
+  "hseName": "Национальный исследовательский Томский гос. ун-т."
+ },
+ "fgaou-vo-natsionalnyy-issledovatelskiy-tomskiy-politehniches-51": {
+  "budget": 73.3,
   "paid": 59.0,
   "nBudget": 1821,
   "year": 2025,
@@ -1288,11 +1253,11 @@
   "hseName": "Национальный исследовательский ун-т. «МИЭТ» (Моск. ин-т. электронной техники)"
  },
  "fgaou-vo-yuurgu-niu-1196": {
-  "budget": 68.3,
-  "paid": 62.1,
-  "nBudget": 664,
+  "budget": 69.0,
+  "paid": 59.8,
+  "nBudget": 1517,
   "year": 2025,
-  "hseName": "Южно-Уральский гос. медицинский ун-т., г. Челябинск"
+  "hseName": "Национальный исследовательский Южно-Уральский гос. ун-т., г. Челябинск"
  },
  "fgaou-vo-niyau-mifi-1135": {
   "budget": 93.9,
@@ -1308,19 +1273,19 @@
   "year": 2025,
   "hseName": "Невинномысский гос. гуманитарно-техн. ин-т."
  },
- "nti-filial-skfu-1437": {
-  "budget": 55.4,
-  "paid": 55.3,
-  "nBudget": 119,
+ "neftekamskiy-filial-fgbou-vo-ufimskiy-universitet-nauki-i-te-1761": {
+  "budget": 61.9,
+  "paid": 65.0,
+  "nBudget": 44,
   "year": 2025,
-  "hseName": "Невинномысский технол. ин-т. (филиал) Северо-Кавказского федерального ун-т.а"
+  "hseName": "Нефтекамский филиал Уфимского ун-т.а науки и технологий"
  },
- "gbou-vo-ngieu-1389": {
-  "budget": 56.0,
-  "paid": 48.6,
-  "nBudget": 270,
+ "fgbou-vo-nizhegorodskiy-gatu-1194": {
+  "budget": 59.2,
+  "paid": null,
+  "nBudget": 347,
   "year": 2025,
-  "hseName": "Нижегородский гос. инженерно-экономический ун-т., г. Княгинино"
+  "hseName": "Нижегородский гос. агротехнол. ун-т."
  },
  "nngasu-145": {
   "budget": 67.8,
@@ -1328,6 +1293,13 @@
   "nBudget": 863,
   "year": 2025,
   "hseName": "Нижегородский гос. архитектурно-строительный ун-т."
+ },
+ "gbou-vo-ngieu-1389": {
+  "budget": 56.0,
+  "paid": 48.6,
+  "nBudget": 270,
+  "year": 2025,
+  "hseName": "Нижегородский гос. инженерно-экономический ун-т., г. Княгинино"
  },
  "nglu-1413": {
   "budget": 75.4,
@@ -1350,6 +1322,13 @@
   "year": 2025,
   "hseName": "Нижегородский гос. техн. ун-т. им. Р.Е. Алексеева"
  },
+ "nizhegorodskiy-institut-upravleniya-filial-ranhigs-1982": {
+  "budget": 75.3,
+  "paid": 61.8,
+  "nBudget": 206,
+  "year": 2025,
+  "hseName": "Нижегородский ин-т. управления - филиал РАНХиГС"
+ },
  "fgbou-vo-nvgu-153": {
   "budget": 64.4,
   "paid": 51.5,
@@ -1357,19 +1336,19 @@
   "year": 2025,
   "hseName": "Нижневартовский гос. ун-т."
  },
- "gbou-vo-sgpi-1154": {
-  "budget": 63.4,
-  "paid": 56.0,
-  "nBudget": 206,
-  "year": 2025,
-  "hseName": "Шадринский гос. педагогический ин-т."
- },
  "novgu-149": {
   "budget": 68.0,
   "paid": 63.6,
   "nBudget": 1670,
   "year": 2025,
   "hseName": "Новгородский гос. ун-т. им. Ярослава Мудрого"
+ },
+ "novgorodskiy-filial-ranhigs-1867": {
+  "budget": 69.7,
+  "paid": 57.2,
+  "nBudget": 17,
+  "year": 2025,
+  "hseName": "Новгородский филиал РАНХиГС"
  },
  "fgbou-vo-ngasu-sibstrin-1009": {
   "budget": 67.7,
@@ -1420,19 +1399,19 @@
   "year": 2025,
   "hseName": "Омский гос. аграрный ун-т."
  },
- "omgtu-183": {
-  "budget": 69.2,
-  "paid": 59.3,
-  "nBudget": 1583,
-  "year": 2025,
-  "hseName": "Омский гос. техн. ун-т."
- },
  "fgbou-vo-omgpu-1035": {
   "budget": 63.7,
   "paid": 55.0,
   "nBudget": 708,
   "year": 2025,
   "hseName": "Омский гос. педагогический ун-т."
+ },
+ "omgtu-183": {
+  "budget": 69.2,
+  "paid": 59.3,
+  "nBudget": 1583,
+  "year": 2025,
+  "hseName": "Омский гос. техн. ун-т."
  },
  "omgu-im-f-m-dostoevskogo-1129": {
   "budget": 66.8,
@@ -1449,11 +1428,11 @@
   "hseName": "Омский гос. ун-т. путей сообщения"
  },
  "fgbou-vo-orenburgskiy-gau-181": {
-  "budget": 65.4,
-  "paid": 57.6,
-  "nBudget": 1383,
+  "budget": 59.7,
+  "paid": 56.9,
+  "nBudget": 505,
   "year": 2025,
-  "hseName": "Оренбургский гос. ун-т."
+  "hseName": "Оренбургский гос. аграрный ун-т."
  },
  "fgbou-vo-ogpu-93": {
   "budget": 69.5,
@@ -1462,12 +1441,19 @@
   "year": 2025,
   "hseName": "Оренбургский гос. педагогический ун-т."
  },
- "orips-filial-samgups-1430": {
-  "budget": 72.3,
-  "paid": 53.2,
-  "nBudget": 56,
+ "ogu-110": {
+  "budget": 65.4,
+  "paid": 57.6,
+  "nBudget": 1383,
   "year": 2025,
-  "hseName": "Оренбургский ин-т. путей сообщения - филиал Самарского государственного ун-т.а путей сообщения"
+  "hseName": "Оренбургский гос. ун-т."
+ },
+ "orenburgskiy-filial-ranhigs-1983": {
+  "budget": 73.0,
+  "paid": 64.0,
+  "nBudget": 18,
+  "year": 2025,
+  "hseName": "Оренбургский филиал РАНХиГС"
  },
  "fgbou-vo-orlovskiy-gau-1011": {
   "budget": 59.3,
@@ -1511,13 +1497,6 @@
   "year": 2025,
   "hseName": "Пензенский гос. ун-т. архитектуры и строительства"
  },
- "pkit-filial-fgbou-vo-mgutu-im-k-g-razumovskogo-pku-1746": {
-  "budget": 55.0,
-  "paid": 50.0,
-  "nBudget": 71,
-  "year": 2025,
-  "hseName": "Пензенский казачий ин-т. технологий (филиал) Московского государственного ун-т.а технологий и управления им. К.Г. Разумовского"
- },
  "fgaou-vo-pervyy-mgmu-im-i-m-sechenova-minzdrava-rossii-seche-12": {
   "budget": 84.6,
   "paid": 69.5,
@@ -1532,13 +1511,6 @@
   "year": 2025,
   "hseName": "Первый Санкт-Петербургский гос. медицинский ун-т. им. И.П. Павлова"
  },
- "fgbou-vo-permskiy-gatu-126": {
-  "budget": 66.2,
-  "paid": 57.5,
-  "nBudget": 406,
-  "year": 2025,
-  "hseName": "Пермский гос. аграрно-технол. ун-т. им. академика Д.Н. Прянишникова"
- },
  "fgbou-vo-permskiy-gosudarstvennyy-gumanitarno-pedagogicheski-28": {
   "budget": 71.5,
   "paid": 58.3,
@@ -1547,18 +1519,25 @@
   "hseName": "Пермский гос. гуманитарно-педагогический ун-т."
  },
  "fgaou-vo-pgniu-1025": {
+  "budget": 69.0,
+  "paid": 59.8,
+  "nBudget": 1677,
+  "year": 2025,
+  "hseName": "Пермский гос. национальный исследовательский ун-т."
+ },
+ "fgaou-vo-pnipu-1036": {
   "budget": 70.1,
   "paid": 58.5,
   "nBudget": 1860,
   "year": 2025,
   "hseName": "Пермский национальный исследовательский политехн. ун-т."
  },
- "pizht-urgups-1247": {
-  "budget": 51.4,
-  "paid": null,
-  "nBudget": 60,
+ "permskiy-filial-ranhigs-1883": {
+  "budget": 70.8,
+  "paid": 64.4,
+  "nBudget": 15,
   "year": 2025,
-  "hseName": "Пермский ин-т. железнодорожного транспорта - филиал Уральского государственного ун-т.а путей сообщения"
+  "hseName": "Пермский филиал РАНХиГС"
  },
  "fgbou-vo-pgups-169": {
   "budget": 62.6,
@@ -1595,12 +1574,19 @@
   "year": 2025,
   "hseName": "Поволжский гос. ун-т. телекоммуникаций и информатики, г. Самара"
  },
- "pkiupt-filial-fgbou-vo-mgutu-im-k-g-razumovskogo-pku-2060": {
-  "budget": 56.5,
-  "paid": null,
-  "nBudget": 61,
+ "povolzhskiy-institut-upravleniya-filial-ranhigs-1884": {
+  "budget": 72.0,
+  "paid": 56.2,
+  "nBudget": 186,
   "year": 2025,
-  "hseName": "Поволжский казачий ин-т. управления и пищевых технологий (филиал) Московского государственного ун-т.а технологий и управления им. К.Г. Разумовского"
+  "hseName": "Поволжский ин-т. управления - филиал РАНХиГС, г. Саратов"
+ },
+ "politehnicheskiy-institut-filial-svfu-v-g-mirnom-2052": {
+  "budget": 61.0,
+  "paid": 44.3,
+  "nBudget": 99,
+  "year": 2025,
+  "hseName": "Политехн. ин-т. (филиал) СВФУ в г. Мирном"
  },
  "ochu-pstgu-2123": {
   "budget": 76.8,
@@ -1630,13 +1616,6 @@
   "year": 2025,
   "hseName": "Приморский гос. аграрно-технол. ун-т., г. Уссурийск"
  },
- "primizht-filial-dvgups-v-g-ussuriyske-1344": {
-  "budget": 64.0,
-  "paid": null,
-  "nBudget": 20,
-  "year": 2025,
-  "hseName": "Приморский ин-т. железнодорожного транспорта - филиал Дальневосточного государственного ун-т.а путей сообщения в г. Уссурийске"
- },
  "fgbou-vo-pskovskiy-gosudarstvennyy-universitet-79": {
   "budget": 66.4,
   "paid": 57.3,
@@ -1644,7 +1623,7 @@
   "year": 2025,
   "hseName": "Псковский гос. ун-т."
  },
- "fgbou-vo-pyatigorskiy-gosudarstvennyy-universitet-pgu-33": {
+ "nf-fgbou-vo-pyatigorskiy-gosudarstvennyy-universitet-1448": {
   "budget": 74.9,
   "paid": 62.7,
   "nBudget": 275,
@@ -1763,26 +1742,19 @@
   "year": 2025,
   "hseName": "Российский национальный исследовательский медицинский ун-т. им. Н.И. Пирогова, г. Москва"
  },
- "ano-vo-rpu-sv-ioanna-bogoslova-2121": {
-  "budget": 63.6,
-  "paid": 60.0,
-  "nBudget": 24,
-  "year": 2025,
-  "hseName": "Российский православный ин-т. святого Иоанна Богослова"
- },
- "ruan-imeni-g-b-mirzoeva-2110": {
-  "budget": 75.7,
-  "paid": 53.9,
-  "nBudget": 20,
-  "year": 2025,
-  "hseName": "Российский ун-т. адвокатуры и нотариата им. Г.Б. Мирзоева"
- },
  "rudn-1092": {
   "budget": 86.9,
   "paid": 64.1,
   "nBudget": 1541,
   "year": 2025,
   "hseName": "Российский ун-т. дружбы народов, г. Москва"
+ },
+ "fgbou-vo-rossiyskiy-universitet-meditsiny-minzdrava-rossii-1206": {
+  "budget": 84.0,
+  "paid": 71.8,
+  "nBudget": 700,
+  "year": 2025,
+  "hseName": "Российский ун-т. медицины, г. Москва"
  },
  "fgaou-vo-rut-miit-rut-miit-27": {
   "budget": 67.0,
@@ -1805,13 +1777,6 @@
   "year": 2025,
   "hseName": "Российский экономический ун-т. им. Г.В. Плеханова, г. Москва"
  },
- "fgbou-vo-rostgmu-minzdrava-rossii-1193": {
-  "budget": 67.1,
-  "paid": 66.1,
-  "nBudget": 863,
-  "year": 2025,
-  "hseName": "Ростовский гос. медицинский ун-т."
- },
  "fgbou-vo-rgups-1060": {
   "budget": 59.3,
   "paid": 50.6,
@@ -1825,6 +1790,13 @@
   "nBudget": 131,
   "year": 2025,
   "hseName": "Ростовский гос. экономический ун-т. \"РИНХ\""
+ },
+ "rostovskiy-filial-rossiyskoy-tamozhennoy-akademii-1315": {
+  "budget": 75.4,
+  "paid": 57.8,
+  "nBudget": 54,
+  "year": 2025,
+  "hseName": "Ростовский филиал Российской таможенной академии"
  },
  "rgatu-imeni-p-a-soloveva-191": {
   "budget": 69.1,
@@ -1840,12 +1812,12 @@
   "year": 2025,
   "hseName": "Рязанский гос. агротехнол. ун-т. им. П.А. Костычева"
  },
- "fgbou-vo-ryazgmu-minzdrava-rossii-1191": {
-  "budget": 77.6,
-  "paid": 70.0,
-  "nBudget": 527,
+ "fgbou-vo-rgrtu-im-v-f-utkina-1215": {
+  "budget": 66.5,
+  "paid": 58.8,
+  "nBudget": 958,
   "year": 2025,
-  "hseName": "Рязанский гос. медицинский ун-т. им. И.П. Павлова"
+  "hseName": "Рязанский гос. радиотехн. ун-т."
  },
  "rgu-imeni-s-a-esenina-1089": {
   "budget": 66.8,
@@ -1861,13 +1833,6 @@
   "year": 2025,
   "hseName": "Самарский гос. аграрный ун-т."
  },
- "fgaou-vo-sgeu-1090": {
-  "budget": 70.9,
-  "paid": 62.4,
-  "nBudget": 125,
-  "year": 2025,
-  "hseName": "Самарский гос. экономический ун-т."
- },
  "fgbou-sgspu-71": {
   "budget": 68.4,
   "paid": 56.7,
@@ -1881,6 +1846,13 @@
   "nBudget": 1906,
   "year": 2025,
   "hseName": "Самарский гос. техн. ун-т."
+ },
+ "fgaou-vo-sgeu-1090": {
+  "budget": 70.9,
+  "paid": 62.4,
+  "nBudget": 125,
+  "year": 2025,
+  "hseName": "Самарский гос. экономический ун-т."
  },
  "samarskiy-universitet-1128": {
   "budget": 73.1,
@@ -1931,12 +1903,12 @@
   "year": 2025,
   "hseName": "Санкт-Петербургский гос. морской техн. ун-т."
  },
- "spbgu-113": {
-  "budget": 77.9,
-  "paid": 65.3,
-  "nBudget": 1572,
+ "fgbou-vo-spbgpmu-minzdrava-rossii-1220": {
+  "budget": 77.6,
+  "paid": 68.2,
+  "nBudget": 926,
   "year": 2025,
-  "hseName": "Санкт-Петербургский гос. электротехн. ун-т. “ЛЭТИ”"
+  "hseName": "Санкт-Петербургский гос. педиатрический медицинский ун-т."
  },
  "fgbou-vo-spbgti-tu-1205": {
   "budget": 71.2,
@@ -1944,6 +1916,13 @@
   "nBudget": 1050,
   "year": 2025,
   "hseName": "Санкт-Петербургский гос. технол. ин-т. (техн. ун-т.)"
+ },
+ "spbgu-113": {
+  "budget": 87.6,
+  "paid": 70.5,
+  "nBudget": 2580,
+  "year": 2025,
+  "hseName": "Санкт-Петербургский гос. ун-т."
  },
  "fgaou-vo-guap-1113": {
   "budget": 73.4,
@@ -1987,12 +1966,26 @@
   "year": 2025,
   "hseName": "Санкт-Петербургский гос. экономический ун-т."
  },
+ "spbgetu-leti-1133": {
+  "budget": 77.9,
+  "paid": 65.3,
+  "nBudget": 1572,
+  "year": 2025,
+  "hseName": "Санкт-Петербургский гос. электротехн. ун-т. “ЛЭТИ”"
+ },
  "nou-vpo-spbgup-1910": {
   "budget": 77.5,
   "paid": 62.6,
   "nBudget": 35,
   "year": 2025,
   "hseName": "Санкт-Петербургский гуманитарный ун-т. профсоюзов"
+ },
+ "sankt-peterburgskiy-filial-rossiyskoy-tamozhennoy-akademii-1314": {
+  "budget": 78.0,
+  "paid": 55.6,
+  "nBudget": 62,
+  "year": 2025,
+  "hseName": "Санкт-Петербургский им. В.Б. Бобкова филиал Российской таможенной академии"
  },
  "fgbou-voin-spbau-ran-im-zh-i-alferova-1209": {
   "budget": 84.7,
@@ -2007,13 +2000,6 @@
   "nBudget": 3375,
   "year": 2025,
   "hseName": "Санкт-Петербургский политехн. ун-т. Петра Великого"
- },
- "fgbou-vo-sgyua-1008": {
-  "budget": 76.1,
-  "paid": 59.5,
-  "nBudget": 418,
-  "year": 2025,
-  "hseName": "Саратовская гос. юридическая академия"
  },
  "fgbou-vo-sgtu-imeni-gagarina-yu-a-1082": {
   "budget": 66.6,
@@ -2078,6 +2064,13 @@
   "year": 2025,
   "hseName": "Северо-Западный гос. медицинский ун-т. им. И.И.Мечникова, г. Санкт-Петербург"
  },
+ "severo-zapadnyy-institut-upravleniya-filial-ranhigs-sziu-ran-1885": {
+  "budget": 84.0,
+  "paid": 63.2,
+  "nBudget": 205,
+  "year": 2025,
+  "hseName": "Северо-Западный ин-т. управления - филиал РАНХиГС, г. Санкт-Петербург"
+ },
  "szf-fgbouvo-rgup-im-v-m-lebedeva-1287": {
   "budget": 83.0,
   "paid": 67.2,
@@ -2099,6 +2092,13 @@
   "year": 2025,
   "hseName": "Северо-Кавказский горно-металлургический ин-т. (гос. технол. ун-т.) , г. Владикавказ"
  },
+ "severo-kavkazskiy-institut-filial-ranhigs-1986": {
+  "budget": 71.5,
+  "paid": 57.1,
+  "nBudget": 22,
+  "year": 2025,
+  "hseName": "Северо-Кавказский ин-т. - филиал РАНХиГС"
+ },
  "skfu-101": {
   "budget": 68.2,
   "paid": 58.1,
@@ -2112,6 +2112,13 @@
   "nBudget": 713,
   "year": 2025,
   "hseName": "Северо-Осетинский гос. ун-т. им. К.Л. Хетагурова, г. Владикавказ"
+ },
+ "sibayskiy-institut-filial-fgbou-vo-ufimskiy-universitet-nauk-1763": {
+  "budget": 58.2,
+  "paid": 73.9,
+  "nBudget": 47,
+  "year": 2025,
+  "hseName": "Сибайский ин-т. (филиал) Уфимского ун-т.а науки и технологий"
  },
  "fgbou-vo-sibadi-1107": {
   "budget": 59.0,
@@ -2169,6 +2176,20 @@
   "year": 2025,
   "hseName": "Сибирский гос. ун-т. телекоммуникаций и информатики, г. Новосибирск"
  },
+ "sibirskiy-institut-upravleniya-filial-ranhigs-1886": {
+  "budget": 76.4,
+  "paid": 59.6,
+  "nBudget": 83,
+  "year": 2025,
+  "hseName": "Сибирский ин-т. управления - филиал РАНХиГС, г. Новосибирск"
+ },
+ "sibirskiy-universitet-potrebitelskoy-kooperatsii-sibupk-1961": {
+  "budget": 57.7,
+  "paid": 49.1,
+  "nBudget": 46,
+  "year": 2025,
+  "hseName": "Сибирский ун-т. потребительской кооперации, г. Новосибирск"
+ },
  "fgaou-vo-sibirskiy-federalnyy-universitet-sfu-16": {
   "budget": 68.7,
   "paid": 61.1,
@@ -2183,19 +2204,19 @@
   "year": 2025,
   "hseName": "Сибирский юридический ун-т."
  },
- "fgbou-vo-smolenskaya-gsha-1152": {
-  "budget": 54.4,
-  "paid": 49.9,
-  "nBudget": 360,
-  "year": 2025,
-  "hseName": "Смоленская гос. сельскохозяйственная академия"
- },
  "smolgu-187": {
   "budget": 65.9,
   "paid": 59.8,
   "nBudget": 381,
   "year": 2025,
   "hseName": "Смоленский гос. ун-т."
+ },
+ "smolenskiy-filial-ranhigs-1866": {
+  "budget": 66.1,
+  "paid": 61.6,
+  "nBudget": 24,
+  "year": 2025,
+  "hseName": "Смоленский филиал РАНХиГС"
  },
  "fgbou-vo-sochigu-197": {
   "budget": 63.2,
@@ -2204,12 +2225,47 @@
   "year": 2025,
   "hseName": "Сочинский гос. ун-т."
  },
- "fgbou-vo-stavropolskiy-gau-1162": {
-  "budget": 71.3,
-  "paid": 60.5,
-  "nBudget": 619,
+ "srednerusskiy-institut-upravleniya-filial-ranhigs-1882": {
+  "budget": 70.7,
+  "paid": 55.8,
+  "nBudget": 125,
   "year": 2025,
-  "hseName": "Ставропольский гос. медицинский ун-т."
+  "hseName": "Среднерусский ин-т. управления - филиал РАНХиГС, г. Орел"
+ },
+ "fgbou-vo-stavropolskiy-gau-1162": {
+  "budget": 64.5,
+  "paid": 60.2,
+  "nBudget": 738,
+  "year": 2025,
+  "hseName": "Ставропольский гос. аграрный ун-т."
+ },
+ "gbou-vo-sgpi-1154": {
+  "budget": 60.6,
+  "paid": 56.9,
+  "nBudget": 421,
+  "year": 2025,
+  "hseName": "Ставропольский гос. педагогический ин-т."
+ },
+ "stavropolskiy-filial-ranhigs-1887": {
+  "budget": 78.6,
+  "paid": 67.1,
+  "nBudget": 12,
+  "year": 2025,
+  "hseName": "Ставропольский филиал РАНХиГС"
+ },
+ "sterlitamakskiy-filial-fgbou-vo-ufimskiy-universitet-nauki-i-1762": {
+  "budget": 63.1,
+  "paid": 75.8,
+  "nBudget": 335,
+  "year": 2025,
+  "hseName": "Стерлитамакский филиал Уфимского ун-т.а науки и технологий"
+ },
+ "bu-surgutskiy-gosudarstvennyy-pedagogicheskiy-universitet-1429": {
+  "budget": 57.1,
+  "paid": 47.9,
+  "nBudget": 480,
+  "year": 2025,
+  "hseName": "Сургутский гос. педагогический ун-т."
  },
  "bu-surgutskiy-gosudarstvennyy-universitet-162": {
   "budget": 69.1,
@@ -2217,13 +2273,6 @@
   "nBudget": 905,
   "year": 2025,
   "hseName": "Сургутский гос. ун-т. Ханты-Мансийского автономного округа — Югры"
- },
- "fgbou-vo-sgu-im-pitirima-sorokina-107": {
-  "budget": 64.5,
-  "paid": 59.8,
-  "nBudget": 818,
-  "year": 2025,
-  "hseName": "Сыктывкарский гос. ун-т."
  },
  "fgbou-vo-tgtu-91": {
   "budget": 61.3,
@@ -2239,12 +2288,12 @@
   "year": 2025,
   "hseName": "Тамбовский гос. ун-т. им. Г.Р. Державина"
  },
- "fgbou-vo-tverskaya-gsha-1109": {
-  "budget": 50.7,
-  "paid": 49.7,
-  "nBudget": 200,
+ "fgbou-vo-tvgtu-1096": {
+  "budget": 62.2,
+  "paid": 54.7,
+  "nBudget": 672,
   "year": 2025,
-  "hseName": "Тверская гос. сельскохозяйственная академия"
+  "hseName": "Тверской гос. техн. ун-т."
  },
  "fgbou-vo-tverskoy-gosudarstvennyy-universitet-1151": {
   "budget": 66.2,
@@ -2253,19 +2302,19 @@
   "year": 2025,
   "hseName": "Тверской гос. ун-т."
  },
- "fgbou-vo-tvgtu-1096": {
-  "budget": 62.2,
-  "paid": 54.7,
-  "nBudget": 672,
+ "tverskoy-filial-ranhigs-1888": {
+  "budget": 73.3,
+  "paid": 56.4,
+  "nBudget": 20,
   "year": 2025,
-  "hseName": "Тверской гос. техн. ун-т."
+  "hseName": "Тверской филиал РАНХиГС"
  },
- "negosudarstvennoe-chastnoe-obrazovatelnoe-uchrezhdenie-vyssh-2265": {
-  "budget": 62.5,
-  "paid": 57.9,
-  "nBudget": 30,
+ "tehnicheskiy-institut-filial-svfu-v-g-neryungri-2051": {
+  "budget": 59.6,
+  "paid": 51.0,
+  "nBudget": 68,
   "year": 2025,
-  "hseName": "Техн. ун-т. УГМК"
+  "hseName": "Техн. ин-т. (филиал) СВФУ в г. Нерюнгри"
  },
  "fgbou-vo-tgmu-minzdrava-rossii-1299": {
   "budget": 61.1,
@@ -2280,13 +2329,6 @@
   "nBudget": 1431,
   "year": 2025,
   "hseName": "Тихоокеанский гос. ун-т., г. Хабаровск"
- },
- "tpi-im-d-i-mendeleeva-filial-tyumgu-1341": {
-  "budget": 57.6,
-  "paid": 52.7,
-  "nBudget": 207,
-  "year": 2025,
-  "hseName": "Тобольский педагогический ин-т. им. Д.И. Менделеева (филиал) Тюменского государственного ун-т.а"
  },
  "tolyattinskaya-akademiya-upravleniya-2007": {
   "budget": 75.5,
@@ -2407,6 +2449,13 @@
   "year": 2025,
   "hseName": "Ульяновский ин-т. гражданской авиации им. Главного маршала авиации Б.П. Бугаева"
  },
+ "ulyanovskiy-filial-ranhigs-1890": {
+  "budget": 61.6,
+  "paid": 53.0,
+  "nBudget": 5,
+  "year": 2025,
+  "hseName": "Ульяновский филиал РАНХиГС"
+ },
  "universitet-itmo-1143": {
   "budget": 93.8,
   "paid": 77.0,
@@ -2442,6 +2491,27 @@
   "year": 2025,
   "hseName": "Уральский гос. горный ун-т., г. Екатеринбург"
  },
+ "fgbou-vo-uralskiy-gosudarstvennyy-lesotehnicheskiy-universit-39": {
+  "budget": 61.7,
+  "paid": 51.0,
+  "nBudget": 566,
+  "year": 2025,
+  "hseName": "Уральский гос. лесотехн. ун-т., г. Екатеринбург"
+ },
+ "fgbou-vo-ugmu-minzdrava-rossii-185": {
+  "budget": 73.7,
+  "paid": 65.4,
+  "nBudget": 896,
+  "year": 2025,
+  "hseName": "Уральский гос. медицинский ун-т., г. Екатеринбург"
+ },
+ "urgpu-1069": {
+  "budget": 66.0,
+  "paid": 54.9,
+  "nBudget": 1279,
+  "year": 2025,
+  "hseName": "Уральский гос. педагогический ун-т., г. Екатеринбург"
+ },
  "fgbou-vo-urgups-177": {
   "budget": 55.5,
   "paid": 51.2,
@@ -2463,19 +2533,12 @@
   "year": 2025,
   "hseName": "Уральский гос. юридический ун-т., г. Екатеринбург"
  },
- "urtisi-sibguti-1450": {
-  "budget": 63.5,
-  "paid": 50.0,
-  "nBudget": 135,
+ "uralskiy-institut-upravleniya-filial-ranhigs-1891": {
+  "budget": 80.0,
+  "paid": 62.2,
+  "nBudget": 100,
   "year": 2025,
-  "hseName": "Уральский техн. ин-т. связи и информатики (филиал) Сибирского государственного ун-т.а телекоммуникаций и информатики в г. Екатеринбурге"
- },
- "uralskiy-federalnyy-universitet-urfu-45": {
-  "budget": 74.5,
-  "paid": 63.0,
-  "nBudget": 5666,
-  "year": 2025,
-  "hseName": "Уральский федеральный ун-т. им. Б.Н. Ельцина"
+  "hseName": "Уральский ин-т. управления - филиал РАНХиГС, г. Екатеринбург"
  },
  "fgbou-vo-ugntu-ugntu-ufimskiy-gosudarstvennyy-neftyanoy-tehn-104": {
   "budget": 71.2,
@@ -2498,12 +2561,54 @@
   "year": 2025,
   "hseName": "Ухтинский гос. техн. ун-т."
  },
- "filial-mgu-imeni-m-v-lomonosova-v-g-sevastopole-2055": {
-  "budget": 74.2,
+ "filial-astrahanskogo-gosudarstvennogo-universiteta-v-g-zname-1251": {
+  "budget": 73.4,
   "paid": null,
-  "nBudget": 96,
+  "nBudget": 43,
   "year": 2025,
-  "hseName": "Филиал Московского государственного ун-т.а им. М.В.Ломоносова в г. Севастополе"
+  "hseName": "Филиал Астраханского государственного ун-т.а в г. Знаменске Астраханской области"
+ },
+ "filial-natsionalnogo-issledovatelskogo-universiteta-mei-v-g-1744": {
+  "budget": 63.7,
+  "paid": 48.3,
+  "nBudget": 65,
+  "year": 2025,
+  "hseName": "Филиал Национального исследовательского ун-т.а «МЭИ» в г. Волжском"
+ },
+ "filial-natsionalnogo-issledovatelskogo-universiteta-mei-v-g-1740": {
+  "budget": 66.3,
+  "paid": 53.9,
+  "nBudget": 284,
+  "year": 2025,
+  "hseName": "Филиал Национального исследовательского ун-т.а «МЭИ» в г. Смоленске"
+ },
+ "filial-fgaou-vo-rgu-nefti-i-gaza-niu-imeni-i-m-gubkina-v-g-o-1420": {
+  "budget": 71.2,
+  "paid": 55.5,
+  "nBudget": 55,
+  "year": 2025,
+  "hseName": "Филиал РГУ нефти и газа (НИУ) им. И.М. Губкина в г. Оренбурге"
+ },
+ "filial-fgbou-vo-ufimskiy-universitet-nauki-i-tehnologiy-v-g-1741": {
+  "budget": 66.2,
+  "paid": 43.0,
+  "nBudget": 10,
+  "year": 2025,
+  "hseName": "Филиал Уфимского ун-т.а науки и технологий в г. Ишимбае"
+ },
+ "filial-fgbou-vo-ufimskiy-universitet-nauki-i-tehnologiy-v-g-1739": {
+  "budget": 60.0,
+  "paid": 51.4,
+  "nBudget": 72,
+  "year": 2025,
+  "hseName": "Филиал Уфимского ун-т.а науки и технологий в г. Кумертау"
+ },
+ "filial-ugtu-v-g-usinske-1805": {
+  "budget": 59.8,
+  "paid": null,
+  "nBudget": 15,
+  "year": 2025,
+  "hseName": "Филиал Ухтинского государственного технического ун-т.а в г.Усинске"
  },
  "fgobu-vo-finansovyy-universitet-pri-pravitelstve-rossiyskoy-60": {
   "budget": 90.3,
@@ -2512,13 +2617,6 @@
   "year": 2025,
   "hseName": "Финансовый ун-т. при Правительстве РФ, г. Москва"
  },
- "hiik-sibguti-1452": {
-  "budget": 61.3,
-  "paid": 43.2,
-  "nBudget": 45,
-  "year": 2025,
-  "hseName": "Хабаровский ин-т. инфокоммуникаций (филиал) Сибирского государственного ун-т.а телекоммуникаций и информатики"
- },
  "fgbou-vo-hgu-im-n-f-katanova-1150": {
   "budget": 59.2,
   "paid": 54.4,
@@ -2526,12 +2624,26 @@
   "year": 2025,
   "hseName": "Хакасский гос. ун-т. им. Н.Ф. Катанова, г. Абакан"
  },
+ "cheboksarskiy-filial-ranhigs-1889": {
+  "budget": 66.9,
+  "paid": 61.9,
+  "nBudget": 22,
+  "year": 2025,
+  "hseName": "Чебоксарский филиал РАНХиГС"
+ },
  "fgbou-vo-chelgu-1112": {
   "budget": 69.1,
   "paid": 58.6,
   "nBudget": 882,
   "year": 2025,
   "hseName": "Челябинский гос. ун-т."
+ },
+ "chelyabinskiy-filial-ranhigs-1865": {
+  "budget": 70.3,
+  "paid": 56.9,
+  "nBudget": 43,
+  "year": 2025,
+  "hseName": "Челябинский филиал РАНХиГС"
  },
  "cherepovetskiy-gosudarstvennyy-universitet-166": {
   "budget": 63.0,
@@ -2596,6 +2708,13 @@
   "year": 2025,
   "hseName": "Южно-Российский гос. политехн. ун-т. им. М.И. Платова, г. Новочеркасск"
  },
+ "yuzhno-rossiyskiy-institut-upravleniya-filial-ranhigs-1987": {
+  "budget": 78.5,
+  "paid": 59.2,
+  "nBudget": 155,
+  "year": 2025,
+  "hseName": "Южно-Российский ин-т. управления - филиал РАНХиГС, г. Ростов-на-Дону"
+ },
  "yuzhno-uralskiy-gosudarstvennyy-agrarnyy-universitet-yuurgau-138": {
   "budget": 51.3,
   "paid": 48.2,
@@ -2610,26 +2729,19 @@
   "year": 2025,
   "hseName": "Южно-Уральский гос. гуманитарно-педагогический ун-т., г. Челябинск"
  },
+ "fgbou-vo-yuugmu-minzdrava-rossii-128": {
+  "budget": 68.3,
+  "paid": 62.1,
+  "nBudget": 664,
+  "year": 2025,
+  "hseName": "Южно-Уральский гос. медицинский ун-т., г. Челябинск"
+ },
  "fgaou-vo-yuzhnyy-federalnyy-universitet-yufu-25": {
   "budget": 71.6,
   "paid": 64.8,
   "nBudget": 3316,
   "year": 2025,
   "hseName": "Южный федеральный ун-т."
- },
- "yaivt-filial-fgbou-vo-sguvt-1231": {
-  "budget": 56.3,
-  "paid": null,
-  "nBudget": 26,
-  "year": 2025,
-  "hseName": "Якутский ин-т. водного транспорта - филиал Сибирского государственного ун-т.а водного транспорта"
- },
- "fgbou-vo-yaroslavskiy-gau-1173": {
-  "budget": 70.6,
-  "paid": 61.5,
-  "nBudget": 499,
-  "year": 2025,
-  "hseName": "Ярославский гос. медицинский ун-т."
  },
  "fgbou-vo-yagpu-im-k-d-ushinskogo-1033": {
   "budget": 68.8,
@@ -2673,19 +2785,19 @@
   "year": 2025,
   "hseName": "Академия управления и производства, г. Москва"
  },
- "altayskiy-institut-ekonomiki-chou-vo-sankt-peterburgskiy-uni-2714": {
+ "astrahanskiy-filial-ranhigs-1980": {
   "budget": null,
-  "paid": 46.3,
+  "paid": 55.3,
   "nBudget": null,
   "year": 2025,
-  "hseName": "Алтайский ин-т. экономики – филиал Санкт-Петербургского ун-т.а технологий управления и экономики"
+  "hseName": "Астраханский филиал РАНХиГС"
  },
- "bashkirskiy-institut-sotsialnyh-tehnologiy-filial-obrazovate-2256": {
+ "bashkirskiy-kooperativnyy-institut-filial-rossiyskogo-univer-2169": {
   "budget": null,
-  "paid": 49.8,
+  "paid": 56.7,
   "nBudget": null,
   "year": 2025,
-  "hseName": "Башкирский ин-т. социальных технологий (филиал) Академии труда и социальных отношений"
+  "hseName": "Башкирский кооперативный ин-т. (филиал) Российского ун-т.а кооперации"
  },
  "chou-vo-vladikavkazskiy-institut-upravleniya-vladikavkazskiy-3169": {
   "budget": null,
@@ -2694,19 +2806,12 @@
   "year": 2025,
   "hseName": "Владикавказский ин-т. управления"
  },
- "voronezhskiy-filial-fgbou-vo-gumrf-imeni-admirala-s-o-makaro-1374": {
+ "ano-vo-gumanitarnyy-universitet-1922": {
   "budget": null,
-  "paid": 52.2,
+  "paid": 57.4,
   "nBudget": null,
   "year": 2025,
-  "hseName": "Воронежский филиал Государственного ун-т.а морского и речного флота им. адмирала С.О. Макарова"
- },
- "anoo-vo-vepi-2723": {
-  "budget": null,
-  "paid": 55.3,
-  "nBudget": null,
-  "year": 2025,
-  "hseName": "Воронежский экономико-правовой ин-т."
+  "hseName": "Гуманитарный ун-т., г. Екатеринбург"
  },
  "chou-vo-eiubp-3146": {
   "budget": null,
@@ -2714,13 +2819,6 @@
   "nBudget": null,
   "year": 2025,
   "hseName": "Ессентукский ин-т. управления, бизнеса и права"
- },
- "if-guap-1271": {
-  "budget": null,
-  "paid": 70.0,
-  "nBudget": null,
-  "year": 2025,
-  "hseName": "Ивангородский гуманитарно-техн. ин-т. (филиал) Санкт-Петербургского государственного ун-т.а аэрокосмического приборостроения"
  },
  "ano-vo-institut-biznesa-i-dizayna-2141": {
   "budget": null,
@@ -2743,12 +2841,12 @@
   "year": 2025,
   "hseName": "Ин-т. международных экономических связей, г. Москва"
  },
- "institut-ekonomiki-i-prava-filial-obrazovatelnogo-uchrezhden-2259": {
+ "kirovskiy-filial-ranhigs-1879": {
   "budget": null,
-  "paid": 50.0,
+  "paid": 55.5,
   "nBudget": null,
   "year": 2025,
-  "hseName": "Ин-т. экономики и права (филиал) Академии труда и социальных отношений в г.Севастополе"
+  "hseName": "Кировский филиал РАНХиГС"
  },
  "gou-vo-kragsiu-1006": {
   "budget": null,
@@ -2756,6 +2854,13 @@
   "nBudget": null,
   "year": 2025,
   "hseName": "Коми республиканская академия государственной службы и управления, г. Сыктывкар"
+ },
+ "kurganskiy-filial-ranhigs-1880": {
+  "budget": null,
+  "paid": 56.6,
+  "nBudget": null,
+  "year": 2025,
+  "hseName": "Курганский филиал РАНХиГС"
  },
  "akademiya-mubint-2711": {
   "budget": null,
@@ -2785,6 +2890,13 @@
   "year": 2025,
   "hseName": "Моск. информационно-технол. ун-т. – Моск. архитектурно-строительный ин-т. (МИТУ-МАСИ)"
  },
+ "moskovskiy-meditsinskiy-universitet-reaviz-2732": {
+  "budget": null,
+  "paid": 64.5,
+  "nBudget": null,
+  "year": 2025,
+  "hseName": "Моск. медицинский ун-т. \"РЕАВИЗ\""
+ },
  "ano-vo-natsionalnyy-institut-biznesa-3154": {
   "budget": null,
   "paid": 57.4,
@@ -2806,12 +2918,33 @@
   "year": 2025,
   "hseName": "Невинномысский ин-т. экономики, управления и права"
  },
+ "omskiy-filial-ranhigs-1988": {
+  "budget": null,
+  "paid": 73.9,
+  "nBudget": null,
+  "year": 2025,
+  "hseName": "Омский филиал РАНХиГС"
+ },
+ "povolzhskiy-kooperativnyy-institut-filial-rossiyskiy-univers-2113": {
+  "budget": null,
+  "paid": 51.9,
+  "nBudget": null,
+  "year": 2025,
+  "hseName": "Поволжский кооперативный ин-т. (филиал) Российского ун-т.а кооперации"
+ },
  "ano-vo-rosnou-1911": {
   "budget": null,
   "paid": 55.7,
   "nBudget": null,
   "year": 2025,
   "hseName": "Российский новый ун-т., г. Москва"
+ },
+ "rossiyskiy-universitet-kooperatsii-2107": {
+  "budget": null,
+  "paid": 56.5,
+  "nBudget": null,
+  "year": 2025,
+  "hseName": "Российский ун-т. кооперации, г. Мытищи"
  },
  "akademiya-dostoevskogo-2189": {
   "budget": null,
@@ -2826,6 +2959,13 @@
   "nBudget": null,
   "year": 2025,
   "hseName": "Санкт-Петербургский ун-т. технологий управления и экономики"
+ },
+ "saranskiy-kooperativnyy-institut-filial-rossiyskogo-universi-2108": {
+  "budget": null,
+  "paid": 55.1,
+  "nBudget": null,
+  "year": 2025,
+  "hseName": "Саранский кооперативный ин-т. (филиал) Российского ун-т.а кооперации"
  },
  "saratovskiy-meditsinskiy-universitet-reaviz-3261": {
   "budget": null,
@@ -2848,11 +2988,25 @@
   "year": 2025,
   "hseName": "Таганрогский ин-т. управления и экономики"
  },
+ "tambovskiy-filial-ranhigs-1989": {
+  "budget": null,
+  "paid": 58.1,
+  "nBudget": null,
+  "year": 2025,
+  "hseName": "Тамбовский филиал РАНХиГС"
+ },
  "ano-vo-universitet-pri-mpa-evrazes-3101": {
   "budget": null,
   "paid": 60.4,
   "nBudget": null,
   "year": 2025,
   "hseName": "Ун-т. при Межпарламентской Ассамблее ЕврАзЭС, г. Санкт-Петербург"
+ },
+ "cheboksarskiy-kooperativnyy-institut-filial-rossiyskogo-univ-2114": {
+  "budget": null,
+  "paid": 56.8,
+  "nBudget": null,
+  "year": 2025,
+  "hseName": "Чебоксарский кооперативный ин-т. (филиал) Российского ун-т.а кооперации"
  }
 }
