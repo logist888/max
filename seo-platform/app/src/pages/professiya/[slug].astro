@@ -73,8 +73,28 @@ const faq = [
       : 'Данных о зарплате по этой группе в открытых государственных источниках (Росстат) пока нет.',
   },
 ];
+// Occupation Schema — машиночитаемая профессия для AI-поиска и rich-результатов:
+// категория ISCO-08 + оценка зарплаты (Росстат, если есть). Только реальные данные.
+const estimatedSalary = [];
+if (s?.avgRF) estimatedSalary.push({
+  '@type': 'MonetaryAmount', currency: 'RUB', name: 'Средняя по РФ (Росстат)',
+  value: { '@type': 'QuantitativeValue', value: s.avgRF, unitText: 'MONTH' },
+});
+if (s?.avgMoscow) estimatedSalary.push({
+  '@type': 'MonetaryAmount', currency: 'RUB', name: 'Москва (оценка по надбавке)',
+  value: { '@type': 'QuantitativeValue', value: s.avgMoscow, unitText: 'MONTH' },
+});
+const occLd: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'Occupation',
+  name: p.nameRu,
+  occupationalCategory: `ISCO-08 ${p.isco}${major ? ` · ${major}` : ''}`,
+  ...(p.nameEn ? { alternateName: p.nameEn } : {}),
+  ...(estimatedSalary.length ? { estimatedSalary } : {}),
+};
 const jsonLd = [
   ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({ name: c.name, url: new URL(c.url!, Astro.site).href }))),
+  occLd,
   ldFaq(faq),
 ];
 ---

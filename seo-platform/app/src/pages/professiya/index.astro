@@ -1,10 +1,12 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Cta from '../../components/Cta.astro';
 import { graph } from '../../lib/graph.ts';
-import { plural } from '../../lib/text.ts';
+import { ldBreadcrumbs, plural } from '../../lib/text.ts';
 
 const { professions } = graph();
+const withSalary = professions.filter((p) => p.salary?.avgRF != null).length;
 const MAJOR: Record<string, string> = {
   '1': 'Руководители',
   '2': 'Специалисты высшего уровня квалификации',
@@ -34,17 +36,40 @@ for (const p of professions) {
 const letters = [...byLetter.entries()].sort((a, b) => a[0].localeCompare(b[0], 'ru'));
 
 const withRoutes = professions.filter((p) => p.routes.length).length;
-const title = `Профессии: ${professions.length} по классификации ISCO-08 | Профориентация`;
-const description = `${professions.length} профессий по международной классификации занятий ISCO-08 с русскими названиями (ОКЗ). Компетенции по ESCO, сопоставление с направлениями подготовки.`;
+const crumbs = [{ name: 'Главная', url: '/' }, { name: 'Профессии' }];
+const title = `Список профессий: ${professions.length} профессий (ISCO-08 / ОКЗ) — зарплаты, компетенции | Профориентация`;
+const description = `Полный список из ${professions.length} профессий по международной классификации ISCO-08 с русскими названиями (ОКЗ): средняя зарплата по данным Росстата, ключевые компетенции (ESCO), направления подготовки. Какие есть профессии и кем можно работать.`;
+// ItemList для AI-поиска и rich-результатов: полный каталог профессий.
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Список профессий (ISCO-08 / ОКЗ)',
+  numberOfItems: professions.length,
+  itemListElement: professions.map((p, i) => ({
+    '@type': 'ListItem', position: i + 1,
+    url: new URL(`/professiya/${p.slug}/`, Astro.site).href, name: p.nameRu,
+  })),
+};
+const jsonLd = [
+  ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({ name: c.name, url: new URL(c.url!, Astro.site).href }))),
+  itemList,
+];
 ---
-<Base title={title} description={description}>
-  <Breadcrumbs items={[{ name: 'Главная', url: '/' }, { name: 'Профессии' }]} />
-  <h1>Профессии</h1>
-  <p>{professions.length}&nbsp;{plural(professions.length, 'профессия', 'профессии', 'профессий')}
-    по международной классификации занятий <strong>ISCO-08</strong> с русскими
-    названиями из ОКЗ. По каждой — компетенции (ESCO) и, где сопоставлено,
-    направления подготовки. Связь профессии с образованием — экспертное
-    сопоставление, не официальная связь.</p>
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <Breadcrumbs items={crumbs} />
+  <h1>Список профессий</h1>
+  {/* Краткое определение для AI-поиска и быстрого ответа. */}
+  <p><strong>Профессия</strong> — вид трудовой деятельности, требующий определённых знаний
+    и навыков. Ниже — полный список из {professions.length}&nbsp;{plural(professions.length, 'профессии', 'профессий', 'профессий')}
+    по международной классификации занятий <strong>ISCO-08</strong> с русскими названиями из ОКЗ.
+    По каждой профессии — средняя зарплата (Росстат), ключевые компетенции (ESCO) и, где
+    сопоставлено, направления подготовки. Связь с образованием — экспертное сопоставление, не
+    официальная связь.</p>
+
+  <p><a href="/professii-vysokooplachivaemye/">→ Рейтинг: самые высокооплачиваемые профессии</a>
+    {withSalary > 0 && ` (зарплаты по ${withSalary} из ${professions.length} групп занятий)`}</p>
+
+  <Cta pageType="profession-catalog" zone="after-intro" />
 
   <p class="notice">Профессия — ещё не выбор. Понять, что подходит именно вам,
     помогает не список, а сильные стороны. <a href="/test/">Пройдите тест из 5 вопросов →</a></p>

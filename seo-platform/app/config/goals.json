@@ -24,6 +24,8 @@
     { "pageType": "city", "zone": "after-vuzy", "goal": "diagnostic" },
     { "pageType": "region", "zone": "after-cities", "goal": "diagnostic" },
     { "pageType": "ugs", "zone": "after-list", "goal": "diagnostic" },
-    { "pageType": "profession", "zone": "after-routes", "goal": "diagnostic" }
+    { "pageType": "profession", "zone": "after-routes", "goal": "diagnostic" },
+    { "pageType": "ranking", "zone": "after-list", "goal": "diagnostic" },
+    { "pageType": "profession-catalog", "zone": "after-intro", "goal": "diagnostic" }
   ]
 }
