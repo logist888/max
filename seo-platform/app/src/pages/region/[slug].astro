@@ -2,16 +2,35 @@
 import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Cta from '../../components/Cta.astro';
+import OrgRow from '../../components/OrgRow.astro';
+import Filters from '../../components/Filters.astro';
+import type { Facet } from '../../components/Filters.astro';
 import { db } from '../../lib/data.ts';
 import { ldBreadcrumbs, plural } from '../../lib/text.ts';
+import {
+  orgFacetData, cityChipFacet, ugsFacet,
+  FACET_LEVELS, FACET_FORMS, FACET_KIND, FACET_BUDGET, FACET_DORM, FACET_MIL, FACET_COST,
+} from '../../lib/facets.ts';
 
 export function getStaticPaths() {
   return db().regions.map((region) => ({ params: { slug: region.slug }, props: { region } }));
 }
 
 const { region } = Astro.props;
-const { meta, combosRegion, directionByOkso, ugs } = db();
+const { catalogRows, cardById, meta, combosRegion, directionByOkso, ugs } = db();
 const cities = [...region.cities].sort((a, b) => b.orgCount - a.orgCount);
+
+// Вузы региона: регион фиксирован, город варьируется → город как chip-мультивыбор.
+// Полный набор пофузовских фасетов (orgFacetData). Показываем при ≥6 вузах.
+const regionRows = catalogRows.filter((r) => r.regionKey === region.key);
+const regionCityMap = new Map<string, string>();
+for (const r of regionRows) if (!regionCityMap.has(r.cityKey)) regionCityMap.set(r.cityKey, r.cityName);
+const cityFacetList = [...regionCityMap].map(([key, name]) => ({ key, name }));
+const showVuzFilters = regionRows.length >= 6;
+const vuzFacets: Facet[] = [
+  ...(cityFacetList.length > 1 ? [cityChipFacet(cityFacetList)] : []),
+  ugsFacet(ugs), FACET_LEVELS, FACET_FORMS, FACET_KIND, FACET_BUDGET, FACET_DORM, FACET_MIL, FACET_COST,
+];
 
 // Специальности региона по укрупнённым группам (УГСН). Где направление
 // индексируемо в регионе (≥2 вузов минимум в 2 городах) — ведём на комбо
@@ -72,6 +91,19 @@ const jsonLd = [ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
       </li>
     ))}
   </ul>
+
+  {showVuzFilters && (
+    <section class="dir-section">
+      <h2>Вузы региона</h2>
+      <p class="meta">Все вузы региона с фильтрами по городу, направлению, уровню, форме
+        обучения, бюджету и стоимости.</p>
+      <Filters facets={vuzFacets} target="[data-filter-item]" itemNoun={['вуз', 'вуза', 'вузов']} />
+      <p class="filters-empty" data-filters-empty hidden>По заданным фильтрам вузов в регионе не найдено. Снимите часть условий.</p>
+      <ul class="card-list">
+        {regionRows.map((row) => <OrgRow row={row} facet={orgFacetData(row, cardById.get(row.id))} />)}
+      </ul>
+    </section>
+  )}
 
   <Cta pageType="region" zone="after-cities" />
 

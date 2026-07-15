@@ -7,7 +7,7 @@
 // формы/бюджета/цены обязан считаться по офферам именно этого ОКСО —
 // `dirOfferFacetData()`, а не из CatalogRow.
 
-import type { CatalogRow, OrgCard, RegionAgg, UgsAgg } from './data.ts';
+import type { CatalogRow, OrgCard, RegionAgg, UgsAgg, DirectionAgg } from './data.ts';
 import type { Facet } from '../components/Filters.astro';
 
 // ---------- data-* строители ----------
@@ -126,5 +126,29 @@ export function cityChipFacet(cities: { key: string; name: string }[]): Facet {
     key: 'city', label: 'Город', type: 'chip',
     chips: [...cities].sort((a, b) => a.name.localeCompare(b.name, 'ru'))
       .map((c) => ({ value: c.key, label: c.name })),
+  };
+}
+
+// ---------- фасеты списков НАПРАВЛЕНИЙ (не вузов) ----------
+
+/** data-* атрибуты направления для /specialnosti/ и /specialnosti/[code].
+ *  egeSubs — уже отфильтрованный список фасетных предметов ЕГЭ этого направления. */
+export function dirCatalogFacetData(d: DirectionAgg, egeSubs: string[]): Record<string, string> {
+  return {
+    'data-ugs': d.ugsCode || '',
+    'data-level': d.level,
+    'data-ege': egeSubs.join(','),
+    'data-budget': d.hasBudget ? '1' : '0',
+    'data-scientific': d.scientific ? '1' : '0',
+    'data-cost-min': d.costRange ? String(d.costRange.min) : '',
+    'data-cost-max': d.costRange ? String(d.costRange.max) : '',
+  };
+}
+
+/** Предмет ЕГЭ как chip-мультивыбор (для списков направлений). */
+export function egeFacet(subjects: { key: string; nom: string }[]): Facet {
+  return {
+    key: 'ege', label: 'Предмет ЕГЭ (бакалавриат/специалитет)', type: 'chip',
+    chips: subjects.map((s) => ({ value: s.key, label: s.nom })),
   };
 }

@@ -8,6 +8,7 @@ import type { Facet } from '../../components/Filters.astro';
 import { db } from '../../lib/data.ts';
 import { ege, EGE_SUBJECTS } from '../../lib/ege.ts';
 import { plural } from '../../lib/text.ts';
+import { dirCatalogFacetData } from '../../lib/facets.ts';
 
 const { ugs, directions, meta } = db();
 const groups = [...ugs].sort((a, b) => a.code.localeCompare(b.code));
@@ -29,15 +30,7 @@ const dirs = [...directions].sort((a, b) =>
 
 function dirFacet(d: typeof directions[number]): Record<string, string> {
   const subs = (bySlug.get(d.slug) ?? []).filter((s) => egeKeys.has(s));
-  return {
-    'data-ugs': d.ugsCode || '',
-    'data-level': d.level,
-    'data-ege': subs.join(','),
-    'data-budget': d.hasBudget ? '1' : '0',
-    'data-scientific': d.scientific ? '1' : '0',
-    'data-cost-min': d.costRange ? String(d.costRange.min) : '',
-    'data-cost-max': d.costRange ? String(d.costRange.max) : '',
-  };
+  return dirCatalogFacetData(d, subs);
 }
 
 const facets: Facet[] = [

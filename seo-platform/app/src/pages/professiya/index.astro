@@ -2,6 +2,8 @@
 import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Cta from '../../components/Cta.astro';
+import Filters from '../../components/Filters.astro';
+import type { Facet } from '../../components/Filters.astro';
 import { graph } from '../../lib/graph.ts';
 import { ldBreadcrumbs, plural } from '../../lib/text.ts';
 import { SCREENING_URL } from '../../lib/links.ts';
@@ -37,6 +39,23 @@ for (const p of professions) {
 const letters = [...byLetter.entries()].sort((a, b) => a[0].localeCompare(b[0], 'ru'));
 
 const withRoutes = professions.filter((p) => p.routes.length).length;
+
+// Фасеты каталога профессий. Применяются к списку «по алфавиту» (плоскому);
+// вид «по группам» — это по сути та же группировка по ОКЗ, что и фасет «группа».
+// Честно: группа занятий (ОКЗ), есть ли сопоставленные направления, есть ли зарплата.
+const majorOptions = groups.map((g) => ({ value: g.digit, label: g.name }));
+const profFacets: Facet[] = [
+  { key: 'major', label: 'Группа занятий (ОКЗ)', type: 'select', placeholder: '— любая группа —', options: majorOptions },
+  { key: 'routes', label: 'Направления подготовки', type: 'toggle', toggleLabel: 'Есть сопоставленные направления' },
+  { key: 'salary', label: 'Зарплата', type: 'toggle', toggleLabel: 'Есть данные о зарплате (Росстат)' },
+];
+const profFacet = (p: typeof professions[number]) => ({
+  'data-filter-item': '',
+  'data-major': p.isco[0],
+  'data-routes': p.routes.length ? '1' : '0',
+  'data-salary': (p.salary && (p.salary.avgRF != null || p.salary.avgMoscow != null)) ? '1' : '0',
+});
+
 const crumbs = [{ name: 'Главная', url: '/' }, { name: 'Профессии' }];
 const title = `Список профессий: ${professions.length} профессий (ISCO-08 / ОКЗ) — зарплаты, компетенции | Профориентация`;
 const description = `Полный список из ${professions.length} профессий по международной классификации ISCO-08 с русскими названиями (ОКЗ): средняя зарплата по данным Росстата, ключевые компетенции (ESCO), направления подготовки. Какие есть профессии и кем можно работать.`;
@@ -61,7 +80,7 @@ const jsonLd = [
   <h1>Список профессий</h1>
   {/* Краткое определение для AI-поиска и быстрого ответа. */}
   <p><strong>Профессия</strong> — вид трудовой деятельности, требующий определённых знаний
-    и навыков. Ниже — полный список из {professions.length}&nbsp;{plural(professions.length, 'профессии', 'профессий', 'профессий')}
+    и навыков. Ниже — полный список из {professions.length}&nbsp;{plural(professions.length, 'профессии', 'профессий', 'профессий')}{' '}
     по международной классификации занятий <strong>ISCO-08</strong> с русскими названиями из ОКЗ.
     По каждой профессии — средняя зарплата (Росстат), ключевые компетенции (ESCO) и, где
     сопоставлено, направления подготовки. Связь с образованием — экспертное сопоставление, не
@@ -75,6 +94,9 @@ const jsonLd = [
   <p class="invite">Профессия — ещё не выбор. Понять, что подходит именно вам,
     помогает не список, а сильные стороны. <a href={SCREENING_URL} rel="noopener">Пройдите тест →</a>
     {' '}Не знаете, с чего начать — <a href="/kak-vybrat-professiyu/">как выбрать профессию</a>.</p>
+
+  <Filters facets={profFacets} target="#view-alpha [data-filter-item]" itemNoun={['профессия', 'профессии', 'профессий']} />
+  <p class="filters-empty" data-filters-empty hidden>По заданным фильтрам профессий не найдено. Снимите часть условий.</p>
 
   <div class="tabs" role="tablist" aria-label="Способ группировки">
     <button class="tab is-active" data-view="alpha" role="tab" aria-selected="true">По алфавиту</button>
@@ -99,17 +121,17 @@ const jsonLd = [
 
   <div id="view-alpha">
     {letters.map(([letter, items]) => (
-      <>
+      <section class="alpha-sec">
         <h2 class="alpha-letter">{letter}</h2>
         <div class="columns">
           <ul>
             {items.map((p) => (
-              <li><a href={`/professiya/${p.slug}/`}>{p.nameRu}</a>
+              <li {...profFacet(p)}><a href={`/professiya/${p.slug}/`}>{p.nameRu}</a>
                 {p.routes.length > 0 && <span class="sub-note"> · есть направления</span>}</li>
             ))}
           </ul>
         </div>
-      </>
+      </section>
     ))}
   </div>
 
@@ -141,14 +163,26 @@ const jsonLd = [
       groups: document.getElementById('view-groups'),
       alpha: document.getElementById('view-alpha'),
     };
-    tabs.forEach((t) => t.addEventListener('click', () => {
-      const view = t.dataset.view!;
+    const groupsTab = tabs.find((t) => t.dataset.view === 'groups');
+    const setView = (view: string) => {
       tabs.forEach((x) => {
-        const on = x === t;
+        const on = x.dataset.view === view;
         x.classList.toggle('is-active', on);
         x.setAttribute('aria-selected', String(on));
       });
       for (const [k, el] of Object.entries(views)) if (el) el.hidden = k !== view;
-    }));
+    };
+    tabs.forEach((t) => t.addEventListener('click', () => setView(t.dataset.view!)));
+
+    // Фильтр применяется к плоскому списку «по алфавиту». При активном фильтре —
+    // принудительно алфавитный вид, а вкладка «по группам» скрыта (там фильтр не
+    // отражается). Пустые буквы-секции прячем.
+    const secs = [...document.querySelectorAll<HTMLElement>('.alpha-sec')];
+    document.addEventListener('filters:change', (e) => {
+      const active = ((e as CustomEvent).detail?.activeCount ?? 0) > 0;
+      if (groupsTab) groupsTab.hidden = active;
+      if (active) setView('alpha');
+      secs.forEach((s) => { s.hidden = !s.querySelector('li:not(.filtered-out)'); });
+    });
   </script>
 </Base>

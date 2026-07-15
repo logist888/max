@@ -2,8 +2,12 @@
 import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Cta from '../../components/Cta.astro';
+import Filters from '../../components/Filters.astro';
+import type { Facet } from '../../components/Filters.astro';
 import { db } from '../../lib/data.ts';
+import { ege, EGE_SUBJECTS } from '../../lib/ege.ts';
 import { ldBreadcrumbs, plural } from '../../lib/text.ts';
+import { dirCatalogFacetData, egeFacet, FACET_BUDGET, FACET_COST } from '../../lib/facets.ts';
 
 export function getStaticPaths() {
   return db().ugs.map((g) => ({ params: { code: g.code }, props: { group: g } }));
@@ -11,6 +15,8 @@ export function getStaticPaths() {
 
 const { group } = Astro.props;
 const { directions, meta } = db();
+const { bySlug } = ege();
+const egeKeys = new Set(EGE_SUBJECTS.map((s) => s.key));
 const groupName = group.name ?? `Группа ${group.code}`;
 const dirs = directions
   .filter((d) => d.ugsCode === group.code)
@@ -26,6 +32,13 @@ const LEVEL_ORDER = ['Бакалавриат', 'Специалитет', 'Маг
   'Базовое высшее образование', 'Специализированное высшее образование', 'Аспирантура'];
 const levels = [...byLevel.entries()].sort(
   (a, b) => (LEVEL_ORDER.indexOf(a[0]) + 99) % 99 - (LEVEL_ORDER.indexOf(b[0]) + 99) % 99);
+
+// Фильтр направлений группы: уровень уже разбит секциями, поэтому фасеты — предмет
+// ЕГЭ / бюджет / стоимость. Группа фиксирована (ugs не фасет); научные в УГСН не попадают.
+const showFilters = dirs.length >= 6;
+const dirFacets: Facet[] = [egeFacet(EGE_SUBJECTS), FACET_BUDGET, FACET_COST];
+const facetOf = (d: typeof dirs[number]) =>
+  dirCatalogFacetData(d, (bySlug.get(d.slug) ?? []).filter((s) => egeKeys.has(s)));
 
 const title = `${groupName}: ${dirs.length} ${plural(dirs.length, 'направление', 'направления', 'направлений')} | ${meta.campaignYear}`;
 const description = `Укрупнённая группа «${groupName}» (${group.code}): ${dirs.length} ${plural(dirs.length,
@@ -47,12 +60,19 @@ const jsonLd = [ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
   <p class="meta">Укрупнённая группа {group.code} · {dirs.length}&nbsp;{plural(dirs.length, 'направление', 'направления', 'направлений')}
     {group.orgCount > 0 && ` · ${group.orgCount} ${plural(group.orgCount, 'вуз', 'вуза', 'вузов')}`}</p>
 
-  {levels.map(([level, list]) => (
+  {showFilters && (
     <>
+      <Filters facets={dirFacets} target="[data-filter-item]" itemNoun={['направление', 'направления', 'направлений']} />
+      <p class="filters-empty" data-filters-empty hidden>По заданным фильтрам направлений не найдено. Снимите часть условий.</p>
+    </>
+  )}
+
+  {levels.map(([level, list]) => (
+    <section class="lvl-sec">
       <h2>{level}</h2>
       <ul class="card-list grid-2">
         {list.map((d) => (
-          <li class="card">
+          <li class="card" {...(showFilters ? { 'data-filter-item': '', ...facetOf(d) } : {})}>
             <h3><a href={`/specialnost/${d.slug}/`}>{d.name}</a></h3>
             <p class="meta">{d.okso.replace(/^\d+\./, '')} · {d.orgCount} {plural(d.orgCount,
               'вуз', 'вуза', 'вузов')} · {d.cityCount} {plural(d.cityCount,
@@ -60,8 +80,20 @@ const jsonLd = [ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
           </li>
         ))}
       </ul>
-    </>
+    </section>
   ))}
 
   <Cta pageType="ugs" zone="after-list" />
+
+  <script>
+    // Прячем заголовок уровня, если в нём не осталось видимых направлений после фильтра.
+    // Работает только на страницах с панелью фильтров (иначе секции не трогаем).
+    if (document.querySelector('[data-filters-count]')) {
+      const secs = [...document.querySelectorAll<HTMLElement>('.lvl-sec')];
+      const sync = () => secs.forEach((s) => {
+        s.hidden = !s.querySelector('.card:not(.filtered-out)');
+      });
+      document.addEventListener('filters:change', sync);
+    }
+  </script>
 </Base>
