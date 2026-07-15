@@ -7,6 +7,10 @@ import Filters from '../../components/Filters.astro';
 import type { Facet } from '../../components/Filters.astro';
 import { db } from '../../lib/data.ts';
 import type { CatalogRow } from '../../lib/data.ts';
+import {
+  orgFacetData, regionFacet, ugsFacet,
+  FACET_LEVELS, FACET_FORMS, FACET_KIND, FACET_BUDGET, FACET_DORM, FACET_MIL, FACET_COST,
+} from '../../lib/facets.ts';
 
 const { catalogRows, cardById, regions, ugs, meta } = db();
 
@@ -60,60 +64,21 @@ alphaSorted.forEach((r, i) => {
 });
 const letters = [...letterFirstRank.keys()].sort((a, b) => letterRank(a) - letterRank(b));
 
-// data-* фасеты + позиция для алфавитного вида. Форму обучения и укрупнённые группы
-// агрегируем из org-cards на билд-тайме (пайплайн не трогаем).
+// data-* фасеты берём из общего orgFacetData (один источник правды с /gorod/, /region/),
+// добавляя позицию/букву для алфавитного вида — они специфичны для /vuzy/.
 function vuzFacet(row: CatalogRow): Record<string, string> {
-  const card = cardById.get(row.id);
-  const forms = new Set<string>();
-  const ugsCodes = new Set<string>();
-  if (card) {
-    for (const o of card.offers) if (o.form) forms.add(o.form);
-    for (const g of card.programsByLevel) for (const d of g.directions) if (d.ugs) ugsCodes.add(d.ugs);
-  }
   return {
+    ...orgFacetData(row, cardById.get(row.id)),
     'data-letter': firstLetter(row.shortName),
     style: `--o:${2 * alphaRank.get(row.id)! + 1}`,
-    'data-region': row.regionKey,
-    'data-kind': row.kind,
-    'data-levels': (row.levels ?? []).join(','),
-    'data-forms': [...forms].join(','),
-    'data-ugs': [...ugsCodes].join(','),
-    'data-budget': row.hasBudget ? '1' : '0',
-    'data-dorm': row.dormitory ? '1' : '0',
-    'data-mil': row.militaryDept ? '1' : '0',
-    'data-cost-min': row.costRange ? String(row.costRange.min) : '',
-    'data-cost-max': row.costRange ? String(row.costRange.max) : '',
   };
 }
-
-const regionOptions = [...regions]
-  .sort((a, b) => a.displayName.localeCompare(b.displayName, 'ru'))
-  .map((r) => ({ value: r.key, label: r.displayName }));
-const ugsOptions = [...ugs]
-  .sort((a, b) => a.code.localeCompare(b.code))
-  .map((g) => ({ value: g.code, label: `${g.code} — ${g.name ?? ''}` }));
 
 // Город убран: нативный select-пикер iOS игнорирует option.hidden, зависимый список
 // город←регион там не сужался. Оставлен регион; вернём город позже (пере-создавая опции).
 const facets: Facet[] = [
-  { key: 'region', label: 'Регион', type: 'select', placeholder: '— любой регион —', options: regionOptions },
-  { key: 'ugs', label: 'Направление (укрупнённая группа)', type: 'select', placeholder: '— любая группа —', options: ugsOptions },
-  { key: 'levels', label: 'Уровень', type: 'chip', chips: [
-    { value: 'Бакалавриат', label: 'Бакалавриат' }, { value: 'Специалитет', label: 'Специалитет' },
-    { value: 'Магистратура', label: 'Магистратура' }, { value: 'Аспирантура', label: 'Аспирантура' },
-  ] },
-  { key: 'forms', label: 'Форма обучения', type: 'chip', chips: [
-    { value: 'Очная', label: 'Очная' }, { value: 'Очно-заочная', label: 'Очно-заочная' },
-    { value: 'Заочная', label: 'Заочная' },
-  ] },
-  { key: 'kind', label: 'Тип', type: 'chip', chips: [
-    { value: 'головной', label: 'Головной вуз' }, { value: 'филиал', label: 'Филиал' },
-    { value: 'зарубежный', label: 'Зарубежный' },
-  ] },
-  { key: 'budget', label: 'Бюджетные места', type: 'toggle', toggleLabel: 'Есть бюджетные места' },
-  { key: 'dorm', label: 'Общежитие', type: 'toggle', toggleLabel: 'Есть общежитие' },
-  { key: 'mil', label: 'Военная подготовка', type: 'toggle', toggleLabel: 'Военная кафедра / УВЦ' },
-  { key: 'cost', label: 'Стоимость платного', type: 'range', unit: '₽/год', min: 0, step: 10000 },
+  regionFacet(regions), ugsFacet(ugs),
+  FACET_LEVELS, FACET_FORMS, FACET_KIND, FACET_BUDGET, FACET_DORM, FACET_MIL, FACET_COST,
 ];
 
 const title = `Каталог вузов России: ${catalogRows.length} организаций с фильтрами | ${meta.campaignYear}`;

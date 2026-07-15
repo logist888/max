@@ -3,18 +3,31 @@ import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import OrgRow from '../../components/OrgRow.astro';
 import Cta from '../../components/Cta.astro';
+import Filters from '../../components/Filters.astro';
+import type { Facet } from '../../components/Filters.astro';
 import { db } from '../../lib/data.ts';
 import { costPhrase, ldBreadcrumbs, plural } from '../../lib/text.ts';
+import {
+  orgFacetData, ugsFacet,
+  FACET_LEVELS, FACET_FORMS, FACET_KIND, FACET_BUDGET, FACET_DORM, FACET_MIL, FACET_COST,
+} from '../../lib/facets.ts';
 
 export function getStaticPaths() {
   return db().cities.map((city) => ({ params: { slug: city.slug }, props: { city } }));
 }
 
 const { city } = Astro.props;
-const { catalogRows, regions, meta, combosCity, directionByOkso, ugs } = db();
+const { catalogRows, cardById, regions, meta, combosCity, directionByOkso, ugs } = db();
 const region = regions.find((r) => r.key === city.regionKey)!;
 const rows = catalogRows.filter((r) => r.cityKey === city.key);
 const cost = costPhrase(city.costRange);
+
+// Фасеты вузов города. Регион/город фиксированы страницей — гео-фасета нет.
+// Показываем только если вузов достаточно, чтобы фильтр имел смысл.
+const showFilters = rows.length >= 6;
+const facets: Facet[] = [
+  ugsFacet(ugs), FACET_LEVELS, FACET_FORMS, FACET_KIND, FACET_BUDGET, FACET_DORM, FACET_MIL, FACET_COST,
+];
 
 // Специальности города по укрупнённым группам (УГСН). Спицы графа: где
 // направление индексируемо в городе (≥2 вузов) — ведём на комбо-страницу
@@ -74,8 +87,19 @@ const jsonLd = [ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
       <a href={`/region/${region.slug}/`}>{region.displayName}</a></li>
   </ul>
 
+  {showFilters && (
+    <>
+      <Filters facets={facets} target="[data-filter-item]" itemNoun={['вуз', 'вуза', 'вузов']} />
+      <p class="filters-empty" data-filters-empty hidden>По заданным фильтрам вузов в городе не найдено. Снимите часть условий.</p>
+    </>
+  )}
+
   <ul class="card-list">
-    {rows.map((row) => <OrgRow row={row} />)}
+    {rows.map((row) => (
+      showFilters
+        ? <OrgRow row={row} facet={orgFacetData(row, cardById.get(row.id))} />
+        : <OrgRow row={row} />
+    ))}
   </ul>
 
   <Cta pageType="city" zone="after-vuzy" />

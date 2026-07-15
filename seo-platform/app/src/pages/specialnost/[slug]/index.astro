@@ -3,20 +3,41 @@ import Base from '../../../layouts/Base.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import OrgRow from '../../../components/OrgRow.astro';
 import Cta from '../../../components/Cta.astro';
+import Filters from '../../../components/Filters.astro';
+import type { Facet } from '../../../components/Filters.astro';
 import { db } from '../../../lib/data.ts';
 import { graph } from '../../../lib/graph.ts';
 import { costPhrase, directionFaq, ldBreadcrumbs, ldFaq, plural } from '../../../lib/text.ts';
 import { ege, EGE_SUBJECTS } from '../../../lib/ege.ts';
+import {
+  dirCardFacetData, dirOfferFacetData, regionFacet,
+  FACET_KIND, FACET_FORM, FACET_BUDGET, FACET_COST, FACET_DORM, FACET_MIL,
+} from '../../../lib/facets.ts';
 
 export function getStaticPaths() {
   return db().directions.map((dir) => ({ params: { slug: dir.slug }, props: { dir } }));
 }
 
 const { dir } = Astro.props;
-const { rowsByOkso, combosCity, cityByKey, directions, meta } = db();
+const { rowsByOkso, cardById, regions, combosCity, cityByKey, directions, meta } = db();
 const rows = rowsByOkso.get(dir.okso) ?? [];
 const code = dir.okso.replace(/^\d+\./, '');
 const cost = costPhrase(dir.costRange);
+
+// Фасеты списка вузов направления. Направление/уровень/группа фиксированы (не фасеты).
+// Гео — только РЕГИОН (город даёт баг iOS + длинный список; город уже покрыт спицами
+// «Где учиться по городам»). Форма/бюджет/цена — честно по офферам ИМЕННО этого ОКСО
+// (dirOfferFacetData), не из агрегатов вуза. Регион-опции — только присутствующие.
+const showFilters = rows.length >= 6;
+const rowRegionKeys = new Set(rows.map((r) => r.regionKey));
+const presentRegions = regions.filter((r) => rowRegionKeys.has(r.key));
+const orgFacet = (row: typeof rows[number]) => ({
+  ...dirCardFacetData(row),
+  ...dirOfferFacetData(cardById.get(row.id), dir.okso),
+});
+const dirFacets: Facet[] = [
+  regionFacet(presentRegions), FACET_KIND, FACET_FORM, FACET_BUDGET, FACET_COST, FACET_DORM, FACET_MIL,
+];
 
 // Города, где направление индексируемо (≥2 вузов) — спицы.
 const comboLinks = combosCity
@@ -120,8 +141,16 @@ const egeSubs = (ege().bySlug.get(dir.slug) ?? []).filter((k) => k !== 'русс
   )}
 
   <h2>Все вузы направления</h2>
+  {showFilters && (
+    <>
+      <Filters facets={dirFacets} target="[data-filter-item]" itemNoun={['вуз', 'вуза', 'вузов']} />
+      <p class="filters-empty" data-filters-empty hidden>По заданным фильтрам вузов с этим направлением не найдено. Снимите часть условий.</p>
+    </>
+  )}
   <ul class="card-list">
-    {rows.map((row) => <OrgRow row={row} />)}
+    {rows.map((row) => (
+      showFilters ? <OrgRow row={row} facet={orgFacet(row)} /> : <OrgRow row={row} />
+    ))}
   </ul>
 
   <Cta pageType="direction" zone="after-vuzy" />
