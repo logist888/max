@@ -4,6 +4,7 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Cta from '../../components/Cta.astro';
 import { db } from '../../lib/data.ts';
 import { vuzScores, vuzScoresByGroup } from '../../lib/scores.ts';
+import { SCREENING_URL } from '../../lib/links.ts';
 import {
   costPhrase, ldBreadcrumbs, ldFaq, ldOrg, orgDescription, orgFaq, orgTitle, plural, rub,
 } from '../../lib/text.ts';
@@ -199,7 +200,7 @@ const links = Object.entries(LINK_LABELS)
 
   <div class="sticky-cta" id="sticky-cta" hidden>
     <span class="sticky-text">Не уверены, что {card.shortName} — ваш вуз?</span>
-    <a class="btn btn-primary" href="/test/">Проверить за 2 минуты</a>
+    <a class="btn btn-primary" href={SCREENING_URL} rel="noopener">Пройти диагностику</a>
   </div>
 
   {similar.length > 0 && (

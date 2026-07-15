@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { db } from '../lib/data.ts';
 import { plural } from '../lib/text.ts';
+import { SCREENING_URL } from '../lib/links.ts';
 
 const { catalogRows, cities, regions, directions, meta } = db();
 const topCities = [...cities].sort((a, b) => b.orgCount - a.orgCount).slice(0, 12);
@@ -27,7 +28,7 @@ const jsonLd = [{
       «что вам подходит» — а уже потом показываем все {catalogRows.length} {plural(catalogRows.length, 'вуз', 'вуза', 'вузов')} России:
       программы, бюджетные места, цены. Только факты официальных данных.</p>
     <div class="actions">
-      <a class="btn btn-primary" href="/test/">Узнать, насколько я определился</a>
+      <a class="btn btn-primary" href={SCREENING_URL} rel="noopener">Узнать, насколько я определился</a>
       <a class="btn btn-secondary" href="/vuzy/">Смотреть каталог вузов</a>
     </div>
     <div class="chips">
@@ -43,9 +44,9 @@ const jsonLd = [{
   <ul class="card-list grid-3">
     <li class="card">
       <h3>1. Поймите, где вы</h3>
-      <p class="meta">Тест из 5 вопросов покажет, что уже решено, а где выбор
+      <p class="meta">Короткий тест покажет, что уже решено, а где выбор
         держится на чужих ожиданиях.</p>
-      <p><a href="/test/">Пройти тест →</a></p>
+      <p><a href={SCREENING_URL} rel="noopener">Пройти тест →</a></p>
     </li>
     <li class="card">
       <h3>2. Сузьте поле</h3>

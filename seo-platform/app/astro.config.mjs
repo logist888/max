@@ -20,7 +20,8 @@ export default defineConfig({
     ...(SITE_URL
       ? [sitemap({
           filter: (page) =>
-            !/\/404\/?$/.test(page) && !/\/vuzy\/\d+\/?$/.test(page),
+            !/\/404\/?$/.test(page) && !/\/vuzy\/\d+\/?$/.test(page)
+            && !/\/test\/?$/.test(page),
         })]
       : []),
   ],

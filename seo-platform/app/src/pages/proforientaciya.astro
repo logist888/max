@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import Cta from '../components/Cta.astro';
 import { ldBreadcrumbs, ldFaq } from '../lib/text.ts';
+import { SCREENING_URL } from '../lib/links.ts';
 
 const crumbs = [
   { name: 'Главная', url: '/' },
@@ -73,7 +74,7 @@ const jsonLd = [
 
   <h2>С чего начать</h2>
   <ul>
-    <li><a href="/test/">Пройти короткий тест</a> — 5 вопросов, ориентир по сильным сторонам.</li>
+    <li><a href={SCREENING_URL} rel="noopener">Пройти короткий тест</a> — ориентир по сильным сторонам.</li>
     <li><a href="/kak-vybrat-professiyu/">Как выбрать профессию</a> — пошаговый разбор.</li>
     <li><a href="/testy-na-proforientaciyu/">Тесты на профориентацию</a> — какие бывают и как выбрать.</li>
     <li><a href="/professiya/">Список профессий</a> — что делают специалисты и куда поступать.</li>

@@ -1,147 +1,17 @@
 ---
+// Временный редирект: локальный квиз заменён внешней диагностикой (скринингом)
+// на dev.mainexperts.online. Прежний квиз из 5 вопросов — в истории git, вернуть
+// можно откатом этого файла. noindex — редирект не индексируем.
 import Base from '../layouts/Base.astro';
-import Breadcrumbs from '../components/Breadcrumbs.astro';
-import Cta from '../components/Cta.astro';
+import { SCREENING_URL } from '../lib/links.ts';
 
-const title = 'Тест: насколько вы определились с выбором вуза';
-const description = 'Пять вопросов без регистрации: где вы сейчас в выборе — и какой следующий шаг даст больше всего ясности.';
+const title = 'Диагностика профориентации — переход';
+const description = 'Переход к диагностике MainExperts.';
 ---
-<Base title={title} description={description}>
-  <Breadcrumbs items={[{ name: 'Главная', url: '/' }, { name: 'Тест' }]} />
-  <div class="quiz-wrap">
-    <h1>Насколько вы определились?</h1>
-    <p class="meta">Пять вопросов, около двух минут. Без регистрации и
-      персональных данных — ответы остаются в вашем браузере.</p>
-
-    <div class="progress" aria-hidden="true"><div class="progress-bar" id="progress"></div></div>
-
-    <form id="quiz">
-      <fieldset data-step="1">
-        <legend>Кто отвечает?</legend>
-        <label><input type="radio" name="who" value="student" required /><span>Школьник или студент</span></label>
-        <label><input type="radio" name="who" value="parent" /><span>Родитель</span></label>
-      </fieldset>
-      <fieldset data-step="2" hidden>
-        <legend>Какой сейчас класс?</legend>
-        <label><input type="radio" name="grade" value="9" required /><span>9 класс или раньше</span></label>
-        <label><input type="radio" name="grade" value="10" /><span>10 класс</span></label>
-        <label><input type="radio" name="grade" value="11" /><span>11 класс</span></label>
-        <label><input type="radio" name="grade" value="other" /><span>Колледж / выпуск прошлых лет</span></label>
-      </fieldset>
-      <fieldset data-step="3" hidden>
-        <legend>Что уже решено?</legend>
-        <label><input type="radio" name="known" value="prof" required /><span>Знаю профессию или направление</span></label>
-        <label><input type="radio" name="known" value="vuz" /><span>Знаю вуз, выбираю программу</span></label>
-        <label><input type="radio" name="known" value="city" /><span>Знаю только город</span></label>
-        <label><input type="radio" name="known" value="nothing" /><span>Пока ничего не решено</span></label>
-      </fieldset>
-      <fieldset data-step="4" hidden>
-        <legend>Насколько уверенно звучит выбор?</legend>
-        <label><input type="radio" name="sure" value="sure" required /><span>Уверенно — осталось сравнить варианты</span></label>
-        <label><input type="radio" name="sure" value="doubt" /><span>Есть вариант, но сомневаюсь</span></label>
-        <label><input type="radio" name="sure" value="lost" /><span>Каждую неделю мнение меняется</span></label>
-      </fieldset>
-      <fieldset data-step="5" hidden>
-        <legend>Что сейчас важнее всего?</legend>
-        <label><input type="radio" name="need" value="list" required /><span>Список вузов под мой запрос</span></label>
-        <label><input type="radio" name="need" value="compare" /><span>Сравнить два-три конкретных вуза</span></label>
-        <label><input type="radio" name="need" value="self" /><span>Понять, что мне вообще подходит</span></label>
-      </fieldset>
-      <p class="quiz-nav">
-        <button type="button" id="back" class="btn btn-secondary" hidden>← Назад</button>
-      </p>
-    </form>
-
-    <section id="result-known" hidden>
-      <h2>Вы ближе к выбору, чем большинство</h2>
-      <p>Решение почти собрано — осталось проверить его фактами:</p>
-      <ul class="card-list">
-        <li class="card"><h3><a href="/specialnosti/">Найдите своё направление</a></h3>
-          <p class="meta">Все вузы, где оно есть, с бюджетными местами и ценами.</p></li>
-        <li class="card"><h3><a href="/vuzy/">Откройте карточки вузов</a></h3>
-          <p class="meta">Сравните программы, места и стоимость двух-трёх кандидатов.</p></li>
-      </ul>
-      <p class="meta">Если сомнение вернётся — вернитесь сюда: сомнение обычно
-        не про вузы, а про то, что решение принято не из своих сильных сторон.</p>
-    </section>
-
-    <section id="result-unknown" hidden>
-      <h2>Честный результат: выбирать вуз пока рано</h2>
-      <p>Каталоги и рейтинги не помогут, пока не ясно, из чего выбирать.
-        Порядок обратный: сначала — сильные стороны и склонности, потом —
-        направление, и только затем — вуз. Это нормальный этап, и он проходится
-        быстрее всего с диагностикой, которая оцифровывает сильные стороны.</p>
-      <Cta pageType="quiz" zone="final" />
-      <p>Параллельно можно смотреть <a href="/specialnosti/">группы направлений</a> —
-        не выбирать, а замечать, что цепляет.</p>
-    </section>
-  </div>
-
-  <style>
-    .quiz-wrap { max-width: 640px; margin: 0 auto; }
-    .progress {
-      height: 6px; border-radius: 999px; background: var(--surface-2);
-      margin: var(--space-6) 0; overflow: hidden;
-    }
-    .progress-bar {
-      height: 100%; width: 20%; border-radius: 999px;
-      background: linear-gradient(90deg, var(--grad-a), var(--grad-b));
-      transition: width .25s ease;
-    }
-    fieldset { border: 0; margin: 0; padding: 0; }
-    legend { font-weight: 700; font-size: 1.25rem; padding: 0; margin-bottom: var(--space-4); letter-spacing: -.01em; }
-    label {
-      display: flex; align-items: center; gap: var(--space-3);
-      padding: var(--space-4) var(--space-6); margin-bottom: var(--space-3);
-      background: var(--surface); border: 1.5px solid var(--border);
-      border-radius: var(--radius); cursor: pointer; box-shadow: var(--shadow-1);
-      transition: border-color .15s ease, transform .15s ease;
-    }
-    label:hover { border-color: var(--accent); transform: translateY(-1px); }
-    label:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
-    input[type="radio"] { width: 20px; height: 20px; accent-color: var(--accent); flex: none; }
-    .quiz-nav { margin-top: var(--space-4); }
-  </style>
-
-  <script>
-    const form = document.getElementById('quiz') as HTMLFormElement;
-    const steps = [...form.querySelectorAll<HTMLFieldSetElement>('fieldset')];
-    const back = document.getElementById('back') as HTMLButtonElement;
-    const bar = document.getElementById('progress') as HTMLDivElement;
-    let current = 0;
-
-    function show(i: number): void {
-      steps.forEach((s, j) => { s.hidden = j !== i; });
-      back.hidden = i === 0;
-      bar.style.width = `${((i + 1) / steps.length) * 100}%`;
-      current = i;
-    }
-
-    function finish(): void {
-      const data = new FormData(form);
-      const unknown = data.get('known') === 'nothing' ||
-        data.get('sure') === 'lost' || data.get('need') === 'self';
-      form.hidden = true;
-      back.hidden = true;
-      bar.style.width = '100%';
-      const result = document.getElementById(unknown ? 'result-unknown' : 'result-known')!;
-      result.hidden = false;
-      try {
-        localStorage.setItem('quiz-result', JSON.stringify({
-          branch: unknown ? 'unknown' : 'known', at: new Date().toISOString(),
-        }));
-      } catch { /* приватный режим — результат просто не сохраняется */ }
-      result.scrollIntoView({ block: 'center' });
-    }
-
-    form.addEventListener('change', (e) => {
-      if (!(e.target instanceof HTMLInputElement)) return;
-      window.setTimeout(() => {
-        if (current < steps.length - 1) show(current + 1);
-        else finish();
-      }, 220);
-    });
-    back.addEventListener('click', () => show(Math.max(0, current - 1)));
-    show(0);
-  </script>
+<Base title={title} description={description} noindex={true}>
+  <meta http-equiv="refresh" content={`0; url=${SCREENING_URL}`} />
+  <script define:vars={{ url: SCREENING_URL }}>location.replace(url);</script>
+  <h1>Открываем диагностику…</h1>
+  <p>Если переход не начался автоматически —
+    <a href={SCREENING_URL} rel="noopener">открыть диагностику MainExperts</a>.</p>
 </Base>

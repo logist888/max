@@ -3,14 +3,14 @@
   "goals": [
     {
       "code": "diagnostic",
-      "title": "Диагностика MainExperts",
-      "url": "",
+      "title": "Пройти диагностику",
+      "url": "https://dev.mainexperts.online/screening",
       "utm": {
         "utm_source": "eduplatform",
         "utm_medium": "referral",
         "utm_campaign": "{page_type}"
       },
-      "active": false
+      "active": true
     }
   ],
   "placements": [

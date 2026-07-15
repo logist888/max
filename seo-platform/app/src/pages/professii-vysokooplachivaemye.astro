@@ -4,6 +4,7 @@ import Breadcrumbs from '../components/Breadcrumbs.astro';
 import Cta from '../components/Cta.astro';
 import { graph } from '../lib/graph.ts';
 import { ldBreadcrumbs, ldFaq, plural } from '../lib/text.ts';
+import { SCREENING_URL } from '../lib/links.ts';
 
 // Рейтинг по РЕАЛЬНЫМ зарплатам Росстата (обследование по группам занятий ОКЗ,
 // октябрь 2025). В рейтинг попадают только профессии с данными — правило «не
@@ -93,7 +94,7 @@ const jsonLd = [
     оценку, поэтому показаны представителем группы.</p>
 
   <p class="notice">Высокая зарплата в группе ≠ ваш будущий доход. Что подходит именно вам —
-    показывает не рейтинг, а сильные стороны. <a href="/test/">Пройдите тест из 5 вопросов →</a></p>
+    показывает не рейтинг, а сильные стороны. <a href={SCREENING_URL} rel="noopener">Пройдите тест →</a></p>
 
   {TOP.length > 0 ? (
     <table class="rank">

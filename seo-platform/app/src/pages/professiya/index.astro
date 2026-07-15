@@ -4,6 +4,7 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Cta from '../../components/Cta.astro';
 import { graph } from '../../lib/graph.ts';
 import { ldBreadcrumbs, plural } from '../../lib/text.ts';
+import { SCREENING_URL } from '../../lib/links.ts';
 
 const { professions } = graph();
 const withSalary = professions.filter((p) => p.salary?.avgRF != null).length;
@@ -72,7 +73,7 @@ const jsonLd = [
   <Cta pageType="profession-catalog" zone="after-intro" />
 
   <p class="notice">Профессия — ещё не выбор. Понять, что подходит именно вам,
-    помогает не список, а сильные стороны. <a href="/test/">Пройдите тест из 5 вопросов →</a>
+    помогает не список, а сильные стороны. <a href={SCREENING_URL} rel="noopener">Пройдите тест →</a>
     {' '}Не знаете, с чего начать — <a href="/kak-vybrat-professiyu/">как выбрать профессию</a>.</p>
 
   <div class="tabs" role="tablist" aria-label="Способ группировки">
