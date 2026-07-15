@@ -1,0 +1,63 @@
+---
+// Предпоказ результата скрининга «Карта выбора» для героя главной — визуальный тезис,
+// единый язык со страницей результата скрининга (gauge + зоны риск/средняя/опора).
+// Это пример (помечен), не реальные данные пользователя.
+---
+<div class="cm">
+  <span class="cm-tag">Пример «Карты выбора»</span>
+  <div class="cm-head">
+    <div class="cm-gauge" aria-hidden="true">
+      <svg viewBox="0 0 200 116" width="132" height="76">
+        <path d="M18 104 A82 82 0 0 1 182 104" fill="none" stroke="var(--surface-2)" stroke-width="15" stroke-linecap="round"/>
+        <path d="M18 104 A82 82 0 0 1 182 104" fill="none" stroke="url(#cmg)" stroke-width="15" stroke-linecap="round"
+          stroke-dasharray="257.6" stroke-dashoffset="97.9"/>
+        <defs><linearGradient id="cmg" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="var(--grad-a)"/><stop offset="1" stop-color="var(--warn)"/></linearGradient></defs>
+      </svg>
+      <div class="cm-val"><b>62</b><span>из 100</span></div>
+    </div>
+    <div>
+      <h2 class="cm-title">Общий риск выбора</h2>
+      <span class="cm-pill"><span class="cm-dot"></span>Стоит внимания</span>
+    </div>
+  </div>
+  <div class="cm-zones">
+    <div class="cm-zone"><span><b>Готовность к выбору</b><i>Низкая</i></span><span class="zone-chip zone-chip--risk">41</span></div>
+    <div class="cm-zone"><span><b>Понимание сильных сторон</b><i>Опора</i></span><span class="zone-chip zone-chip--ok">94</span></div>
+    <div class="cm-zone"><span><b>Полнота данных</b><i>Средняя</i></span><span class="zone-chip zone-chip--mid">45</span></div>
+  </div>
+  <p class="cm-note">Тот же визуальный язык, что на странице результата скрининга.</p>
+</div>
+
+<style>
+  .cm {
+    position: relative; background: var(--surface); color: var(--text);
+    border: 1px solid var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow-2); padding: var(--space-6) var(--space-4) var(--space-4);
+  }
+  .cm-tag {
+    position: absolute; top: -11px; left: var(--space-4);
+    background: var(--accent); color: #fff; font-size: .68rem; font-weight: 700;
+    letter-spacing: .05em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px;
+  }
+  .cm-head { display: flex; align-items: center; gap: var(--space-4); }
+  .cm-gauge { position: relative; width: 132px; flex: none; }
+  .cm-val { position: absolute; left: 0; right: 0; bottom: 4px; text-align: center; }
+  .cm-val b { font-family: var(--display); font-size: 1.9rem; line-height: 1; font-variant-numeric: tabular-nums; }
+  .cm-val span { display: block; font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); }
+  .cm-title { font-size: 1rem; margin: 0 0 4px; }
+  .cm-pill {
+    display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 999px;
+    background: var(--warn-soft); color: var(--warn); font-weight: 700; font-size: .85rem;
+  }
+  .cm-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--warn); }
+  .cm-zones { display: flex; flex-direction: column; gap: 8px; margin-top: var(--space-4); }
+  .cm-zone {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+    padding: 10px var(--space-3); border: 1px solid var(--border); border-radius: var(--radius-s); background: var(--bg);
+  }
+  .cm-zone span:first-child { display: flex; flex-direction: column; }
+  .cm-zone b { font-size: .9rem; }
+  .cm-zone i { font-style: normal; font-size: .72rem; color: var(--text-muted); }
+  .cm-note { margin: var(--space-3) 0 0; font-size: .72rem; color: var(--text-muted); }
+</style>

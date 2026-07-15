@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import ChoiceMapPreview from '../components/ChoiceMapPreview.astro';
 import { db } from '../lib/data.ts';
 import { plural } from '../lib/text.ts';
 import { SCREENING_URL } from '../lib/links.ts';
@@ -23,22 +24,44 @@ const jsonLd = [{
 ---
 <Base title={title} description={description} jsonLd={jsonLd}>
   <section class="hero">
-    <h1>Сначала — понять себя.<br />Потом — выбирать вуз.</h1>
-    <p>Каталоги отвечают на вопрос «где учиться». Мы начинаем с вопроса
-      «что вам подходит» — а уже потом показываем все {catalogRows.length} {plural(catalogRows.length, 'вуз', 'вуза', 'вузов')} России:
-      программы, бюджетные места, цены. Только факты официальных данных.</p>
-    <div class="actions">
-      <a class="btn btn-primary" href={SCREENING_URL} rel="noopener">Узнать, насколько я определился</a>
-      <a class="btn btn-secondary" href="/vuzy/">Смотреть каталог вузов</a>
-    </div>
-    <div class="chips">
-      <span class="chip">{catalogRows.length} вузов</span>
-      <span class="chip">{directions.length} направлений</span>
-      <span class="chip">{cities.length} {plural(cities.length, 'город', 'города', 'городов')}</span>
-      <span class="chip">Приём {meta.campaignYear}</span>
-      <span class="chip">Без выдуманных рейтингов</span>
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <h1>Сначала — понять себя.<br />Потом — выбирать вуз.</h1>
+        <p>Бесплатная «Карта выбора» покажет, где решение — опора, а где зона риска.
+          А дальше — {catalogRows.length} {plural(catalogRows.length, 'вуз', 'вуза', 'вузов')} и программы
+          из официальных данных, без выдуманных рейтингов.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href={SCREENING_URL} rel="noopener">Узнать риск своего выбора →</a>
+          <a class="btn btn-secondary" href="/vuzy/">Смотреть каталог вузов</a>
+        </div>
+        <div class="prov">Данные:
+          <span class="src">Госуслуги</span><span class="src">Росстат</span><span class="src">ВШЭ</span>
+        </div>
+        <div class="chips">
+          <span class="chip">{catalogRows.length} вузов</span>
+          <span class="chip">{directions.length} направлений</span>
+          <span class="chip">{cities.length} {plural(cities.length, 'город', 'города', 'городов')}</span>
+          <span class="chip">Приём {meta.campaignYear}</span>
+          <span class="chip">Без выдуманных рейтингов</span>
+        </div>
+      </div>
+      <div class="hero-aside"><ChoiceMapPreview /></div>
     </div>
   </section>
+
+  <p class="eyebrow">Один язык со скринингом</p>
+  <h2 class="tight">Четыре вопроса — и куда за ответом</h2>
+  <p class="meta">Скрининг заканчивается этими вопросами. Сайт отвечает на них фактами — та же рамка, тот же путь.</p>
+  <ul class="card-list grid-4">
+    <li class="card"><span class="qic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 6.9H21l-5.3 4.1 2 6.9L12 16l-5.7 3.8 2-6.9L3 8.9h6.6z"/></svg></span>
+      <h3><a href="/professiya/">Чем заниматься?</a></h3><p class="meta">Каталог профессий: зарплаты, компетенции.</p></li>
+    <li class="card"><span class="qic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13M9 21v-6h6v6"/></svg></span>
+      <h3><a href="/professii-vysokooplachivaemye/">Где работать?</a></h3><p class="meta">Зарплаты по профессиям — данные Росстата.</p></li>
+    <li class="card"><span class="qic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h11a2 2 0 012 2v12a2 2 0 00-2-2H4zM20 5H9a2 2 0 00-2 2v12a2 2 0 012-2h11z"/></svg></span>
+      <h3><a href="/specialnosti/">Что учить?</a></h3><p class="meta">{fgosDirections.length} направлений по группам.</p></li>
+    <li class="card"><span class="qic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.2-7-11a7 7 0 0114 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg></span>
+      <h3><a href="/vuzy/">Куда поступить?</a></h3><p class="meta">{catalogRows.length} вузов с фильтрами и программами.</p></li>
+  </ul>
 
   <h2>Как это работает</h2>
   <ul class="card-list grid-3">

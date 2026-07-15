@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Cta from '../components/Cta.astro';
 import { db } from '../lib/data.ts';
 
 const { catalogRows, meta } = db();
@@ -37,4 +38,6 @@ const description = 'Откуда данные каталога, когда об
   <h2>Обновление</h2>
   <p>Данные обновляются к началу приёмной кампании. Дата актуальной выгрузки
     указана в подвале каждой страницы.</p>
+
+  <Cta pageType="guide" zone="after-content" />
 </Base>

@@ -223,6 +223,16 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   padding: 6px 14px; border-radius: 999px; font-size: .84rem; font-weight: 500;
   background: rgba(255, 255, 255, .13); border: 1px solid rgba(255, 255, 255, .22); color: #fff;
 }
+/* Двухколоночный герой: текст + предпоказ «Карты выбора» */
+.hero-inner { display: grid; grid-template-columns: 1.08fr .92fr; gap: var(--space-8); align-items: center; }
+.hero-copy { min-width: 0; }
+.hero-copy p { color: rgba(255, 255, 255, .9); }
+/* Первичный CTA на тёмном герое — светлый, чтобы выигрывать контрастом */
+.hero .btn-primary { background: #fff; color: var(--accent-strong); box-shadow: 0 8px 24px rgba(0, 0, 0, .2); }
+.hero .btn-primary:hover { background: #fff; color: var(--grad-b); transform: translateY(-1px); box-shadow: 0 12px 30px rgba(0, 0, 0, .3); }
+.hero .prov { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: var(--space-4); font-size: .82rem; color: rgba(255, 255, 255, .78); }
+.hero .prov .src { display: inline-flex; padding: 4px 11px; border-radius: 999px; background: rgba(255, 255, 255, .14); color: #fff; font-weight: 600; }
+@media (max-width: 900px) { .hero-inner { grid-template-columns: 1fr; gap: var(--space-6); } }
 
 /* ---------- Хлебные крошки */
 .breadcrumbs { font-size: .8125rem; color: var(--text-muted); margin-top: var(--space-4); }
@@ -260,7 +270,16 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 @media (min-width: 768px) {
   .card-list.grid-2 { grid-template-columns: 1fr 1fr; }
   .card-list.grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .card-list.grid-4 { grid-template-columns: repeat(4, 1fr); }
 }
+@media (min-width: 480px) and (max-width: 767px) { .card-list.grid-4 { grid-template-columns: 1fr 1fr; } }
+/* Иконка-плашка в карточках-вопросах + надзаголовок (eyebrow) */
+.qic { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px;
+  border-radius: 11px; background: var(--surface-2); color: var(--accent); margin-bottom: var(--space-2); }
+.qic svg { width: 22px; height: 22px; }
+.eyebrow { font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent); margin: var(--space-8) 0 0; }
+.eyebrow + h2.tight { margin-top: var(--space-2); }
 .card {
   border: 1px solid var(--border); border-radius: var(--radius);
   padding: var(--space-4) var(--space-6); background: var(--surface);
