@@ -136,11 +136,17 @@ const links = Object.entries(LINK_LABELS)
   )}
 
   <h2>Программы {meta.campaignYear}</h2>
+  <div class="prog-filter" id="prog-filter" hidden>
+    <span>Фильтр из каталога: <strong id="prog-filter-labels"></strong>. Показаны подходящие программы.</span>
+    <button type="button" class="btn btn-secondary" id="prog-filter-reset">Сбросить фильтр</button>
+  </div>
+  <p class="missing" id="prog-empty" hidden>По выбранному фильтру программ нет.
+    <button type="button" class="linklike" id="prog-empty-reset">Показать все</button></p>
   {card.programsByLevel.length === 0 ? (
     <p class="missing">Программы источником не выгружены.</p>
   ) : (
     card.programsByLevel.map((group, i) => (
-      <details class="level-group" open={i === 0}>
+      <details class="level-group" data-level={group.level} open={i === 0}>
         <summary>{group.level} — {group.directions.length} {plural(group.directions.length,
           'направление', 'направления', 'направлений')}</summary>
         <div class="table-wrap">
@@ -150,10 +156,15 @@ const links = Object.entries(LINK_LABELS)
                 <th class="num">Мест</th><th class="num">Стоимость/год</th></tr>
             </thead>
             <tbody>
-              {group.directions.flatMap((dir) =>
-                dir.offers.map((off, j) => (
-                  <tr class={j === 0 ? 'dir-start' : undefined}>
-                    <td>{j === 0 ? <>{dir.okso.replace(/^\d+\./, '')} <a href={`/specialnost/${dir.slug}/`}>{dir.name}</a></> : ''}</td>
+              {group.directions.flatMap((dir) => [
+                <tr class="dir-head" data-ugs={dir.ugs}>
+                  <td colspan="5">{dir.okso.replace(/^\d+\./, '')} <a href={`/specialnost/${dir.slug}/`}>{dir.name}</a></td>
+                </tr>,
+                ...dir.offers.map((off) => (
+                  <tr class="offer-row" data-ugs={dir.ugs} data-form={off.form}
+                    data-budget={off.placeType === 'Платные места' ? '0' : '1'}
+                    data-cost={off.placeType === 'Платные места' && off.cost !== null ? String(off.cost) : ''}>
+                    <td class="offer-indent"></td>
                     <td>{off.form}</td>
                     <td>{off.placeType}</td>
                     <td class="num">{off.places ?? '—'}</td>
@@ -161,7 +172,8 @@ const links = Object.entries(LINK_LABELS)
                       ? (off.cost !== null ? rub(off.cost) : 'нет данных')
                       : '—'}</td>
                   </tr>
-                )))}
+                )),
+              ])}
             </tbody>
           </table>
         </div>
@@ -222,6 +234,20 @@ const links = Object.entries(LINK_LABELS)
     .scores-tbl { width: 100%; border-collapse: collapse; margin-top: var(--space-3); font-size: 0.9375rem; }
     .scores-tbl th, .scores-tbl td { text-align: left; padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--border); }
     .scores-tbl th:nth-child(2), .scores-tbl th:nth-child(3), .scores-tbl td.val { text-align: right; white-space: nowrap; }
+    /* Таблица программ: заголовок направления отдельной строкой + строки-офферы */
+    tr.dir-head td { border-top: 2px solid color-mix(in srgb, var(--accent) 22%, var(--border));
+      font-weight: 600; padding-top: 12px; }
+    td.offer-indent { width: 1.25rem; padding: 0; }
+    /* Наследованный из каталога фильтр программ */
+    .prog-filter {
+      display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+      flex-wrap: wrap; margin: var(--space-3) 0; padding: var(--space-3) var(--space-4);
+      background: var(--info-soft); border-left: 4px solid var(--accent);
+      border-radius: 0 var(--radius-s) var(--radius-s) 0;
+    }
+    .prog-hidden { display: none !important; }
+    .linklike { background: none; border: 0; padding: 0; font: inherit; color: var(--accent);
+      text-decoration: underline; cursor: pointer; }
   </style>
 
   <script>
@@ -231,5 +257,81 @@ const links = Object.entries(LINK_LABELS)
       const deep = window.scrollY > document.documentElement.scrollHeight * 0.35;
       if (deep !== shown) { shown = deep; bar.hidden = !deep; }
     }, { passive: true });
+
+    // Наследование фильтров каталога (/vuzy/) → таблица программ. Программные фасеты:
+    // форма / уровень / бюджет / стоимость / УГСН. Носитель — sessionStorage['vuzFilters'].
+    (function inheritFilters() {
+      let raw = '';
+      try { raw = sessionStorage.getItem('vuzFilters') || ''; } catch { /* приватный режим */ }
+      const p = new URLSearchParams(raw);
+      const forms = p.get('forms') ? new Set(p.get('forms')!.split(',')) : null;
+      const levels = p.get('levels') ? new Set(p.get('levels')!.split(',')) : null;
+      const budget = p.get('budget') === '1';
+      const ugs = p.get('ugs') ? new Set(p.get('ugs')!.split(',')) : null;
+      const costRaw = p.get('cost');
+      let cmin: number | null = null, cmax: number | null = null;
+      if (costRaw) { const [a, b] = costRaw.split('-'); cmin = a ? +a : null; cmax = b ? +b : null; }
+      if (!(forms || levels || budget || ugs || costRaw)) return;
+
+      const banner = document.getElementById('prog-filter')!;
+      const emptyMsg = document.getElementById('prog-empty');
+
+      const offerOk = (tr: HTMLElement) => {
+        const d = tr.dataset;
+        if (forms && !forms.has(d.form!)) return false;
+        if (budget && d.budget !== '1') return false;
+        if (ugs && !ugs.has(d.ugs!)) return false;
+        if (costRaw) {
+          if (!d.cost) return false;
+          const c = +d.cost;
+          if (cmin != null && c < cmin) return false;
+          if (cmax != null && c > cmax) return false;
+        }
+        return true;
+      };
+
+      let totalVisible = 0;
+      document.querySelectorAll<HTMLElement>('.level-group').forEach((grp) => {
+        if (levels && !levels.has(grp.dataset.level!)) { grp.classList.add('prog-hidden'); return; }
+        grp.classList.remove('prog-hidden');
+        let groupVisible = 0, curHead: HTMLElement | null = null, headVisible = 0;
+        const closeHead = () => { if (curHead) curHead.classList.toggle('prog-hidden', headVisible === 0); };
+        grp.querySelectorAll<HTMLElement>('tbody tr').forEach((tr) => {
+          if (tr.classList.contains('dir-head')) { closeHead(); curHead = tr; headVisible = 0; }
+          else if (tr.classList.contains('offer-row')) {
+            const ok = offerOk(tr);
+            tr.classList.toggle('prog-hidden', !ok);
+            if (ok) { headVisible++; groupVisible++; totalVisible++; }
+          }
+        });
+        closeHead();
+        grp.classList.toggle('prog-hidden', groupVisible === 0);
+        if (groupVisible > 0) (grp as HTMLDetailsElement).open = true;
+      });
+
+      const labels: string[] = [];
+      if (forms) labels.push([...forms].join(', '));
+      if (levels) labels.push([...levels].join(', '));
+      if (budget) labels.push('бюджетные места');
+      if (costRaw) {
+        const parts: string[] = [];
+        if (cmin != null) parts.push('от ' + cmin.toLocaleString('ru'));
+        if (cmax != null) parts.push('до ' + cmax.toLocaleString('ru'));
+        labels.push('стоимость ' + parts.join(' ') + ' ₽');
+      }
+      if (ugs) labels.push('группа ' + [...ugs].join(', '));
+      document.getElementById('prog-filter-labels')!.textContent = labels.join(' · ');
+      banner.hidden = false;
+      if (emptyMsg) emptyMsg.hidden = totalVisible !== 0;
+
+      const reset = () => {
+        try { sessionStorage.removeItem('vuzFilters'); } catch { /* */ }
+        document.querySelectorAll('.prog-hidden').forEach((el) => el.classList.remove('prog-hidden'));
+        banner.hidden = true;
+        if (emptyMsg) emptyMsg.hidden = true;
+      };
+      document.getElementById('prog-filter-reset')!.addEventListener('click', reset);
+      document.getElementById('prog-empty-reset')?.addEventListener('click', reset);
+    })();
   </script>
 </Base>

@@ -125,7 +125,7 @@ const description = `Все вузы России из данных «ВУЗ-н�
   <p class="meta">{catalogRows.length} организаций. Отфильтруйте по региону, направлению, уровню,
     форме обучения, наличию бюджета и другим параметрам, либо найдите вуз через поиск.</p>
 
-  <Filters facets={facets} target="[data-filter-item]" itemNoun={['вуз', 'вуза', 'вузов']} />
+  <Filters facets={facets} target="[data-filter-item]" itemNoun={['вуз', 'вуза', 'вузов']} persistKey="vuzFilters" />
   <p class="filters-empty" data-filters-empty hidden>По заданным фильтрам вузов не найдено. Снимите часть условий.</p>
 
   <div class="tabs" role="tablist" aria-label="Вид списка">

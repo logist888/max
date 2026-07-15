@@ -28,8 +28,9 @@ interface Props {
   facets: Facet[];
   target?: string;                      // селектор фильтруемых карточек
   itemNoun?: [string, string, string];  // склонения для счётчика
+  persistKey?: string;                  // ключ sessionStorage: состояние наследуется на др. страницы
 }
-const { facets, target = '[data-filter-item]', itemNoun = ['результат', 'результата', 'результатов'] } = Astro.props;
+const { facets, target = '[data-filter-item]', itemNoun = ['результат', 'результата', 'результатов'], persistKey } = Astro.props;
 
 // Метаданные для клиента: подписи значений (для активных чипов) + типы.
 const meta: Record<string, { label: string; type: string; toggleLabel?: string; unit?: string; values: Record<string, string> }> = {};
@@ -96,7 +97,7 @@ for (const f of facets) {
   </div>
 </div>
 
-<script define:vars={{ target, itemNoun, meta }}>
+<script define:vars={{ target, itemNoun, meta, persistKey }}>
   // define:vars — классический инлайн-скрипт: выполняется в точке вставки (выше списка
   // карточек), поэтому запускаем движок после готовности DOM, иначе items пуст.
   function initFilters() {
@@ -187,6 +188,11 @@ for (const f of facets) {
       }
       const qs = p.toString();
       history.replaceState(null, '', qs ? '?' + qs + location.hash : location.pathname + location.hash);
+      // Зеркалим в sessionStorage — состояние наследуется на другие страницы (карточка вуза),
+      // «пока не сброшу»; очистка фильтра очищает и наследование.
+      if (persistKey) {
+        try { qs ? sessionStorage.setItem(persistKey, qs) : sessionStorage.removeItem(persistKey); } catch {}
+      }
     }
 
     // Зависимые списки: город показывает только города выбранного региона; если
@@ -264,9 +270,12 @@ for (const f of facets) {
     if (closeBtn) closeBtn.addEventListener('click', () => setOpen(false));
     if (applyBtn) applyBtn.addEventListener('click', () => setOpen(false));
 
-    // Восстановить из URL при загрузке
+    // Восстановить из URL при загрузке; если URL чист — из sessionStorage (возврат в каталог
+    // по обычной ссылке сохраняет унаследованный фильтр).
     (function fromURL() {
-      const p = new URLSearchParams(location.search);
+      let src = location.search.replace(/^\?/, '');
+      if (!src && persistKey) { try { src = sessionStorage.getItem(persistKey) || ''; } catch {} }
+      const p = new URLSearchParams(src);
       p.forEach((val, key) => {
         const cb = chips.filter((b) => b.dataset.facet === key);
         if (cb.length) { const set = new Set(val.split(',')); cb.forEach((b) => b.setAttribute('aria-pressed', set.has(b.dataset.value) ? 'true' : 'false')); return; }
