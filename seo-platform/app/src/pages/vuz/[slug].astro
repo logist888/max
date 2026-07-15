@@ -240,7 +240,7 @@ const links = Object.entries(LINK_LABELS)
       font-weight: 600; padding-top: 12px; }
     td.offer-indent { width: 1.25rem; padding: 0; }
     /* Наследованный из каталога фильтр программ */
-    .prog-filter {
+    .prog-filter:not([hidden]) {
       display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
       flex-wrap: wrap; margin: var(--space-3) 0; padding: var(--space-3) var(--space-4);
       background: var(--info-soft); border-left: 4px solid var(--accent);

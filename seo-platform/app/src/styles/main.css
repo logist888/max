@@ -15,6 +15,23 @@
   src: url('/fonts/inter-lat.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+2000-206F, U+20AC, U+2122, U+2212;
 }
+/* Lora Variable — заголовочная (редакционная) гарнитура, самостоятельный хостинг. */
+@font-face {
+  font-family: 'LoraVariable';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/lora-cyr.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'LoraVariable';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/lora-lat.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+2000-206F, U+20AC, U+2122, U+2212;
+}
 
 /* Дизайн-токены (этап 6). Корпоративная коричнево-карамельная палитра
    (обновление по запросу владельца 12.07.2026). Пары «текст/фон» проходят
@@ -36,6 +53,8 @@
   --info-soft: #f6ecdb;
   --warn: #8a5a12;
   --warn-soft: #fbf0da;
+  --risk: #c9382f;
+  --risk-soft: #f8e6e3;
   --border: #e8dccb;
   --shadow-1: 0 1px 2px rgba(74, 47, 19, .06);
   --shadow-2: 0 10px 30px rgba(74, 47, 19, .12);
@@ -43,6 +62,9 @@
   --radius-s: 9px;
   --space-1: 4px; --space-2: 8px; --space-3: 12px;
   --space-4: 16px; --space-6: 24px; --space-8: 32px; --space-12: 48px;
+  /* Гарнитуры: заголовки — редакционный serif, тело/UI — Inter. */
+  --sans: 'InterVariable', Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --display: 'LoraVariable', Georgia, 'Times New Roman', serif;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -60,6 +82,8 @@
     --info-soft: #2b2114;
     --warn: #e0b25e;
     --warn-soft: #2b2110;
+    --risk: #ef6b60;
+    --risk-soft: #3a1f1b;
     --border: #3a3025;
     --shadow-1: 0 1px 2px rgba(0, 0, 0, .4);
     --shadow-2: 0 10px 30px rgba(0, 0, 0, .5);
@@ -70,17 +94,19 @@
 html { font-size: 16px; scroll-behavior: smooth; }
 body {
   margin: 0;
-  font-family: 'InterVariable', Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--sans);
   font-size: 1rem; line-height: 1.55;
   color: var(--text); background: var(--bg);
   -webkit-font-smoothing: antialiased;
 }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-4); }
 
-h1 { font-size: 1.9rem; line-height: 1.2; letter-spacing: -.02em; margin: var(--space-6) 0 var(--space-3); }
-h2 { font-size: 1.4rem; letter-spacing: -.01em; margin: var(--space-8) 0 var(--space-3); }
-h3 { font-size: 1.1rem; margin: var(--space-6) 0 var(--space-2); }
-@media (min-width: 768px) { h1 { font-size: 2.4rem; } h2 { font-size: 1.55rem; } }
+h1 { font-family: var(--display); font-size: 2.1rem; line-height: 1.12; letter-spacing: -.02em; text-wrap: balance; margin: var(--space-6) 0 var(--space-3); }
+h2 { font-family: var(--display); font-size: 1.55rem; line-height: 1.2; letter-spacing: -.01em; text-wrap: balance; margin: var(--space-8) 0 var(--space-3); }
+h3 { font-family: var(--display); font-size: 1.15rem; margin: var(--space-6) 0 var(--space-2); }
+@media (min-width: 768px) { h1 { font-size: 2.7rem; } h2 { font-size: 1.8rem; } }
+/* Утилитарные подписи-заголовки остаются в Inter (uppercase-serif выглядит плохо). */
+.filter-group-title, .filters-panel-head strong { font-family: var(--sans); }
 
 a { color: var(--accent); text-decoration: none; }
 a:hover { color: var(--accent-strong); }
@@ -118,7 +144,16 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   display: flex; align-items: center; gap: var(--space-4) var(--space-6);
   min-height: 60px; flex-wrap: wrap; padding-top: 6px; padding-bottom: 6px;
 }
-.header-top { display: flex; align-items: center; gap: 10px; }
+.header-top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); flex: 1 1 100%; }
+.header-actions { display: flex; align-items: center; gap: 10px; flex: none; }
+.nav-cta {
+  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+  padding: 9px 16px; border-radius: 999px; font-weight: 600; font-size: .9rem;
+  color: #fff; background: linear-gradient(135deg, var(--grad-a), var(--grad-b));
+  box-shadow: 0 4px 14px rgba(122, 68, 19, .3);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.nav-cta:hover { color: #fff; transform: translateY(-1px); box-shadow: 0 8px 20px rgba(122, 68, 19, .42); text-decoration: none; }
 .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; color: var(--text); font-size: 1.05rem; }
 .brand:hover { color: var(--text); text-decoration: none; }
 .brand-mark { height: 30px; width: auto; flex: none; display: block; }
@@ -178,8 +213,8 @@ a:focus-visible, button:focus-visible, input:focus-visible {
     radial-gradient(700px 420px at -10% 110%, rgba(120, 72, 34, .55), transparent 55%),
     linear-gradient(135deg, #3a2413, #8a531f 55%, #b5793c);
 }
-.hero h1 { margin: 0 0 var(--space-3); color: #fff; font-size: clamp(1.8rem, 4.5vw, 3rem); }
-.hero p { margin: 0 0 var(--space-6); max-width: 46ch; font-size: 1.08rem; color: rgba(255, 255, 255, .88); }
+.hero h1 { margin: 0 0 var(--space-3); color: #fff; font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.05; }
+.hero p { margin: 0 0 var(--space-6); max-width: 46ch; font-size: 1.14rem; color: rgba(255, 255, 255, .9); }
 .hero .actions { display: flex; gap: var(--space-3); flex-wrap: wrap; }
 .hero .btn-secondary { background: rgba(255, 255, 255, .14); color: #fff; border-color: rgba(255, 255, 255, .35); }
 .hero .btn-secondary:hover { background: rgba(255, 255, 255, .22); color: #fff; }
@@ -266,6 +301,22 @@ details.level-group > div { padding: 0 var(--space-6) var(--space-4); }
   padding: var(--space-3) var(--space-4); border-radius: 0 var(--radius-s) var(--radius-s) 0;
   margin: var(--space-4) 0; color: var(--text);
 }
+/* Приглашение (value-prop, конверсия) — акцент, НЕ предупреждение. */
+.invite {
+  border-left: 4px solid var(--accent); background: var(--accent-soft);
+  padding: var(--space-3) var(--space-4); border-radius: 0 var(--radius-s) var(--radius-s) 0;
+  margin: var(--space-4) 0; color: var(--text);
+}
+
+/* Семантические чипы-зоны (единый язык со скринингом: риск/средняя/опора). */
+.zone-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 11px; border-radius: 8px; font-weight: 700; font-size: .85rem;
+  font-variant-numeric: tabular-nums;
+}
+.zone-chip--risk { background: var(--risk-soft); color: var(--risk); }
+.zone-chip--mid { background: var(--warn-soft); color: var(--warn); }
+.zone-chip--ok { background: var(--ok-soft); color: var(--ok); }
 
 /* ---------- Пагинация */
 .pagination { display: flex; gap: var(--space-2); flex-wrap: wrap; margin: var(--space-8) 0; }
