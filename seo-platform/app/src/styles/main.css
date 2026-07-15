@@ -476,6 +476,13 @@ details.level-group > div { padding: 0 var(--space-6) var(--space-4); }
 .vuz-list.alpha .az-head.head-empty { display: none; }
 .vuz-list.alpha > li { order: var(--o, 0); }
 
+/* ---------- Движение (прогрессивное улучшение)
+   Гейт .js-motion на <html> ставит JS только если движение разрешено. Без JS и при
+   prefers-reduced-motion гейт не ставится → .reveal остаётся видимым, числа — реальные. */
+.hero .chip .num { font-variant-numeric: tabular-nums; } /* без скачка ширины при count-up */
+.js-motion .reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+.js-motion .reveal.in { opacity: 1; transform: none; }
+
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
   html { scroll-behavior: auto; }

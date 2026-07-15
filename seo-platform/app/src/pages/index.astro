@@ -38,9 +38,9 @@ const jsonLd = [{
           <span class="src">Госуслуги</span><span class="src">Росстат</span><span class="src">ВШЭ</span>
         </div>
         <div class="chips">
-          <span class="chip">{catalogRows.length} вузов</span>
-          <span class="chip">{directions.length} направлений</span>
-          <span class="chip">{cities.length} {plural(cities.length, 'город', 'города', 'городов')}</span>
+          <span class="chip"><span class="num" data-count={catalogRows.length}>{catalogRows.length}</span> вузов</span>
+          <span class="chip"><span class="num" data-count={directions.length}>{directions.length}</span> направлений</span>
+          <span class="chip"><span class="num" data-count={cities.length}>{cities.length}</span> {plural(cities.length, 'город', 'города', 'городов')}</span>
           <span class="chip">Приём {meta.campaignYear}</span>
           <span class="chip">Без выдуманных рейтингов</span>
         </div>
@@ -49,6 +49,20 @@ const jsonLd = [{
     </div>
   </section>
 
+  {/* Гейт движения ставится синхронно (до отрисовки секций ниже) → без вспышки
+     «видно-скрыто-показано». Числа героя обнуляются здесь же, до первой отрисовки,
+     чтобы count-up не мигал. Без JS и при prefers-reduced-motion гейт не ставится. */}
+  <script is:inline>
+    (function () {
+      var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) return;
+      document.documentElement.classList.add('js-motion');
+      var nums = document.querySelectorAll('[data-count]');
+      for (var i = 0; i < nums.length; i++) nums[i].textContent = '0';
+    })();
+  </script>
+
+  <div class="reveal">
   <p class="eyebrow">Один язык со скринингом</p>
   <h2 class="tight">Четыре вопроса — и куда за ответом</h2>
   <p class="meta">Скрининг заканчивается этими вопросами. Сайт отвечает на них фактами — та же рамка, тот же путь.</p>
@@ -62,29 +76,36 @@ const jsonLd = [{
     <li class="card"><span class="qic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.2-7-11a7 7 0 0114 0c0 5.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg></span>
       <h3><a href="/vuzy/">Куда поступить?</a></h3><p class="meta">{catalogRows.length} вузов с фильтрами и программами.</p></li>
   </ul>
+  </div>
 
+  <div class="reveal">
   <h2>Как это работает</h2>
   <ul class="card-list grid-3">
     <li class="card">
+      <span class="qic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg></span>
       <h3>1. Поймите, где вы</h3>
       <p class="meta">Короткий тест покажет, что уже решено, а где выбор
         держится на чужих ожиданиях.</p>
       <p><a href={SCREENING_URL} rel="noopener">Пройти тест →</a></p>
     </li>
     <li class="card">
+      <span class="qic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18l-7 8v6l-4-2v-4z"/></svg></span>
       <h3>2. Сузьте поле</h3>
-      <p class="meta">894 направления в 57 группах: где учат, сколько стоит,
+      <p class="meta">{fgosDirections.length} направлений в 57 группах: где учат, сколько стоит,
         есть ли бюджет — по каждому.</p>
       <p><a href="/specialnosti/">Смотреть направления →</a></p>
     </li>
     <li class="card">
+      <span class="qic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M20 20H3"/></svg></span>
       <h3>3. Сравните вузы</h3>
       <p class="meta">Карточки всех вузов России с программами и ценами
         приёмной кампании {meta.campaignYear}.</p>
       <p><a href="/vuzy/">Открыть каталог →</a></p>
     </li>
   </ul>
+  </div>
 
+  <div class="reveal">
   <h2>Направления с самым широким выбором вузов</h2>
   <p class="meta">Отсортированы по числу вузов, где направление представлено
     в выгрузке, — это охват предложения, а не рейтинг и не спрос.</p>
@@ -98,7 +119,9 @@ const jsonLd = [{
     ))}
   </ul>
   <p class="meta">Все {fgosDirections.length} направлений — <a href="/specialnosti/">по группам</a>.</p>
+  </div>
 
+  <div class="reveal">
   <h2>Крупнейшие города</h2>
   <ul class="card-list grid-3">
     {topCities.map((c) => (
@@ -111,4 +134,52 @@ const jsonLd = [{
   </ul>
 
   <p class="meta">Все {regions.length} регионов — <a href="/regiony/">на одной странице</a>.</p>
+  </div>
+
+  {/* Прогрессивное улучшение: reveal секций при скролле + count-up чисел героя.
+     Инлайн (не модуль) — не может не загрузиться, поэтому контент никогда не
+     останется скрытым. Работает только при активном гейте .js-motion. */}
+  <script is:inline>
+    (function () {
+      var root = document.documentElement;
+      if (!root.classList.contains('js-motion')) return;
+
+      var reveals = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window && reveals.length) {
+        var ro = new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+          });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        reveals.forEach(function (el) { ro.observe(el); });
+      } else {
+        reveals.forEach(function (el) { el.classList.add('in'); });
+      }
+
+      var nums = document.querySelectorAll('[data-count]');
+      var animate = function (el) {
+        var target = Number(el.getAttribute('data-count')) || 0;
+        var dur = 900, startTs = 0;
+        var step = function (ts) {
+          if (!startTs) startTs = ts;
+          var t = Math.min(1, (ts - startTs) / dur);
+          var eased = 1 - Math.pow(1 - t, 3);
+          el.textContent = String(Math.round(eased * target));
+          if (t < 1) requestAnimationFrame(step);
+          else el.textContent = String(target);
+        };
+        requestAnimationFrame(step);
+      };
+      if ('IntersectionObserver' in window && nums.length) {
+        var no = new IntersectionObserver(function (entries, obs) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { animate(e.target); obs.unobserve(e.target); }
+          });
+        }, { threshold: 0.5 });
+        nums.forEach(function (el) { no.observe(el); });
+      } else {
+        nums.forEach(function (el) { el.textContent = String(Number(el.getAttribute('data-count')) || 0); });
+      }
+    })();
+  </script>
 </Base>
