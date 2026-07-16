@@ -19,9 +19,16 @@ const attrs = facet ? { 'data-filter-item': '', ...facet } : {};
     {row.directionsCount > 0
       ? `${row.directionsCount} ${plural(row.directionsCount, 'направление', 'направления', 'направлений')}`
       : 'программы источником не выгружены'}
-    {row.hasBudget && ' · есть бюджетные места'}
     {cost ? ` · платно ${cost}` : ''}
-    {row.dormitory && ' · общежитие'}
-    {row.militaryDept && ' · военная кафедра'}
   </p>
+  {/* Реальные признаки-флаги — семантическими бейджами (язык дизайн-системы:
+     бюджет = «опора»/зелёный, военная = info/карамель). Отсутствие флага —
+     молчание, а не красное «нет». Ничего не выдумываем: только то, что в данных. */}
+  {(row.hasBudget || row.dormitory || row.militaryDept) && (
+    <div class="badges">
+      {row.hasBudget && <span class="badge badge--ok">Есть бюджет</span>}
+      {row.dormitory && <span class="badge">Общежитие</span>}
+      {row.militaryDept && <span class="badge badge--info">Военная кафедра</span>}
+    </div>
+  )}
 </li>
