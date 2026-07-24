@@ -180,6 +180,7 @@ h1,h2,h3{font-weight:600;letter-spacing:-.02em;line-height:1.07;margin:0;}
 .faq summary .pm::after{top:1px;left:9px;width:2px;height:18px;}
 .faq details[open] summary .pm::after{transform:rotate(90deg);opacity:0;}
 .faq details > div{padding:0 4px 26px;color:var(--text-2);font-size:1.1rem;line-height:1.55;max-width:70ch;}
+@media (max-width:600px){.faq summary{padding-left:16px;padding-right:14px;font-size:1.12rem;}.faq details > div{padding-left:16px;padding-right:16px;}}
 
 .cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,56px);align-items:center;}
 @media (max-width:840px){.cta-grid{grid-template-columns:1fr;}}
