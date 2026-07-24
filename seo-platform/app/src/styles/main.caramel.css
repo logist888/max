@@ -15,57 +15,78 @@
   src: url('/fonts/inter-lat.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+2000-206F, U+20AC, U+2122, U+2212;
 }
-/* Заголовки в новом дизайне — тот же Inter (близок к SF), без serif. Файлы Lora
-   оставлены в public/fonts для отката к прежнему дизайну (main.caramel.css). */
+/* Lora Variable — заголовочная (редакционная) гарнитура, самостоятельный хостинг. */
+@font-face {
+  font-family: 'LoraVariable';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/lora-cyr.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'LoraVariable';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/lora-lat.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+2000-206F, U+20AC, U+2122, U+2212;
+}
 
-/* Дизайн-токены — минимализм в духе Apple (редизайн 16.07.2026).
-   Прежняя карамельная палитра сохранена в main.caramel.css (откат).
-   Пары «текст/фон» проходят WCAG AA. Тёмная тема — через prefers-color-scheme. */
+/* Дизайн-токены (этап 6). Корпоративная коричнево-карамельная палитра
+   (обновление по запросу владельца 12.07.2026). Пары «текст/фон» проходят
+   WCAG AA. Тёмная тема — через prefers-color-scheme. */
 :root {
-  --bg: #ffffff;
+  --bg: #faf6f0;
   --surface: #ffffff;
-  --surface-2: #f5f5f7;       /* фирменный светло-серый Apple для секций/плашек */
-  --text: #1d1d1f;            /* почти чёрный */
-  --text-muted: #6e6e73;      /* вторичный серый */
-  --accent: #0066cc;          /* ссылки — синий, AA на белом */
-  --accent-strong: #0071e3;   /* кнопки — синий Apple */
-  --accent-soft: #ebf3ff;     /* лёгкая синяя подложка (invite/чипы) */
-  --grad-a: #0a84ff;
-  --grad-b: #0066cc;
-  --cta: #0071e3;
-  --ok: #248a3d;   --ok-soft: #e6f6ea;    /* зелёный (бюджет/опора) */
-  --info-soft: #eef4ff;
-  --warn: #8a6d00; --warn-soft: #fbf1cf;  /* янтарный */
-  --risk: #d70015; --risk-soft: #fdeaea;  /* красный Apple */
-  --border: #d2d2d7;          /* тонкая серая линия Apple */
-  --shadow-1: 0 1px 2px rgba(0, 0, 0, .04);
-  --shadow-2: 0 8px 30px rgba(0, 0, 0, .10);
-  --radius: 18px;             /* радиус карточек Apple */
-  --radius-s: 12px;
+  --surface-2: #f4ece0;
+  --text: #2a2018;
+  --text-muted: #6d5d4c;
+  --accent: #9a5a1c;
+  --accent-strong: #7a4413;
+  --accent-soft: #f7e9d5;
+  --grad-a: #a86a2c;
+  --grad-b: #6f3f1c;
+  --cta: #9a5a1c;
+  --ok: #3f7a2e;
+  --ok-soft: #ecf3e4;
+  --info-soft: #f6ecdb;
+  --warn: #8a5a12;
+  --warn-soft: #fbf0da;
+  --risk: #c9382f;
+  --risk-soft: #f8e6e3;
+  --border: #e8dccb;
+  --shadow-1: 0 1px 2px rgba(74, 47, 19, .06);
+  --shadow-2: 0 10px 30px rgba(74, 47, 19, .12);
+  --radius: 14px;
+  --radius-s: 9px;
   --space-1: 4px; --space-2: 8px; --space-3: 12px;
   --space-4: 16px; --space-6: 24px; --space-8: 32px; --space-12: 48px;
-  /* Одна гарнитура: Inter (стенд-ин SF) для тела/UI и заголовков. */
-  --sans: 'InterVariable', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --display: 'InterVariable', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  /* Гарнитуры: заголовки — редакционный serif, тело/UI — Inter. */
+  --sans: 'InterVariable', Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --display: 'LoraVariable', Georgia, 'Times New Roman', serif;
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #000000;
-    --surface: #1c1c1e;
-    --surface-2: #161617;
-    --text: #f5f5f7;
-    --text-muted: #a1a1a6;
-    --accent: #2997ff;
-    --accent-strong: #2997ff;
-    --accent-soft: #10233a;
-    --cta: #2997ff;
-    --ok: #30d158;   --ok-soft: #12240f;
-    --info-soft: #10233a;
-    --warn: #e5b93b; --warn-soft: #2a2410;
-    --risk: #ff453a; --risk-soft: #2e1414;
-    --border: #38383a;
-    --shadow-1: 0 1px 2px rgba(0, 0, 0, .5);
-    --shadow-2: 0 8px 30px rgba(0, 0, 0, .6);
+    --bg: #1b1510;
+    --surface: #241d16;
+    --surface-2: #2d251b;
+    --text: #f2e8db;
+    --text-muted: #b7a893;
+    --accent: #e0a463;
+    --accent-strong: #eebd85;
+    --accent-soft: #33271a;
+    --cta: #cf8f4f;
+    --ok: #7cc16a;
+    --ok-soft: #1e2814;
+    --info-soft: #2b2114;
+    --warn: #e0b25e;
+    --warn-soft: #2b2110;
+    --risk: #ef6b60;
+    --risk-soft: #3a1f1b;
+    --border: #3a3025;
+    --shadow-1: 0 1px 2px rgba(0, 0, 0, .4);
+    --shadow-2: 0 10px 30px rgba(0, 0, 0, .5);
   }
 }
 
@@ -80,10 +101,10 @@ body {
 }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-4); }
 
-h1 { font-family: var(--display); font-size: 2.2rem; line-height: 1.08; letter-spacing: -.03em; font-weight: 700; text-wrap: balance; margin: var(--space-6) 0 var(--space-3); }
-h2 { font-family: var(--display); font-size: 1.6rem; line-height: 1.15; letter-spacing: -.021em; font-weight: 600; text-wrap: balance; margin: var(--space-8) 0 var(--space-3); }
-h3 { font-family: var(--display); font-size: 1.15rem; letter-spacing: -.01em; font-weight: 600; margin: var(--space-6) 0 var(--space-2); }
-@media (min-width: 768px) { h1 { font-size: 3rem; } h2 { font-size: 2rem; } }
+h1 { font-family: var(--display); font-size: 2.1rem; line-height: 1.12; letter-spacing: -.02em; text-wrap: balance; margin: var(--space-6) 0 var(--space-3); }
+h2 { font-family: var(--display); font-size: 1.55rem; line-height: 1.2; letter-spacing: -.01em; text-wrap: balance; margin: var(--space-8) 0 var(--space-3); }
+h3 { font-family: var(--display); font-size: 1.15rem; margin: var(--space-6) 0 var(--space-2); }
+@media (min-width: 768px) { h1 { font-size: 2.7rem; } h2 { font-size: 1.8rem; } }
 /* Утилитарные подписи-заголовки остаются в Inter (uppercase-serif выглядит плохо). */
 .filter-group-title, .filters-panel-head strong { font-family: var(--sans); }
 
@@ -97,16 +118,20 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 /* ---------- Кнопки */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 12px 24px; min-height: 44px; border-radius: 999px;
+  padding: 13px 22px; min-height: 46px; border-radius: 999px;
   font-weight: 600; font-size: 1rem; border: 0; cursor: pointer;
-  transition: background .2s ease, color .2s ease, opacity .2s ease;
+  transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
 }
-/* Плоская синяя «пилюля» — как CTA у Apple, без тяжёлых теней/подъёма. */
-.btn-primary { background: var(--cta); color: #fff; }
-.btn-primary:hover { color: #fff; background: color-mix(in srgb, var(--cta) 88%, #000); }
-/* Вторичная — светло-серая «пилюля» с синим текстом. */
-.btn-secondary { background: var(--surface-2); color: var(--accent); border: 0; }
-.btn-secondary:hover { color: var(--accent); background: color-mix(in srgb, var(--accent) 9%, var(--surface-2)); }
+.btn-primary {
+  background: linear-gradient(135deg, var(--grad-a), var(--grad-b));
+  color: #fff; box-shadow: 0 6px 20px rgba(122, 68, 19, .35);
+}
+.btn-primary:hover { color: #fff; transform: translateY(-1px); box-shadow: 0 10px 26px rgba(122, 68, 19, .45); }
+.btn-secondary {
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); box-shadow: var(--shadow-1);
+}
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
 
 /* ---------- Шапка */
 .site-header {
@@ -123,11 +148,12 @@ a:focus-visible, button:focus-visible, input:focus-visible {
 .header-actions { display: flex; align-items: center; gap: 10px; flex: none; }
 .nav-cta {
   display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
-  padding: 8px 16px; border-radius: 999px; font-weight: 600; font-size: .9rem;
-  color: #fff; background: var(--cta);
-  transition: background .2s ease;
+  padding: 9px 16px; border-radius: 999px; font-weight: 600; font-size: .9rem;
+  color: #fff; background: linear-gradient(135deg, var(--grad-a), var(--grad-b));
+  box-shadow: 0 4px 14px rgba(122, 68, 19, .3);
+  transition: transform .15s ease, box-shadow .15s ease;
 }
-.nav-cta:hover { color: #fff; background: color-mix(in srgb, var(--cta) 88%, #000); text-decoration: none; }
+.nav-cta:hover { color: #fff; transform: translateY(-1px); box-shadow: 0 8px 20px rgba(122, 68, 19, .42); text-decoration: none; }
 .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; color: var(--text); font-size: 1.05rem; }
 .brand:hover { color: var(--text); text-decoration: none; }
 .brand-mark { height: 30px; width: auto; flex: none; display: block; }
@@ -176,29 +202,37 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   background: var(--surface);
 }
 
-/* ---------- Геро (минимализм Apple: светлый фон, крупная типографика, воздух) */
+/* ---------- Геро */
 .hero {
   position: relative; overflow: hidden;
-  margin: var(--space-8) 0;
-  padding: clamp(40px, 7vw, 96px) clamp(20px, 5vw, 64px);
-  border-radius: var(--radius); color: var(--text);
-  background: var(--surface-2);
+  margin: var(--space-6) 0 var(--space-8);
+  padding: clamp(28px, 6vw, 64px) clamp(20px, 5vw, 56px);
+  border-radius: 24px; color: #fff;
+  background:
+    radial-gradient(900px 380px at 85% -10%, rgba(210, 150, 82, .5), transparent 60%),
+    radial-gradient(700px 420px at -10% 110%, rgba(120, 72, 34, .55), transparent 55%),
+    linear-gradient(135deg, #3a2413, #8a531f 55%, #b5793c);
 }
-.hero h1 { margin: 0 0 var(--space-4); color: var(--text); font-size: clamp(2.4rem, 6vw, 4rem); line-height: 1.04; font-weight: 700; letter-spacing: -.035em; }
-.hero p { margin: 0 0 var(--space-6); max-width: 46ch; font-size: clamp(1.1rem, 2.2vw, 1.35rem); line-height: 1.4; color: var(--text-muted); }
+.hero h1 { margin: 0 0 var(--space-3); color: #fff; font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.05; }
+.hero p { margin: 0 0 var(--space-6); max-width: 46ch; font-size: 1.14rem; color: rgba(255, 255, 255, .9); }
 .hero .actions { display: flex; gap: var(--space-3); flex-wrap: wrap; }
-.hero .chips { display: flex; gap: var(--space-2); flex-wrap: wrap; margin-top: var(--space-8); }
+.hero .btn-secondary { background: rgba(255, 255, 255, .14); color: #fff; border-color: rgba(255, 255, 255, .35); }
+.hero .btn-secondary:hover { background: rgba(255, 255, 255, .22); color: #fff; }
+.hero .chips { display: flex; gap: var(--space-2); flex-wrap: wrap; margin-top: var(--space-6); }
 .hero .chip {
-  padding: 7px 15px; border-radius: 999px; font-size: .84rem; font-weight: 500;
-  background: var(--surface); border: 1px solid var(--border); color: var(--text-muted);
+  padding: 6px 14px; border-radius: 999px; font-size: .84rem; font-weight: 500;
+  background: rgba(255, 255, 255, .13); border: 1px solid rgba(255, 255, 255, .22); color: #fff;
 }
-.hero .chip .num { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
 /* Двухколоночный герой: текст + предпоказ «Карты выбора» */
-.hero-inner { display: grid; grid-template-columns: 1.08fr .92fr; gap: var(--space-12); align-items: center; }
+.hero-inner { display: grid; grid-template-columns: 1.08fr .92fr; gap: var(--space-8); align-items: center; }
 .hero-copy { min-width: 0; }
-.hero .prov { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: var(--space-6); font-size: .82rem; color: var(--text-muted); }
-.hero .prov .src { display: inline-flex; padding: 4px 11px; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-weight: 600; }
-@media (max-width: 900px) { .hero-inner { grid-template-columns: 1fr; gap: var(--space-8); } }
+.hero-copy p { color: rgba(255, 255, 255, .9); }
+/* Первичный CTA на тёмном герое — светлый, чтобы выигрывать контрастом */
+.hero .btn-primary { background: #fff; color: var(--accent-strong); box-shadow: 0 8px 24px rgba(0, 0, 0, .2); }
+.hero .btn-primary:hover { background: #fff; color: var(--grad-b); transform: translateY(-1px); box-shadow: 0 12px 30px rgba(0, 0, 0, .3); }
+.hero .prov { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: var(--space-4); font-size: .82rem; color: rgba(255, 255, 255, .78); }
+.hero .prov .src { display: inline-flex; padding: 4px 11px; border-radius: 999px; background: rgba(255, 255, 255, .14); color: #fff; font-weight: 600; }
+@media (max-width: 900px) { .hero-inner { grid-template-columns: 1fr; gap: var(--space-6); } }
 
 /* ---------- Хлебные крошки */
 .breadcrumbs { font-size: .8125rem; color: var(--text-muted); margin-top: var(--space-4); }
