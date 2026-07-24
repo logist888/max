@@ -63,3 +63,28 @@ base64 и заменю SVG-плейсхолдеры), страница оста�
 Совет: не увлекайтесь тяжёлыми фото — ужмите каждое до ~150–250 КБ (ширина ~1600px, JPEG качество
 ~80), иначе страница разрастётся. Плейсхолдеры-градиенты выглядят аккуратно и сами по себе, так что
 можно добавлять фото по одному.
+
+---
+
+# Промпты для лендинга профориентации (`web/proforientation.html`)
+
+Два слота: полоса после блока «Как это работает» и полоса после блока «Научная основа».
+Те же правила: **без текста в кадре**, люди **обезличены**, палитра нейтральная с синим акцентом.
+
+## Слот 1 — Полоса: подросток проходит тест
+
+```
+A calm modern photograph, wide landscape orientation. A teenager around 15 years old sits at a light oak desk by a bright window, focused on a laptop screen with a soft blue glow, seen from a three-quarter angle from behind so the face is not identifiable. A notebook and a glass of water on the desk, a plant softly out of focus in the background. Minimalist bright room, white walls, generous negative space on the right. Soft diffused daylight from the left, natural skin and fabric texture, no harsh shadows. Shot on Sony A7IV, 35mm f/2, shallow depth of field, editorial premium look, clean Apple-like aesthetic. The person is anonymous and not identifiable. Do not include any text, letters, logos or watermarks. quality: high
+```
+
+**Структура:** подросток за ноутбуком у окна, вид сзади-сбоку (лицо не читается), светлая минималистичная комната, воздух справа. Мягкий дневной свет, премиальный editorial.
+
+## Слот 2 — Полоса: родитель и подросток обсуждают результаты
+
+```
+A warm quiet family moment, wide landscape orientation. A parent and a teenager sit side by side at a light wooden table in a bright minimalist room, looking together at a tablet and a printed document, seen from behind and slightly above so faces are not identifiable. Calm neutral palette of white, pale oak and one soft blue accent from the screen, generous negative space. Soft diffused window light, natural textures, relaxed unposed body language, no harsh shadows. Shot on Sony A7IV, 50mm f/2, shallow depth of field, editorial premium look, clean Apple-like aesthetic. People are anonymous and not identifiable. Do not include any text, letters, logos or watermarks. quality: high
+```
+
+**Структура:** родитель и подросток рядом смотрят планшет и распечатку, вид со спины сверху (лица не видны), светлая комната, спокойная сцена. Нейтрально плюс синий акцент экрана.
+
+**Вставка:** пришлите картинки мне — вставлю в слоты (найдите комментарии `ФОТО-СЛОТ 1` и `ФОТО-СЛОТ 2` в `web/proforientation.html`).

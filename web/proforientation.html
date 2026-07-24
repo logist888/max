@@ -101,7 +101,7 @@ h1,h2,h3{font-weight:600;letter-spacing:-.02em;line-height:1.07;margin:0;}
 @media (max-width:880px){.hero .meta{justify-content:center;}}
 .hero .meta b{color:var(--text);font-weight:600;}
 
-/* Animated report card (hero visual) */
+/* Animated report card */
 .report-anim{position:relative;justify-self:end;width:100%;max-width:460px;background:var(--tile);border:1px solid var(--hair-soft);border-radius:26px;box-shadow:0 24px 60px rgba(0,0,0,.14);padding:26px;animation:floaty 6s ease-in-out infinite;}
 @media (max-width:880px){.report-anim{justify-self:center;margin-top:12px;}}
 .ra-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
@@ -122,7 +122,7 @@ h1,h2,h3{font-weight:600;letter-spacing:-.02em;line-height:1.07;margin:0;}
 @keyframes fadein{to{opacity:1}}
 @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 
-/* Sticky CTA bar */
+/* Sticky CTA */
 .sticky-cta{position:fixed;left:0;right:0;bottom:0;z-index:90;transform:translateY(120%);transition:transform .35s var(--ease);background:var(--nav-bg);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-top:1px solid var(--hair);}
 .sticky-cta.show{transform:none;}
 .sticky-cta .wrap{display:flex;align-items:center;gap:14px;padding-top:12px;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));}
@@ -132,7 +132,7 @@ h1,h2,h3{font-weight:600;letter-spacing:-.02em;line-height:1.07;margin:0;}
 .sticky-cta .btn{margin-left:auto;white-space:nowrap;}
 @media (max-width:560px){.sticky-cta .txt span{display:none;}.sticky-cta .sc-full{display:none;}.sticky-cta .btn{padding:.66em 1.05em;font-size:.98rem;}}
 
-/* Tiles / grids */
+/* Tiles */
 .grid{display:grid;gap:20px;}
 @media (min-width:700px){.grid.g2{grid-template-columns:1fr 1fr;}.grid.g3{grid-template-columns:repeat(3,1fr);}.grid.g4{grid-template-columns:repeat(2,1fr);}}
 @media (min-width:980px){.grid.g4{grid-template-columns:repeat(4,1fr);}}
@@ -144,12 +144,79 @@ h1,h2,h3{font-weight:600;letter-spacing:-.02em;line-height:1.07;margin:0;}
 .ic-badge{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:14px;background:color-mix(in srgb,var(--accent) 10%,transparent);color:var(--accent);margin-bottom:14px;}
 
 /* Steps */
-.steps{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));list-style:none;padding:0;margin:0;}
+.steps{position:relative;display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));list-style:none;padding:0;margin:0;}
 .step{background:var(--tile);border:1px solid var(--hair-soft);border-radius:22px;padding:28px;box-shadow:var(--elev);position:relative;}
-.step .n{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:var(--accent);color:#fff;font-weight:600;font-variant-numeric:tabular-nums;margin-bottom:14px;}
+.step .n{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:var(--accent);color:#fff;margin-bottom:14px;}
+.step .n .ic{width:21px;height:21px;stroke-width:1.9;}
 .step h3{margin:0 0 .4rem;font-size:1.2rem;}
 .step p{margin:0;color:var(--text-2);font-size:1rem;line-height:1.5;}
 .step .flash{display:inline-block;margin-top:10px;font-size:.82rem;font-weight:600;color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent);border-radius:980px;padding:4px 11px;}
+@media (min-width:980px){.step:not(:last-child)::after{content:'';position:absolute;top:50px;right:-20px;width:20px;height:2px;background:var(--hair);}}
+
+/* Report pages mock */
+.pages{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,22px);max-width:940px;margin:0 auto;}
+@media (max-width:760px){.pages{grid-template-columns:1fr;max-width:330px;}}
+.pg-wrap{text-align:center;}
+.pg{background:var(--tile);border:1px solid var(--hair-soft);border-radius:12px;box-shadow:var(--elev);padding:clamp(14px,1.7vw,20px);aspect-ratio:1/1.19;display:flex;flex-direction:column;gap:9px;overflow:hidden;transition:transform .4s var(--ease),box-shadow .4s var(--ease);}
+.pg:hover{transform:translateY(-5px);box-shadow:var(--elev-hover);}
+.pg-cap{margin-top:12px;font-size:.92rem;color:var(--text-2);line-height:1.4;}
+.pg-cap b{display:block;color:var(--text);font-weight:600;font-size:1rem;margin-bottom:2px;}
+.pg-h{height:8px;width:64%;border-radius:4px;background:var(--accent);opacity:.9;flex:none;}
+.pg-h2{height:6px;width:44%;border-radius:3px;background:color-mix(in srgb,var(--accent) 45%,transparent);flex:none;margin-top:3px;}
+.pg-l{height:5px;border-radius:3px;background:var(--hair);flex:none;}
+.pg-l.s{width:88%;} .pg-l.m{width:96%;} .pg-l.xs{width:62%;}
+.pg-box{border-radius:8px;background:color-mix(in srgb,var(--accent) 8%,transparent);border:1px solid color-mix(in srgb,var(--accent) 16%,transparent);padding:8px;display:grid;gap:5px;flex:none;}
+.pg-box .pg-l{background:color-mix(in srgb,var(--accent) 26%,transparent);}
+.pg-mini{display:grid;gap:5px;flex:none;}
+.pg-mini i{display:block;height:6px;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--accent-2));}
+.pg-foot{margin-top:auto;display:flex;gap:6px;align-items:center;}
+.pg-foot i{display:block;height:4px;border-radius:2px;background:var(--hair);flex:1;}
+.pg-foot b{font-size:.62rem;color:var(--text-3);font-weight:600;}
+.pg-tab{display:flex;gap:4px;flex:none;}
+.pg-tab i{flex:1;height:14px;border-radius:4px;background:var(--bg-alt);}
+.pg-tab i.on{background:color-mix(in srgb,var(--accent) 22%,transparent);}
+
+/* Viz cards */
+.viz{background:var(--tile);border:1px solid var(--hair-soft);border-radius:22px;padding:clamp(24px,3vw,34px);box-shadow:var(--elev);}
+.viz h3{margin:0 0 6px;}
+.viz p{margin:0 0 18px;color:var(--text-2);font-size:1rem;line-height:1.5;}
+.bell{display:block;width:100%;height:auto;}
+.bell-fill{fill:color-mix(in srgb,var(--accent) 14%,transparent);}
+.bell-line{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linecap:round;}
+.bell-axis{stroke:var(--hair);stroke-width:1.5;}
+.bell-mark{stroke:var(--accent);stroke-width:2;stroke-dasharray:4 4;}
+.bell-dot{fill:var(--accent);}
+.bell-txt{fill:var(--text-3);font-size:12px;}
+.bell-badge{fill:var(--accent);}
+.bell-badge-t{fill:#fff;font-size:12px;font-weight:600;}
+
+/* Match bars */
+.match{display:grid;gap:14px;}
+.match-row{display:grid;grid-template-columns:1fr auto;gap:5px 12px;align-items:center;}
+.match-row .nm{font-size:1rem;color:var(--text);}
+.match-row .pc{font-size:.9rem;font-weight:600;color:var(--accent);font-variant-numeric:tabular-nums;}
+.match-row .tr{grid-column:1 / -1;height:8px;border-radius:5px;background:var(--bg-alt);overflow:hidden;}
+.match-row .fl{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0;transition:width 1.1s var(--ease);}
+.reveal.in .match-row .fl{width:var(--w,60%);}
+
+/* Plan A/B/C */
+.plan{display:block;width:100%;height:auto;}
+.plan-path{fill:none;stroke:var(--hair);stroke-width:2.5;}
+.plan-path.a{stroke:var(--accent);}
+.plan-node{fill:var(--tile);stroke:var(--hair);stroke-width:1.5;}
+.plan-node.a{stroke:var(--accent);}
+.plan-t{fill:var(--text);font-size:13px;font-weight:600;}
+.plan-s{fill:var(--text-3);font-size:11px;}
+.plan-start{fill:var(--accent);}
+.plan-start-t{fill:#fff;font-size:12px;font-weight:600;}
+
+/* Photo bands */
+.photo-band{position:relative;margin:clamp(36px,5vw,56px) auto 0;max-width:1080px;aspect-ratio:2.4/1;border-radius:26px;overflow:hidden;box-shadow:var(--elev);display:flex;align-items:center;justify-content:center;}
+.photo-band img{width:100%;height:100%;object-fit:cover;}
+.photo-band .ph-ic{width:70px;height:70px;color:rgba(255,255,255,.5);stroke-width:1.3;fill:none;stroke:currentColor;}
+.photo-band--test{background:radial-gradient(50% 70% at 22% 25%,#7cc0ff,transparent 62%),radial-gradient(52% 72% at 82% 62%,#b9a2ff,transparent 60%),linear-gradient(135deg,#0a84ff,#0050c8);}
+.photo-band--family{background:radial-gradient(50% 70% at 25% 30%,#6fe0c6,transparent 60%),radial-gradient(50% 70% at 82% 68%,#8f9bff,transparent 60%),linear-gradient(135deg,#0a84ff,#00b09a);}
+@media (max-width:700px){.photo-band{aspect-ratio:16/10;}}
 
 /* Report preview */
 .rp{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
@@ -177,14 +244,12 @@ h1,h2,h3{font-weight:600;letter-spacing:-.02em;line-height:1.07;margin:0;}
 .quote .who{display:flex;align-items:center;gap:11px;color:var(--text-2);font-size:.92rem;}
 .quote .av{flex:none;width:38px;height:38px;border-radius:50%;background:var(--bg-alt);}
 
-/* Pricing extras */
+/* Pricing */
 .anchor{margin:2px 0 18px;color:var(--text-3);font-size:.98rem;}
 .guarantee{display:flex;gap:13px;align-items:flex-start;text-align:left;background:color-mix(in srgb,var(--accent) 7%,var(--tile));border:1px solid color-mix(in srgb,var(--accent) 22%,var(--hair-soft));border-radius:16px;padding:15px 18px;margin:0 auto 22px;max-width:440px;}
 .guarantee .ic{flex:none;color:var(--accent);margin-top:1px;}
 .guarantee p{margin:0;font-size:.98rem;line-height:1.45;color:var(--text);}
 .secondary-cta{margin:16px auto 0;color:var(--text-2);font-size:1rem;max-width:520px;}
-
-/* Pricing */
 .price-card{max-width:560px;margin:0 auto;background:var(--tile);border:1px solid var(--hair-soft);border-radius:28px;padding:clamp(30px,4vw,44px);box-shadow:var(--elev);text-align:center;}
 .price-amt{font-size:clamp(2.6rem,6vw,3.4rem);font-weight:700;letter-spacing:-.03em;line-height:1;margin:6px 0 4px;}
 .price-sub{color:var(--text-2);font-size:1.02rem;margin:0 0 6px;}
@@ -208,21 +273,45 @@ h1,h2,h3{font-weight:600;letter-spacing:-.02em;line-height:1.07;margin:0;}
 .faq details > div{padding:0 6px 26px;color:var(--text-2);font-size:1.1rem;line-height:1.55;max-width:70ch;}
 @media (max-width:600px){.faq summary{padding-left:16px;padding-right:14px;font-size:1.12rem;}.faq details > div{padding-left:16px;padding-right:16px;}}
 
-/* CTA */
 .cta-final{text-align:center;}
 .cta-final .lead{margin:1rem auto 1.8rem;max-width:560px;}
 
 .ftr{border-top:1px solid var(--hair);padding:44px 0 96px;color:var(--text-3);font-size:.86rem;line-height:1.6;}
 .ftr .brand{margin-bottom:16px;color:var(--text-2);}
 .ftr p{margin:0 0 8px;max-width:88ch;}
-.ftr a{color:var(--text-2);}
 
 .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
 .reveal.in{opacity:1;transform:none;}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}html{scroll-behavior:auto;}.reveal{opacity:1;transform:none;}.ra-fill{width:var(--w,60%);}.ra-poly,.ra-dot{opacity:1;}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}html{scroll-behavior:auto;}.reveal{opacity:1;transform:none;}.ra-fill{width:var(--w,60%);}.ra-poly,.ra-dot{opacity:1;}.match-row .fl{width:var(--w,60%);}}
 </style>
 </head>
 <body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-question" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.4 9.2a2.7 2.7 0 015.2.9c0 1.8-2.6 2.2-2.6 4"/><path d="M12 17.4h.01"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.3l3.2 1.9"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-9.5A3.5 3.5 0 0112 8a3.5 3.5 0 017 2.5C19 15.5 12 20 12 20z"/></symbol>
+<symbol id="i-noise" viewBox="0 0 24 24"><path d="M20 6H4v11h4v3l4-3h8z"/><path d="M8.5 11h7M8.5 8.4h4"/></symbol>
+<symbol id="i-card" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2.4"/><path d="M3 10h18M6.5 14.4h3"/></symbol>
+<symbol id="i-clipboard" viewBox="0 0 24 24"><rect x="5" y="4.5" width="14" height="16" rx="2.2"/><path d="M9 4.5a3 3 0 016 0"/><path d="M8.6 12.6l2 2 4.4-4.4"/></symbol>
+<symbol id="i-flash-doc" viewBox="0 0 24 24"><path d="M7 3h8l4 4v14H7z"/><path d="M15 3v4h4"/><path d="M13 10.5l-3 4h3l-1 3.5 3.2-4.2H12z"/></symbol>
+<symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="7" r="2.2"/><circle cx="18" cy="17" r="2.2"/><path d="M8.2 7H14a3 3 0 010 6H9.5a3 3 0 000 6h6.3"/></symbol>
+<symbol id="i-beaker" viewBox="0 0 24 24"><path d="M9.5 3h5M10.5 3v5.5L6 17a2 2 0 001.8 3h8.4A2 2 0 0018 17l-4.5-8.5V3"/><path d="M8 14h8"/></symbol>
+<symbol id="i-bars" viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M7 20v-6M12 20v-11M17 20v-4"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c0-3.4 2.6-5.4 5.5-5.4s5.5 2 5.5 5.4"/><path d="M16.5 7.2a3 3 0 010 5.6M17.5 14.8c2 .7 3 2.5 3 5.2"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.4M12 7.6h.01"/></symbol>
+<symbol id="i-split" viewBox="0 0 24 24"><path d="M5 19V9a4 4 0 014-4h10"/><path d="M15.5 1.8L19 5l-3.5 3.2"/><path d="M5 19h14"/><path d="M15.5 15.8L19 19l-3.5 3.2"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M19.5 12a7.5 7.5 0 11-2.2-5.3"/><path d="M17.5 3v4h-4"/></symbol>
+<symbol id="i-laptop" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="11" rx="2"/><path d="M2 19.5h20"/></symbol>
+<symbol id="i-chat" viewBox="0 0 24 24"><path d="M20 6H4v11h5v3l4-3h7z"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h9"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.5 5.1 5.5.8-4 4 1 5.6L12 16l-5 2.9 1-5.6-4-4 5.5-.8z"/></symbol>
+<symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.6 8.4l-2.3 4.9-4.9 2.3 2.3-4.9z"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="8" cy="7" r="1.4" fill="currentColor" stroke="none"/><circle cx="14" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="10" cy="17" r="1.4" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/><path d="M9 15l2 2 4-4"/></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M14 3v4h4"/><path d="M9 13h6M9 16h6"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.6-3 7.6-7 9-4-1.4-7-4.4-7-9V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+</defs></svg>
 
 <header class="hdr">
   <div class="wrap">
@@ -263,7 +352,6 @@ h1,h2,h3{font-weight:600;letter-spacing:-.02em;line-height:1.07;margin:0;}
         </div>
       </div>
 
-      <!-- Анимированный отчёт (иллюстративный пример, не реальные данные) -->
       <div class="report-anim reveal" role="img" aria-label="Иллюстрация персонального отчёта: профиль и сильные стороны">
         <div class="ra-head"><span class="ra-title">Персональный отчёт</span><span class="ra-badge">пример</span></div>
         <svg class="ra-radar" viewBox="0 0 200 160" aria-hidden="true">
@@ -289,7 +377,7 @@ h1,h2,h3{font-weight:600;letter-spacing:-.02em;line-height:1.07;margin:0;}
     </div>
   </section>
 
-  <!-- ===== Pains / situation ===== -->
+  <!-- ===== Pains ===== -->
   <section class="sec sec--alt" id="pains">
     <div class="wrap">
       <div class="sec-head reveal">
@@ -298,10 +386,10 @@ h1,h2,h3{font-weight:600;letter-spacing:-.02em;line-height:1.07;margin:0;}
         <p class="lead">Выбор пути редко даётся легко. Вот с чем чаще всего приходят родители — и что снимает эта профориентация.</p>
       </div>
       <div class="grid g2 reveal">
-        <div class="tile tile--hover"><h3 class="h3">Ребёнок сам не знает, чего хочет</h3><p>«Мне всё равно» или «не знаю» — а решать, куда двигаться, нужно уже скоро.</p></div>
-        <div class="tile tile--hover"><h3 class="h3">Легко потерять годы</h3><p>Поступил не туда, разочаровался, начал заново — время, силы и деньги уходят впустую.</p></div>
-        <div class="tile tile--hover"><h3 class="h3">Страшно навязать своё</h3><p>Хочется помочь — и страшно продавить собственные амбиции вместо интересов ребёнка.</p></div>
-        <div class="tile tile--hover"><h3 class="h3">Советов много, ясности нет</h3><p>Родные, репетиторы, интернет и бесплатные тесты дают общие слова, а не решение.</p></div>
+        <div class="tile tile--hover"><div class="ic-badge"><svg class="ic"><use href="#i-question"/></svg></div><h3 class="h3">Ребёнок сам не знает, чего хочет</h3><p>«Мне всё равно» или «не знаю» — а решать, куда двигаться, нужно уже скоро.</p></div>
+        <div class="tile tile--hover"><div class="ic-badge"><svg class="ic"><use href="#i-clock"/></svg></div><h3 class="h3">Легко потерять годы</h3><p>Поступил не туда, разочаровался, начал заново — время, силы и деньги уходят впустую.</p></div>
+        <div class="tile tile--hover"><div class="ic-badge"><svg class="ic"><use href="#i-heart"/></svg></div><h3 class="h3">Страшно навязать своё</h3><p>Хочется помочь — и страшно продавить собственные амбиции вместо интересов ребёнка.</p></div>
+        <div class="tile tile--hover"><div class="ic-badge"><svg class="ic"><use href="#i-noise"/></svg></div><h3 class="h3">Советов много, ясности нет</h3><p>Родные, репетиторы, интернет и бесплатные тесты дают общие слова, а не решение.</p></div>
       </div>
     </div>
   </section>
@@ -315,11 +403,15 @@ h1,h2,h3{font-weight:600;letter-spacing:-.02em;line-height:1.07;margin:0;}
         <p class="lead">Никаких недель ожидания. Отчёт формируется сразу, как только пройдены все тесты.</p>
       </div>
       <ol class="steps reveal">
-        <li class="step"><span class="n">1</span><h3 class="h3">Оплата</h3><p>Оплачиваете профориентацию — доступ к тестам открывается сразу.</p></li>
-        <li class="step"><span class="n">2</span><h3 class="h3">Тесты и анкеты</h3><p>Подросток проходит научные тесты (25–35 минут), вы заполняете короткую анкету о контексте и целях.</p></li>
-        <li class="step"><span class="n">3</span><h3 class="h3">Отчёт сразу</h3><p>Как только все тесты пройдены, формируется подробный персональный отчёт — без ожидания.</p><span class="flash">Сразу после прохождения</span></li>
-        <li class="step"><span class="n">4</span><h3 class="h3">План действий</h3><p>Читаете резюме за 5 минут и двигаетесь по плану: сегодня → ближайшие недели → дальше.</p></li>
+        <li class="step"><span class="n"><svg class="ic"><use href="#i-card"/></svg></span><h3 class="h3">1. Оплата</h3><p>Оплачиваете профориентацию — доступ к тестам открывается сразу.</p></li>
+        <li class="step"><span class="n"><svg class="ic"><use href="#i-clipboard"/></svg></span><h3 class="h3">2. Тесты и анкеты</h3><p>Подросток проходит научные тесты (25–35 минут), вы заполняете короткую анкету о контексте и целях.</p></li>
+        <li class="step"><span class="n"><svg class="ic"><use href="#i-flash-doc"/></svg></span><h3 class="h3">3. Отчёт сразу</h3><p>Как только все тесты пройдены, формируется подробный персональный отчёт — без ожидания.</p><span class="flash">Сразу после прохождения</span></li>
+        <li class="step"><span class="n"><svg class="ic"><use href="#i-route"/></svg></span><h3 class="h3">4. План действий</h3><p>Читаете резюме за 5 минут и двигаетесь по плану: сегодня → ближайшие недели → дальше.</p></li>
       </ol>
+      <!-- ФОТО-СЛОТ 1 (полоса ~2.4:1): подросток проходит тест за ноутбуком. Замена: вставьте <img> внутрь, SVG удалите. Промпт — web/images/PROMPTS.md -->
+      <div class="photo-band photo-band--test reveal" role="img" aria-label="Подросток проходит тест">
+        <svg class="ph-ic" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-laptop"/></svg>
+      </div>
     </div>
   </section>
 
@@ -332,26 +424,79 @@ h1,h2,h3{font-weight:600;letter-spacing:-.02em;line-height:1.07;margin:0;}
         <p class="lead">Отчёт переводит результаты тестов в конкретную образовательную и карьерную траекторию — с учётом вашего контекста.</p>
       </div>
       <div class="grid g3 reveal">
-        <div class="tile tile--hover"><div class="ic-badge"><svg class="ic" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h9"/></svg></div><h3 class="h3">Резюме за 5 минут</h3><p>Главный вывод, сильные стороны и риски — так, чтобы родитель понял картину сразу.</p></div>
-        <div class="tile tile--hover"><div class="ic-badge"><svg class="ic" viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M7 20v-6M12 20v-11M17 20v-4"/></svg></div><h3 class="h3">Сильные стороны с процентилями</h3><p>Что развито сильнее всего — в сравнении с нормативной выборкой, а не «на глаз».</p></div>
-        <div class="tile tile--hover"><div class="ic-badge"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l2.5 5.1 5.5.8-4 4 1 5.6L12 16l-5 2.9 1-5.6-4-4 5.5-.8z"/></svg></div><h3 class="h3">Личностный профиль</h3><p>Как подросток учится, работает и справляется со стрессом — стиль, который меньше сопротивляется.</p></div>
-        <div class="tile tile--hover"><div class="ic-badge"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.6 8.4l-2.3 4.9-4.9 2.3 2.3-4.9z"/></svg></div><h3 class="h3">Карьерный профиль</h3><p>Какие задачи и рабочая среда интересны и подпитывают энергией — а какие быстро выматывают.</p></div>
-        <div class="tile tile--hover"><div class="ic-badge"><svg class="ic" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="8" cy="7" r="1.4" fill="currentColor" stroke="none"/><circle cx="14" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="10" cy="17" r="1.4" fill="currentColor" stroke="none"/></svg></div><h3 class="h3">Профессии и роли</h3><p>Подходящие направления с индексом устойчивого успеха — оценкой, где результат даётся легче и дольше не выгораешь.</p></div>
-        <div class="tile tile--hover"><div class="ic-badge"><svg class="ic" viewBox="0 0 24 24"><path d="M6 3v18M6 4h10l-2 3 2 3H6"/></svg></div><h3 class="h3">Планы A / B / C</h3><p>Амбициозный, реалистичный и страховочный сценарии — чтобы снять тревогу «а вдруг не туда».</p></div>
-        <div class="tile tile--hover"><div class="ic-badge"><svg class="ic" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/><path d="M9 15l2 2 4-4"/></svg></div><h3 class="h3">Что делать: сегодня → недели</h3><p>Конкретные шаги на ближайшие недели, а не абстрактные «развивайте потенциал».</p></div>
-        <div class="tile tile--hover"><div class="ic-badge"><svg class="ic" viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-9.5A3.5 3.5 0 0112 8a3.5 3.5 0 017 2.5C19 15.5 12 20 12 20z"/></svg></div><h3 class="h3">Рекомендации родителям</h3><p>Какой стиль поддержки сейчас работает и как отслеживать прогресс без давления.</p></div>
-        <div class="tile tile--hover"><div class="ic-badge"><svg class="ic" viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M14 3v4h4"/><path d="M9 13h6M9 16h6"/></svg></div><h3 class="h3">Приложения</h3><p>Таблицы результатов, методология и список источников — для тех, кто хочет глубже.</p></div>
+        <div class="tile tile--hover"><div class="ic-badge"><svg class="ic"><use href="#i-list"/></svg></div><h3 class="h3">Резюме за 5 минут</h3><p>Главный вывод, сильные стороны и риски — так, чтобы родитель понял картину сразу.</p></div>
+        <div class="tile tile--hover"><div class="ic-badge"><svg class="ic"><use href="#i-bars"/></svg></div><h3 class="h3">Сильные стороны с процентилями</h3><p>Что развито сильнее всего — в сравнении с нормативной выборкой, а не «на глаз».</p></div>
+        <div class="tile tile--hover"><div class="ic-badge"><svg class="ic"><use href="#i-star"/></svg></div><h3 class="h3">Личностный профиль</h3><p>Как подросток учится, работает и справляется со стрессом — стиль, который меньше сопротивляется.</p></div>
+        <div class="tile tile--hover"><div class="ic-badge"><svg class="ic"><use href="#i-compass"/></svg></div><h3 class="h3">Карьерный профиль</h3><p>Какие задачи и рабочая среда интересны и подпитывают энергией — а какие быстро выматывают.</p></div>
+        <div class="tile tile--hover"><div class="ic-badge"><svg class="ic"><use href="#i-target"/></svg></div><h3 class="h3">Профессии и роли</h3><p>Подходящие направления с индексом устойчивого успеха — оценкой, где результат даётся легче и дольше не выгораешь.</p></div>
+        <div class="tile tile--hover"><div class="ic-badge"><svg class="ic"><use href="#i-split"/></svg></div><h3 class="h3">Планы A / B / C</h3><p>Амбициозный, реалистичный и страховочный сценарии — чтобы снять тревогу «а вдруг не туда».</p></div>
+        <div class="tile tile--hover"><div class="ic-badge"><svg class="ic"><use href="#i-cal"/></svg></div><h3 class="h3">Что делать: сегодня → недели</h3><p>Конкретные шаги на ближайшие недели, а не абстрактные «развивайте потенциал».</p></div>
+        <div class="tile tile--hover"><div class="ic-badge"><svg class="ic"><use href="#i-heart"/></svg></div><h3 class="h3">Рекомендации родителям</h3><p>Какой стиль поддержки сейчас работает и как отслеживать прогресс без давления.</p></div>
+        <div class="tile tile--hover"><div class="ic-badge"><svg class="ic"><use href="#i-doc"/></svg></div><h3 class="h3">Приложения</h3><p>Таблицы результатов, методология и список источников — для тех, кто хочет глубже.</p></div>
       </div>
     </div>
   </section>
 
-  <!-- ===== Example / preview ===== -->
-  <section class="sec" id="example">
+  <!-- ===== Report pages mock ===== -->
+  <section class="sec" id="inside">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Объём</p>
+        <h2 class="h2">Полтора десятка страниц, а не страница выводов</h2>
+        <p class="lead">Отчёт устроен как документ: резюме для быстрого решения, разборы профилей и практическая часть с треками и планами.</p>
+      </div>
+      <div class="pages reveal" aria-hidden="true">
+        <div class="pg-wrap">
+          <div class="pg">
+            <div class="pg-h"></div>
+            <div class="pg-l m"></div><div class="pg-l s"></div><div class="pg-l m"></div><div class="pg-l xs"></div>
+            <div class="pg-h2"></div>
+            <div class="pg-box"><div class="pg-l m"></div><div class="pg-l s"></div></div>
+            <div class="pg-l m"></div><div class="pg-l s"></div><div class="pg-l m"></div>
+            <div class="pg-h2"></div>
+            <div class="pg-l s"></div><div class="pg-l m"></div><div class="pg-l xs"></div>
+            <div class="pg-foot"><i></i><b>1</b></div>
+          </div>
+          <div class="pg-cap"><b>Резюме</b>главный вывод, сильные стороны, риски</div>
+        </div>
+        <div class="pg-wrap">
+          <div class="pg">
+            <div class="pg-h"></div>
+            <div class="pg-l m"></div><div class="pg-l s"></div>
+            <div class="pg-mini"><i style="width:86%"></i><i style="width:72%"></i><i style="width:64%"></i><i style="width:48%"></i></div>
+            <div class="pg-l m"></div><div class="pg-l xs"></div>
+            <div class="pg-h2"></div>
+            <div class="pg-mini"><i style="width:78%"></i><i style="width:58%"></i><i style="width:41%"></i></div>
+            <div class="pg-l s"></div><div class="pg-l m"></div>
+            <div class="pg-foot"><i></i><b>6</b></div>
+          </div>
+          <div class="pg-cap"><b>Профили</b>личность и карьерные интересы в процентилях</div>
+        </div>
+        <div class="pg-wrap">
+          <div class="pg">
+            <div class="pg-h"></div>
+            <div class="pg-tab"><i class="on"></i><i></i><i></i></div>
+            <div class="pg-l m"></div><div class="pg-l s"></div><div class="pg-l m"></div>
+            <div class="pg-box"><div class="pg-l m"></div><div class="pg-l xs"></div></div>
+            <div class="pg-l s"></div><div class="pg-l m"></div>
+            <div class="pg-box"><div class="pg-l s"></div><div class="pg-l m"></div></div>
+            <div class="pg-l m"></div><div class="pg-l xs"></div>
+            <div class="pg-foot"><i></i><b>12</b></div>
+          </div>
+          <div class="pg-cap"><b>Треки и планы</b>профессии, сценарии A/B/C, шаги</div>
+        </div>
+      </div>
+      <p class="disclaimer">Схематичное изображение структуры документа. Итоговый отчёт формируется индивидуально по вашим результатам.</p>
+    </div>
+  </section>
+
+  <!-- ===== Example ===== -->
+  <section class="sec sec--alt" id="example">
     <div class="wrap">
       <div class="sec-head reveal">
         <p class="eyebrow">Пример отчёта</p>
         <h2 class="h2">Как это выглядит внутри</h2>
-        <p class="lead">Структура настоящего отчёта и фрагмент резюме. Данные — обезличенный пример, не реальный человек.</p>
+        <p class="lead">Фрагменты настоящей структуры отчёта. Данные — обезличенный пример, не реальный человек.</p>
       </div>
       <div class="rp reveal">
         <div class="rp-toc">
@@ -377,40 +522,95 @@ h1,h2,h3{font-weight:600;letter-spacing:-.02em;line-height:1.07;margin:0;}
             <span class="rp-chip">Спокойствие под нагрузкой · 80</span>
             <span class="rp-chip">Самостоятельность · 78</span>
           </div>
-          <div class="kicker" style="color:var(--text-3);margin-top:16px;">Подходящие направления</div>
-          <div class="rp-chips">
-            <span class="rp-chip">Аналитика данных</span>
-            <span class="rp-chip">Инженерные науки</span>
-            <span class="rp-chip">Управление проектами</span>
-          </div>
         </div>
       </div>
-      <p class="disclaimer">Пример носит иллюстративный характер и не является точной диагностикой. На странице используются рабочие названия методик; итоговый отчёт формируется индивидуально по результатам ваших тестов и анкет. Результаты носят развивающий, не клинический характер.</p>
+
+      <div class="grid g2 reveal" style="margin-top:24px;">
+        <div class="viz">
+          <div class="kicker">Пример</div>
+          <h3 class="h3">Профессии с индексом устойчивого успеха</h3>
+          <p>Оценка, где результат даётся легче и дольше не наступает выгорание — с учётом профиля и контекста.</p>
+          <div class="match">
+            <div class="match-row"><span class="nm">Аналитик данных</span><span class="pc">92</span><span class="tr"><span class="fl" style="--w:92%"></span></span></div>
+            <div class="match-row"><span class="nm">Инженер-исследователь</span><span class="pc">86</span><span class="tr"><span class="fl" style="--w:86%"></span></span></div>
+            <div class="match-row"><span class="nm">Руководитель проектов</span><span class="pc">79</span><span class="tr"><span class="fl" style="--w:79%"></span></span></div>
+            <div class="match-row"><span class="nm">Продуктовый аналитик</span><span class="pc">74</span><span class="tr"><span class="fl" style="--w:74%"></span></span></div>
+            <div class="match-row"><span class="nm">Преподаватель</span><span class="pc">51</span><span class="tr"><span class="fl" style="--w:51%"></span></span></div>
+          </div>
+        </div>
+
+        <div class="viz">
+          <div class="kicker">Пример</div>
+          <h3 class="h3">Сценарии A / B / C</h3>
+          <p>Три просчитанных пути вместо одной ставки: амбициозный, реалистичный и страховочный.</p>
+          <svg class="plan" viewBox="0 0 400 210" role="img" aria-label="Схема трёх сценариев: амбициозный, реалистичный и страховочный">
+            <circle class="plan-start" cx="38" cy="105" r="21"/>
+            <text class="plan-start-t" x="38" y="110" text-anchor="middle">Вы</text>
+            <path class="plan-path a" d="M61 98 C 120 92, 140 46, 196 42"/>
+            <path class="plan-path" d="M61 105 C 130 105, 140 105, 196 105"/>
+            <path class="plan-path" d="M61 112 C 120 118, 140 164, 196 168"/>
+            <rect class="plan-node a" x="196" y="20" width="196" height="44" rx="11"/>
+            <text class="plan-t" x="210" y="40">План A — амбициозный</text>
+            <text class="plan-s" x="210" y="55">максимум возможного</text>
+            <rect class="plan-node" x="196" y="83" width="196" height="44" rx="11"/>
+            <text class="plan-t" x="210" y="103">План B — реалистичный</text>
+            <text class="plan-s" x="210" y="118">высокая вероятность</text>
+            <rect class="plan-node" x="196" y="146" width="196" height="44" rx="11"/>
+            <text class="plan-t" x="210" y="166">План C — страховочный</text>
+            <text class="plan-s" x="210" y="181">если пойдёт иначе</text>
+          </svg>
+        </div>
+      </div>
+      <p class="disclaimer">Пример носит иллюстративный характер и не является точной диагностикой. На странице используются рабочие названия методик. Результаты носят развивающий, не клинический характер.</p>
     </div>
   </section>
 
-  <!-- ===== Diagnostics / trust ===== -->
-  <section class="sec sec--alt" id="method">
+  <!-- ===== Method + bell curve ===== -->
+  <section class="sec" id="method">
     <div class="wrap">
       <div class="sec-head reveal">
         <p class="eyebrow">Почему этому можно доверять</p>
         <h2 class="h2">Научная основа, а не гороскоп</h2>
       </div>
+
+      <div class="viz reveal" style="margin-bottom:20px;">
+        <div class="kicker">Как читаются результаты</div>
+        <h3 class="h3">Не «сильный» и «слабый», а точное место в выборке</h3>
+        <p>Каждая шкала показана процентилем — положением относительно нормативной выборки более чем в 100&#8239;000 человек.</p>
+        <svg class="bell" viewBox="0 0 640 200" role="img" aria-label="Кривая распределения: пример результата в 84-м процентиле">
+          <path class="bell-fill" d="M40,168 C 150,168 170,42 320,42 C 470,42 490,168 600,168 Z"/>
+          <path class="bell-line" d="M40,168 C 150,168 170,42 320,42 C 470,42 490,168 600,168"/>
+          <line class="bell-axis" x1="30" y1="168" x2="610" y2="168"/>
+          <line class="bell-mark" x1="470" y1="168" x2="470" y2="94"/>
+          <circle class="bell-dot" cx="470" cy="94" r="6"/>
+          <rect class="bell-badge" x="404" y="52" width="132" height="26" rx="13"/>
+          <text class="bell-badge-t" x="470" y="69" text-anchor="middle">84-й процентиль</text>
+          <text class="bell-txt" x="40" y="188">ниже среднего</text>
+          <text class="bell-txt" x="320" y="188" text-anchor="middle">среднее по выборке</text>
+          <text class="bell-txt" x="600" y="188" text-anchor="end">выше среднего</text>
+        </svg>
+      </div>
+
       <div class="grid g3 reveal">
-        <div class="tile"><h3 class="h3">Проверенные методики</h3><p>В основе — признанные инструменты оценки личности и профессиональных склонностей. Не тесты из интернета.</p></div>
-        <div class="tile"><h3 class="h3">Нормативная выборка</h3><p>Результаты показаны в процентилях относительно выборки более чем в 100&#8239;000 человек — видно, где сильные стороны на самом деле.</p></div>
-        <div class="tile"><h3 class="h3">Контекст семьи</h3><p>Анкеты переводят сухие баллы в реальную траекторию: нагрузка, цели, ситуация — всё учтено.</p></div>
-        <div class="tile"><h3 class="h3">Не диагноз</h3><p>Это модель вероятностей — где будет легче удерживать мотивацию и результат, а не приговор и не медицинская диагностика.</p></div>
-        <div class="tile"><h3 class="h3">Честное разделение</h3><p>В отчёте отделены устойчивые выводы, рабочие гипотезы и то, что стоит проверить пробами.</p></div>
-        <div class="tile"><h3 class="h3">Динамика во времени</h3><p>Профиль желательно пройти повторно примерно через полгода — чтобы видеть развитие, а не только точку.</p></div>
+        <div class="tile"><div class="ic-badge"><svg class="ic"><use href="#i-beaker"/></svg></div><h3 class="h3">Проверенные методики</h3><p>В основе — признанные инструменты оценки личности и профессиональных склонностей. Не тесты из интернета.</p></div>
+        <div class="tile"><div class="ic-badge"><svg class="ic"><use href="#i-bars"/></svg></div><h3 class="h3">Нормативная выборка</h3><p>Результаты показаны в процентилях относительно выборки более чем в 100&#8239;000 человек — видно, где сильные стороны на самом деле.</p></div>
+        <div class="tile"><div class="ic-badge"><svg class="ic"><use href="#i-users"/></svg></div><h3 class="h3">Контекст семьи</h3><p>Анкеты переводят сухие баллы в реальную траекторию: нагрузка, цели, ситуация — всё учтено.</p></div>
+        <div class="tile"><div class="ic-badge"><svg class="ic"><use href="#i-info"/></svg></div><h3 class="h3">Не диагноз</h3><p>Это модель вероятностей — где будет легче удерживать мотивацию и результат, а не приговор и не медицинская диагностика.</p></div>
+        <div class="tile"><div class="ic-badge"><svg class="ic"><use href="#i-split"/></svg></div><h3 class="h3">Честное разделение</h3><p>В отчёте отделены устойчивые выводы, рабочие гипотезы и то, что стоит проверить пробами.</p></div>
+        <div class="tile"><div class="ic-badge"><svg class="ic"><use href="#i-refresh"/></svg></div><h3 class="h3">Динамика во времени</h3><p>Профиль желательно пройти повторно примерно через полгода — чтобы видеть развитие, а не только точку.</p></div>
+      </div>
+
+      <!-- ФОТО-СЛОТ 2 (полоса ~2.4:1): родитель и подросток обсуждают отчёт. Замена: вставьте <img> внутрь, SVG удалите. Промпт — web/images/PROMPTS.md -->
+      <div class="photo-band photo-band--family reveal" role="img" aria-label="Родитель и подросток обсуждают результаты">
+        <svg class="ph-ic" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chat"/></svg>
       </div>
     </div>
   </section>
 
-  <!-- ===== Social proof (ПЛЕЙСХОЛДЕР: заменить на реальные данные или скрыть) ===== -->
-  <!-- ВАЖНО (Максим): цифры и отзывы ниже — заглушки. Замените на реальные (с согласием родителей на публикацию)
+  <!-- ===== Social proof (ПЛЕЙСХОЛДЕР) ===== -->
+  <!-- ВАЖНО (Максим): цифры и отзывы ниже — заглушки. Замените на реальные (с согласием родителей)
        или удалите весь блок <section id="reviews">. Публиковать выдуманные отзывы нельзя. -->
-  <section class="sec" id="reviews">
+  <section class="sec sec--alt" id="reviews">
     <div class="wrap">
       <div class="sec-head reveal">
         <p class="eyebrow">Опыт семей</p>
@@ -431,7 +631,7 @@ h1,h2,h3{font-weight:600;letter-spacing:-.02em;line-height:1.07;margin:0;}
   </section>
 
   <!-- ===== Pricing ===== -->
-  <section class="sec sec--alt" id="price">
+  <section class="sec" id="price">
     <div class="wrap">
       <div class="sec-head reveal">
         <p class="eyebrow">Цена</p>
@@ -449,9 +649,9 @@ h1,h2,h3{font-weight:600;letter-spacing:-.02em;line-height:1.07;margin:0;}
           <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span>Подробный отчёт с профессиями и планом A/B/C</li>
           <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span>Отчёт сразу после прохождения всех тестов</li>
         </ul>
-        <!-- ГАРАНТИЯ: подтвердите или измените условия под вашу реальную политику; при отсутствии — удалите блок .guarantee -->
+        <!-- ГАРАНТИЯ: подтвердите условия под вашу реальную политику; при отсутствии — удалите блок .guarantee -->
         <div class="guarantee">
-          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-3 7.6-7 9-4-1.4-7-4.4-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>
+          <svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg>
           <p><b>Спокойная гарантия.</b> Если после отчёта не станет яснее, куда двигаться, — переработаем разбор или вернём оплату.</p>
         </div>
         <a class="btn btn-primary btn-lg" href="ЗАМЕНИТЬ_ОПЛАТА">Перейти к оплате</a>
@@ -462,7 +662,7 @@ h1,h2,h3{font-weight:600;letter-spacing:-.02em;line-height:1.07;margin:0;}
   </section>
 
   <!-- ===== FAQ ===== -->
-  <section class="sec" id="faq">
+  <section class="sec sec--alt" id="faq">
     <div class="wrap">
       <div class="sec-head reveal">
         <p class="eyebrow">Вопросы</p>
@@ -484,7 +684,7 @@ h1,h2,h3{font-weight:600;letter-spacing:-.02em;line-height:1.07;margin:0;}
   </section>
 
   <!-- ===== Final CTA ===== -->
-  <section class="sec sec--alt">
+  <section class="sec">
     <div class="wrap cta-final reveal">
       <p class="eyebrow">Готовы начать?</p>
       <h2 class="h2">Дайте ребёнку ясность, а себе — спокойствие</h2>
@@ -494,7 +694,6 @@ h1,h2,h3{font-weight:600;letter-spacing:-.02em;line-height:1.07;margin:0;}
   </section>
 </main>
 
-<!-- Липкий призыв -->
 <div class="sticky-cta" id="stickyCta" aria-hidden="true">
   <div class="wrap">
     <span class="txt"><b><span class="sc-full">Профориентация — </span>£2&#8239;000</b><span>Отчёт сразу после прохождения тестов</span></span>
