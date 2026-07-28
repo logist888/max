@@ -26,6 +26,7 @@ updated: 2026-06-23
 
 Дословный снимок Диска — `memory/memory.md`. Оригиналы методологий — `reference/`.
 Источники MMS — `vault/10-sources/mms-tom-1-business-architecture.md`, `…/mms-tom-2-functional-specification.md`.
+Созвоны 27.07.26 (Поток-2) — `vault/10-sources/2026-07-27-screening-review-call.md`, `…/2026-07-27-profile-ui-call.md`; атомарные — `vault/20-notes/2026-07-27-gotovnost-k-vyboru.md`, `…/2026-07-27-screening-static-texts.md`.
 
 ## Рабочие заметки — vault/ (из новых ингестов)
 Якоря потоков и гипотезы:
