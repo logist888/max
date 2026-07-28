@@ -31,7 +31,7 @@ const jsonLd = [{
           А дальше — {catalogRows.length} {plural(catalogRows.length, 'вуз', 'вуза', 'вузов')} и программы
           из официальных данных, без выдуманных рейтингов.</p>
         <div class="actions">
-          <a class="btn btn-primary" href={SCREENING_URL} rel="noopener">Узнать риск своего выбора →</a>
+          <a class="btn btn-primary" href={SCREENING_URL} target="_blank" rel="noopener">Узнать риск своего выбора →</a>
           <a class="btn btn-secondary" href="/vuzy/">Смотреть каталог вузов</a>
         </div>
         <div class="prov">Данные:
@@ -86,7 +86,7 @@ const jsonLd = [{
       <h3>1. Поймите, где вы</h3>
       <p class="meta">Короткий тест покажет, что уже решено, а где выбор
         держится на чужих ожиданиях.</p>
-      <p><a href={SCREENING_URL} rel="noopener">Пройти тест →</a></p>
+      <p><a href={SCREENING_URL} target="_blank" rel="noopener">Пройти тест →</a></p>
     </li>
     <li class="card">
       <span class="qic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18l-7 8v6l-4-2v-4z"/></svg></span>
