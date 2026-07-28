@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Модель данных · запуск любого продукта где угодно · MainExperts</title>
+<style>
+  :root{
+    --primary:#1D4ED8; --secondary:#0F172A; --accent:#10B981; --warning:#F59E0B;
+    --error:#DC2626; --indigo:#4338CA; --ink:#1E293B; --muted:#64748B;
+    --line:#E2E8F0; --bg:#F8FAFC; --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    color:var(--ink); background:var(--bg); font-size:14px; line-height:1.45;}
+  a{color:var(--primary);text-decoration:none}
+  header{background:linear-gradient(135deg,var(--secondary),#16265c 55%,var(--primary));
+    color:#fff; padding:20px 24px 16px;}
+  header .eyebrow{letter-spacing:.28em;font-size:10px;text-transform:uppercase;color:rgba(255,255,255,.6)}
+  header h1{margin:5px 0 4px;font-size:22px;font-weight:800;letter-spacing:-.3px}
+  header p{margin:0;font-size:12.5px;color:rgba(255,255,255,.82);max-width:900px}
+  header .spine{margin-top:10px;font-size:11px;color:rgba(255,255,255,.9);
+    display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);
+    padding:5px 10px;border-radius:8px}
+  header .spine b{color:#7dd3fc}
+  header .spine .ar{color:rgba(255,255,255,.5)}
+  nav{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);
+    display:flex;gap:2px;padding:0 12px;overflow-x:auto}
+  nav button{appearance:none;border:none;background:none;font:inherit;cursor:pointer;
+    padding:12px 14px;color:var(--muted);font-weight:600;font-size:13px;
+    border-bottom:3px solid transparent;white-space:nowrap}
+  nav button:hover{color:var(--ink)}
+  nav button.on{color:var(--primary);border-bottom-color:var(--primary)}
+  main{max-width:1180px;margin:0 auto;padding:20px 16px 60px}
+  section{display:none}
+  section.on{display:block}
+  h2.st{font-size:18px;margin:4px 0 10px;color:var(--secondary)}
+  .sub{color:var(--muted);font-size:13px;margin:0 0 16px;max-width:820px}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin:0 0 14px}
+  .legend .lg{display:inline-flex;align-items:center;gap:6px}
+  .legend .sw{width:12px;height:12px;border-radius:3px;display:inline-block}
+
+  /* Map */
+  #map-wrap{position:relative}
+  .band{position:relative;background:var(--card);border:1px solid var(--line);
+    border-radius:12px;margin-bottom:14px;padding:10px 12px 12px}
+  .band .bh{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .band .bh .dot{width:10px;height:10px;border-radius:50%}
+  .band .bh .nm{font-weight:800;font-size:12px;letter-spacing:.02em;color:var(--secondary)}
+  .band .bh .ct{font-size:11px;color:var(--muted)}
+  .nodes{display:flex;flex-wrap:wrap;gap:8px;position:relative;z-index:2}
+  .node{border:1.5px solid var(--line);background:#fff;border-radius:9px;padding:7px 10px;
+    cursor:pointer;font-size:12px;font-weight:600;color:var(--ink);position:relative;
+    transition:transform .08s, box-shadow .12s, border-color .12s}
+  .node .k{font-size:9.5px;color:var(--muted);font-weight:600;display:block;margin-top:1px}
+  .node:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(15,23,42,.10)}
+  .node.dim{opacity:.28}
+  .node.sel{border-color:var(--primary);box-shadow:0 0 0 3px rgba(29,78,216,.15)}
+  .node.nb{border-color:var(--accent);box-shadow:0 0 0 3px rgba(16,185,129,.14)}
+  #edges{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;overflow:visible}
+  #edges path{fill:none;stroke:#CBD5E1;stroke-width:1.2;opacity:.5}
+  #edges path.hi{stroke:var(--accent);stroke-width:2;opacity:1}
+  #edges path.ho{stroke:var(--primary);stroke-width:2;opacity:1}
+  .maphint{font-size:12px;color:var(--muted);margin:2px 0 12px}
+  .maphint b{color:var(--primary)}
+
+  /* detail popover / panel */
+  #detail{position:fixed;right:16px;bottom:16px;width:360px;max-width:calc(100vw - 32px);
+    max-height:70vh;overflow:auto;background:#fff;border:1px solid var(--line);
+    border-radius:14px;box-shadow:0 18px 50px rgba(15,23,42,.22);z-index:40;display:none}
+  #detail .dh{position:sticky;top:0;background:var(--secondary);color:#fff;padding:11px 14px;
+    display:flex;justify-content:space-between;align-items:center;border-radius:14px 14px 0 0}
+  #detail .dh b{font-size:14px}
+  #detail .dh .x{cursor:pointer;opacity:.8;font-size:18px;line-height:1}
+  #detail .db{padding:12px 14px}
+  #detail .desc{font-size:12px;color:var(--muted);margin-bottom:10px}
+  #detail .rel{font-size:11.5px;margin-top:10px}
+  #detail .rel .rt{font-weight:700;color:var(--secondary);margin:8px 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+  #detail .chip{display:inline-block;background:var(--bg);border:1px solid var(--line);
+    border-radius:20px;padding:2px 9px;margin:2px 3px 2px 0;font-size:11px;cursor:pointer}
+  #detail .chip:hover{border-color:var(--primary);color:var(--primary)}
+
+  /* tables */
+  .tablewrap{border:1px solid var(--line);border-radius:10px;overflow:auto;margin:10px 0 18px;background:#fff}
+  table{border-collapse:collapse;width:100%;font-size:12px}
+  thead th{background:var(--primary);color:#fff;text-align:left;padding:7px 10px;font-weight:600;
+    position:sticky;top:0;white-space:nowrap}
+  tbody td{padding:6px 10px;border-top:1px solid var(--line);vertical-align:top;white-space:nowrap}
+  tbody tr:nth-child(even){background:var(--bg)}
+  td.k,th.k{font-weight:700;color:var(--secondary)}
+  .req{color:var(--error);font-weight:700}
+  .pk{display:inline-block;background:#DBEAFE;color:#1E40AF;border-radius:5px;padding:0 6px;font-size:10px;font-weight:700}
+  .fk{display:inline-block;background:#ECFDF5;color:#065F46;border-radius:5px;padding:0 6px;font-size:10px;font-weight:700}
+
+  /* explorer layout */
+  .explorer{display:grid;grid-template-columns:230px 1fr;gap:16px}
+  .tlist{border:1px solid var(--line);border-radius:10px;background:#fff;overflow:hidden;align-self:start}
+  .tlist .grp{padding:7px 11px;font-size:10px;text-transform:uppercase;letter-spacing:.05em;
+    font-weight:800;color:#fff}
+  .tlist .it{padding:7px 11px;font-size:12.5px;cursor:pointer;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:center}
+  .tlist .it:hover{background:var(--bg)}
+  .tlist .it.on{background:#EFF4FF;color:var(--primary);font-weight:700}
+  .tlist .it .n{color:var(--muted);font-size:10.5px}
+  @media(max-width:760px){.explorer{grid-template-columns:1fr}}
+
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+  .card h3{margin:0 0 4px;font-size:15px;color:var(--secondary)}
+  .card .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:var(--primary)}
+  .kpiTiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:10px 0 4px}
+  .tile{background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+  .tile .l{font-size:11px;color:var(--muted)}
+  .tile .v{font-size:20px;font-weight:800;color:var(--secondary);margin-top:2px}
+  .tile .v.good{color:#065F46}.tile .v.bad{color:var(--error)}
+
+  /* goals tree */
+  .tree{font-size:12.5px}
+  .tnode{border:1.5px solid var(--line);border-radius:10px;background:#fff;padding:9px 12px;margin:6px 0}
+  .tnode .tt{font-weight:700;color:var(--secondary)}
+  .tnode .tm{color:var(--muted);font-size:11.5px;margin-top:2px}
+  .tnode .tag{display:inline-block;font-size:10px;font-weight:700;border-radius:5px;padding:1px 7px;margin-right:6px}
+  .lvl1{border-left:5px solid var(--secondary)}
+  .lvl2{border-left:5px solid var(--primary);margin-left:18px}
+  .lvl3{border-left:5px solid var(--indigo);margin-left:36px}
+  .lvl3.camp{border-left-color:var(--primary)}
+  .lvl3.chan{border-left-color:var(--warning)}
+  .lvl3.test{border-left-color:var(--error)}
+  .badge{display:inline-block;font-size:10px;font-weight:700;padding:1px 8px;border-radius:20px}
+  .b-run{background:#DBEAFE;color:#1E40AF}.b-done{background:#D1FAE5;color:#065F46}
+
+  /* acceptance */
+  .acc{border:1px solid var(--line);border-radius:10px;background:#fff;padding:11px 13px;margin-bottom:9px;
+    display:grid;grid-template-columns:26px 1fr;gap:10px}
+  .acc .ok{color:var(--accent);font-weight:800;font-size:16px}
+  .acc .at{font-weight:700;color:var(--secondary);font-size:13px}
+  .acc .ad{color:var(--muted);font-size:12px;margin-top:2px}
+  .acc .chk{font-size:11px;margin-top:4px;font-family:ui-monospace,Menlo,monospace;color:var(--primary)}
+  .note{background:#FFFBEB;border:1px solid var(--warning);border-radius:9px;padding:9px 12px;font-size:12px;margin:8px 0}
+  .note b{color:#92400E}
+  footer{max-width:1180px;margin:0 auto;padding:0 16px 40px;color:var(--muted);font-size:11.5px}
+</style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">MainExperts · docs/10-data-model</div>
+  <h1>Модель данных: запуск любого продукта где угодно</h1>
+  <p>Единый источник истины о продуктах, рынках, ценах, продажах и целях. Интерактивная визуализация
+     реляционной модели: слои, 31 таблица, демо-данные и витрины, считающиеся вживую в браузере.</p>
+  <div class="spine">Ядро:&nbsp; <b>Product</b> <span class="ar">→</span> <b>SKU</b>
+     <span class="ar">→</span> <b>Listing</b> <span class="ar">→</span> <b>(Market × Channel)</b>
+     <span class="ar">→</span> <b>Fact</b></div>
+</header>
+
+<nav id="nav">
+  <button data-s="map" class="on">Карта модели</button>
+  <button data-s="tables">Таблицы (31)</button>
+  <button data-s="data">Демо-данные</button>
+  <button data-s="goals">Дерево целей</button>
+  <button data-s="views">Витрины / P&amp;L</button>
+  <button data-s="accept">Приёмка (10)</button>
+</nav>
+
+<main>
+  <!-- MAP -->
+  <section id="map" class="on">
+    <h2 class="st">Карта модели по слоям</h2>
+    <p class="maphint">Кликните таблицу — подсветятся её связи (<b style="color:#10B981">на неё ссылаются</b> /
+      <b>ссылается на</b>) и откроется карточка с полями. Клик по пустому месту — сброс.</p>
+    <div class="legend" id="legend"></div>
+    <div id="map-wrap">
+      <svg id="edges"></svg>
+      <div id="bands"></div>
+    </div>
+  </section>
+
+  <!-- TABLES -->
+  <section id="tables">
+    <h2 class="st">Таблицы: поля, ключи, связи</h2>
+    <p class="sub">31 таблица по четырём слоям. Первый столбец каждой — ключ; ссылки — строгими ID.</p>
+    <div class="explorer">
+      <div class="tlist" id="tlist"></div>
+      <div id="tdetail"></div>
+    </div>
+  </section>
+
+  <!-- DATA -->
+  <section id="data">
+    <h2 class="st">Демо-данные</h2>
+    <p class="sub">Связный набор: кружка (1 SKU) в US/RU/DE на 2 каналах; 3 SKU-варианта; подписка с
+      продлением и отменой; услуга-бронь; полная цепочка целей; возврат; смена цены среди периода;
+      остатки; дневной маркетинг.</p>
+    <div class="explorer">
+      <div class="tlist" id="dlist"></div>
+      <div id="ddetail"></div>
+    </div>
+  </section>
+
+  <!-- GOALS -->
+  <section id="goals">
+    <h2 class="st">Дерево целей (план)</h2>
+    <p class="sub">Business → Marketing → {Campaign · Channel · Test}. План живёт здесь; факт — в витринах.</p>
+    <div class="tree" id="tree"></div>
+  </section>
+
+  <!-- VIEWS -->
+  <section id="views">
+    <h2 class="st">Витрины — считаются вживую из демо-данных</h2>
+    <p class="sub">Ниже не статичные числа: JS join'ит факты с ценами, налогами, комиссиями, курсами и
+      себестоимостью по формулам словаря KPI. Это доказывает, что модель исполнима.</p>
+    <div id="viewsBody"></div>
+  </section>
+
+  <!-- ACCEPT -->
+  <section id="accept">
+    <h2 class="st">Сценарии приёмки</h2>
+    <p class="sub">Каждый сценарий — с проверкой на демо-данных.</p>
+    <div id="accBody"></div>
+  </section>
+</main>
+
+<div id="detail">
+  <div class="dh"><b id="dName"></b><span class="x" onclick="closeDetail()">×</span></div>
+  <div class="db" id="dBody"></div>
+</div>
+
+<footer>
+  Источник: <span class="mono" style="font-family:ui-monospace,Menlo,monospace">docs/10-data-model.md</span> ·
+  Снимок 08.07.2026 · Рабочий контекст, не выверенный источник. Правило двух потоков: разрез по
+  каналу и базовой валюте — ₽/£ не сводятся в одной витрине.
+</footer>
+
+<script>
+/* ============================ ПАЛИТРА СЛОЁВ ============================ */
+const COL={core:'#1D4ED8',econ:'#4338CA',goals:'#F59E0B',facts:'#10B981'};
+const LAYERS=[
+ {id:'core',name:'Слой 0 · Справочники ядра',
+  tables:['products','skus','markets','channels','listings','languages','currencies','warehouses']},
+ {id:'econ',name:'Слой 1 · Локализация, цены, экономика',
+  tables:['listing_content','fx_rates','price_periods','channel_fees','market_tax','cost_periods']},
+ {id:'goals',name:'Слой 2 · Слой целей',
+  tables:['business_objectives','marketing_objectives','campaign_objectives','channel_objectives',
+          'test_objectives','kpi_definitions','campaign_supporting_metrics','campaign_channels',
+          'campaign_tactics','objective_scope','outcomes']},
+ {id:'facts',name:'Слой 3 · Факты (append-only)',
+  tables:['orders','order_lines','subscriptions','bookings','inventory_snapshots','marketing_daily']},
+];
+const LAYEROF={}; LAYERS.forEach(l=>l.tables.forEach(t=>LAYEROF[t]=l.id));
+
+/* ============================ СХЕМА ПОЛЕЙ ============================ */
+/* [name, type, required(bool), key('','PK','FK→x'), example] */
+const SCHEMA={
+ products:{d:'Глобальный концепт продукта/услуги',f:[
+  ['Product_ID','string',1,'PK','P001'],['name','string',1,'','Premium Insulated Mug'],
+  ['type','enum(physical/digital/service/subscription)',1,'','physical'],
+  ['category','string',0,'','Drinkware'],['status','enum(active/archived)',1,'','active']]},
+ skus:{d:'Конкретный вариант/оффер',f:[
+  ['SKU_ID','string',1,'PK','SKU_MUG_BLACK_500'],['Product_ID','string',1,'FK→products','P001'],
+  ['variant_label','string',0,'','Black / 500 ml'],['unit','string',0,'','pcs'],
+  ['status','enum(active/archived)',1,'','active']]},
+ markets:{d:'Страна/город/таймзона/валюта/налоговый режим',f:[
+  ['Market_ID','string',1,'PK','MKT_US_NYC'],['country_iso','string',1,'','US'],
+  ['city','string',0,'','New York'],['timezone','string(IANA)',1,'','America/New_York'],
+  ['Currency_ID','string',1,'FK→currencies','USD'],['default_Language_ID','string',1,'FK→languages','EN'],
+  ['price_includes_tax','bool',1,'','FALSE']]},
+ channels:{d:'Платформа или продающий аккаунт',f:[
+  ['Channel_ID','string',1,'PK','CH_AMZ_US'],['name','string',1,'','Amazon US'],
+  ['type','enum(marketplace/own_web/retail/app_store)',1,'','marketplace'],
+  ['settlement_Currency_ID','string',1,'FK→currencies','USD']]},
+ listings:{d:'Размещение = SKU × канал × рынок (уникальная тройка)',f:[
+  ['Listing_ID','string',1,'PK','LST_AMZ_US_MUG'],['SKU_ID','string',1,'FK→skus','SKU_MUG_BLACK_500'],
+  ['Channel_ID','string',1,'FK→channels','CH_AMZ_US'],['Market_ID','string',1,'FK→markets','MKT_US_NYC'],
+  ['external_ref','string',0,'','B0MUG123'],['status','enum(active/paused)',1,'','active']]},
+ languages:{d:'Справочник языков',f:[
+  ['Language_ID','string',1,'PK','EN'],['name','string',1,'','English']]},
+ currencies:{d:'Справочник валют',f:[
+  ['Currency_ID','string(ISO4217)',1,'PK','USD'],['name','string',1,'','US Dollar'],['is_base','bool',1,'','TRUE']]},
+ warehouses:{d:'Склады/точки хранения',f:[
+  ['Warehouse_ID','string',1,'PK','WH_US_EAST'],['Market_ID','string',1,'FK→markets','MKT_US_NYC'],
+  ['name','string',0,'','US East (NJ)']]},
+ listing_content:{d:'Локализованный контент листинга по языкам, с версией',f:[
+  ['Content_ID','string',1,'PK','CNT_MUG_DE_EN'],['Listing_ID','string',1,'FK→listings','LST_WEB_DE_MUG'],
+  ['Language_ID','string',1,'FK→languages','EN'],['version','int',1,'','1'],
+  ['title','string',1,'','Premium Insulated Mug'],['description','text',0,'','…'],
+  ['keywords','string',0,'','mug, insulated'],['is_current','bool',1,'','TRUE']]},
+ fx_rates:{d:'Курс валюты к базовой на дату',f:[
+  ['Rate_ID','string',1,'PK','FX_EUR_0610'],['Currency_ID','string',1,'FK→currencies','EUR'],
+  ['base_Currency_ID','string',1,'FK→currencies','USD'],['rate_date','date',1,'','2026-06-10'],
+  ['rate_to_base','decimal',1,'','1.08']]},
+ price_periods:{d:'Цена листинга с датами действия и типом (история)',f:[
+  ['Price_Period_ID','string',1,'PK','PP_MUG_AMZ_1'],['Listing_ID','string',1,'FK→listings','LST_AMZ_US_MUG'],
+  ['price','decimal',1,'','24.90'],['Currency_ID','string',1,'FK→currencies','USD'],
+  ['type','enum(regular/promo)',1,'','regular'],['valid_from','date',1,'','2026-06-01'],
+  ['valid_to','date',0,'','2026-06-14']]},
+ channel_fees:{d:'Комиссии/сборы канала (% и фикс) с датами',f:[
+  ['Fee_ID','string',1,'PK','FEE_AMZ_1'],['Channel_ID','string',1,'FK→channels','CH_AMZ_US'],
+  ['percent','decimal',1,'','0.15'],['fixed','decimal',1,'','0.00'],
+  ['fixed_Currency_ID','string',1,'FK→currencies','USD'],['valid_from','date',1,'','2026-01-01']]},
+ market_tax:{d:'Ставка НДС/налога рынка с датами',f:[
+  ['Tax_ID','string',1,'PK','TAX_DE_1'],['Market_ID','string',1,'FK→markets','MKT_DE_BER'],
+  ['tax_rate','decimal',1,'','0.19'],['tax_name','string',0,'','VAT'],['valid_from','date',1,'','2026-01-01']]},
+ cost_periods:{d:'Себестоимость SKU с историей (добавлено — нужно для маржи)',f:[
+  ['Cost_Period_ID','string',1,'PK','COST_MUG_1'],['SKU_ID','string',1,'FK→skus','SKU_MUG_BLACK_500'],
+  ['unit_cost','decimal',1,'','6.00'],['Currency_ID','string',1,'FK→currencies','USD'],
+  ['valid_from','date',1,'','2026-01-01']]},
+ business_objectives:{d:'Бизнес-цель верхнего уровня',f:[
+  ['BizObj_ID','string',1,'PK','BO1'],['name','string',1,'','$50k/мес к Q4'],
+  ['owner','string',1,'','CEO'],['horizon','string',0,'','2026-Q4']]},
+ marketing_objectives:{d:'Маркетинговая цель',f:[
+  ['MktObj_ID','string',1,'PK','MO1'],['BizObj_ID','string',1,'FK→business_objectives','BO1'],
+  ['name','string',1,'','60% выручки через платные каналы'],['owner','string',1,'','CMO']]},
+ campaign_objectives:{d:'Цель кампании',f:[
+  ['CampObj_ID','string',1,'PK','CO1'],['MktObj_ID','string',1,'FK→marketing_objectives','MO1'],
+  ['name','string',1,'','Запуск Mug в US'],['target_audience','string',1,'','US 25–40, эко'],
+  ['desired_change','string',1,'','незнание → 1-я покупка'],
+  ['Primary_KPI_ID','string',1,'FK→kpi_definitions','KPI_ROAS'],['status','enum(planned/running/done)',1,'','running']]},
+ channel_objectives:{d:'Цель по каналу (baseline/target числами с датами)',f:[
+  ['ChanObj_ID','string',1,'PK','CHO1'],['MktObj_ID','string',1,'FK→marketing_objectives','MO1'],
+  ['Channel_ID','string',1,'FK→channels','CH_AMZ_US'],['Primary_KPI_ID','string',1,'FK→kpi_definitions','KPI_ROAS'],
+  ['baseline_value','decimal',1,'','1.8'],['baseline_date','date',1,'','2026-05-31'],
+  ['target_value','decimal',1,'','3.0'],['target_date','date',1,'','2026-08-31'],
+  ['optimization_loop','string',1,'','еженедельно']]},
+ test_objectives:{d:'Цель-тест (доводится до решения)',f:[
+  ['TestObj_ID','string',1,'PK','TO1'],['MktObj_ID','string',1,'FK→marketing_objectives','MO1'],
+  ['assumption','string',1,'','не знаем цену'],['hypothesis','string',1,'','$24.90 > $27.90'],
+  ['test_variable','string',1,'','цена US'],['success_threshold','string',1,'','+10% выручки'],
+  ['decision_rule','string',1,'','порог → $24.90'],['status','enum(planned/running/done)',1,'','done'],
+  ['result_value','string',0,'','−4% выручки, +18% маржи'],['decision_date','date',0,'','2026-06-21'],
+  ['decision_taken','string',0,'','оставить $27.90']]},
+ kpi_definitions:{d:'Словарь KPI: формула из фактов',f:[
+  ['KPI_ID','string',1,'PK','KPI_ROAS'],['name','string',1,'','ROAS'],['meaning','string',1,'','возврат на расход'],
+  ['formula','string',1,'','Σ net_revenue_base / Σ spend_base'],
+  ['source_tables','string',1,'','order_lines, marketing_daily'],['unit','string',1,'','x']]},
+ campaign_supporting_metrics:{d:'Мост кампания ↔ вспом. метрики (составной PK)',f:[
+  ['CampObj_ID','string',1,'FK→campaign_objectives','CO1'],['KPI_ID','string',1,'FK→kpi_definitions','KPI_CTR']]},
+ campaign_channels:{d:'Мост кампания ↔ каналы, M:N (составной PK)',f:[
+  ['CampObj_ID','string',1,'FK→campaign_objectives','CO1'],['Channel_ID','string',1,'FK→channels','CH_AMZ_US']]},
+ campaign_tactics:{d:'Тактики кампании',f:[
+  ['Tactic_ID','string',1,'PK','TAC_CO1_1'],['CampObj_ID','string',1,'FK→campaign_objectives','CO1'],
+  ['tactic','string',1,'','видео-обзоры']]},
+ objective_scope:{d:'Мост: цель ↔ продукт/SKU/листинг/рынок/канал (полиморфно)',f:[
+  ['Scope_ID','string',1,'PK','SCP_CO1_1'],['Objective_Type','enum',1,'','campaign'],
+  ['Objective_ID','string',1,'FK(логич.)','CO1'],['Product_ID','string',0,'FK→products',''],
+  ['SKU_ID','string',0,'FK→skus',''],['Listing_ID','string',0,'FK→listings','LST_AMZ_US_MUG'],
+  ['Market_ID','string',0,'FK→markets','MKT_US_NYC'],['Channel_ID','string',0,'FK→channels','']]},
+ outcomes:{d:'Факт результата цели (план в цели, факт здесь)',f:[
+  ['Outcome_ID','string',1,'PK','OUT_CO1'],['Objective_Type','enum',1,'','campaign'],
+  ['Objective_ID','string',1,'FK(логич.)','CO1'],['KPI_ID','string',1,'FK→kpi_definitions','KPI_ROAS'],
+  ['outcome_date','date',1,'','2026-06-30'],['actual_value','decimal',1,'','2.4']]},
+ orders:{d:'Шапка заказа',f:[
+  ['Order_ID','string',1,'PK','ORD001'],['order_date','date',1,'','2026-06-10'],
+  ['Channel_ID','string',1,'FK→channels','CH_AMZ_US'],['Market_ID','string',1,'FK→markets','MKT_US_NYC'],
+  ['attribution_CampObj_ID','string',0,'FK→campaign_objectives','CO1'],
+  ['status','enum(paid/cancelled/returned)',1,'','paid']]},
+ order_lines:{d:'Строка заказа — грань факта продаж',f:[
+  ['Line_ID','string',1,'PK','L001'],['Order_ID','string',1,'FK→orders','ORD001'],
+  ['Listing_ID','string',1,'FK→listings','LST_AMZ_US_MUG'],['qty','int (может быть <0)',1,'','2'],
+  ['unit_price','decimal',1,'','24.90'],['Currency_ID','string',1,'FK→currencies','USD'],
+  ['Price_Period_ID','string',1,'FK→price_periods','PP_MUG_AMZ_1'],['line_date','date',1,'','2026-06-10'],
+  ['status','enum(paid/return)',1,'','paid']]},
+ subscriptions:{d:'Период подписки (append-only, строка = биллинг-период)',f:[
+  ['Sub_Period_ID','string',1,'PK','SUBP001'],['Subscription_ID','string',1,'(группа)','SUBSCR_APP_001'],
+  ['Listing_ID','string',1,'FK→listings','LST_WEB_US_APPPRO'],['Origin_Order_ID','string',1,'FK→orders','ORD007'],
+  ['period_start','date',1,'','2026-06-19'],['period_end','date',1,'','2026-07-19'],
+  ['status','enum(active/renewed/cancelled)',1,'','active'],['mrr_amount','decimal',1,'','9.99'],
+  ['Currency_ID','string',1,'FK→currencies','USD']]},
+ bookings:{d:'Запись на услугу',f:[
+  ['Booking_ID','string',1,'PK','BKG001'],['Listing_ID','string',1,'FK→listings','LST_WEB_US_CONSULT'],
+  ['slot_datetime','datetime(ISO)',1,'','2026-06-25T15:00'],['status','enum(booked/completed/cancelled)',1,'','completed'],
+  ['Origin_Order_ID','string',0,'FK→orders','ORD010']]},
+ inventory_snapshots:{d:'Остатки SKU × склад на дату (не листинг — сток общий)',f:[
+  ['Snapshot_ID','string',1,'PK','INV_MUG_USE_0601'],['SKU_ID','string',1,'FK→skus','SKU_MUG_BLACK_500'],
+  ['Warehouse_ID','string',1,'FK→warehouses','WH_US_EAST'],['snap_date','date',1,'','2026-06-01'],
+  ['qty_on_hand','int',1,'','200']]},
+ marketing_daily:{d:'Дневной факт маркетинга',f:[
+  ['Fact_ID','string',1,'PK','MKT_0610_AMZ'],['fact_date','date',1,'','2026-06-10'],
+  ['Channel_ID','string',1,'FK→channels','CH_AMZ_US'],['CampObj_ID','string',0,'FK→campaign_objectives','CO1'],
+  ['Market_ID','string',1,'FK→markets','MKT_US_NYC'],['spend','decimal',1,'','120.00'],
+  ['spend_Currency_ID','string',1,'FK→currencies','USD'],['impressions','int',0,'','20000'],
+  ['clicks','int',0,'','400'],['conversions','int',0,'','12']]},
+};
+
+/* ============================ ДЕМО-ДАННЫЕ ============================ */
+const DATA={
+ products:{cols:['Product_ID','name','type'],rows:[
+  ['P001','Premium Insulated Mug','physical'],['P002','Aroma Diffuser','physical'],
+  ['P003','Focus App Pro','subscription'],['P004','1:1 Consultation','service']]},
+ skus:{cols:['SKU_ID','Product_ID','variant_label'],rows:[
+  ['SKU_MUG_BLACK_500','P001','Black / 500 ml'],['SKU_DIFF_100','P002','100 ml'],
+  ['SKU_DIFF_200','P002','200 ml'],['SKU_DIFF_300','P002','300 ml'],
+  ['SKU_APP_PRO_M','P003','Monthly'],['SKU_CONSULT_60','P004','60 min']]},
+ markets:{cols:['Market_ID','country_iso','timezone','Currency_ID','default_Language_ID','price_includes_tax'],rows:[
+  ['MKT_US_NYC','US','America/New_York','USD','EN','FALSE'],
+  ['MKT_RU_MOW','RU','Europe/Moscow','RUB','RU','TRUE'],
+  ['MKT_DE_BER','DE','Europe/Berlin','EUR','DE','TRUE']]},
+ channels:{cols:['Channel_ID','name','type','settlement_Currency_ID'],rows:[
+  ['CH_AMZ_US','Amazon US','marketplace','USD'],['CH_WEB','Own Web (Stripe)','own_web','USD'],
+  ['CH_OZON_RU','Ozon RU','marketplace','RUB']]},
+ listings:{cols:['Listing_ID','SKU_ID','Channel_ID','Market_ID'],rows:[
+  ['LST_AMZ_US_MUG','SKU_MUG_BLACK_500','CH_AMZ_US','MKT_US_NYC'],
+  ['LST_WEB_US_MUG','SKU_MUG_BLACK_500','CH_WEB','MKT_US_NYC'],
+  ['LST_WEB_DE_MUG','SKU_MUG_BLACK_500','CH_WEB','MKT_DE_BER'],
+  ['LST_WEB_RU_MUG','SKU_MUG_BLACK_500','CH_WEB','MKT_RU_MOW'],
+  ['LST_OZON_RU_MUG','SKU_MUG_BLACK_500','CH_OZON_RU','MKT_RU_MOW'],
+  ['LST_WEB_US_DIFF100','SKU_DIFF_100','CH_WEB','MKT_US_NYC'],
+  ['LST_WEB_US_DIFF200','SKU_DIFF_200','CH_WEB','MKT_US_NYC'],
+  ['LST_WEB_US_DIFF300','SKU_DIFF_300','CH_WEB','MKT_US_NYC'],
+  ['LST_WEB_US_APPPRO','SKU_APP_PRO_M','CH_WEB','MKT_US_NYC'],
+  ['LST_WEB_US_CONSULT','SKU_CONSULT_60','CH_WEB','MKT_US_NYC']]},
+ languages:{cols:['Language_ID','name'],rows:[['EN','English'],['RU','Русский'],['DE','Deutsch']]},
+ currencies:{cols:['Currency_ID','name','is_base'],rows:[['USD','US Dollar','TRUE'],['EUR','Euro','FALSE'],['RUB','Russian Ruble','FALSE']]},
+ warehouses:{cols:['Warehouse_ID','Market_ID','name'],rows:[
+  ['WH_US_EAST','MKT_US_NYC','US East (NJ)'],['WH_DE_CENTRAL','MKT_DE_BER','DE Central']]},
+ listing_content:{cols:['Content_ID','Listing_ID','Language_ID','version','title','is_current'],rows:[
+  ['CNT_MUG_DE_DE','LST_WEB_DE_MUG','DE','1','Premium Thermobecher','TRUE'],
+  ['CNT_MUG_DE_EN','LST_WEB_DE_MUG','EN','1','Premium Insulated Mug','TRUE'],
+  ['CNT_MUG_RU_RU','LST_WEB_RU_MUG','RU','1','Премиальная термокружка','TRUE'],
+  ['CNT_MUG_AMZ_EN','LST_AMZ_US_MUG','EN','1','Premium Insulated Mug 500ml','TRUE'],
+  ['CNT_APP_EN','LST_WEB_US_APPPRO','EN','2','Focus App Pro','TRUE']]},
+ fx_rates:{cols:['Rate_ID','Currency_ID','base_Currency_ID','rate_date','rate_to_base'],rows:[
+  ['FX_EUR_0610','EUR','USD','2026-06-10','1.08'],['FX_RUB_0610','RUB','USD','2026-06-10','0.0125'],
+  ['FX_EUR_0615','EUR','USD','2026-06-15','1.08'],['FX_RUB_0615','RUB','USD','2026-06-15','0.0125'],
+  ['FX_USD_0610','USD','USD','2026-06-10','1.00']]},
+ price_periods:{cols:['Price_Period_ID','Listing_ID','price','Currency_ID','type','valid_from','valid_to'],rows:[
+  ['PP_MUG_AMZ_1','LST_AMZ_US_MUG','24.90','USD','regular','2026-06-01','2026-06-14'],
+  ['PP_MUG_AMZ_2','LST_AMZ_US_MUG','27.90','USD','regular','2026-06-15',''],
+  ['PP_MUG_WEBUS_1','LST_WEB_US_MUG','26.90','USD','regular','2026-06-01',''],
+  ['PP_MUG_DE_1','LST_WEB_DE_MUG','27.90','EUR','regular','2026-06-01',''],
+  ['PP_MUG_RU_1','LST_WEB_RU_MUG','1990','RUB','regular','2026-06-01',''],
+  ['PP_MUG_OZON_1','LST_OZON_RU_MUG','2090','RUB','regular','2026-06-20',''],
+  ['PP_DIFF200_1','LST_WEB_US_DIFF200','39.00','USD','regular','2026-06-01',''],
+  ['PP_APP_1','LST_WEB_US_APPPRO','9.99','USD','regular','2026-06-01',''],
+  ['PP_CONSULT_1','LST_WEB_US_CONSULT','120.00','USD','regular','2026-06-01','']]},
+ channel_fees:{cols:['Fee_ID','Channel_ID','percent','fixed','fixed_Currency_ID','valid_from'],rows:[
+  ['FEE_AMZ_1','CH_AMZ_US','0.15','0.00','USD','2026-01-01'],
+  ['FEE_WEB_1','CH_WEB','0.029','0.30','USD','2026-01-01'],
+  ['FEE_OZON_1','CH_OZON_RU','0.12','0.00','RUB','2026-01-01']]},
+ market_tax:{cols:['Tax_ID','Market_ID','tax_rate','tax_name','valid_from'],rows:[
+  ['TAX_US_1','MKT_US_NYC','0.08875','Sales Tax','2026-01-01'],
+  ['TAX_DE_1','MKT_DE_BER','0.19','VAT','2026-01-01'],
+  ['TAX_RU_1','MKT_RU_MOW','0.20','VAT','2026-01-01']]},
+ cost_periods:{cols:['Cost_Period_ID','SKU_ID','unit_cost','Currency_ID','valid_from'],rows:[
+  ['COST_MUG_1','SKU_MUG_BLACK_500','6.00','USD','2026-01-01'],
+  ['COST_DIFF200_1','SKU_DIFF_200','5.50','USD','2026-01-01'],
+  ['COST_APP_1','SKU_APP_PRO_M','0.80','USD','2026-01-01'],
+  ['COST_CONSULT_1','SKU_CONSULT_60','20.00','USD','2026-01-01']]},
+ business_objectives:{cols:['BizObj_ID','name','owner','horizon'],rows:[
+  ['BO1','Выйти на $50k выручки/мес к Q4 2026','CEO','2026-Q4']]},
+ marketing_objectives:{cols:['MktObj_ID','BizObj_ID','name','owner'],rows:[
+  ['MO1','BO1','60% выручки через платные каналы','CMO']]},
+ campaign_objectives:{cols:['CampObj_ID','MktObj_ID','name','target_audience','desired_change','Primary_KPI_ID','status'],rows:[
+  ['CO1','MO1','Запуск Mug в US','US 25–40, эко, кофеманы','незнание → 1-я покупка','KPI_ROAS','running']]},
+ channel_objectives:{cols:['ChanObj_ID','MktObj_ID','Channel_ID','Primary_KPI_ID','baseline_value','baseline_date','target_value','target_date'],rows:[
+  ['CHO1','MO1','CH_AMZ_US','KPI_ROAS','1.8','2026-05-31','3.0','2026-08-31'],
+  ['CHO2','MO1','CH_WEB','KPI_CVR','0.012','2026-05-31','0.025','2026-08-31']]},
+ test_objectives:{cols:['TestObj_ID','hypothesis','test_variable','success_threshold','decision_rule','status','result_value','decision_date','decision_taken'],rows:[
+  ['TO1','$24.90 > $27.90 по выручке','цена US Amazon','выручка/нед +10%','порог → $24.90, иначе $27.90','done','−4% выручки, +18% маржи','2026-06-21','оставить $27.90']]},
+ kpi_definitions:{cols:['KPI_ID','name','formula','source_tables'],rows:[
+  ['KPI_ROAS','ROAS','Σ attributed net_revenue_base / Σ spend_base','order_lines, orders, marketing_daily, fx_rates'],
+  ['KPI_CVR','Conversion Rate','Σ conversions / Σ clicks','marketing_daily'],
+  ['KPI_CTR','CTR','Σ clicks / Σ impressions','marketing_daily'],
+  ['KPI_REVENUE','Net Revenue','Σ net_revenue_base','order_lines, market_tax, fx_rates'],
+  ['KPI_MRR','MRR','Σ active mrr_amount_base за месяц','subscriptions, fx_rates']]},
+ campaign_supporting_metrics:{cols:['CampObj_ID','KPI_ID'],rows:[['CO1','KPI_CTR'],['CO1','KPI_CVR']]},
+ campaign_channels:{cols:['CampObj_ID','Channel_ID'],rows:[['CO1','CH_AMZ_US'],['CO1','CH_WEB']]},
+ campaign_tactics:{cols:['Tactic_ID','CampObj_ID','tactic'],rows:[
+  ['TAC_CO1_1','CO1','видео-обзоры у блогеров'],['TAC_CO1_2','CO1','ретаргетинг'],['TAC_CO1_3','CO1','промо первую неделю']]},
+ objective_scope:{cols:['Scope_ID','Objective_Type','Objective_ID','Listing_ID','Market_ID','Channel_ID'],rows:[
+  ['SCP_CO1_1','campaign','CO1','LST_AMZ_US_MUG','MKT_US_NYC',''],
+  ['SCP_CO1_2','campaign','CO1','LST_WEB_US_MUG','MKT_US_NYC',''],
+  ['SCP_CHO1','channel','CHO1','','MKT_US_NYC','CH_AMZ_US'],
+  ['SCP_CHO2','channel','CHO2','','MKT_US_NYC','CH_WEB'],
+  ['SCP_TO1','test','TO1','LST_AMZ_US_MUG','MKT_US_NYC','']]},
+ outcomes:{cols:['Outcome_ID','Objective_Type','Objective_ID','KPI_ID','outcome_date','actual_value'],rows:[
+  ['OUT_CO1','campaign','CO1','KPI_ROAS','2026-06-30','2.4'],
+  ['OUT_CHO1','channel','CHO1','KPI_ROAS','2026-06-30','2.1'],
+  ['OUT_CHO2','channel','CHO2','KPI_CVR','2026-06-30','0.017']]},
+ orders:{cols:['Order_ID','order_date','Channel_ID','Market_ID','attribution_CampObj_ID','status'],rows:[
+  ['ORD001','2026-06-10','CH_AMZ_US','MKT_US_NYC','CO1','paid'],
+  ['ORD002','2026-06-12','CH_WEB','MKT_DE_BER','','paid'],
+  ['ORD003','2026-06-13','CH_WEB','MKT_RU_MOW','','paid'],
+  ['ORD004','2026-06-16','CH_AMZ_US','MKT_US_NYC','CO1','paid'],
+  ['ORD005','2026-06-17','CH_WEB','MKT_US_NYC','CO1','paid'],
+  ['ORD006','2026-06-18','CH_WEB','MKT_US_NYC','','paid'],
+  ['ORD007','2026-06-19','CH_WEB','MKT_US_NYC','','paid'],
+  ['ORD008','2026-06-20','CH_AMZ_US','MKT_US_NYC','CO1','returned'],
+  ['ORD009','2026-07-19','CH_WEB','MKT_US_NYC','','paid'],
+  ['ORD010','2026-06-24','CH_WEB','MKT_US_NYC','','paid']]},
+ order_lines:{cols:['Line_ID','Order_ID','Listing_ID','qty','unit_price','Currency_ID','Price_Period_ID','line_date','status'],rows:[
+  ['L001','ORD001','LST_AMZ_US_MUG','2','24.90','USD','PP_MUG_AMZ_1','2026-06-10','paid'],
+  ['L002','ORD002','LST_WEB_DE_MUG','1','27.90','EUR','PP_MUG_DE_1','2026-06-12','paid'],
+  ['L003','ORD003','LST_WEB_RU_MUG','3','1990','RUB','PP_MUG_RU_1','2026-06-13','paid'],
+  ['L004','ORD004','LST_AMZ_US_MUG','1','27.90','USD','PP_MUG_AMZ_2','2026-06-16','paid'],
+  ['L005','ORD005','LST_WEB_US_MUG','1','26.90','USD','PP_MUG_WEBUS_1','2026-06-17','paid'],
+  ['L006','ORD006','LST_WEB_US_DIFF200','1','39.00','USD','PP_DIFF200_1','2026-06-18','paid'],
+  ['L007','ORD007','LST_WEB_US_APPPRO','1','9.99','USD','PP_APP_1','2026-06-19','paid'],
+  ['L008','ORD008','LST_AMZ_US_MUG','1','27.90','USD','PP_MUG_AMZ_2','2026-06-20','paid'],
+  ['L008R','ORD008','LST_AMZ_US_MUG','-1','27.90','USD','PP_MUG_AMZ_2','2026-06-24','return'],
+  ['L009','ORD009','LST_WEB_US_APPPRO','1','9.99','USD','PP_APP_1','2026-07-19','paid'],
+  ['L010','ORD010','LST_WEB_US_CONSULT','1','120.00','USD','PP_CONSULT_1','2026-06-24','paid']]},
+ subscriptions:{cols:['Sub_Period_ID','Subscription_ID','Listing_ID','Origin_Order_ID','period_start','period_end','status','mrr_amount','Currency_ID'],rows:[
+  ['SUBP001','SUBSCR_APP_001','LST_WEB_US_APPPRO','ORD007','2026-06-19','2026-07-19','active','9.99','USD'],
+  ['SUBP002','SUBSCR_APP_001','LST_WEB_US_APPPRO','ORD009','2026-07-19','2026-08-19','renewed','9.99','USD'],
+  ['SUBP003','SUBSCR_APP_001','LST_WEB_US_APPPRO','ORD009','2026-08-19','2026-09-19','cancelled','0.00','USD']]},
+ bookings:{cols:['Booking_ID','Listing_ID','slot_datetime','status','Origin_Order_ID'],rows:[
+  ['BKG001','LST_WEB_US_CONSULT','2026-06-25T15:00','completed','ORD010'],
+  ['BKG002','LST_WEB_US_CONSULT','2026-06-27T10:00','cancelled','']]},
+ inventory_snapshots:{cols:['Snapshot_ID','SKU_ID','Warehouse_ID','snap_date','qty_on_hand'],rows:[
+  ['INV_MUG_USE_0601','SKU_MUG_BLACK_500','WH_US_EAST','2026-06-01','200'],
+  ['INV_MUG_USE_0615','SKU_MUG_BLACK_500','WH_US_EAST','2026-06-15','150'],
+  ['INV_MUG_USE_0622','SKU_MUG_BLACK_500','WH_US_EAST','2026-06-22','120'],
+  ['INV_MUG_DE_0601','SKU_MUG_BLACK_500','WH_DE_CENTRAL','2026-06-01','80'],
+  ['INV_DIFF200_USE_0622','SKU_DIFF_200','WH_US_EAST','2026-06-22','40']]},
+ marketing_daily:{cols:['Fact_ID','fact_date','Channel_ID','CampObj_ID','Market_ID','spend','spend_Currency_ID','impressions','clicks','conversions'],rows:[
+  ['MKT_0610_AMZ','2026-06-10','CH_AMZ_US','CO1','MKT_US_NYC','120.00','USD','20000','400','12'],
+  ['MKT_0610_WEB','2026-06-10','CH_WEB','CO1','MKT_US_NYC','80.00','USD','15000','300','6'],
+  ['MKT_0616_AMZ','2026-06-16','CH_AMZ_US','CO1','MKT_US_NYC','130.00','USD','21000','380','9'],
+  ['MKT_0617_WEB','2026-06-17','CH_WEB','CO1','MKT_US_NYC','75.00','USD','14000','280','7']]},
+};
+
+/* ============================ СВЯЗИ (44 ребра) ============================ */
+/* [from, to, label] — from ссылается на to (FK) */
+const REL=[
+ ['skus','products','Product_ID'],['listings','skus','SKU_ID'],['listings','channels','Channel_ID'],
+ ['listings','markets','Market_ID'],['markets','currencies','Currency_ID'],['markets','languages','default_lang'],
+ ['warehouses','markets','Market_ID'],['listing_content','listings','Listing_ID'],
+ ['listing_content','languages','Language_ID'],['fx_rates','currencies','Currency_ID'],
+ ['price_periods','listings','Listing_ID'],['price_periods','currencies','Currency_ID'],
+ ['channel_fees','channels','Channel_ID'],['market_tax','markets','Market_ID'],['cost_periods','skus','SKU_ID'],
+ ['marketing_objectives','business_objectives','BizObj_ID'],
+ ['campaign_objectives','marketing_objectives','MktObj_ID'],['campaign_objectives','kpi_definitions','Primary_KPI'],
+ ['channel_objectives','marketing_objectives','MktObj_ID'],['channel_objectives','channels','Channel_ID'],
+ ['channel_objectives','kpi_definitions','Primary_KPI'],['test_objectives','marketing_objectives','MktObj_ID'],
+ ['campaign_supporting_metrics','campaign_objectives','CampObj_ID'],['campaign_supporting_metrics','kpi_definitions','KPI_ID'],
+ ['campaign_channels','campaign_objectives','CampObj_ID'],['campaign_channels','channels','Channel_ID'],
+ ['campaign_tactics','campaign_objectives','CampObj_ID'],
+ ['objective_scope','listings','Listing_ID'],['objective_scope','markets','Market_ID'],['objective_scope','channels','Channel_ID'],
+ ['outcomes','kpi_definitions','KPI_ID'],
+ ['orders','channels','Channel_ID'],['orders','markets','Market_ID'],['orders','campaign_objectives','attribution'],
+ ['order_lines','orders','Order_ID'],['order_lines','listings','Listing_ID'],['order_lines','price_periods','Price_Period_ID'],
+ ['subscriptions','listings','Listing_ID'],['subscriptions','orders','Origin_Order_ID'],
+ ['bookings','listings','Listing_ID'],['inventory_snapshots','skus','SKU_ID'],
+ ['inventory_snapshots','warehouses','Warehouse_ID'],['marketing_daily','channels','Channel_ID'],
+ ['marketing_daily','markets','Market_ID'],['marketing_daily','campaign_objectives','CampObj_ID'],
+];
+
+/* ============================ УТИЛИТЫ ============================ */
+function objs(t){const T=DATA[t];if(!T)return[];return T.rows.map(r=>{const o={};T.cols.forEach((c,i)=>o[c]=r[i]);return o;});}
+function idx(t,key){const m={};objs(t).forEach(o=>m[o[key]]=o);return m;}
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const money=n=>(n<0?'-$':'$')+Math.abs(n).toFixed(2);
+
+/* ============================ ТАБЫ ============================ */
+document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('main section').forEach(s=>s.classList.toggle('on',s.id===b.dataset.s));
+  if(b.dataset.s==='map') requestAnimationFrame(drawEdges);
+});
+
+/* ============================ КАРТА ============================ */
+function buildMap(){
+  const leg=document.getElementById('legend');
+  leg.innerHTML=LAYERS.map(l=>`<span class="lg"><span class="sw" style="background:${COL[l.id]}"></span>${l.name.split('·')[1].trim()}</span>`).join('');
+  const bands=document.getElementById('bands');
+  bands.innerHTML=LAYERS.map(l=>`
+    <div class="band" style="border-top:3px solid ${COL[l.id]}">
+      <div class="bh"><span class="dot" style="background:${COL[l.id]}"></span>
+        <span class="nm">${l.name}</span><span class="ct">· ${l.tables.length} табл.</span></div>
+      <div class="nodes">${l.tables.map(t=>`
+        <div class="node" data-t="${t}" onclick="selectNode('${t}',event)">
+          ${t}<span class="k">${(SCHEMA[t].f.find(f=>f[3]==='PK')||['','','','',''])[0]||'—'}</span>
+        </div>`).join('')}</div>
+    </div>`).join('');
+}
+let SEL=null;
+function neighbors(t){const outn=[],inn=[];REL.forEach(([a,b])=>{if(a===t)outn.push(b);if(b===t)inn.push(a);});return{outn:[...new Set(outn)],inn:[...new Set(inn)]};}
+function selectNode(t,e){
+  if(e)e.stopPropagation();
+  SEL=t; const {outn,inn}=neighbors(t); const nb=new Set([...outn,...inn]);
+  document.querySelectorAll('.node').forEach(n=>{
+    const id=n.dataset.t; n.classList.remove('sel','nb','dim');
+    if(id===t)n.classList.add('sel'); else if(nb.has(id))n.classList.add('nb'); else n.classList.add('dim');
+  });
+  drawEdges(); showDetail(t);
+}
+function clearSel(){SEL=null;document.querySelectorAll('.node').forEach(n=>n.classList.remove('sel','nb','dim'));drawEdges();closeDetail();}
+document.getElementById('map-wrap').addEventListener('click',clearSel);
+
+function drawEdges(){
+  const svg=document.getElementById('edges'), wrap=document.getElementById('map-wrap');
+  if(!wrap.offsetParent && !document.getElementById('map').classList.contains('on'))return;
+  const wr=wrap.getBoundingClientRect();
+  svg.setAttribute('viewBox',`0 0 ${wr.width} ${wr.height}`);
+  const pos={};
+  document.querySelectorAll('.node').forEach(n=>{
+    const r=n.getBoundingClientRect();
+    pos[n.dataset.t]={x:r.left-wr.left+r.width/2,y:r.top-wr.top+r.height/2,w:r.width,h:r.height,t:r.top-wr.top,b:r.bottom-wr.top};
+  });
+  let p='';
+  REL.forEach(([a,b],i)=>{
+    if(!pos[a]||!pos[b])return;
+    const hl = SEL && (a===SEL||b===SEL);
+    if(SEL && !hl) return; // при выборе рисуем только связи узла
+    const A=pos[a],B=pos[b];
+    const x1=A.x,y1=A.b, x2=B.x,y2=B.t; // из низа A в верх B (обычно A ниже по слоям? не всегда)
+    const sy1=A.y<B.y?A.b:A.t, sy2=A.y<B.y?B.t:B.b;
+    const my=(sy1+sy2)/2;
+    const cls = hl ? (b===SEL?'hi':'ho') : '';
+    p+=`<path class="${cls}" d="M${A.x},${sy1} C${A.x},${my} ${B.x},${my} ${B.x},${sy2}"/>`;
+  });
+  svg.innerHTML=p;
+}
+window.addEventListener('resize',()=>requestAnimationFrame(drawEdges));
+
+function showDetail(t){
+  const s=SCHEMA[t], {outn,inn}=neighbors(t);
+  document.getElementById('dName').textContent=t;
+  const fields=s.f.map(f=>`<tr><td class="k">${f[0]}</td><td>${esc(f[1])}</td>
+     <td>${f[2]?'<span class="req">да</span>':'нет'}</td>
+     <td>${f[3]?(f[3]==='PK'?'<span class="pk">PK</span>':'<span class="fk">'+esc(f[3])+'</span>'):''}</td></tr>`).join('');
+  const rowsN = DATA[t]?DATA[t].rows.length:0;
+  document.getElementById('dBody').innerHTML=`
+    <div class="desc">${esc(s.d)} · <b>${rowsN}</b> демо-строк · слой: ${LAYERS.find(l=>l.id===LAYEROF[t]).name.split('·')[0]}</div>
+    <div class="tablewrap" style="margin:0"><table><thead><tr><th class="k">Поле</th><th>Тип</th><th>Обяз.</th><th>Ключ</th></tr></thead><tbody>${fields}</tbody></table></div>
+    <div class="rel">
+      ${outn.length?`<div class="rt">Ссылается на</div>${outn.map(x=>`<span class="chip" onclick="selectNode('${x}',event)">${x}</span>`).join('')}`:''}
+      ${inn.length?`<div class="rt">На неё ссылаются</div>${inn.map(x=>`<span class="chip" onclick="selectNode('${x}',event)">${x}</span>`).join('')}`:''}
+    </div>`;
+  document.getElementById('detail').style.display='block';
+}
+function closeDetail(){document.getElementById('detail').style.display='none';}
+
+/* ============================ ТАБЛИЦЫ (explorer) ============================ */
+function buildTableList(listId,onPick){
+  const el=document.getElementById(listId); let h='';
+  LAYERS.forEach(l=>{
+    h+=`<div class="grp" style="background:${COL[l.id]}">${l.name}</div>`;
+    l.tables.forEach(t=>{const n=DATA[t]?DATA[t].rows.length:0;
+      h+=`<div class="it" data-t="${t}" onclick="${onPick}('${t}')">${t}<span class="n">${n}</span></div>`;});
+  });
+  el.innerHTML=h;
+}
+function pickSchema(t){
+  document.querySelectorAll('#tlist .it').forEach(i=>i.classList.toggle('on',i.dataset.t===t));
+  const s=SCHEMA[t],{outn,inn}=neighbors(t);
+  const fields=s.f.map(f=>`<tr><td class="k">${f[0]}</td><td>${esc(f[1])}</td>
+     <td>${f[2]?'<span class="req">да</span>':'нет'}</td>
+     <td>${f[3]?(f[3]==='PK'?'<span class="pk">PK</span>':'<span class="fk">'+esc(f[3])+'</span>'):''}</td>
+     <td class="mono">${esc(f[4]||'')}</td></tr>`).join('');
+  document.getElementById('tdetail').innerHTML=`
+    <div class="card"><h3>${t}</h3><div class="sub" style="margin:0 0 6px">${esc(s.d)}</div>
+      <div class="tablewrap" style="margin:6px 0 0"><table>
+        <thead><tr><th class="k">Поле</th><th>Тип</th><th>Обяз.</th><th>Ключ</th><th>Пример</th></tr></thead>
+        <tbody>${fields}</tbody></table></div>
+      <div class="rel" style="font-size:12px;margin-top:10px">
+       ${outn.length?`<div class="rt" style="font-weight:700;color:#0F172A;margin:6px 0 3px;font-size:11px;text-transform:uppercase">Ссылается на</div>`+outn.map(x=>`<span class="chip" onclick="pickSchema('${x}')">${x}</span>`).join(''):''}
+       ${inn.length?`<div class="rt" style="font-weight:700;color:#0F172A;margin:8px 0 3px;font-size:11px;text-transform:uppercase">На неё ссылаются</div>`+inn.map(x=>`<span class="chip" onclick="pickSchema('${x}')">${x}</span>`).join(''):''}
+      </div>
+    </div>`;
+}
+function pickData(t){
+  document.querySelectorAll('#dlist .it').forEach(i=>i.classList.toggle('on',i.dataset.t===t));
+  const T=DATA[t];
+  const head=T.cols.map(c=>`<th>${esc(c)}</th>`).join('');
+  const body=T.rows.map(r=>`<tr>${r.map((v,i)=>`<td${i===0?' class="k"':''}>${esc(v)}</td>`).join('')}</tr>`).join('');
+  document.getElementById('ddetail').innerHTML=`
+    <div class="card"><h3>${t} <span style="font-weight:400;color:#64748B;font-size:12px">· ${T.rows.length} строк</span></h3>
+      <div class="sub" style="margin:0 0 6px">${esc(SCHEMA[t].d)}</div>
+      <div class="tablewrap" style="margin:6px 0 0"><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div></div>`;
+}
+
+/* ============================ ДЕРЕВО ЦЕЛЕЙ ============================ */
+function buildTree(){
+  const bo=objs('business_objectives')[0], mo=objs('marketing_objectives')[0];
+  const co=objs('campaign_objectives'), cho=objs('channel_objectives'), to=objs('test_objectives');
+  const tac=objs('campaign_tactics'), cc=objs('campaign_channels'), sm=objs('campaign_supporting_metrics');
+  const out=idxBy(objs('outcomes'),'Objective_ID');
+  let h=`<div class="tnode lvl1"><span class="tag" style="background:#0F172A;color:#fff">BUSINESS</span>
+    <span class="tt">${esc(bo.name)}</span><div class="tm">owner ${bo.owner} · горизонт ${bo.horizon}</div></div>`;
+  h+=`<div class="tnode lvl2"><span class="tag" style="background:#1D4ED8;color:#fff">MARKETING</span>
+    <span class="tt">${esc(mo.name)}</span><div class="tm">owner ${mo.owner}</div></div>`;
+  co.forEach(c=>{
+    const ch=cc.filter(x=>x.CampObj_ID===c.CampObj_ID).map(x=>x.Channel_ID).join(', ');
+    const mets=sm.filter(x=>x.CampObj_ID===c.CampObj_ID).map(x=>x.KPI_ID).join(', ');
+    const tc=tac.filter(x=>x.CampObj_ID===c.CampObj_ID).map(x=>x.tactic).join(' · ');
+    const o=out[c.CampObj_ID];
+    h+=`<div class="tnode lvl3 camp"><span class="tag" style="background:#DBEAFE;color:#1E40AF">CAMPAIGN</span>
+      <span class="tt">${esc(c.name)}</span> <span class="badge b-${c.status==='done'?'done':'run'}">${c.status}</span>
+      <div class="tm">🎯 ${esc(c.target_audience)} · изменение: ${esc(c.desired_change)}<br>
+      Primary KPI: <b>${c.Primary_KPI_ID}</b> · метрики: ${mets} · каналы: ${ch}<br>
+      тактики: ${esc(tc)}${o?` · <b>факт ${c.Primary_KPI_ID}: ${o.actual_value}</b>`:''}</div></div>`;
+  });
+  cho.forEach(c=>{const o=out[c.ChanObj_ID];
+    h+=`<div class="tnode lvl3 chan"><span class="tag" style="background:#FEF3C7;color:#92400E">CHANNEL</span>
+      <span class="tt">Канал ${c.Channel_ID}</span>
+      <div class="tm">KPI <b>${c.Primary_KPI_ID}</b> · baseline ${c.baseline_value} (${c.baseline_date}) → target ${c.target_value} (${c.target_date})${o?` · <b>факт ${o.actual_value}</b>`:''}</div></div>`;
+  });
+  to.forEach(t=>{
+    h+=`<div class="tnode lvl3 test"><span class="tag" style="background:#FEE2E2;color:#991B1B">TEST</span>
+      <span class="tt">${esc(t.hypothesis)}</span> <span class="badge b-done">${t.status}</span>
+      <div class="tm">переменная: ${esc(t.test_variable)} · порог: ${esc(t.success_threshold)}<br>
+      правило: ${esc(t.decision_rule)}<br>➜ результат: <b>${esc(t.result_value)}</b> · решение (${t.decision_date}): <b>${esc(t.decision_taken)}</b></div></div>`;
+  });
+  document.getElementById('tree').innerHTML=h;
+}
+function idxBy(arr,k){const m={};arr.forEach(o=>m[o[k]]=o);return m;}
+
+/* ============================ ВИТРИНЫ (live compute) ============================ */
+function rate(cur,date){
+  if(cur==='USD')return 1;
+  const rows=objs('fx_rates').filter(r=>r.Currency_ID===cur && r.rate_date<=date);
+  if(rows.length)return parseFloat(rows.sort((a,b)=>b.rate_date.localeCompare(a.rate_date))[0].rate_to_base);
+  const any=objs('fx_rates').filter(r=>r.Currency_ID===cur);
+  return any.length?parseFloat(any[0].rate_to_base):1;
+}
+function taxRate(mkt,date){const r=objs('market_tax').filter(x=>x.Market_ID===mkt&&x.valid_from<=date);return r.length?parseFloat(r[0].tax_rate):0;}
+function unitCost(sku){const r=objs('cost_periods').filter(x=>x.SKU_ID===sku);return r.length?parseFloat(r[0].unit_cost):0;}
+function feeOf(ch){const r=objs('channel_fees').filter(x=>x.Channel_ID===ch);return r.length?{p:parseFloat(r[0].percent),fix:parseFloat(r[0].fixed)}:{p:0,fix:0};}
+
+function computePnL(){
+  const L=idx('listings','Listing_ID'), M=idx('markets','Market_ID');
+  const per={};
+  objs('order_lines').forEach(ln=>{
+    const lst=L[ln.Listing_ID], mkt=M[lst.Market_ID];
+    const qty=parseInt(ln.qty,10), price=parseFloat(ln.unit_price);
+    const gross=qty*price;
+    const incl=mkt.price_includes_tax==='TRUE';
+    const tr=taxRate(mkt.Market_ID,ln.line_date);
+    const net=incl?gross/(1+tr):gross;
+    const fx=rate(ln.Currency_ID,ln.line_date);
+    const fee=feeOf(lst.Channel_ID);
+    const feeLocal=fee.p*gross;
+    const feeBase=feeLocal*fx + fee.fix; // % в базу по курсу; фикс — раз на строку (USD/база)
+    const netBase=net*fx;
+    const cogsBase=qty*unitCost(lst.SKU_ID);
+    const marginBase=netBase-feeBase-cogsBase;
+    const k=ln.Listing_ID;
+    if(!per[k])per[k]={listing:k,sku:lst.SKU_ID,market:lst.Market_ID,channel:lst.Channel_ID,cur:ln.Currency_ID,gross:0,net:0,netBase:0,feeBase:0,cogsBase:0,marginBase:0};
+    const p=per[k];p.gross+=gross;p.net+=net;p.netBase+=netBase;p.feeBase+=feeBase;p.cogsBase+=cogsBase;p.marginBase+=marginBase;
+  });
+  return Object.values(per);
+}
+function buildViews(){
+  const pnl=computePnL();
+  const totMargin=pnl.reduce((s,p)=>s+p.marginBase,0);
+  const totRev=pnl.reduce((s,p)=>s+p.netBase,0);
+  // P&L по листингу
+  let t1=`<div class="card"><h3>В1 · P&L по листингу</h3>
+   <div class="sub" style="margin:0 0 6px">net_revenue = (цена с НДС ? gross/(1+ставка) : gross) → база по курсу; margin = net − комиссия − себестоимость. Возвраты входят автоматически (qty&lt;0).</div>
+   <div class="tablewrap" style="margin:6px 0 0"><table><thead><tr>
+   <th>Листинг</th><th>Рынок</th><th>Канал</th><th>gross (лок.)</th><th>net (лок.)</th><th>net_base</th><th>fee_base</th><th>cogs_base</th><th>margin_base</th></tr></thead><tbody>`;
+  pnl.forEach(p=>{t1+=`<tr><td class="k">${p.listing}</td><td>${p.market.replace('MKT_','')}</td><td>${p.channel.replace('CH_','')}</td>
+   <td>${p.gross.toFixed(2)} ${p.cur}</td><td>${p.net.toFixed(2)}</td><td>${money(p.netBase)}</td>
+   <td>${money(p.feeBase)}</td><td>${money(p.cogsBase)}</td><td class="k" style="color:${p.marginBase>=0?'#065F46':'#DC2626'}">${money(p.marginBase)}</td></tr>`;});
+  t1+=`</tbody></table></div></div>`;
+
+  // rollup по рынку и каналу
+  const byMkt=roll(pnl,'market'), byCh=roll(pnl,'channel'), byProd=rollProd(pnl);
+  const t2=`<div class="card"><h3>В2 · P&L сводно</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px" class="rollgrid">
+     ${rollTable('По продукту',byProd)}${rollTable('По рынку',byMkt)}${rollTable('По каналу',byCh)}</div></div>`;
+
+  // маркетинг vs target (ROAS)
+  const roas=computeRoas(pnl);
+  let t3=`<div class="card"><h3>В3 · Маркетинг vs target (ROAS по каналам, кампания CO1)</h3>
+    <div class="tablewrap" style="margin:6px 0 0"><table><thead><tr><th>Канал</th><th>Расход (база)</th><th>Атриб. выручка (база)</th><th>ROAS</th><th>Target</th><th>Статус</th></tr></thead><tbody>`;
+  roas.forEach(r=>{t3+=`<tr><td class="k">${r.channel.replace('CH_','')}</td><td>${money(r.spend)}</td><td>${money(r.rev)}</td>
+    <td class="k">${r.roas.toFixed(2)}x</td><td>${r.target?r.target.toFixed(1)+'x':'—'}</td>
+    <td>${r.target?(r.roas>=r.target?'🟢':(r.roas>=r.target*0.7?'🟡':'🔴')):'—'}</td></tr>`;});
+  t3+=`</tbody></table></div><div class="sub" style="margin:6px 0 0">ROAS считается по словарю KPI: Σ attributed net_revenue_base / Σ spend_base.</div></div>`;
+
+  // статус целей
+  const os=computeObjStatus();
+  let t4=`<div class="card"><h3>В4 · Статус целей (план vs факт)</h3>
+    <div class="tablewrap" style="margin:6px 0 0"><table><thead><tr><th>Цель</th><th>KPI</th><th>План</th><th>Факт</th><th>%</th><th>Статус</th></tr></thead><tbody>`;
+  os.forEach(o=>{t4+=`<tr><td class="k">${o.id}</td><td>${o.kpi}</td><td>${o.plan}</td><td>${o.fact}</td>
+    <td class="k">${(o.pct*100).toFixed(0)}%</td><td>${o.pct>=1?'🟢':(o.pct>=0.7?'🟡':'🔴')}</td></tr>`;});
+  t4+=`</tbody></table></div></div>`;
+
+  // реестр тестов
+  const to=objs('test_objectives');
+  let t5=`<div class="card"><h3>В5 · Реестр тестов</h3><div class="tablewrap" style="margin:6px 0 0"><table>
+    <thead><tr><th>Тест</th><th>Гипотеза</th><th>Переменная</th><th>Порог</th><th>Результат</th><th>Решение</th><th>Статус</th></tr></thead><tbody>`;
+  to.forEach(t=>{t5+=`<tr><td class="k">${t.TestObj_ID}</td><td>${esc(t.hypothesis)}</td><td>${esc(t.test_variable)}</td>
+    <td>${esc(t.success_threshold)}</td><td>${esc(t.result_value)}</td><td class="k">${esc(t.decision_taken)}</td>
+    <td><span class="badge b-done">${t.status}</span></td></tr>`;});
+  t5+=`</tbody></table></div></div>`;
+
+  // недели запаса
+  const wos=computeWeeksOfStock();
+  let t6=`<div class="card"><h3>В6 · Недели запаса (по SKU)</h3><div class="tablewrap" style="margin:6px 0 0"><table>
+    <thead><tr><th>SKU</th><th>Остаток (посл.)</th><th>Продажи/нед</th><th>Недель запаса</th></tr></thead><tbody>`;
+  wos.forEach(w=>{t6+=`<tr><td class="k">${w.sku}</td><td>${w.onhand}</td><td>${w.weekly.toFixed(1)}</td>
+    <td class="k" style="color:${w.weeks<4?'#DC2626':(w.weeks<8?'#F59E0B':'#065F46')}">${isFinite(w.weeks)?w.weeks.toFixed(1):'∞'}</td></tr>`;});
+  t6+=`</tbody></table></div><div class="sub" style="margin:6px 0 0">Продажи/нед — приближённо: оплаченное кол-во / 3 недели демо-периода.</div></div>`;
+
+  // MRR
+  const mrr=objs('subscriptions').filter(s=>s.status!=='cancelled').reduce((a,s)=>a+parseFloat(s.mrr_amount),0);
+  document.getElementById('viewsBody').innerHTML=`
+    <div class="kpiTiles">
+      <div class="tile"><div class="l">Итого маржа (база)</div><div class="v ${totMargin>=0?'good':'bad'}">${money(totMargin)}</div></div>
+      <div class="tile"><div class="l">Чистая выручка (база)</div><div class="v">${money(totRev)}</div></div>
+      <div class="tile"><div class="l">Активный MRR</div><div class="v">${money(mrr)}</div></div>
+      <div class="tile"><div class="l">Листингов с продажами</div><div class="v">${pnl.length}</div></div>
+    </div>${t1}${t2}${t3}${t4}${t5}${t6}`;
+}
+function roll(pnl,key){const m={};pnl.forEach(p=>{const k=p[key];if(!m[k])m[k]={k,margin:0,rev:0};m[k].margin+=p.marginBase;m[k].rev+=p.netBase;});return Object.values(m);}
+function rollProd(pnl){const S=idx('skus','SKU_ID');const m={};pnl.forEach(p=>{const pr=S[p.sku].Product_ID;if(!m[pr])m[pr]={k:pr,margin:0,rev:0};m[pr].margin+=p.marginBase;m[pr].rev+=p.netBase;});return Object.values(m);}
+function rollTable(title,rows){return `<div><div style="font-weight:700;font-size:12px;margin-bottom:4px;color:#0F172A">${title}</div>
+  <div class="tablewrap" style="margin:0"><table><thead><tr><th>Ключ</th><th>Выручка</th><th>Маржа</th></tr></thead><tbody>
+  ${rows.map(r=>`<tr><td class="k">${r.k.replace(/^(MKT_|CH_)/,'')}</td><td>${money(r.rev)}</td><td class="k" style="color:${r.margin>=0?'#065F46':'#DC2626'}">${money(r.margin)}</td></tr>`).join('')}
+  </tbody></table></div></div>`;}
+function computeRoas(pnl){
+  const L=idx('listings','Listing_ID');
+  const spend={},rev={};
+  objs('marketing_daily').forEach(m=>{const fx=rate(m.spend_Currency_ID,m.fact_date);spend[m.Channel_ID]=(spend[m.Channel_ID]||0)+parseFloat(m.spend)*fx;});
+  // атрибутированная выручка: заказы с attribution=CO1, разнести по каналу заказа
+  const ordCh=idx('orders','Order_ID');
+  objs('order_lines').forEach(ln=>{const o=ordCh[ln.Order_ID];if(o.attribution_CampObj_ID!=='CO1')return;
+    const lst=L[ln.Listing_ID];const mkt=idx('markets','Market_ID')[lst.Market_ID];
+    const incl=mkt.price_includes_tax==='TRUE';const tr=taxRate(mkt.Market_ID,ln.line_date);
+    const gross=parseInt(ln.qty,10)*parseFloat(ln.unit_price);const net=incl?gross/(1+tr):gross;
+    const fx=rate(ln.Currency_ID,ln.line_date);rev[o.Channel_ID]=(rev[o.Channel_ID]||0)+net*fx;});
+  const tgt={};objs('channel_objectives').forEach(c=>{if(c.Primary_KPI_ID==='KPI_ROAS')tgt[c.Channel_ID]=parseFloat(c.target_value);});
+  return Object.keys(spend).map(ch=>({channel:ch,spend:spend[ch],rev:rev[ch]||0,roas:(rev[ch]||0)/spend[ch],target:tgt[ch]}));
+}
+function computeObjStatus(){
+  const out=idxBy(objs('outcomes'),'Objective_ID');const res=[];
+  objs('campaign_objectives').forEach(c=>{const o=out[c.CampObj_ID];if(!o)return;
+    // target кампании: возьмём target Amazon-канала как прокси плана ROAS (3.0)
+    const plan=3.0;res.push({id:c.CampObj_ID,kpi:c.Primary_KPI_ID,plan:plan.toFixed(1),fact:o.actual_value,pct:parseFloat(o.actual_value)/plan});});
+  objs('channel_objectives').forEach(c=>{const o=out[c.ChanObj_ID];if(!o)return;
+    res.push({id:c.ChanObj_ID,kpi:c.Primary_KPI_ID,plan:c.target_value,fact:o.actual_value,pct:parseFloat(o.actual_value)/parseFloat(c.target_value)});});
+  return res;
+}
+function computeWeeksOfStock(){
+  const inv={};objs('inventory_snapshots').forEach(s=>{(inv[s.SKU_ID]=inv[s.SKU_ID]||[]).push(s);});
+  const L=idx('listings','Listing_ID');const sales={};
+  objs('order_lines').forEach(ln=>{if(ln.status!=='paid')return;const sku=L[ln.Listing_ID].SKU_ID;sales[sku]=(sales[sku]||0)+parseInt(ln.qty,10);});
+  return Object.keys(inv).map(sku=>{
+    const latestDate=inv[sku].map(s=>s.snap_date).sort().pop();
+    const onhand=inv[sku].filter(s=>s.snap_date===latestDate).reduce((a,s)=>a+parseInt(s.qty_on_hand,10),0);
+    const weekly=(sales[sku]||0)/3;
+    return{sku,onhand,weekly,weeks:weekly?onhand/weekly:Infinity};
+  });
+}
+
+/* ============================ ПРИЁМКА ============================ */
+const ACC=[
+ ['Кружка в US/RU/DE — 3 цены, 3 валюты, P&L корректен','v_pnl_listing (вкладка «Витрины»): RU $41.72 и DE $18.15 — по одному заказу; US Amazon агрегирует ORD001/004/008 с возвратом → $48.05. Три валюты, три налоговых режима, база USD'],
+ ['Варианты: 3 SKU без изменения структуры','P002 → SKU_DIFF_100/200/300, свои листинги и цены; ноль правок схемы'],
+ ['Новый рынок и канал — только новые строки','LST_OZON_RU_MUG + FEE_OZON_1 + PP_MUG_OZON_1 добавлены без структурных правок'],
+ ['Листинг на двух языках; смена языка не дублирует SKU','LST_WEB_DE_MUG → CNT_MUG_DE_DE + CNT_MUG_DE_EN; один листинг, один SKU'],
+ ['Цена сменилась с 15-го — разные ценовые периоды','L001→PP_MUG_AMZ_1 (24.90), L004→PP_MUG_AMZ_2 (27.90); история не затёрта'],
+ ['Возврат уменьшает P&L, но не удаляет факт','L008 (paid) сохранена; L008R (qty −1, return) вычитается в витрине'],
+ ['Кампания с 2 каналами: разнос по каналам, KPI из фактов','CO1 → CH_AMZ_US + CH_WEB; ROAS = Σ net_revenue_base / Σ spend_base по словарю'],
+ ['Тест закрыт по decision rule','TO1.status=done, порог не достигнут → решение «оставить $27.90»'],
+ ['Подписка: старт → продление → отмена; MRR без правок схемы','SUBP001 active → SUBP002 renewed → SUBP003 cancelled'],
+ ['Один SKU, 2 канала одного рынка — разные комиссии','US: Amazon (15%) vs Web (2.9%+$0.30) → разная маржа на единицу'],
+];
+function buildAcc(){
+  document.getElementById('accBody').innerHTML=ACC.map((a,i)=>`
+   <div class="acc"><div class="ok">✓</div><div><div class="at">${i+1}. ${esc(a[0])}</div>
+   <div class="chk">${esc(a[1])}</div></div></div>`).join('')+
+   `<div class="note"><b>Ограничение (названо явно):</b> остатки — на грани SKU×склад (сток общий для листингов SKU),
+    поэтому «недели запаса по листингу» считаются разложением. Атрибуция — одно касание (last-click).</div>`;
+}
+
+/* ============================ INIT ============================ */
+buildMap(); buildTableList('tlist','pickSchema'); buildTableList('dlist','pickData');
+buildTree(); buildViews(); buildAcc();
+pickSchema('listings'); pickData('order_lines');
+requestAnimationFrame(drawEdges);
+setTimeout(drawEdges,120);
+</script>
+</body>
+</html>
