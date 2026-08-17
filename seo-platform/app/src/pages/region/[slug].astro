@@ -1,0 +1,151 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Cta from '../../components/Cta.astro';
+import OrgRow from '../../components/OrgRow.astro';
+import Filters from '../../components/Filters.astro';
+import type { Facet } from '../../components/Filters.astro';
+import { db } from '../../lib/data.ts';
+import { ldBreadcrumbs, plural } from '../../lib/text.ts';
+import {
+  orgFacetData, cityChipFacet, ugsFacet,
+  FACET_LEVELS, FACET_FORMS, FACET_KIND, FACET_BUDGET, FACET_DORM, FACET_MIL, FACET_COST,
+} from '../../lib/facets.ts';
+
+export function getStaticPaths() {
+  return db().regions.map((region) => ({ params: { slug: region.slug }, props: { region } }));
+}
+
+const { region } = Astro.props;
+const { catalogRows, cardById, meta, combosRegion, directionByOkso, ugs } = db();
+const cities = [...region.cities].sort((a, b) => b.orgCount - a.orgCount);
+
+// Вузы региона: регион фиксирован, город варьируется → город как chip-мультивыбор.
+// Полный набор пофузовских фасетов (orgFacetData). Показываем при ≥6 вузах.
+const regionRows = catalogRows.filter((r) => r.regionKey === region.key);
+const regionCityMap = new Map<string, string>();
+for (const r of regionRows) if (!regionCityMap.has(r.cityKey)) regionCityMap.set(r.cityKey, r.cityName);
+const cityFacetList = [...regionCityMap].map(([key, name]) => ({ key, name }));
+const showVuzFilters = regionRows.length >= 6;
+const vuzFacets: Facet[] = [
+  ...(cityFacetList.length > 1 ? [cityChipFacet(cityFacetList)] : []),
+  ugsFacet(ugs), FACET_LEVELS, FACET_FORMS, FACET_KIND, FACET_BUDGET, FACET_DORM, FACET_MIL, FACET_COST,
+];
+
+// Специальности региона по укрупнённым группам (УГСН). Где направление
+// индексируемо в регионе (≥2 вузов минимум в 2 городах) — ведём на комбо
+// «направление × регион», иначе на страницу направления. Всё из данных.
+const ugsName = new Map(ugs.map((u) => [u.code, u.name]));
+type DirLink = { name: string; url: string; orgCount: number };
+const dirGroups = new Map<string, { code: string; name: string | null; dirs: DirLink[] }>();
+const sciDirs: DirLink[] = [];
+for (const c of combosRegion) {
+  if (c.regionKey !== region.key) continue;
+  const dir = directionByOkso.get(c.okso)!;
+  const link: DirLink = {
+    name: dir.name,
+    url: c.indexable ? `/specialnost/${dir.slug}/region/${region.slug}/` : `/specialnost/${dir.slug}/`,
+    orgCount: c.orgIds.length,
+  };
+  if (dir.scientific || !dir.ugsCode) { sciDirs.push(link); continue; }
+  const g = dirGroups.get(dir.ugsCode)
+    ?? { code: dir.ugsCode, name: ugsName.get(dir.ugsCode) ?? null, dirs: [] };
+  g.dirs.push(link);
+  dirGroups.set(dir.ugsCode, g);
+}
+const byOrgThenName = (a: DirLink, b: DirLink) =>
+  b.orgCount - a.orgCount || a.name.localeCompare(b.name, 'ru');
+const groupList = [...dirGroups.values()]
+  .map((g) => ({ ...g, dirs: g.dirs.sort(byOrgThenName) }))
+  .sort((a, b) => b.dirs.length - a.dirs.length || a.code.localeCompare(b.code));
+sciDirs.sort(byOrgThenName);
+
+const title = `Вузы региона ${region.displayName}: ${region.orgCount} ${plural(region.orgCount, 'вуз', 'вуза', 'вузов')} | ${meta.campaignYear}`;
+const description = `${region.displayName}: ${region.orgCount} ${plural(region.orgCount,
+  'вуз', 'вуза', 'вузов')} в ${cities.length} ${plural(cities.length,
+  'населённом пункте', 'населённых пунктах', 'населённых пунктах')}. Приём ${meta.campaignYear}.`;
+
+const crumbs = [
+  { name: 'Главная', url: '/' },
+  { name: 'Регионы', url: '/regiony/' },
+  { name: region.displayName },
+];
+const jsonLd = [ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
+  name: c.name, url: new URL(c.url!, Astro.site).href,
+})))];
+---
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <Breadcrumbs items={crumbs} />
+  <h1>Вузы: {region.displayName}</h1>
+  <ul class="facts">
+    <li><span class="label">Вузов в регионе</span> {region.orgCount}</li>
+    <li><span class="label">Городов с вузами</span> {cities.length}</li>
+  </ul>
+
+  <h2>Города региона</h2>
+  <ul class="card-list">
+    {cities.map((c) => (
+      <li class="card">
+        <h3><a href={`/gorod/${c.slug}/`}>{c.name}</a></h3>
+        <p class="meta">{c.orgCount} {plural(c.orgCount, 'вуз', 'вуза', 'вузов')}</p>
+      </li>
+    ))}
+  </ul>
+
+  {showVuzFilters && (
+    <section class="dir-section">
+      <h2>Вузы региона</h2>
+      <p class="meta">Все вузы региона с фильтрами по городу, направлению, уровню, форме
+        обучения, бюджету и стоимости.</p>
+      <Filters facets={vuzFacets} target="[data-filter-item]" itemNoun={['вуз', 'вуза', 'вузов']} />
+      <p class="filters-empty" data-filters-empty hidden>По заданным фильтрам вузов в регионе не найдено. Снимите часть условий.</p>
+      <ul class="card-list">
+        {regionRows.map((row) => <OrgRow row={row} facet={orgFacetData(row, cardById.get(row.id))} />)}
+      </ul>
+    </section>
+  )}
+
+  <Cta pageType="region" zone="after-cities" />
+
+  {groupList.length > 0 && (
+    <section class="dir-section">
+      <h2>Специальности в регионе</h2>
+      <p class="meta">Направления подготовки в вузах региона — по укрупнённым
+        группам. Число рядом с направлением — сколько вузов региона его ведут
+        (по выгрузке от {meta.snapshotDate}); где их достаточно, ссылка ведёт
+        на страницу направления в регионе.</p>
+      {groupList.map((g) => (
+        <div class="dir-group">
+          <h3><a href={`/specialnosti/${g.code}/`}>{g.name ?? `Группа ${g.code}`}</a><span
+            class="dir-count"> · {g.dirs.length} {plural(g.dirs.length, 'направление', 'направления', 'направлений')}</span></h3>
+          <div class="columns">
+            <ul>
+              {g.dirs.map((d) => (
+                <li><a href={d.url}>{d.name}</a> <span class="dir-count">{d.orgCount}</span></li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ))}
+      {sciDirs.length > 0 && (
+        <details class="level-group">
+          <summary>Аспирантура и научные специальности ({sciDirs.length})</summary>
+          <div class="columns">
+            <ul>
+              {sciDirs.map((d) => (
+                <li><a href={d.url}>{d.name}</a> <span class="dir-count">{d.orgCount}</span></li>
+              ))}
+            </ul>
+          </div>
+        </details>
+      )}
+    </section>
+  )}
+
+  <style>
+    .dir-section { margin-top: var(--space-8); }
+    .dir-group { margin-bottom: var(--space-6); }
+    .dir-group h3 { margin-bottom: var(--space-2); }
+    .dir-count { color: var(--text-muted); font-weight: 400; font-size: 0.8125rem; font-variant-numeric: tabular-nums; }
+  </style>
+</Base>

@@ -1,0 +1,133 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import OrgRow from '../../../components/OrgRow.astro';
+import Cta from '../../../components/Cta.astro';
+import Filters from '../../../components/Filters.astro';
+import type { Facet } from '../../../components/Filters.astro';
+import { db } from '../../../lib/data.ts';
+import { costPhrase, ldBreadcrumbs, ldFaq, placeDirectionFaq, plural } from '../../../lib/text.ts';
+import type { CostRange } from '../../../lib/data.ts';
+import {
+  dirCardFacetData, dirOfferFacetData,
+  FACET_KIND, FACET_FORM, FACET_BUDGET, FACET_COST, FACET_DORM, FACET_MIL,
+} from '../../../lib/facets.ts';
+
+export function getStaticPaths() {
+  const { combosCity, cityByKey, directionByOkso } = db();
+  return combosCity
+    .filter((c) => c.indexable)
+    .map((c) => {
+      const dir = directionByOkso.get(c.okso)!;
+      const city = cityByKey.get(c.cityKey)!;
+      return {
+        params: { slug: dir.slug, city: city.slug },
+        props: { okso: c.okso, cityKey: c.cityKey, orgIds: c.orgIds },
+      };
+    });
+}
+
+const { okso, cityKey, orgIds } = Astro.props;
+const { directionByOkso, cityByKey, rowById, cardById, meta } = db();
+const dir = directionByOkso.get(okso)!;
+const city = cityByKey.get(cityKey)!;
+const rows = orgIds.map((id) => rowById.get(id)!)
+  .sort((a, b) => b.directionsCount - a.directionsCount);
+const code = dir.okso.replace(/^\d+\./, '');
+
+// Вилка стоимости именно этого направления в этом городе.
+const costs: number[] = [];
+let budget = false;
+for (const id of orgIds) {
+  const card = cardById.get(id)!;
+  for (const group of card.programsByLevel) {
+    for (const d of group.directions) {
+      if (d.okso !== okso) continue;
+      for (const off of d.offers) {
+        if (off.cost !== null) costs.push(off.cost);
+        if (off.placeType !== 'Платные места') budget = true;
+      }
+    }
+  }
+}
+const range: CostRange | null = costs.length
+  ? { min: Math.min(...costs), max: Math.max(...costs) } : null;
+const cost = costPhrase(range);
+
+// Направление и город фиксированы — гео-фасета нет. Форма/бюджет/стоимость —
+// честно по офферам этого ОКСО (dirOfferFacetData); тип/общежитие/военная — по вузу.
+const showFilters = rows.length >= 6;
+const comboFacets: Facet[] = [FACET_KIND, FACET_FORM, FACET_BUDGET, FACET_COST, FACET_DORM, FACET_MIL];
+const orgFacet = (row: typeof rows[number]) => ({
+  ...dirCardFacetData(row),
+  ...dirOfferFacetData(cardById.get(row.id), okso),
+});
+
+const title = `${dir.name} — ${city.displayName}: ${rows.length} ${plural(rows.length, 'вуз', 'вуза', 'вузов')}${range ? `, от ${range.min.toLocaleString('ru-RU')} ₽/год` : ''} | ${meta.campaignYear}`;
+const descParts = [
+  `Где учиться: «${dir.name}» (${code}, ${dir.level.toLowerCase()}) — ${city.displayName}`,
+  `${rows.length} ${plural(rows.length, 'вуз', 'вуза', 'вузов')}`,
+];
+if (budget) descParts.push('есть бюджетные места');
+if (cost) descParts.push(`платно ${cost}`);
+const description = descParts.join('. ') + '.';
+
+const crumbs = [
+  { name: 'Главная', url: '/' },
+  { name: 'Специальности', url: '/specialnosti/' },
+  { name: dir.name, url: `/specialnost/${dir.slug}/` },
+  { name: city.displayName },
+];
+const faq = placeDirectionFaq(dir.name, `в городе ${city.displayName}`,
+  rows.length, budget, range, meta.snapshotDate);
+const jsonLd = [
+  ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
+    name: c.name, url: new URL(c.url!, Astro.site).href,
+  }))),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: rows.map((r, i) => ({
+      '@type': 'ListItem', position: i + 1, name: r.shortName,
+      url: new URL(`/vuz/${r.slug}/`, Astro.site).href,
+    })),
+  },
+  ldFaq(faq),
+];
+---
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <Breadcrumbs items={crumbs} />
+  <h1>{dir.name}: {city.displayName}</h1>
+  <p class="meta">{code} · {dir.level}</p>
+
+  <ul class="facts">
+    <li><span class="label">Вузов в городе</span> {rows.length}</li>
+    <li><span class="label">Бюджетные места</span>
+      {budget ? 'есть' : `в выгрузке от ${meta.snapshotDate} не указаны`}</li>
+    <li><span class="label">Стоимость платного обучения</span>
+      {cost ?? <span class="missing">Информация отсутствует</span>}</li>
+    <li><span class="label">Город</span>
+      <a href={`/gorod/${city.slug}/`}>{city.displayName}</a>, {city.regionKey}</li>
+  </ul>
+
+  {showFilters && (
+    <>
+      <Filters facets={comboFacets} target="[data-filter-item]" itemNoun={['вуз', 'вуза', 'вузов']} />
+      <p class="filters-empty" data-filters-empty hidden>По заданным фильтрам вузов не найдено. Снимите часть условий.</p>
+    </>
+  )}
+  <ul class="card-list">
+    {rows.map((row) => (
+      showFilters ? <OrgRow row={row} facet={orgFacet(row)} /> : <OrgRow row={row} />
+    ))}
+  </ul>
+
+  <Cta pageType="combo-city" zone="after-vuzy" />
+
+  <h2>Вопросы и ответы</h2>
+  <dl class="faq">
+    {faq.map((f) => (<><dt>{f.q}</dt><dd>{f.a}</dd></>))}
+  </dl>
+
+  <p><a href={`/specialnost/${dir.slug}/`}>«{dir.name}» во всех городах →</a></p>
+</Base>

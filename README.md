@@ -19,6 +19,14 @@
   `10-sources`, `20-notes`, `30-entities`, `40-reports`, `_templates`.
 - `scripts/` — `extract.py` (файл → текст), `pdf_ru.py` (отчёт → кириллический PDF),
   `setup.sh`, `requirements.txt`.
+- `seo-platform/` — проектирование SEO-платформы по выбору образования (Поток 2):
+  `00-audit.md` — аудит задачи и базы вузов; `01-model-ia.md` — модель данных
+  и информационная архитектура; `02-pseo.md` — Programmatic SEO и индексация;
+  `03-search.md` — поиск; `04-product.md` — карточки, фильтры, конверсия, AI;
+  `05-tech.md` — стек, база, API, админка; `06-operations.md` — дизайн-система,
+  производительность, аналитика, эксплуатация; `07-roadmap.md` — дорожная
+  карта запуска; `audit_csv.py`, `audit_json.py`, `inventory.py` —
+  воспроизводимые расчёты.
 - `.claude/skills/` — `boot`, `ingest`, `report`.
 
 ## Два рабочих действия

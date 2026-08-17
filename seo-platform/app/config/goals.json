@@ -1,0 +1,33 @@
+{
+  "_комментарий": "Реестр конверсионных целей (этап 1, Р2). Поле url заполняет владелец вручную — любой адрес любого сайта. Пока url пуст, цель держать неактивной (active: false); CTA на сайте не рендерятся. Метки из utm подставляются к url автоматически; {page_type} заменяется типом страницы.",
+  "goals": [
+    {
+      "code": "diagnostic",
+      "title": "Пройти диагностику",
+      "url": "https://mainexperts.online/screening",
+      "utm": {
+        "utm_source": "eduplatform",
+        "utm_medium": "referral",
+        "utm_campaign": "{page_type}"
+      },
+      "active": true
+    }
+  ],
+  "placements": [
+    { "pageType": "org-card", "zone": "after-programs", "goal": "diagnostic" },
+    { "pageType": "org-card", "zone": "sticky", "goal": "diagnostic" },
+    { "pageType": "quiz", "zone": "final", "goal": "diagnostic" },
+    { "pageType": "catalog", "zone": "after-row-10", "goal": "diagnostic" },
+    { "pageType": "direction", "zone": "after-vuzy", "goal": "diagnostic" },
+    { "pageType": "combo-city", "zone": "after-vuzy", "goal": "diagnostic" },
+    { "pageType": "combo-region", "zone": "after-vuzy", "goal": "diagnostic" },
+    { "pageType": "city", "zone": "after-vuzy", "goal": "diagnostic" },
+    { "pageType": "region", "zone": "after-cities", "goal": "diagnostic" },
+    { "pageType": "ugs", "zone": "after-list", "goal": "diagnostic" },
+    { "pageType": "profession", "zone": "after-routes", "goal": "diagnostic" },
+    { "pageType": "ranking", "zone": "after-list", "goal": "diagnostic" },
+    { "pageType": "profession-catalog", "zone": "after-intro", "goal": "diagnostic" },
+    { "pageType": "guide", "zone": "after-intro", "goal": "diagnostic" },
+    { "pageType": "guide", "zone": "after-content", "goal": "diagnostic" }
+  ]
+}
