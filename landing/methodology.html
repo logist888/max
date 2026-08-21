@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mainexperts — Методология выбора траектории обучения</title>
+<meta name="description" content="Современная методология выбора траектории обучения: цифровой профиль ребёнка, сопоставление с профессиями и рынком труда, персональный маршрут. Первый шаг — бесплатный скрининг.">
+<style>
+  :root{
+    /* warm brand palette, снято с mainexperts.online */
+    --bg:#F1EBDF;
+    --bg-2:#EDE6D8;
+    --surface:#FFFFFF;
+    --ink:#1E2A38;
+    --ink-2:#57544C;
+    --ink-3:#948C7E;
+    --line:#E7DFCF;
+    --line-2:#D9CFBB;
+
+    --camel:#C7A878;
+    --camel-deep:#B4935E;
+    --gold:#C69A4C;
+    --gold-soft:#EFE4C9;
+    --gold-line:#E3D0A2;
+
+    --taupe:#8C7D6B;
+    --taupe-bg:#9A9084;
+
+    --risk:#C0504A;  --risk-bg:#F7E5E1;
+    --warn:#CE9A3A;  --warn-bg:#F7ECD3;
+    --ok:#4F9E6E;    --ok-bg:#E4F0E7;   --ok-chip:#5FB27C;
+
+    --radius:18px;
+    --radius-lg:26px;
+    --sans:"Onest","Golos Text","Inter",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --serif:Georgia,"Times New Roman",serif;
+    --shadow:0 1px 2px rgba(70,56,34,.04),0 10px 30px rgba(70,56,34,.07);
+    --shadow-lg:0 2px 8px rgba(70,56,34,.07),0 26px 60px rgba(70,56,34,.12);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  a{color:inherit}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+  .eyebrow{font-size:12px;font-weight:640;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--gold);margin:0 0 14px}
+  h1,h2,h3{font-weight:760;letter-spacing:-.02em;margin:0;color:var(--ink)}
+  h2{font-size:clamp(26px,3.6vw,38px);line-height:1.12}
+  h3{font-size:18px;font-weight:700}
+  p{margin:0}
+  .lead{color:var(--ink-2);font-size:clamp(16px,1.9vw,19px);line-height:1.6}
+
+  /* ---------- header ---------- */
+  header.site{position:sticky;top:0;z-index:40;background:rgba(241,235,223,.86);
+    backdrop-filter:saturate(150%) blur(10px);border-bottom:1px solid var(--line)}
+  .site-inner{display:flex;align-items:center;gap:14px;height:66px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand .logo-mark{width:34px;height:30px;flex-shrink:0}
+  .brand .word{font-weight:780;font-size:20px;letter-spacing:-.02em;color:var(--ink)}
+  .site-spacer{flex:1}
+  .site-note{font-size:12.5px;color:var(--ink-3);font-weight:560}
+  @media(max-width:680px){.site-note{display:none}}
+  .logo-mark .g1{fill:url(#lg1)} .logo-mark .g2{fill:url(#lg2)}
+
+  /* ---------- buttons ---------- */
+  .btn{display:inline-flex;align-items:center;gap:14px;font-family:var(--sans);font-size:16px;
+    font-weight:640;line-height:1;cursor:pointer;padding:8px 30px 8px 8px;border-radius:999px;
+    border:1px solid transparent;text-decoration:none;white-space:nowrap;
+    transition:transform .12s ease,box-shadow .18s ease,background .18s ease}
+  .btn:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+  .btn .ico{width:44px;height:44px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;
+    justify-content:center}
+  .btn .ico svg{width:19px;height:19px}
+  .btn-primary{background:var(--camel);color:#fff;box-shadow:0 8px 22px rgba(183,149,94,.28)}
+  .btn-primary .ico{background:#fff}
+  .btn-primary .ico svg path{stroke:var(--ink)}
+  .btn-primary:hover{background:var(--camel-deep);transform:translateY(-1px);
+    box-shadow:0 12px 28px rgba(183,149,94,.34)}
+  .btn-primary .ico svg{transition:transform .16s ease}
+  .btn-primary:hover .ico svg{transform:translate(2px,-2px)}
+  .btn-sm{font-size:14.5px;padding:6px 22px 6px 6px;gap:10px}
+  .btn-sm .ico{width:34px;height:34px}
+  .btn-sm .ico svg{width:15px;height:15px}
+  .free-tag{font-size:13px;color:var(--ink-3);display:inline-flex;align-items:center;gap:8px;font-weight:560}
+  .free-tag .dot{width:7px;height:7px;border-radius:50%;background:var(--gold)}
+
+  /* ---------- sections ---------- */
+  section{padding:clamp(56px,8vw,98px) 0}
+  section.tint{background:var(--bg-2)}
+  section.paper{background:linear-gradient(180deg,#FBF8F1,#F7F2E8);
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .sec-head{max-width:66ch}
+  .sec-head h2{margin-bottom:14px}
+
+  /* ---------- hero ---------- */
+  .hero{padding:clamp(40px,6vw,72px) 0 clamp(52px,8vw,90px)}
+  .chip-intro{display:inline-flex;align-items:center;gap:9px;background:var(--taupe-bg);color:#fff;
+    font-size:14px;font-weight:560;padding:9px 18px;border-radius:999px;margin-bottom:26px}
+  .chip-intro .dot{width:7px;height:7px;border-radius:50%;background:#fff;opacity:.85}
+  .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:52px;align-items:center}
+  .hero h1{font-size:clamp(32px,5.4vw,54px);line-height:1.05;letter-spacing:-.03em;margin-bottom:22px}
+  .hero h1 .accent{color:var(--gold)}
+  .hero .lead{max-width:50ch;margin-bottom:14px}
+  .hero .lead.b{color:var(--ink);font-weight:600}
+  .hero-cta{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-top:30px}
+  .trust-row{display:flex;gap:26px;flex-wrap:wrap;margin-top:32px;padding-top:26px;border-top:1px solid var(--line)}
+  .trust-row .ti{display:flex;flex-direction:column;gap:3px}
+  .trust-row .tn{font-size:24px;font-weight:760;color:var(--ink);letter-spacing:-.02em}
+  .trust-row .tl{font-size:13px;color:var(--ink-2)}
+
+  /* route card (hero aside) */
+  .route-card{background:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);
+    padding:28px 28px 24px}
+  .route-card .rc-k{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink-3);margin-bottom:18px}
+  .route{list-style:none;margin:0;padding:0}
+  .route li{display:grid;grid-template-columns:34px 1fr;gap:14px;padding:13px 0;position:relative}
+  .route li:not(:last-child)::before{content:"";position:absolute;left:16px;top:44px;bottom:-6px;
+    width:2px;background:var(--line-2)}
+  .route .rn{width:34px;height:34px;border-radius:50%;background:var(--gold-soft);color:#9A7A2E;
+    font-weight:760;font-size:15px;display:flex;align-items:center;justify-content:center;position:relative;z-index:1}
+  .route .rn.done{background:var(--ok-bg);color:var(--ok)}
+  .route .rt{font-weight:680;font-size:15.5px;line-height:1.3;padding-top:6px}
+  .route .rd{font-size:13.5px;color:var(--ink-2);margin-top:3px;line-height:1.45}
+  .route-note{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);
+    font-size:13px;color:var(--ink-3);display:flex;align-items:center;gap:8px}
+  .route-note .dot{width:7px;height:7px;border-radius:50%;background:var(--ok-chip);flex-shrink:0}
+
+  /* ---------- generic cards ---------- */
+  .cards{display:grid;gap:18px;margin-top:42px}
+  .c4{grid-template-columns:repeat(4,1fr)}
+  .c3{grid-template-columns:repeat(3,1fr)}
+  .card{background:var(--surface);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+  .card .icobox{width:42px;height:42px;border-radius:12px;background:var(--bg-2);display:flex;
+    align-items:center;justify-content:center;margin-bottom:16px}
+  .card .icobox svg{width:22px;height:22px}
+  .card h3{margin-bottom:8px}
+  .card p{color:var(--ink-2);font-size:14.5px}
+
+  .closer{margin-top:32px;font-family:var(--serif);font-size:clamp(18px,2.3vw,22px);line-height:1.4;
+    color:var(--ink);border-left:3px solid var(--gold);padding:8px 0 8px 22px;max-width:60ch}
+
+  /* ---------- numbered stages ---------- */
+  .factors{margin-top:42px;background:var(--surface);border-radius:var(--radius-lg);
+    box-shadow:var(--shadow);overflow:hidden}
+  .factor{display:grid;grid-template-columns:46px 1fr;gap:18px;padding:22px 26px;border-bottom:1px solid var(--line)}
+  .factor:last-child{border-bottom:none}
+  .factor.total{background:#FBF8F1}
+  .factor .fn{font-size:14px;font-weight:700;color:var(--gold);padding-top:2px}
+  .factor .ft{font-weight:700;font-size:16px;margin-bottom:4px}
+  .factor .fd{color:var(--ink-2);font-size:14.5px}
+  .factor.total .ft{color:var(--gold)}
+
+  /* ---------- CTA band ---------- */
+  .cta-band{background:var(--ink);color:#fff;border-radius:var(--radius-lg);
+    padding:clamp(30px,4.5vw,46px) clamp(26px,4.5vw,52px);position:relative;overflow:hidden;
+    box-shadow:var(--shadow-lg);display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between}
+  .cta-band::after{content:"";position:absolute;right:-70px;top:-70px;width:280px;height:280px;
+    border-radius:50%;background:radial-gradient(circle,rgba(198,154,76,.20),transparent 70%)}
+  .cta-band h2{color:#fff;font-size:clamp(21px,2.8vw,28px);max-width:26ch;position:relative}
+  .cta-band .sub{color:rgba(255,255,255,.78);font-size:14.5px;margin-top:8px;position:relative}
+  .cta-band .btn{position:relative;flex-shrink:0}
+
+  /* ---------- data ground ---------- */
+  .ground{display:grid;grid-template-columns:1fr .95fr;gap:48px;align-items:center;margin-top:46px}
+  .ground-notes{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:17px}
+  .ground-notes li{display:flex;gap:13px;align-items:flex-start;font-size:16px;color:var(--ink)}
+  .ground-notes li .ar{color:var(--gold);font-weight:760;flex-shrink:0}
+  .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .metric{background:var(--surface);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+  .metric .mv{font-size:clamp(24px,3vw,32px);font-weight:780;letter-spacing:-.02em;color:var(--gold)}
+  .metric .ml{font-size:13.5px;color:var(--ink-2);margin-top:6px;line-height:1.45}
+
+  /* ---------- approach (данные + эксперт) ---------- */
+  .approach{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:42px}
+  .ap{background:var(--surface);border-radius:var(--radius-lg);padding:28px;box-shadow:var(--shadow)}
+  .ap .k{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink-3);margin-bottom:14px}
+  .ap h3{font-size:20px;margin-bottom:12px}
+  .ap ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+  .ap li{display:flex;gap:12px;align-items:flex-start;font-size:15px;color:var(--ink-2)}
+  .ap li .d{flex-shrink:0;width:8px;height:8px;border-radius:50%;background:var(--gold);margin-top:8px}
+  .ap-join{grid-column:1/-1;text-align:center;font-family:var(--serif);
+    font-size:clamp(17px,2.1vw,20px);color:var(--ink);padding:6px 0}
+
+  /* ---------- audience ---------- */
+  .pain-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:42px}
+  .pain{background:var(--surface);border-left:3px solid var(--gold);border-radius:0 var(--radius) var(--radius) 0;
+    padding:20px 24px;box-shadow:var(--shadow)}
+  .pain .q{font-size:16px;font-weight:600;color:var(--ink);line-height:1.45}
+  .pain .a{font-size:14px;color:var(--ink-2);margin-top:8px;line-height:1.5}
+  .aud-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+  .aud-tag{display:inline-flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--line-2);
+    border-radius:999px;padding:10px 18px;font-size:14.5px;font-weight:560;color:var(--ink)}
+  .aud-tag .dot{width:7px;height:7px;border-radius:50%;background:var(--gold)}
+
+  /* ---------- recap ---------- */
+  .benefits{margin-top:40px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .benefit{display:flex;gap:15px;align-items:flex-start;background:var(--surface);border-radius:var(--radius);
+    padding:20px 22px;box-shadow:var(--shadow)}
+  .benefit .chk{flex-shrink:0;width:30px;height:30px;border-radius:9px;background:var(--ok-bg);
+    display:flex;align-items:center;justify-content:center}
+  .benefit .chk svg{width:16px;height:16px}
+  .benefit span{font-size:15px;color:var(--ink);line-height:1.5}
+  .benefit b{display:block;margin-bottom:3px}
+
+  /* ---------- final CTA ---------- */
+  .final{text-align:center;padding:clamp(66px,9vw,112px) 0}
+  .final .eyebrow{display:flex;justify-content:center}
+  .final h2{font-size:clamp(28px,4vw,42px);max-width:22ch;margin:0 auto 10px}
+  .final .fl{color:var(--ink-2);font-size:17.5px;margin-top:18px;line-height:1.7}
+  .final .fl b{color:var(--ink);font-weight:640}
+  .final .cta-center{display:flex;justify-content:center;margin-top:34px}
+  .final .free-tag{justify-content:center;margin-top:18px}
+
+  footer.foot{border-top:1px solid var(--line);padding:36px 0;background:var(--bg-2)}
+  .foot-inner{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;
+    font-size:13px;color:var(--ink-3)}
+  .foot-inner .brand .word{font-size:17px}
+  .foot-inner .logo-mark{width:26px;height:23px}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:900px){
+    .hero-grid{grid-template-columns:1fr;gap:40px}
+    .ground{grid-template-columns:1fr;gap:32px}
+    .approach{grid-template-columns:1fr}
+    .c4{grid-template-columns:repeat(2,1fr)}
+    .benefits{grid-template-columns:1fr}
+  }
+  @media(max-width:640px){
+    .c4,.c3,.pain-grid,.metric-grid{grid-template-columns:1fr}
+    .hero-cta{flex-direction:column;align-items:stretch}
+    .hero-cta .btn{justify-content:center}
+    .trust-row{gap:20px}
+    .cta-band{flex-direction:column;align-items:flex-start}
+  }
+  @media(max-width:480px){
+    .brand .word{display:none}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<!-- shared SVG defs: gold gradients -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="lg1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E4C87E"/><stop offset="1" stop-color="#B5893F"/>
+    </linearGradient>
+    <linearGradient id="lg2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#C9A24E"/><stop offset="1" stop-color="#8C6A2C"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<!-- ===================== HEADER ===================== -->
+<header class="site">
+  <div class="wrap site-inner">
+    <div class="brand">
+      <svg class="logo-mark" viewBox="0 0 40 34" fill="none" aria-hidden="true">
+        <path class="g1" d="M2 3 L14 3 L21 20 L15 20 Z"/>
+        <path class="g2" d="M13 3 L24 3 L31 31 L21.5 16 Z"/>
+        <path class="g1" d="M24 3 L34 3 L27 20 L21 20 Z" opacity="0.9"/>
+      </svg>
+      <span class="word">Mainexperts</span>
+    </div>
+    <div class="site-spacer"></div>
+    <span class="site-note">Методология выбора траектории обучения</span>
+    <a href="#start" class="btn btn-primary btn-sm">
+      <span class="ico"><svg viewBox="0 0 20 20" fill="none"><path d="M6 14L14 6M14 6H7M14 6V13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      Начать бесплатно
+    </a>
+  </div>
+</header>
+
+<!-- ===================== БЛОК 1 — ГЕРОЙ ===================== -->
+<section class="hero" id="start">
+  <div class="wrap">
+    <div class="chip-intro"><span class="dot"></span> Для родителей школьников 10–18 лет</div>
+    <div class="hero-grid">
+      <div>
+        <h1>Современная методология выбора <span class="accent">траектории обучения ребёнка</span></h1>
+        <p class="lead">Куда поступать — решение на годы вперёд. Обычно его принимают по оценкам, советам знакомых и ощущениям. Методология Mainexperts заменяет догадки на данные.</p>
+        <p class="lead b" style="margin-top:16px">Цифровой профиль ребёнка, сопоставление с профессиями и рынком труда — и персональный маршрут: что выбрать, куда поступать, какой шаг следующий.</p>
+        <div class="hero-cta">
+          <a href="#start" class="btn btn-primary">
+            <span class="ico"><svg viewBox="0 0 20 20" fill="none"><path d="M6 14L14 6M14 6H7M14 6V13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            Сделать первый шаг бесплатно
+          </a>
+          <span class="free-tag"><span class="dot"></span> Скрининг · 15 вопросов · ~2 минуты</span>
+        </div>
+        <div class="trust-row">
+          <div class="ti"><span class="tn">3</span><span class="tl">этапа методологии</span></div>
+          <div class="ti"><span class="tn">~40</span><span class="tl">страниц в полном отчёте</span></div>
+          <div class="ti"><span class="tn">0 ₽</span><span class="tl">стоимость первого шага</span></div>
+        </div>
+      </div>
+
+      <!-- маршрут: как выглядит путь семьи -->
+      <aside class="route-card" aria-label="Как выглядит маршрут">
+        <div class="rc-k">Маршрут вашей семьи</div>
+        <ol class="route">
+          <li>
+            <span class="rn done">1</span>
+            <div>
+              <div class="rt">Скрининг — где вы сейчас</div>
+              <div class="rd">15 вопросов, ~2 минуты. Показывает, на чём держится текущий выбор и где зоны риска.</div>
+            </div>
+          </li>
+          <li>
+            <span class="rn">2</span>
+            <div>
+              <div class="rt">Диагностика — какой он, ваш ребёнок</div>
+              <div class="rd">Сильные стороны, интересы и склонности — в цифровом профиле, а не в ощущениях.</div>
+            </div>
+          </li>
+          <li>
+            <span class="rn">3</span>
+            <div>
+              <div class="rt">Маршрут — что делать дальше</div>
+              <div class="rd">Направления, вузы и план шагов, подобранные под профиль ребёнка и цели семьи.</div>
+            </div>
+          </li>
+        </ol>
+        <div class="route-note"><span class="dot"></span> Первый шаг бесплатный и ни к чему не обязывает</div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== БЛОК 2 — ТРИ ВЫГОДЫ ===================== -->
+<section class="paper">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Что даёт методология</p>
+      <h2>Решение, за которое не страшно</h2>
+      <p class="lead" style="margin-top:16px">Три вещи, которые семья получает вместо «поступим — а там посмотрим».</p>
+    </div>
+    <div class="cards c3">
+      <div class="card">
+        <div class="icobox"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v3m0 12v3M3 12h3m12 0h3M6.3 6.3l2.1 2.1m7.2 7.2l2.1 2.1m0-11.4l-2.1 2.1M8.4 15.6l-2.1 2.1" stroke="#C69A4C" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <h3>Персональный выбор</h3>
+        <p>Направление подбирается под сильные стороны и интересы вашего ребёнка — а не «куда все пошли» и не под чужой успешный сценарий.</p>
+      </div>
+      <div class="card">
+        <div class="icobox"><svg viewBox="0 0 24 24" fill="none"><path d="M4 19V5m0 14h16M8 15l3-4 3 2 5-6" stroke="#C69A4C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Опора на данные</h3>
+        <p>Каждая рекомендация сверяется с реальным рынком труда и базами профессий — видно, куда движется профессия, а не только где она сейчас.</p>
+      </div>
+      <div class="card">
+        <div class="icobox"><svg viewBox="0 0 24 24" fill="none"><path d="M9 11l3 3 8-8M20 12a8 8 0 11-5.3-7.5" stroke="#C69A4C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Понятный следующий шаг</h3>
+        <p>На каждом этапе ясно, что делать дальше: от первого скрининга до списка вузов и плана действий. Без подвешенного «и что теперь?».</p>
+      </div>
+    </div>
+    <p class="closer">Ошибка в выборе траектории стоит семье лет и денег. Методология нужна, чтобы её увидеть до поступления, а не после.</p>
+  </div>
+</section>
+
+<!-- ===================== БЛОК 3 — ТРИ ЭТАПА ===================== -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Как это устроено</p>
+      <h2>Три этапа — от догадок к маршруту</h2>
+    </div>
+    <div class="factors">
+      <div class="factor">
+        <div class="fn">01</div>
+        <div>
+          <div class="ft">Скрининг текущей ситуации</div>
+          <div class="fd">Короткая бесплатная проверка: на каких данных держится ваш выбор, что уже понятно, а где вы решаете вслепую. Результат — сразу, с рекомендациями, что закрыть в первую очередь.</div>
+        </div>
+      </div>
+      <div class="factor">
+        <div class="fn">02</div>
+        <div>
+          <div class="ft">Диагностика и цифровой профиль ребёнка</div>
+          <div class="fd">Ребёнок проходит диагностику способностей и интересов по научно обоснованной модели. Из ответов собирается цифровой профиль: сильные стороны, склонности, академические приоритеты — картина целиком, а не отдельные впечатления.</div>
+        </div>
+      </div>
+      <div class="factor">
+        <div class="fn">03</div>
+        <div>
+          <div class="ft">Сопоставление с профессиями и маршрут</div>
+          <div class="fd">Профиль сопоставляется с базами профессий и данными рынка труда. Итог — отчёт около 40 страниц: подходящие направления, риски, вузы и конкретный план шагов для вашей семьи.</div>
+        </div>
+      </div>
+      <div class="factor total">
+        <div class="fn">=</div>
+        <div>
+          <div class="ft">Персональный маршрут обучения</div>
+          <div class="fd">Не универсальный совет, а траектория, собранная под одного конкретного ребёнка — с обоснованием каждого пункта.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== БЛОК 4 — CTA ===================== -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="cta-band">
+      <div>
+        <h2>Начните с бесплатного скрининга</h2>
+        <p class="sub">15 вопросов, около двух минут. Результат — сразу, без ожидания.</p>
+      </div>
+      <a href="#start" class="btn btn-primary">
+        <span class="ico"><svg viewBox="0 0 20 20" fill="none"><path d="M6 14L14 6M14 6H7M14 6V13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        Пройти скрининг
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== БЛОК 5 — НА ЧЁМ ПОСТРОЕНО ===================== -->
+<section class="tint">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">На чём построена методология</p>
+      <h2>Данные вместо интуиции</h2>
+    </div>
+    <div class="ground">
+      <div>
+        <ul class="ground-notes">
+          <li><span class="ar">→</span><span>В мире больше 250 000 профессий. Подросток обычно может назвать 7–10 — и выбирает из них.</span></li>
+          <li><span class="ar">→</span><span>Методология опирается на международные классификации профессий и данные рынка труда, обновляемые в реальном времени.</span></li>
+          <li><span class="ar">→</span><span>Диагностика построена на научно обоснованной модели способностей и интересов, адаптированной для подростков 10–18 лет.</span></li>
+          <li><span class="ar">→</span><span>Профиль ребёнка хранится и пересчитывается: траекторию можно уточнять по мере роста, а не выбирать один раз и навсегда.</span></li>
+        </ul>
+      </div>
+      <div class="metric-grid">
+        <div class="metric"><div class="mv">250 000+</div><div class="ml">профессий существует в мире — выбор шире, чем кажется</div></div>
+        <div class="metric"><div class="mv">2</div><div class="ml">международные базы профессий в основе сопоставления</div></div>
+        <div class="metric"><div class="mv">~40</div><div class="ml">страниц — глубина полного отчёта по ребёнку</div></div>
+        <div class="metric"><div class="mv">10–18</div><div class="ml">лет — возраст, для которого адаптирована диагностика</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== БЛОК 6 — ЧТО ПОЛУЧИТЕ ===================== -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Результат для семьи</p>
+      <h2>Что у вас будет на руках</h2>
+    </div>
+    <div class="cards c4">
+      <div class="card">
+        <div class="icobox"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#C69A4C" stroke-width="1.8"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6" stroke="#C69A4C" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <h3>Профиль ребёнка</h3>
+        <p>Сильные стороны, интересы и склонности — целостная картина вместо разрозненных наблюдений.</p>
+      </div>
+      <div class="card">
+        <div class="icobox"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke="#C69A4C" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <h3>Список направлений</h3>
+        <p>Подходящие профессиональные направления с объяснением, почему именно они — и какие есть риски.</p>
+      </div>
+      <div class="card">
+        <div class="icobox"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L2 8l10 5 10-5-10-5z" stroke="#C69A4C" stroke-width="1.8" stroke-linejoin="round"/><path d="M6 10.5V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-5.5" stroke="#C69A4C" stroke-width="1.8"/></svg></div>
+        <h3>Ориентиры по вузам</h3>
+        <p>Куда идти с этим профилем: варианты программ и вузов под цели семьи — в России или за рубежом.</p>
+      </div>
+      <div class="card">
+        <div class="icobox"><svg viewBox="0 0 24 24" fill="none"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01" stroke="#C69A4C" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <h3>План шагов</h3>
+        <p>Конкретные действия на ближайшее время: что проверить, что попробовать, к чему готовиться.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== БЛОК 7 — ПОДХОД: ДАННЫЕ + ЭКСПЕРТ ===================== -->
+<section class="paper">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Почему это работает</p>
+      <h2>Данные и эксперт — не «или», а «и»</h2>
+      <p class="lead" style="margin-top:16px">Алгоритм без человека не видит контекста семьи. Человек без данных опирается на личный опыт. Методология соединяет обе стороны.</p>
+    </div>
+    <div class="approach">
+      <div class="ap">
+        <div class="k">Что делает платформа</div>
+        <h3>Считает и сопоставляет</h3>
+        <ul>
+          <li><span class="d"></span>обрабатывает результаты диагностики и собирает цифровой профиль;</li>
+          <li><span class="d"></span>сопоставляет профиль с базами профессий и рынком труда;</li>
+          <li><span class="d"></span>формирует отчёт с направлениями, рисками и планом.</li>
+        </ul>
+      </div>
+      <div class="ap">
+        <div class="k">Что делает эксперт</div>
+        <h3>Проверяет и объясняет</h3>
+        <ul>
+          <li><span class="d"></span>проверяет выводы отчёта до того, как он попадёт к вам;</li>
+          <li><span class="d"></span>учитывает контекст семьи: цели, ограничения, планы;</li>
+          <li><span class="d"></span>отвечает на вопросы и помогает принять решение.</li>
+        </ul>
+      </div>
+      <div class="ap-join">Отчёт без живого разбора — половина результата. Поэтому в методологии есть и то, и другое.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== БЛОК 8 — КОМУ ЭТО НУЖНО ===================== -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Кому это нужно</p>
+      <h2>Узнаёте себя?</h2>
+    </div>
+    <div class="pain-grid">
+      <div class="pain">
+        <p class="q">«Ребёнок сам не знает, чего хочет, — а сроки поджимают»</p>
+        <p class="a">Методология начинает не с «кем ты хочешь стать», а с того, какой он есть: способности и интересы измеряются, а не угадываются.</p>
+      </div>
+      <div class="pain">
+        <p class="q">«Боюсь навязать своё и сломать ему путь»</p>
+        <p class="a">Решение строится на профиле ребёнка и данных рынка — у семьи появляется общая опора для разговора вместо спора мнений.</p>
+      </div>
+      <div class="pain">
+        <p class="q">«Вложим деньги в образование — а вдруг мимо?»</p>
+        <p class="a">Риски выбранного направления видны до поступления: дешевле уточнить траекторию сейчас, чем менять факультет потом.</p>
+      </div>
+      <div class="pain">
+        <p class="q">«Я не понимаю, какие профессии будут нужны»</p>
+        <p class="a">Рынок труда меняется быстрее, чем образование. Методология сверяет выбор с трендами профессий, а не со вчерашним днём.</p>
+      </div>
+    </div>
+    <div class="aud-tags">
+      <span class="aud-tag"><span class="dot"></span> Выбираете вуз в России</span>
+      <span class="aud-tag"><span class="dot"></span> Планируете обучение за рубежом</span>
+      <span class="aud-tag"><span class="dot"></span> До поступления ещё 2–4 года</span>
+      <span class="aud-tag"><span class="dot"></span> Решение нужно уже в этом году</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== БЛОК 9 — ПОВТОР МАРШРУТА ===================== -->
+<section class="tint" style="padding-bottom:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Коротко</p>
+      <h2>Ещё раз — весь маршрут</h2>
+    </div>
+    <div class="benefits">
+      <div class="benefit">
+        <span class="chk"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="#4F9E6E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span><b>1. Скрининг</b>Бесплатно увидеть, где вы сейчас и какие зоны риска в текущем выборе.</span>
+      </div>
+      <div class="benefit">
+        <span class="chk"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="#4F9E6E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span><b>2. Диагностика</b>Собрать цифровой профиль ребёнка: способности, интересы, склонности.</span>
+      </div>
+      <div class="benefit">
+        <span class="chk"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="#4F9E6E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span><b>3. Маршрут</b>Получить направления, вузы и план шагов — с разбором вместе с экспертом.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ФИНАЛЬНЫЙ CTA ===================== -->
+<section class="tint">
+  <div class="wrap final">
+    <p class="eyebrow">Первый шаг</p>
+    <h2>Траектория ребёнка начинается с двух минут</h2>
+    <p class="fl">Пройдите бесплатный скрининг и посмотрите, на чём держится ваш текущий выбор.<br><b>Дальше решать вам — но уже с данными на руках.</b></p>
+    <div class="cta-center">
+      <a href="#start" class="btn btn-primary">
+        <span class="ico"><svg viewBox="0 0 20 20" fill="none"><path d="M6 14L14 6M14 6H7M14 6V13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        Пройти скрининг бесплатно
+      </a>
+    </div>
+    <div class="free-tag"><span class="dot"></span> 15 вопросов · ~2 минуты · без обязательств</div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <div class="brand">
+      <svg class="logo-mark" viewBox="0 0 40 34" fill="none" aria-hidden="true">
+        <path class="g1" d="M2 3 L14 3 L21 20 L15 20 Z"/>
+        <path class="g2" d="M13 3 L24 3 L31 31 L21.5 16 Z"/>
+        <path class="g1" d="M24 3 L34 3 L27 20 L21 20 Z" opacity="0.9"/>
+      </svg>
+      <span class="word">Mainexperts</span>
+    </div>
+    <span>© Mainexperts · mainexperts.online</span>
+  </div>
+</footer>
+
+</body>
+</html>
