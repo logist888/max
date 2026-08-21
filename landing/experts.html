@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mainexperts — экспертам: практика без рутины</title>
+<meta name="description" content="MainExperts строит инфраструктуру, где профориентологи, психологи и карьерные консультанты занимаются экспертной работой, а диагностику, организацию и оплаты берёт на себя платформа. Отбор в первую когорту.">
+<style>
+  :root{
+    --bg:#F1EBDF;
+    --bg-2:#EDE6D8;
+    --surface:#FFFFFF;
+    --ink:#1E2A38;
+    --ink-2:#57544C;
+    --ink-3:#948C7E;
+    --line:#E7DFCF;
+    --line-2:#D9CFBB;
+    --camel:#C7A878;
+    --camel-deep:#B4935E;
+    --gold:#C69A4C;
+    --gold-soft:#EFE4C9;
+    --taupe-bg:#9A9084;
+    --risk:#C0504A;   --risk-bg:#F7E5E1;
+    --ok:#4F9E6E;     --ok-bg:#E4F0E7;
+    --radius:18px;
+    --radius-lg:26px;
+    --sans:"Onest","Golos Text","Inter",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --serif:Georgia,"Times New Roman",serif;
+    --shadow:0 1px 2px rgba(70,56,34,.04),0 10px 30px rgba(70,56,34,.07);
+    --shadow-lg:0 2px 8px rgba(70,56,34,.07),0 26px 60px rgba(70,56,34,.12);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  a{color:inherit}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+  .eyebrow{font-size:12px;font-weight:640;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--gold);margin:0 0 14px}
+  h1,h2,h3{font-weight:760;letter-spacing:-.02em;margin:0;color:var(--ink)}
+  h2{font-size:clamp(26px,3.6vw,38px);line-height:1.12}
+  h3{font-size:18px;font-weight:700}
+  p{margin:0}
+  .lead{color:var(--ink-2);font-size:clamp(16px,1.9vw,19px);line-height:1.6}
+
+  header.site{position:sticky;top:0;z-index:40;background:rgba(241,235,223,.86);
+    backdrop-filter:saturate(150%) blur(10px);border-bottom:1px solid var(--line)}
+  .site-inner{display:flex;align-items:center;gap:14px;height:66px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand .logo-mark{width:34px;height:30px;flex-shrink:0}
+  .brand .word{font-weight:780;font-size:20px;letter-spacing:-.02em;color:var(--ink)}
+  .site-spacer{flex:1}
+  .site-note{font-size:12.5px;color:var(--ink-3);font-weight:560}
+  @media(max-width:680px){.site-note{display:none}}
+  .logo-mark .g1{fill:url(#lg1)} .logo-mark .g2{fill:url(#lg2)}
+
+  .btn{display:inline-flex;align-items:center;gap:14px;font-family:var(--sans);font-size:16px;
+    font-weight:640;line-height:1;cursor:pointer;padding:8px 30px 8px 8px;border-radius:999px;
+    border:1px solid transparent;text-decoration:none;white-space:nowrap;
+    transition:transform .12s ease,box-shadow .18s ease,background .18s ease}
+  .btn:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+  .btn .ico{width:44px;height:44px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .btn .ico svg{width:19px;height:19px}
+  .btn-primary{background:var(--camel);color:#fff;box-shadow:0 8px 22px rgba(183,149,94,.28)}
+  .btn-primary .ico{background:#fff}
+  .btn-primary .ico svg path{stroke:var(--ink)}
+  .btn-primary:hover{background:var(--camel-deep);transform:translateY(-1px);box-shadow:0 12px 28px rgba(183,149,94,.34)}
+  .btn-primary .ico svg{transition:transform .16s ease}
+  .btn-primary:hover .ico svg{transform:translate(2px,-2px)}
+  .btn-sm{font-size:14.5px;padding:6px 22px 6px 6px;gap:10px}
+  .btn-sm .ico{width:34px;height:34px}
+  .btn-sm .ico svg{width:15px;height:15px}
+  .btn-ghost{background:var(--surface);color:var(--ink);border-color:var(--line-2);padding:15px 26px}
+  .btn-ghost:hover{border-color:var(--camel);transform:translateY(-1px)}
+  .free-tag{font-size:13px;color:var(--ink-3);display:inline-flex;align-items:center;gap:8px;font-weight:560}
+  .free-tag .dot{width:7px;height:7px;border-radius:50%;background:var(--gold)}
+
+  section{padding:clamp(56px,8vw,98px) 0}
+  section.tint{background:var(--bg-2)}
+  section.paper{background:linear-gradient(180deg,#FBF8F1,#F7F2E8);
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .sec-head{max-width:66ch}
+  .sec-head h2{margin-bottom:14px}
+
+  /* dark inverted blocks */
+  .dark-sec{background:var(--ink);color:#fff}
+  .dark-sec h2{color:#fff}
+  .dark-sec .eyebrow{color:var(--camel)}
+  .dark-sec .lead{color:rgba(255,255,255,.82)}
+
+  /* hero */
+  .hero{padding:clamp(40px,6vw,72px) 0 clamp(52px,8vw,90px)}
+  .chip-intro{display:inline-flex;align-items:center;gap:9px;background:var(--taupe-bg);color:#fff;
+    font-size:14px;font-weight:560;padding:9px 18px;border-radius:999px;margin-bottom:26px}
+  .chip-intro .dot{width:7px;height:7px;border-radius:50%;background:#fff;opacity:.85}
+  .hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:52px;align-items:center}
+  .hero h1{font-size:clamp(31px,5vw,50px);line-height:1.07;letter-spacing:-.03em;margin-bottom:22px}
+  .hero h1 .accent{color:var(--gold)}
+  .hero .lead{max-width:52ch;margin-bottom:14px}
+  .hero-cta{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-top:30px}
+  .trust-row{display:flex;gap:26px;flex-wrap:wrap;margin-top:32px;padding-top:26px;border-top:1px solid var(--line)}
+  .trust-row .ti{display:flex;flex-direction:column;gap:3px}
+  .trust-row .tn{font-size:17px;font-weight:760;color:var(--ink);letter-spacing:-.01em}
+  .trust-row .tl{font-size:13px;color:var(--ink-2)}
+
+  /* hero cabinet mockup */
+  .cab{background:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);overflow:hidden}
+  .cab-head{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+  .cab-head .k{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+  .cab-head .live{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;
+    color:var(--ok);font-weight:640}
+  .cab-head .live .dot{width:7px;height:7px;border-radius:50%;background:var(--ok)}
+  .cab-list{padding:8px 22px 18px}
+  .cab-row{display:flex;align-items:center;gap:13px;padding:14px 0;border-bottom:1px solid var(--line)}
+  .cab-row:last-child{border-bottom:none}
+  .cab-av{width:38px;height:38px;border-radius:50%;background:var(--gold-soft);color:#9A7A2E;
+    display:flex;align-items:center;justify-content:center;font-weight:760;font-size:14px;flex-shrink:0}
+  .cab-row .who{flex:1;min-width:0}
+  .cab-row .wt{font-weight:640;font-size:14.5px}
+  .cab-row .wd{font-size:12.5px;color:var(--ink-2);margin-top:1px}
+  .cab-chip{flex-shrink:0;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:640;
+    padding:6px 11px;border-radius:999px;background:var(--ok-bg);color:var(--ok)}
+  .cab-chip .dot{width:6px;height:6px;border-radius:50%;background:var(--ok)}
+  .cab-foot{padding:13px 22px;background:#FBF8F1;border-top:1px solid var(--line);
+    font-size:12.5px;color:var(--ink-2)}
+
+  /* cards */
+  .cards{display:grid;gap:18px;margin-top:42px}
+  .c4{grid-template-columns:repeat(4,1fr)}
+  .c3{grid-template-columns:repeat(3,1fr)}
+  .card{background:var(--surface);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+  .card .icobox{width:42px;height:42px;border-radius:12px;background:var(--bg-2);display:flex;
+    align-items:center;justify-content:center;margin-bottom:16px}
+  .card .icobox svg{width:22px;height:22px}
+  .card h3{margin-bottom:8px}
+  .card p{color:var(--ink-2);font-size:14.5px}
+  .card.warn{border-top:3px solid var(--risk)}
+  .card .mini-tag{display:inline-block;font-size:11px;font-weight:640;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .card .wip{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:11.5px;
+    font-weight:600;color:#9A7A2E;background:var(--gold-soft);padding:5px 11px;border-radius:999px}
+
+  .closer{margin-top:32px;font-family:var(--serif);font-size:clamp(18px,2.3vw,22px);line-height:1.4;
+    color:var(--ink);border-left:3px solid var(--gold);padding:8px 0 8px 22px;max-width:60ch}
+  .dark-sec .closer{color:#fff;border-color:var(--camel)}
+
+  /* factors list */
+  .factors{margin-top:42px;background:var(--surface);border-radius:var(--radius-lg);
+    box-shadow:var(--shadow);overflow:hidden}
+  .factor{display:grid;grid-template-columns:46px 1fr;gap:18px;padding:22px 26px;border-bottom:1px solid var(--line)}
+  .factor:last-child{border-bottom:none}
+  .factor .fn{font-size:14px;font-weight:700;color:var(--gold);padding-top:2px}
+  .factor .ft{font-weight:700;font-size:16px;margin-bottom:4px}
+  .factor .fd{color:var(--ink-2);font-size:14.5px}
+
+  /* compare */
+  .compare{margin-top:40px;background:var(--surface);border-radius:var(--radius-lg);
+    box-shadow:var(--shadow);overflow:hidden}
+  .cmp-head{display:grid;grid-template-columns:1fr 1fr}
+  .cmp-head .ch{padding:18px 24px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+  .cmp-head .ch.old{color:var(--ink-3);background:var(--bg-2)}
+  .cmp-head .ch.new{color:#fff;background:var(--camel)}
+  .cmp-row{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
+  .cmp-row .cell{padding:18px 24px;font-size:15px;display:flex;gap:11px;align-items:flex-start}
+  .cmp-row .cell.old{color:var(--ink-2);border-right:1px solid var(--line)}
+  .cmp-row .cell.new{color:var(--ink);font-weight:560;background:#FCFAF5}
+  .cmp-row .cell .ic{flex-shrink:0;margin-top:3px;width:16px;height:16px}
+  .ic.minus{color:var(--ink-3)} .ic.plus{color:var(--ok)}
+  /* inverted variant: «вам | нам» */
+  .compare.keepgive .ch.old{color:#fff;background:var(--camel)}
+  .compare.keepgive .ch.new{color:var(--ink-3);background:var(--bg-2)}
+  .compare.keepgive .cell.old{color:var(--ink);font-weight:560;background:#FCFAF5}
+  .compare.keepgive .cell.new{color:var(--ink-2);font-weight:400;background:var(--surface)}
+
+  /* benefits */
+  .benefits{margin-top:40px;display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .benefit{display:flex;gap:15px;align-items:flex-start;background:var(--surface);border-radius:var(--radius);
+    padding:20px 22px;box-shadow:var(--shadow)}
+  .benefit .chk{flex-shrink:0;width:30px;height:30px;border-radius:9px;background:var(--ok-bg);
+    display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .benefit .chk svg{width:16px;height:16px}
+  .benefit .bt{font-weight:640;font-size:15.5px;line-height:1.4}
+  .benefit .bd{font-size:14px;color:var(--ink-2);margin-top:3px;line-height:1.5}
+  .honest{margin-top:22px;background:var(--gold-soft);border-left:3px solid var(--gold);
+    border-radius:0 var(--radius) var(--radius) 0;padding:18px 22px;font-size:15px;color:var(--ink);
+    line-height:1.6;max-width:74ch}
+  .honest b{color:#9A7A2E}
+
+  /* dark quote block */
+  .quote-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:44px;align-items:center;margin-top:8px}
+  .quote-grid .qt{display:flex;flex-direction:column;gap:16px;font-size:16.5px;line-height:1.65;
+    color:rgba(255,255,255,.85)}
+  .stat-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);
+    border-radius:var(--radius-lg);padding:32px;text-align:center}
+  .stat-card .big{font-size:clamp(44px,6vw,64px);font-weight:780;color:var(--camel);letter-spacing:-.03em;line-height:1}
+  .stat-card .cap{font-size:15px;color:rgba(255,255,255,.8);margin-top:12px;line-height:1.5}
+  .stat-card .src{font-size:11.5px;color:rgba(255,255,255,.45);margin-top:14px}
+
+  /* chips cloud */
+  .chips{margin-top:38px;display:flex;flex-wrap:wrap;gap:10px;max-width:900px}
+  .chip{background:var(--surface);border:1px solid var(--line-2);border-radius:999px;
+    padding:11px 20px;font-size:14.5px;font-weight:560;box-shadow:var(--shadow)}
+
+  /* refuse list */
+  .refuse{margin-top:38px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:900px}
+  .refuse .ri{display:flex;gap:13px;align-items:flex-start;background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.12);border-radius:var(--radius);padding:16px 19px;
+    font-size:15px;color:rgba(255,255,255,.88);line-height:1.5}
+  .refuse .x{flex-shrink:0;width:22px;height:22px;border-radius:7px;background:rgba(192,80,74,.22);
+    display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .refuse .x svg{width:11px;height:11px}
+
+  /* steps */
+  .steps{margin-top:42px;display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+    background:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow);overflow:hidden}
+  .step{padding:28px 26px;border-right:1px solid var(--line)}
+  .step:last-child{border-right:none}
+  .step .sn{font-size:12.5px;font-weight:640;color:var(--gold);margin-bottom:16px;letter-spacing:.04em;text-transform:uppercase}
+  .step .sc{width:44px;height:44px;border-radius:13px;background:var(--camel);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:780;font-size:19px;margin-bottom:16px}
+  .step h3{font-size:16px;margin-bottom:6px}
+  .step p{font-size:14px;color:var(--ink-2)}
+
+  /* principles */
+  .why-stmts{display:flex;flex-direction:column;gap:14px;margin-top:38px;max-width:860px}
+  .why-stmt{background:var(--surface);border-left:3px solid var(--gold);border-radius:0 var(--radius) var(--radius) 0;
+    padding:18px 22px;box-shadow:var(--shadow)}
+  .why-stmt .wt{font-size:16px;font-weight:680}
+  .why-stmt .wd{font-size:14.5px;color:var(--ink-2);margin-top:4px;line-height:1.55}
+
+  /* ladder */
+  .ladder{margin-top:44px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px;position:relative}
+  .rung{background:var(--surface);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);position:relative}
+  .rung .no{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .rung h3{font-size:17px;margin-bottom:7px}
+  .rung p{font-size:14px;color:var(--ink-2)}
+  .rung::after{content:"";position:absolute;top:-9px;left:22px;right:-18px;height:3px;
+    background:linear-gradient(90deg,var(--gold),var(--camel));border-radius:99px;opacity:.55}
+  .rung:last-child::after{right:22px}
+
+  /* faq */
+  .faq{margin-top:40px;max-width:840px}
+  .faq details{background:var(--surface);border-radius:var(--radius);margin-bottom:12px;
+    overflow:hidden;box-shadow:var(--shadow)}
+  .faq summary{list-style:none;cursor:pointer;padding:20px 24px;font-weight:680;font-size:16.5px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary .pm{color:var(--gold);font-size:24px;font-weight:400;line-height:1;transition:transform .2s ease;flex-shrink:0}
+  .faq details[open] summary .pm{transform:rotate(45deg)}
+  .faq .fa-body{padding:0 24px 22px;color:var(--ink-2);font-size:15.5px;line-height:1.6}
+  .faq .fa-body p{margin:0 0 8px}
+  .faq .fa-body p:last-child{margin:0}
+
+  /* form */
+  .apply-card{max-width:660px;margin:44px auto 0;background:var(--surface);border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-lg);padding:clamp(26px,4vw,40px);text-align:left}
+  .apply-card .fld{margin-bottom:16px}
+  .apply-card label{display:block;font-size:13px;font-weight:640;color:var(--ink-2);margin-bottom:7px}
+  .apply-card input,.apply-card select{width:100%;font-family:var(--sans);font-size:15.5px;color:var(--ink);
+    background:#FCFAF5;border:1px solid var(--line-2);border-radius:12px;padding:14px 16px;outline:none}
+  .apply-card input:focus,.apply-card select:focus{border-color:var(--camel);box-shadow:0 0 0 3px rgba(199,168,120,.18)}
+  .apply-card .agree{display:flex;gap:11px;align-items:flex-start;font-size:13px;color:var(--ink-2);
+    margin:18px 0 20px;line-height:1.5}
+  .apply-card .agree input{width:19px;height:19px;flex-shrink:0;accent-color:var(--camel);margin-top:1px}
+  .apply-card .btn{width:100%;justify-content:center}
+  .apply-note{text-align:center;font-size:13px;color:rgba(255,255,255,.65);margin-top:18px;line-height:1.7}
+
+  .final{text-align:center;padding-bottom:clamp(64px,9vw,110px)}
+  .final h2{font-size:clamp(26px,3.8vw,40px);max-width:24ch;margin:0 auto 10px}
+  .final .fl{color:rgba(255,255,255,.8);font-size:17px;margin-top:16px;line-height:1.7}
+
+  footer.foot{border-top:1px solid var(--line);padding:36px 0;background:var(--bg-2)}
+  .foot-inner{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;
+    font-size:13px;color:var(--ink-3)}
+  .foot-inner .brand .word{font-size:17px}
+  .foot-inner .logo-mark{width:26px;height:23px}
+
+  @media(max-width:900px){
+    .hero-grid{grid-template-columns:1fr;gap:40px}
+    .quote-grid{grid-template-columns:1fr;gap:30px}
+    .c4{grid-template-columns:repeat(2,1fr)}
+    .steps{grid-template-columns:repeat(2,1fr)}
+    .step:nth-child(2){border-right:none}
+    .step:nth-child(1),.step:nth-child(2){border-bottom:1px solid var(--line)}
+    .ladder{grid-template-columns:repeat(2,1fr)}
+    .rung::after{display:none}
+  }
+  @media(max-width:640px){
+    .c4,.c3,.benefits,.refuse,.ladder{grid-template-columns:1fr}
+    .steps{grid-template-columns:1fr}
+    .step{border-right:none;border-bottom:1px solid var(--line)}
+    .step:last-child{border-bottom:none}
+    .cmp-head,.cmp-row{grid-template-columns:1fr}
+    .cmp-row .cell.old{border-right:none;border-bottom:1px solid var(--line)}
+    .hero-cta{flex-direction:column;align-items:stretch}
+    .hero-cta .btn{justify-content:center}
+    .cab-row:nth-child(n+3){display:none}
+  }
+  @media(max-width:480px){
+    .brand .word{display:none}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="lg1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E4C87E"/><stop offset="1" stop-color="#B5893F"/>
+    </linearGradient>
+    <linearGradient id="lg2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#C9A24E"/><stop offset="1" stop-color="#8C6A2C"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<!-- ============ ШАПКА ============ -->
+<header class="site">
+  <div class="wrap site-inner">
+    <div class="brand">
+      <svg class="logo-mark" viewBox="0 0 40 34" fill="none" aria-hidden="true">
+        <path class="g1" d="M2 3 L14 3 L21 20 L15 20 Z"/>
+        <path class="g2" d="M13 3 L24 3 L31 31 L21.5 16 Z"/>
+        <path class="g1" d="M24 3 L34 3 L27 20 L21 20 Z" opacity="0.9"/>
+      </svg>
+      <span class="word">Mainexperts</span>
+    </div>
+    <div class="site-spacer"></div>
+    <span class="site-note">Экспертам</span>
+    <a href="#apply" class="btn btn-primary btn-sm">
+      <span class="ico"><svg viewBox="0 0 20 20" fill="none"><path d="M6 14L14 6M14 6H7M14 6V13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      Подать заявку
+    </a>
+  </div>
+</header>
+
+<!-- ============ 01 HERO ============ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="chip-intro"><span class="dot"></span> Экспертам · профориентация и сопровождение семей</div>
+    <div class="hero-grid">
+      <div>
+        <h1>Вы учились годами, чтобы вести практику. <span class="accent">А не переписку</span></h1>
+        <p class="lead">Первичные интервью без оплаты, переносы встреч, напоминания о платежах, поиск новых клиентов. У сильного эксперта это съедает часы, которые могли стоить дорого.</p>
+        <p class="lead" style="margin-top:14px;color:var(--ink);font-weight:600">MainExperts строит инфраструктуру, где эксперт занимается экспертной работой. Остальное берёт на себя платформа.</p>
+        <div class="hero-cta">
+          <a href="#apply" class="btn btn-primary">
+            <span class="ico"><svg viewBox="0 0 20 20" fill="none"><path d="M6 14L14 6M14 6H7M14 6V13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            Подать заявку
+          </a>
+          <a href="#selection" class="btn btn-ghost">Как устроен отбор</a>
+        </div>
+        <div class="trust-row">
+          <div class="ti"><span class="tn">Первая когорта</span><span class="tl">отбор по заявкам</span></div>
+          <div class="ti"><span class="tn">Без комиссии</span><span class="tl">с ваших сессий</span></div>
+          <div class="ti"><span class="tn">Ваше имя</span><span class="tl">публичный профиль эксперта</span></div>
+        </div>
+      </div>
+
+      <!-- кабинет эксперта -->
+      <aside class="cab" aria-label="Кабинет эксперта — иллюстрация">
+        <div class="cab-head">
+          <span class="k">Кабинет эксперта</span>
+          <span class="live"><span class="dot"></span> заявки семей</span>
+        </div>
+        <div class="cab-list">
+          <div class="cab-row">
+            <span class="cab-av">А</span>
+            <span class="who"><span class="wt">Семья, подросток 15 лет</span><br><span class="wd">запрос: выбор направления</span></span>
+            <span class="cab-chip"><span class="dot"></span> профиль готов</span>
+          </div>
+          <div class="cab-row">
+            <span class="cab-av">М</span>
+            <span class="who"><span class="wt">Семья, подросток 17 лет</span><br><span class="wd">запрос: сомнения перед вузом</span></span>
+            <span class="cab-chip"><span class="dot"></span> профиль готов</span>
+          </div>
+          <div class="cab-row">
+            <span class="cab-av">Д</span>
+            <span class="who"><span class="wt">Семья, подросток 13 лет</span><br><span class="wd">запрос: сильные стороны</span></span>
+            <span class="cab-chip"><span class="dot"></span> профиль готов</span>
+          </div>
+        </div>
+        <div class="cab-foot">Семья приходит с пройденной диагностикой. Первая встреча начинается с разбора, а не со сбора данных.</div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 ПОЧЕМУ ПОТЕНЦИАЛ НЕ РЕАЛИЗУЕТСЯ ============ -->
+<section class="paper">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Положение сильного специалиста</p>
+      <h2>Экспертиза — меньшая часть рабочего дня</h2>
+      <p class="lead" style="margin-top:16px">Мы разговаривали с практикующими консультантами. Три вещи повторяются в каждом разговоре.</p>
+    </div>
+    <div class="cards c3">
+      <div class="card warn">
+        <div class="icobox"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#C0504A" stroke-width="1.8"/><path d="M12 8v4l2.5 2.5" stroke="#C0504A" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <h3>Первичная диагностика — бесплатно</h3>
+        <p>Час-полтора на знакомство и сбор данных, которые клиент не оплачивает. Десять клиентов — рабочая неделя в подарок.</p>
+      </div>
+      <div class="card warn">
+        <div class="icobox"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="15" rx="2.5" stroke="#C0504A" stroke-width="1.8"/><path d="M8 3v4M16 3v4M9 13l2 2 4-4" stroke="#C0504A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Перенос съедает день</h3>
+        <p>Каждая перенесённая встреча — переписка, пересборка расписания и дыры в календаре, которые никто не компенсирует.</p>
+      </div>
+      <div class="card warn">
+        <div class="icobox"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#C0504A" stroke-width="1.8"/><path d="M12 8v8M9.5 10.5c0-1 1-1.6 2.5-1.6s2.5.7 2.5 1.7c0 2-4.8 1.2-4.8 3.3 0 1 1 1.7 2.3 1.7s2.4-.6 2.4-1.6" stroke="#C0504A" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <h3>Деньги приходится выпрашивать</h3>
+        <p>Напоминания об оплате, «переведу завтра», сверка поступлений. Неловко, долго и отнимает силы.</p>
+      </div>
+    </div>
+    <p class="closer">Это не жалобы слабых. Это устройство самостоятельной практики.</p>
+  </div>
+</section>
+
+<!-- ============ 03 ОГРАНИЧЕНИЯ МОДЕЛИ ============ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Ограничения самостоятельной практики</p>
+      <h2>Потолок зашит в модель, а не в вас</h2>
+    </div>
+    <div class="factors">
+      <div class="factor"><span class="fn">01</span><div><div class="ft">Доход равен часам</div><div class="fd">Каждый рубль требует вашего личного часа. Отпуск и болезнь останавливают выручку.</div></div></div>
+      <div class="factor"><span class="fn">02</span><div><div class="ft">Один человек — весь бизнес</div><div class="fd">Маркетинг, продажи, расписание, бухгалтерия — всё на вас. Экспертной работе достаётся остаток дня.</div></div></div>
+      <div class="factor"><span class="fn">03</span><div><div class="ft">Данные собираются вручную</div><div class="fd">Анкеты, тесты по ссылкам, пересылка файлов. Картина клиента складывается из фрагментов.</div></div></div>
+      <div class="factor"><span class="fn">04</span><div><div class="ft">Репутация заперта в сарафане</div><div class="fd">Рекомендации работают, пока о вас помнят. Систематического потока они не дают.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 ПРОФЕССИЯ БУДУЩЕГО ============ -->
+<section class="tint">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Профессия эксперта будущего</p>
+      <h2>Как должна быть устроена работа эксперта</h2>
+    </div>
+    <div class="compare">
+      <div class="cmp-head">
+        <div class="ch old">Сегодня</div>
+        <div class="ch new">Должно быть</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cell old"><svg class="ic minus" viewBox="0 0 16 16"><path d="M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Клиент приходит «с нуля»</div>
+        <div class="cell new"><svg class="ic plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Клиент приходит с готовым профилем: диагностика пройдена до первой встречи</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cell old"><svg class="ic minus" viewBox="0 0 16 16"><path d="M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Час на интейк без оплаты</div>
+        <div class="cell new"><svg class="ic plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Первая встреча начинается с разбора данных, а не со сбора</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cell old"><svg class="ic minus" viewBox="0 0 16 16"><path d="M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Выводы на глаз и опыт</div>
+        <div class="cell new"><svg class="ic plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Выводы опираются на данные о человеке и рынке труда</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cell old"><svg class="ic minus" viewBox="0 0 16 16"><path d="M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Рутина между встречами</div>
+        <div class="cell new"><svg class="ic plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Расписание, оплаты и напоминания идут без вашего участия</div>
+      </div>
+    </div>
+    <p class="closer">Для этого эксперту нужна инфраструктура. Строить её в одиночку — годы.</p>
+  </div>
+</section>
+
+<!-- ============ 05 ПОЧЕМУ ПОЯВИЛСЯ MAINEXPERTS ============ -->
+<section class="dark-sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Почему появился MainExperts</p>
+      <h2>Мы пришли к этому с другой стороны — от семей</h2>
+    </div>
+    <div class="quote-grid" style="margin-top:38px">
+      <div class="qt">
+        <p>Родители выбирают образование ребёнка по оценкам, советам знакомых и интуиции. Цена ошибки — потерянные годы и потерянная мотивация. Мы строим платформу, где это решение опирается на данные: диагностика, аналитика рынка труда, образовательные маршруты, сопровождение.</p>
+        <p>И упёрлись в то же, во что упирается каждая семья: данные без эксперта не работают. Отчёт сам по себе не убеждает и не ведёт — нужен человек, который берёт ответственность за рекомендацию.</p>
+        <p style="color:#fff;font-weight:600">Поэтому эксперт — не функция платформы. Эксперт — то, ради чего семья остаётся.</p>
+      </div>
+      <div class="stat-card">
+        <div class="big">8 из 9</div>
+        <p class="cap">семей в наших интервью сказали: отчёт без консультации специалиста им недостаточен</p>
+        <p class="src">серия из 9 глубинных интервью с родителями, 2026</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 КАК УСИЛИВАЕМ ============ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Как мы усиливаем экспертов</p>
+      <h2>Технологии усиливают профессионала. Не заменяют</h2>
+    </div>
+    <div class="cards c4">
+      <div class="card">
+        <span class="mini-tag">Инструмент</span>
+        <h3>Диагностика до встречи</h3>
+        <p>Семья проходит диагностику на платформе. К вам приходит человек с готовым профилем: сильные стороны, интересы, зоны внимания.</p>
+      </div>
+      <div class="card">
+        <span class="mini-tag">Инструмент</span>
+        <h3>Аналитика рынка труда</h3>
+        <p>Данные о профессиях и требованиях рынка — в вашем кабинете, а не в десяти вкладках браузера.</p>
+      </div>
+      <div class="card">
+        <span class="mini-tag">Инструмент</span>
+        <h3>ИИ готовит черновики</h3>
+        <p>Первичный разбор профиля, черновик отчёта, конспект встречи. Финальное слово и подпись — ваши.</p>
+      </div>
+      <div class="card">
+        <span class="mini-tag">Инструмент</span>
+        <h3>Организация без вас</h3>
+        <p>Бронирование, перенос, оплата, напоминания — платформа. Ваше участие — только сами встречи.</p>
+      </div>
+    </div>
+    <div style="margin-top:36px">
+      <a href="#apply" class="btn btn-primary">
+        <span class="ico"><svg viewBox="0 0 20 20" fill="none"><path d="M6 14L14 6M14 6H7M14 6V13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        Подать заявку
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 ЧТО ПОЛУЧАЕТ ЭКСПЕРТ ============ -->
+<section class="paper">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Что получает эксперт</p>
+      <h2>Что меняется в вашей практике</h2>
+    </div>
+    <div class="benefits">
+      <div class="benefit"><span class="chk"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="#4F9E6E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><div class="bt">Сложные случаи вместо конвейера</div><div class="bd">Первичную типовую работу берут диагностика и ИИ. Вам достаётся то, где нужен эксперт.</div></div></div>
+      <div class="benefit"><span class="chk"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="#4F9E6E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><div class="bt">Время возвращается в практику</div><div class="bd">Освободившиеся часы вы вкладываете в клиентов, методологию или отдых.</div></div></div>
+      <div class="benefit"><span class="chk"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="#4F9E6E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><div class="bt">Работа опирается на данные</div><div class="bd">Решения аргументируются профилем и аналитикой, а не только авторитетом.</div></div></div>
+      <div class="benefit"><span class="chk"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="#4F9E6E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><div class="bt">Профессиональное окружение</div><div class="bd">Сообщество отобранных практиков: разборы случаев, супервизия, методологические дискуссии.</div></div></div>
+      <div class="benefit"><span class="chk"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="#4F9E6E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><div class="bt">Ваше имя работает на вас</div><div class="bd">Профиль эксперта публичный: специализация, опыт, отзывы семей.</div></div></div>
+    </div>
+    <div class="honest">
+      <b>Честно о потоке клиентов.</b> Поток обращений зависит от роста платформы, а мы в начале пути: первые эксперты работают с первыми семьями воронки. Обещать очередь из клиентов сегодня было бы неправдой — и это главная причина, почему мы начинаем с небольшой когорты.
+    </div>
+  </div>
+</section>
+
+<!-- ============ 08 ЧТО ЗАБИРАЕМ ============ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Что платформа забирает на себя</p>
+      <h2>Список того, что вы перестанете делать</h2>
+    </div>
+    <div class="compare keepgive">
+      <div class="cmp-head">
+        <div class="ch old">Остаётся вам</div>
+        <div class="ch new">Уходит платформе</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cell old"><svg class="ic plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Встречи с семьями, выводы и рекомендации</div>
+        <div class="cell new"><svg class="ic minus" viewBox="0 0 16 16"><path d="M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Первичная диагностика и сбор данных</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cell old"><svg class="ic plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Ваша методология и стиль работы</div>
+        <div class="cell new"><svg class="ic minus" viewBox="0 0 16 16"><path d="M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Поиск и подбор семей под вашу специализацию</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cell old"><svg class="ic plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Развитие в сообществе и супервизия</div>
+        <div class="cell new"><svg class="ic minus" viewBox="0 0 16 16"><path d="M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Расписание, переносы, приём оплат, напоминания</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cell old"><svg class="ic plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Ответственность за рекомендацию семье</div>
+        <div class="cell new"><svg class="ic minus" viewBox="0 0 16 16"><path d="M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Видеовстречи технически, типовые вопросы — ИИ-помощник</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 09 ВОЗМОЖНОСТИ ============ -->
+<section class="tint">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Какие возможности открываются</p>
+      <h2>Расти можно не только количеством встреч</h2>
+    </div>
+    <div class="cards c4">
+      <div class="card">
+        <h3>Методология</h3>
+        <p>Оформляйте наработки в методики под вашим именем. Вопрос защиты авторских прав сейчас прорабатывается — до его закрытия обещаний не даём.</p>
+        <span class="wip">прорабатываем</span>
+      </div>
+      <div class="card">
+        <h3>Исследования</h3>
+        <p>Обезличенные данные платформы — материал для исследований и публикаций. Правила доступа определим вместе с экспертным советом.</p>
+        <span class="wip">прорабатываем</span>
+      </div>
+      <div class="card">
+        <h3>Новые продукты</h3>
+        <p>Групповые форматы, программы сопровождения, продукты для школ. Платформа даёт инфраструктуру для запуска.</p>
+      </div>
+      <div class="card">
+        <h3>Влияние на продукт</h3>
+        <p>Первая когорта определяет стандарты: как выглядит отчёт, как устроена супервизия, что попадает в этику сообщества.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10 КОГО ПРИГЛАШАЕМ ============ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Кого мы приглашаем</p>
+      <h2>Сообщество собирается из практиков</h2>
+      <p class="lead" style="margin-top:16px">Специализации разные — общее одно: работа с реальными семьями и готовность аргументировать свои выводы.</p>
+    </div>
+    <div class="chips">
+      <span class="chip">Профориентологи</span>
+      <span class="chip">Карьерные консультанты</span>
+      <span class="chip">Психологи</span>
+      <span class="chip">HR-эксперты</span>
+      <span class="chip">Специалисты по оценке компетенций</span>
+      <span class="chip">Преподаватели вузов</span>
+      <span class="chip">Специалисты по поступлению</span>
+      <span class="chip">Представители бизнеса</span>
+      <span class="chip">Отраслевые эксперты</span>
+      <span class="chip">Специалисты по развитию талантов</span>
+      <span class="chip">Исследователи образования</span>
+      <span class="chip">Методологи</span>
+      <span class="chip">Практики, работающие с подростками и родителями</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11 КОГО НЕ ПРИГЛАШАЕМ ============ -->
+<section class="dark-sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Кого мы не приглашаем</p>
+      <h2>Кого здесь не будет</h2>
+    </div>
+    <div class="refuse">
+      <div class="ri"><span class="x"><svg viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="#E28A80" stroke-width="2" stroke-linecap="round"/></svg></span>Кто обещает определить профессию за один тест</div>
+      <div class="ri"><span class="x"><svg viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="#E28A80" stroke-width="2" stroke-linecap="round"/></svg></span>Кто использует методики без научного основания</div>
+      <div class="ri"><span class="x"><svg viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="#E28A80" stroke-width="2" stroke-linecap="round"/></svg></span>Кто работает по шаблону, не глядя на человека</div>
+      <div class="ri"><span class="x"><svg viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="#E28A80" stroke-width="2" stroke-linecap="round"/></svg></span>Кто продаёт родителям страх</div>
+      <div class="ri"><span class="x"><svg viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="#E28A80" stroke-width="2" stroke-linecap="round"/></svg></span>Кто ставит продажи выше интересов семьи</div>
+      <div class="ri"><span class="x"><svg viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="#E28A80" stroke-width="2" stroke-linecap="round"/></svg></span>Кто закончил учиться</div>
+    </div>
+    <p class="closer">Эти критерии — не маркетинг. По ним мы отказываем.</p>
+  </div>
+</section>
+
+<!-- ============ 12 ОТБОР ============ -->
+<section id="selection">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Как устроен отбор</p>
+      <h2>Четыре шага. Обе стороны решают</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="sn">Шаг 1</div><div class="sc">1</div><h3>Заявка</h3><p>Четыре поля, две минуты. Без резюме и сопроводительных писем.</p></div>
+      <div class="step"><div class="sn">Шаг 2</div><div class="sc">2</div><h3>Анкета</h3><p>12 вопросов о вашей практике и подходе. Смотрим на метод, не на регалии.</p></div>
+      <div class="step"><div class="sn">Шаг 3</div><div class="sc">3</div><h3>Интервью</h3><p>40 минут разговора о ваших случаях. Вы задаёте вопросов не меньше, чем мы.</p></div>
+      <div class="step"><div class="sn">Шаг 4</div><div class="sc">4</div><h3>Пилотный разбор</h3><p>Один учебный кейс по нашим материалам. Мы видим ваш метод, вы видите наши стандарты.</p></div>
+    </div>
+    <p style="margin-top:20px;font-size:14px;color:var(--ink-3)">Документы об образовании проверяются при онбординге. Отказываем письменно и по критериям.</p>
+    <div style="margin-top:28px">
+      <a href="#apply" class="btn btn-primary">
+        <span class="ico"><svg viewBox="0 0 20 20" fill="none"><path d="M6 14L14 6M14 6H7M14 6V13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        Подать заявку
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 13 СОТРУДНИЧЕСТВО ============ -->
+<section class="paper">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Как устроено сотрудничество</p>
+      <h2>Вы — независимый эксперт. Это принцип, не формальность</h2>
+    </div>
+    <div class="why-stmts">
+      <div class="why-stmt"><div class="wt">Без комиссии с сессий</div><div class="wd">Платформа зарабатывает на подписке, а не на проценте с вашей работы. Модель вознаграждения и тарифы для экспертов фиксируются письменно до подписания условий.</div></div>
+      <div class="why-stmt"><div class="wt">Ваше имя — ваш актив</div><div class="wd">Профиль публичный. Методики подписаны вами. Публикации выходят под вашим именем и с вашего согласия.</div></div>
+      <div class="why-stmt"><div class="wt">Практика вне платформы остаётся вашей</div><div class="wd">Эксклюзивности не требуем. Ваши прямые клиенты — ваши.</div></div>
+      <div class="why-stmt"><div class="wt">Планов продаж нет</div><div class="wd">Стандарты касаются качества работы с семьёй, а не выручки. Продажи и упаковка — работа платформы.</div></div>
+      <div class="why-stmt"><div class="wt">Правила — до старта, письменно</div><div class="wd">Как строится работа с семьями, пришедшими через платформу, фиксируется в условиях сотрудничества до начала работы — не «по ходу».</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 14 КАЧЕСТВО ============ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Как обеспечивается качество</p>
+      <h2>Ваша репутация защищена планкой всего сообщества</h2>
+    </div>
+    <div class="factors">
+      <div class="factor"><span class="fn">01</span><div><div class="ft">Отбор до входа</div><div class="fd">Анкета, интервью, пилотный разбор. В сообщество попадают после четырёх шагов, а не после регистрации.</div></div></div>
+      <div class="factor"><span class="fn">02</span><div><div class="ft">Проверка документов</div><div class="fd">Образование и квалификация подтверждаются при онбординге.</div></div></div>
+      <div class="factor"><span class="fn">03</span><div><div class="ft">Обратная связь семей</div><div class="fd">После консультаций семьи оценивают работу. Оценки видны в профиле эксперта.</div></div></div>
+      <div class="factor"><span class="fn">04</span><div><div class="ft">Супервизия и разборы</div><div class="fd">Сложные случаи разбираются внутри сообщества. Ошибку обсуждают, а не прячут.</div></div></div>
+      <div class="factor"><span class="fn">05</span><div><div class="ft">Этические правила</div><div class="fd">За продажу страха и работу против интересов семьи расстаёмся. Психологическая диагностика работает в правовом поле: допуск к типам работ зависит от квалификации.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 15 РАЗВИТИЕ ============ -->
+<section class="tint">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Как развивается эксперт внутри</p>
+      <h2>Траектория внутри сообщества</h2>
+    </div>
+    <div class="ladder">
+      <div class="rung"><div class="no">Ступень 1</div><h3>Практик</h3><p>Консультации с опорой на диагностику и аналитику платформы.</p></div>
+      <div class="rung"><div class="no">Ступень 2</div><h3>Наставник</h3><p>Супервизия, разборы случаев, работа со стандартами качества.</p></div>
+      <div class="rung"><div class="no">Ступень 3</div><h3>Методолог</h3><p>Авторские методики и программы на платформе.</p></div>
+      <div class="rung"><div class="no">Ступень 4</div><h3>Соавтор отрасли</h3><p>Исследования, публикации, влияние на стандарты профориентации.</p></div>
+    </div>
+    <p style="margin-top:22px;font-size:14px;color:var(--ink-3)">Ступени — не должности и не грейды. Это роли, которые эксперт добавляет к практике по мере вклада.</p>
+  </div>
+</section>
+
+<!-- ============ 16 РЫНОК 5–10 ЛЕТ ============ -->
+<section class="dark-sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Каким станет рынок через 5–10 лет</p>
+      <h2>Каким станет выбор будущего — и кто его будет вести</h2>
+    </div>
+    <div class="qt" style="max-width:72ch;margin-top:32px;display:flex;flex-direction:column;gap:18px;font-size:17px;line-height:1.7;color:rgba(255,255,255,.85)">
+      <p>Через десять лет решение об образовании ребёнка перестанет приниматься на глаз. Родители будут ожидать данных так же, как сегодня ожидают анализов перед лечением. Подростки будут знать свои сильные стороны раньше, чем получат аттестат.</p>
+      <p>Рутину этой работы заберут алгоритмы. Останется то, что алгоритмам не отдать: интерпретация, разговор, ответственность за рекомендацию. Цена настоящей экспертизы вырастет — цена шаблонных тестов упадёт до нуля.</p>
+      <p style="color:#fff;font-weight:600">Стандарты этой профессии пишутся сейчас. Мы строим инфраструктуру и собираем людей, которые напишут их вместе с нами.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 17 FAQ ============ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Частые вопросы</p>
+      <h2>Спросите нас о неудобном</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>Я потеряю независимость? <span class="pm">+</span></summary>
+        <div class="fa-body"><p>Нет. Вы независимый специалист. Практика вне платформы остаётся вашей, эксклюзивности мы не требуем.</p></div>
+      </details>
+      <details>
+        <summary>Меня заставят продавать? <span class="pm">+</span></summary>
+        <div class="fa-body"><p>Нет. Продажи и упаковка услуг — работа платформы. Ваша работа — консультации и рекомендации.</p></div>
+      </details>
+      <details>
+        <summary>Мне навяжут показатели? <span class="pm">+</span></summary>
+        <div class="fa-body"><p>Планов продаж нет. Есть стандарты качества работы с семьёй — отбор, супервизия, обратная связь. Они защищают и семьи, и вашу репутацию.</p></div>
+      </details>
+      <details>
+        <summary>Мои клиенты перестанут быть моими? <span class="pm">+</span></summary>
+        <div class="fa-body"><p>Семьи, которые пришли к вам напрямую, — ваши. Правила работы с семьями, пришедшими через платформу, фиксируются письменно в условиях сотрудничества до начала работы.</p></div>
+      </details>
+      <details>
+        <summary>Моё имя используют без меня? <span class="pm">+</span></summary>
+        <div class="fa-body"><p>Профиль, методики и публикации выходят под вашим именем и только с вашего согласия. Ваше имя — ваш актив, платформа его усиливает, а не забирает.</p></div>
+      </details>
+      <details>
+        <summary>Утону в регламентах? <span class="pm">+</span></summary>
+        <div class="fa-body"><p>Регламенты касаются качества и этики: как проверяются документы, как собирается обратная связь, что недопустимо в работе с семьёй. Метод и стиль работы остаются вашими.</p></div>
+      </details>
+      <details>
+        <summary>Я превращусь в исполнителя? <span class="pm">+</span></summary>
+        <div class="fa-body"><p>Первая когорта проектирует стандарты вместе с нами: отчёт, супервизию, этику сообщества. Исполнителю такое не поручают.</p></div>
+      </details>
+      <details>
+        <summary>Что если платформа не взлетит? <span class="pm">+</span></summary>
+        <div class="fa-body"><p>Честный ответ: мы на ранней стадии, и это риск. Взамен ранние эксперты получают наибольшее влияние на правила, продукт и стандарты сообщества. Вы ничего не платите за вход и ничего не теряете при выходе — практика и клиенты остаются с вами.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 18 ФИНАЛ + ФОРМА ============ -->
+<section class="dark-sec" id="apply">
+  <div class="wrap final">
+    <p class="eyebrow" style="text-align:center">Заявка</p>
+    <h2>Если вы дочитали до этого места — вы уже думаете как часть сообщества</h2>
+    <p class="fl">Заявка занимает две минуты и ни к чему не обязывает.<br>Дальше — анкета, разговор и решение обеих сторон.</p>
+
+    <form class="apply-card" action="#" method="post" onsubmit="return false">
+      <div class="fld">
+        <label for="f-name">Имя и фамилия</label>
+        <input id="f-name" name="name" type="text" autocomplete="name" required>
+      </div>
+      <div class="fld">
+        <label for="f-spec">Специализация</label>
+        <select id="f-spec" name="spec" required>
+          <option value="" selected disabled>Выберите из списка</option>
+          <option>Профориентолог</option>
+          <option>Карьерный консультант</option>
+          <option>Психолог</option>
+          <option>HR-эксперт</option>
+          <option>Специалист по оценке компетенций</option>
+          <option>Преподаватель вуза</option>
+          <option>Специалист по поступлению</option>
+          <option>Представитель бизнеса / отраслевой эксперт</option>
+          <option>Специалист по развитию талантов</option>
+          <option>Исследователь образования / методолог</option>
+          <option>Другое</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label for="f-link">Ссылка на профиль, сайт или страницу</label>
+        <input id="f-link" name="link" type="url" placeholder="https://" autocomplete="url">
+      </div>
+      <div class="fld">
+        <label for="f-contact">Как с вами связаться (телефон, Telegram или почта)</label>
+        <input id="f-contact" name="contact" type="text" required>
+      </div>
+      <label class="agree">
+        <input type="checkbox" required>
+        <span>Соглашаюсь на обработку персональных данных для рассмотрения заявки</span>
+      </label>
+      <button class="btn btn-primary" type="submit">
+        <span class="ico"><svg viewBox="0 0 20 20" fill="none"><path d="M6 14L14 6M14 6H7M14 6V13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        Подать заявку
+      </button>
+    </form>
+    <p class="apply-note">Отвечаем на каждую заявку. Отказываем письменно и по критериям.</p>
+    <!-- Требуется решение команды: SLA ответа; адресат заявок (CRM/почта); обработчик формы -->
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <div class="brand">
+      <svg class="logo-mark" viewBox="0 0 40 34" fill="none" aria-hidden="true">
+        <path class="g1" d="M2 3 L14 3 L21 20 L15 20 Z"/>
+        <path class="g2" d="M13 3 L24 3 L31 31 L21.5 16 Z"/>
+        <path class="g1" d="M24 3 L34 3 L27 20 L21 20 Z" opacity="0.9"/>
+      </svg>
+      <span class="word">Mainexperts</span>
+    </div>
+    <span>© Mainexperts · mainexperts.online · экспертам</span>
+  </div>
+</footer>
+
+</body>
+</html>
