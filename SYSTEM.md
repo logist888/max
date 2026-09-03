@@ -45,7 +45,7 @@ vault/               РАБОЧИЕ заметки из новых ингест�
   40-reports/        черновики отчётов до экспорта в Drive
 raw/                 архив сырья — не индексируется, грузится по нужде
 scripts/             extract.py, pdf_ru.py, setup.sh, requirements.txt
-.claude/skills/      boot, ingest, report
+.claude/skills/      boot, ingest, report, publish; ui-ux-pro-max и спутники (design, design-system, ui-styling, brand, slides, banner-design)
 ```
 
 ## Модель заметки (frontmatter)
