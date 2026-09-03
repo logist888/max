@@ -10,3 +10,7 @@
 `ui-ux-pro-max`, `design`, `design-system`, `ui-styling`, `brand`, `slides`, `banner-design`.
 Установка: `npx ui-ux-pro-max-cli init --ai claude`. Обновление: та же команда с `--force`.
 Скрипт поиска `python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<запрос>" --design-system` требует только Python 3.
+
+## 2026-09-03 — презентация ДЕМО Дня
+`vault/40-reports/demo-day-2026-09.pptx`: итоги августа и планы на сентябрь, пять слайдов
+в палитре презентации Agafonov Consulting (чёрный 171717, белый, золото C8AA72, Arial).
