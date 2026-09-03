@@ -19,7 +19,7 @@
   `10-sources`, `20-notes`, `30-entities`, `40-reports`, `_templates`.
 - `scripts/` — `extract.py` (файл → текст), `pdf_ru.py` (отчёт → кириллический PDF),
   `setup.sh`, `requirements.txt`.
-- `.claude/skills/` — `boot`, `ingest`, `report`.
+- `.claude/skills/` — `boot`, `ingest`, `report`, `publish`; плюс набор UI/UX Pro Max (`ui-ux-pro-max`, `design`, `design-system`, `ui-styling`, `brand`, `slides`, `banner-design`) — дизайн-интеллект для интерфейсов, установлен через `npx ui-ux-pro-max-cli init --ai claude`, обновление той же командой с `--force`.
 
 ## Два рабочих действия
 - **ingest** — принять файл и разложить в `vault/`.
