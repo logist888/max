@@ -1,0 +1,198 @@
+name: Деплой vuz-navigator.ru
+
+# Версия для Gitea Actions. Синтаксис совместим с GitHub Actions, но есть
+# принципиальное отличие: у Gitea НЕТ собственных раннеров. Пока не поднят и не
+# зарегистрирован act_runner, ни один workflow не запустится.
+#
+# Поднять раннер (одной командой, нужен Docker на любой машине с интернетом):
+#   docker run -d --name gitea-runner --restart always \
+#     -v /var/run/docker.sock:/var/run/docker.sock \
+#     -e GITEA_INSTANCE_URL=https://ВАШ-GITEA \
+#     -e GITEA_RUNNER_REGISTRATION_TOKEN=<токен из Settings → Actions → Runners> \
+#     -e GITEA_RUNNER_LABELS=ubuntu-latest \
+#     gitea/act_runner:latest
+#
+# Если поднимать раннер не хочется — есть scripts/deploy-ftp.sh: то же самое
+# с ноутбука, без всякого CI.
+#
+# Настройки репозитория (Settings → Actions → Secrets / Variables):
+#   Secrets:   FTP_SERVER, FTP_USERNAME, FTP_PASSWORD
+#   Variables: FTP_REMOTE_DIR (корень сайта на сервере, узнаётся режимом discover)
+#              SITE_URL (необязательно, по умолчанию https://vuz-navigator.ru)
+#              FTP_DELETE_STALE ('true' — удалять на сервере лишнее; включать
+#                                только после успешного dry-run)
+
+on:
+  push:
+    branches: [main, master, claude/education-seo-platform-p5k4i8]
+    paths:
+      - 'seo-platform/app/**'
+      - 'seo-platform/data/**'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'discover — показать структуру FTP; dry-run — пробная синхронизация; deploy — реальная заливка'
+        type: choice
+        required: true
+        default: dry-run
+        options: [discover, dry-run, deploy]
+      force_full:
+        description: 'Залить все файлы заново, не пропуская совпадающие по размеру'
+        type: boolean
+        required: false
+        default: false
+
+concurrency:
+  group: deploy-vuz-navigator
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      APP_DIR: seo-platform/app
+      MODE: ${{ github.event_name == 'push' && 'deploy' || inputs.mode }}
+
+    steps:
+      - name: Проверка настроек
+        env:
+          HAS_SERVER: ${{ secrets.FTP_SERVER != '' }}
+          HAS_USER: ${{ secrets.FTP_USERNAME != '' }}
+          HAS_PASS: ${{ secrets.FTP_PASSWORD != '' }}
+          REMOTE_DIR: ${{ vars.FTP_REMOTE_DIR }}
+        run: |
+          fail=0
+          for pair in "FTP_SERVER:$HAS_SERVER" "FTP_USERNAME:$HAS_USER" "FTP_PASSWORD:$HAS_PASS"; do
+            name=${pair%%:*}; val=${pair##*:}
+            if [ "$val" != "true" ]; then echo "ОШИБКА: не задан секрет $name"; fail=1; fi
+          done
+          if [ "$MODE" != "discover" ] && [ -z "$REMOTE_DIR" ]; then
+            echo "ОШИБКА: не задана переменная FTP_REMOTE_DIR. Запустите режим discover."
+            fail=1
+          fi
+          [ "$fail" = 0 ] || exit 1
+          echo "Режим: $MODE"
+
+      - name: Установить lftp
+        run: |
+          if command -v lftp >/dev/null 2>&1; then echo "lftp уже есть"; else
+            (sudo apt-get update -qq && sudo apt-get install -y -qq lftp) \
+              || (apt-get update -qq && apt-get install -y -qq lftp)
+          fi
+
+      - name: Показать структуру FTP (discover)
+        if: env.MODE == 'discover'
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          LFTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          lftp -u "$FTP_USERNAME" --env-password "$FTP_SERVER" <<'LFTP'
+            set ftp:passive-mode on
+            set ftp:ssl-allow true
+            set ssl:verify-certificate no
+            set net:timeout 20
+            set cmd:fail-exit no
+            echo "=== корень FTP ==="
+            ls
+            echo "=== типовые каталоги сайта ==="
+            ls www
+            ls public_html
+            ls data
+            ls www/vuz-navigator.ru
+            ls data/www/vuz-navigator.ru
+            bye
+          LFTP
+          echo "Найденный корень сайта впишите в переменную FTP_REMOTE_DIR."
+
+      - uses: actions/checkout@v4
+        if: env.MODE != 'discover'
+
+      - uses: actions/setup-node@v4
+        if: env.MODE != 'discover'
+        with:
+          node-version: '22'
+
+      - name: Установить зависимости
+        if: env.MODE != 'discover'
+        working-directory: ${{ env.APP_DIR }}
+        run: npm ci
+
+      - name: Собрать витрины данных
+        if: env.MODE != 'discover'
+        working-directory: ${{ env.APP_DIR }}
+        run: npm run pipeline && npm run graph
+
+      - name: Собрать сайт
+        if: env.MODE != 'discover'
+        working-directory: ${{ env.APP_DIR }}
+        env:
+          SITE_URL: ${{ vars.SITE_URL || 'https://vuz-navigator.ru' }}
+        run: |
+          npm run build
+          echo "Страниц собрано: $(find dist -name '*.html' | wc -l)"
+          echo "Размер dist: $(du -sh dist | cut -f1)"
+
+      - name: Проверить сборку до заливки
+        if: env.MODE != 'discover'
+        working-directory: ${{ env.APP_DIR }}
+        env:
+          EXPECTED_URL: ${{ vars.SITE_URL || 'https://vuz-navigator.ru' }}
+        run: |
+          pages=$(find dist -name '*.html' | wc -l)
+          if [ "$pages" -lt 9000 ]; then
+            echo "ОШИБКА: собрано только $pages страниц (ожидалось >9000). Заливка отменена."
+            exit 1
+          fi
+          for f in dist/index.html dist/404.html dist/sitemap-index.xml; do
+            [ -s "$f" ] || { echo "ОШИБКА: нет или пуст $f. Заливка отменена."; exit 1; }
+          done
+          if ! grep -q "canonical\" href=\"$EXPECTED_URL" dist/index.html; then
+            echo "ОШИБКА: canonical не указывает на $EXPECTED_URL. Проверьте SITE_URL."
+            exit 1
+          fi
+          echo "Проверки пройдены: $pages страниц."
+
+      - name: Синхронизация на FTP
+        if: env.MODE != 'discover'
+        working-directory: ${{ env.APP_DIR }}
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          LFTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          REMOTE_DIR: ${{ vars.FTP_REMOTE_DIR }}
+          DELETE_STALE: ${{ vars.FTP_DELETE_STALE }}
+          FORCE_FULL: ${{ inputs.force_full }}
+        run: |
+          FLAGS="--reverse --continue --parallel=5 --verbose=1"
+          [ "$FORCE_FULL" = "true" ] || FLAGS="$FLAGS --ignore-time"
+          [ "$DELETE_STALE" = "true" ] && FLAGS="$FLAGS --delete"
+          [ "$MODE" = "dry-run" ] && FLAGS="$FLAGS --dry-run"
+          echo "Флаги mirror: $FLAGS"
+          lftp -u "$FTP_USERNAME" --env-password "$FTP_SERVER" <<LFTP
+            set ftp:passive-mode on
+            set ftp:ssl-allow true
+            set ssl:verify-certificate no
+            set net:timeout 20
+            set net:max-retries 3
+            set net:reconnect-interval-base 5
+            set mirror:parallel-transfer-count 5
+            set xfer:log no
+            mirror $FLAGS dist/ "$REMOTE_DIR"
+            bye
+          LFTP
+
+      - name: Проверить прод после заливки
+        if: env.MODE == 'deploy'
+        env:
+          SITE: ${{ vars.SITE_URL || 'https://vuz-navigator.ru' }}
+        run: |
+          fail=0
+          for p in / /vuzy/ /gorod/moskva/ /professiya/ /specialnosti/ /sitemap-index.xml; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' -m 25 "$SITE$p" || echo 000)
+            echo "$code  $p"
+            [ "$code" = "200" ] || fail=1
+          done
+          [ "$fail" = 0 ] || { echo "ОШИБКА: часть страниц не отвечает 200."; exit 1; }
+          echo "Прод отвечает."

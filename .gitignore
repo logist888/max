@@ -15,3 +15,7 @@ scratch/
 # Сырьё ингеста (большие бинарники); каталог держим через .gitkeep
 raw/*
 !raw/.gitkeep
+
+# Учётные данные FTP для scripts/deploy-ftp.sh — НИКОГДА не коммитить
+scripts/.env.deploy
+.env.deploy
