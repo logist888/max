@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_MMS" targetNamespace="http://mainexperts/mms"
+                  exporter="MainExperts MMS BPMN decomposition" exporterVersion="0.1">
+  <bpmn:process id="P-MGMT-01" name="Цикл принятия решений (ядро MMS)" isExecutable="false">
+    <bpmn:documentation>Источник: MMS Том I гл. 4, 8. Лейны (System / AI Copilot / Владелец / Исполнитель) описаны в docs/bpmn/01-management-cycle.md. AI Copilot ассистирует, но не утверждает решение.</bpmn:documentation>
+    <bpmn:startEvent id="Start_Event" name="Business event">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Task_KPIAlert" name="KPI и формирование Alert">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_AI" name="AI: причины и сценарии">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_Severity" name="Уровень критичности">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:callActivity id="Call_Drill" name="SP-DRILL / Root Cause" calledElement="SP-DRILL">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:incoming>Flow_loop</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:callActivity id="Call_PB" name="SP-PB-00X (Playbook)" calledElement="SP-PB">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:userTask id="Task_Decide" name="Решение и назначение (человек)">
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+      <bpmn:outgoing>Flow_8</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_Execute" name="Исполнение решения">
+      <bpmn:incoming>Flow_8</bpmn:incoming>
+      <bpmn:outgoing>Flow_9</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:callActivity id="Call_Verify" name="SP-VERIFY" calledElement="SP-VERIFY">
+      <bpmn:incoming>Flow_9</bpmn:incoming>
+      <bpmn:outgoing>Flow_10</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:exclusiveGateway id="Gateway_Result" name="Результат достигнут?">
+      <bpmn:incoming>Flow_10</bpmn:incoming>
+      <bpmn:outgoing>Flow_11</bpmn:outgoing>
+      <bpmn:outgoing>Flow_loop</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Task_Knowledge" name="Запись в Knowledge Base">
+      <bpmn:incoming>Flow_11</bpmn:incoming>
+      <bpmn:outgoing>Flow_12</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="End_Knowledge" name="Knowledge">
+      <bpmn:incoming>Flow_12</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="End_NoAction" name="Лог, без действий">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="Start_Event" targetRef="Task_KPIAlert" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_KPIAlert" targetRef="Task_AI" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_AI" targetRef="Gateway_Severity" />
+    <bpmn:sequenceFlow id="Flow_4" name="Critical / Emergency" sourceRef="Gateway_Severity" targetRef="Call_Drill" />
+    <bpmn:sequenceFlow id="Flow_5" name="Information" sourceRef="Gateway_Severity" targetRef="End_NoAction" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Call_Drill" targetRef="Call_PB" />
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Call_PB" targetRef="Task_Decide" />
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="Task_Decide" targetRef="Task_Execute" />
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="Task_Execute" targetRef="Call_Verify" />
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="Call_Verify" targetRef="Gateway_Result" />
+    <bpmn:sequenceFlow id="Flow_11" name="да" sourceRef="Gateway_Result" targetRef="Task_Knowledge" />
+    <bpmn:sequenceFlow id="Flow_12" sourceRef="Task_Knowledge" targetRef="End_Knowledge" />
+    <bpmn:sequenceFlow id="Flow_loop" name="нет — повторный цикл" sourceRef="Gateway_Result" targetRef="Call_Drill" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="P-MGMT-01">
+      <bpmndi:BPMNShape id="di_Start_Event" bpmnElement="Start_Event">
+        <dc:Bounds x="160" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_Task_KPIAlert" bpmnElement="Task_KPIAlert">
+        <dc:Bounds x="240" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_Task_AI" bpmnElement="Task_AI">
+        <dc:Bounds x="390" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_Gateway_Severity" bpmnElement="Gateway_Severity" isMarkerVisible="true">
+        <dc:Bounds x="540" y="95" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_Call_Drill" bpmnElement="Call_Drill">
+        <dc:Bounds x="620" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_Call_PB" bpmnElement="Call_PB">
+        <dc:Bounds x="770" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_Task_Decide" bpmnElement="Task_Decide">
+        <dc:Bounds x="920" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_Task_Execute" bpmnElement="Task_Execute">
+        <dc:Bounds x="1070" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_Call_Verify" bpmnElement="Call_Verify">
+        <dc:Bounds x="1070" y="240" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_Gateway_Result" bpmnElement="Gateway_Result" isMarkerVisible="true">
+        <dc:Bounds x="960" y="255" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_Task_Knowledge" bpmnElement="Task_Knowledge">
+        <dc:Bounds x="810" y="240" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_End_Knowledge" bpmnElement="End_Knowledge">
+        <dc:Bounds x="700" y="262" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="di_End_NoAction" bpmnElement="End_NoAction">
+        <dc:Bounds x="547" y="262" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="di_Flow_1" bpmnElement="Flow_1">
+        <di:waypoint x="196" y="120" /><di:waypoint x="240" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_Flow_2" bpmnElement="Flow_2">
+        <di:waypoint x="340" y="120" /><di:waypoint x="390" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_Flow_3" bpmnElement="Flow_3">
+        <di:waypoint x="490" y="120" /><di:waypoint x="540" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_Flow_4" bpmnElement="Flow_4">
+        <di:waypoint x="590" y="120" /><di:waypoint x="620" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_Flow_5" bpmnElement="Flow_5">
+        <di:waypoint x="565" y="145" /><di:waypoint x="565" y="262" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_Flow_6" bpmnElement="Flow_6">
+        <di:waypoint x="720" y="120" /><di:waypoint x="770" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_Flow_7" bpmnElement="Flow_7">
+        <di:waypoint x="870" y="120" /><di:waypoint x="920" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_Flow_8" bpmnElement="Flow_8">
+        <di:waypoint x="1020" y="120" /><di:waypoint x="1070" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_Flow_9" bpmnElement="Flow_9">
+        <di:waypoint x="1120" y="160" /><di:waypoint x="1120" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_Flow_10" bpmnElement="Flow_10">
+        <di:waypoint x="1070" y="280" /><di:waypoint x="1010" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_Flow_11" bpmnElement="Flow_11">
+        <di:waypoint x="960" y="280" /><di:waypoint x="910" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_Flow_12" bpmnElement="Flow_12">
+        <di:waypoint x="810" y="280" /><di:waypoint x="736" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="di_Flow_loop" bpmnElement="Flow_loop">
+        <di:waypoint x="985" y="255" /><di:waypoint x="985" y="200" /><di:waypoint x="670" y="200" /><di:waypoint x="670" y="160" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

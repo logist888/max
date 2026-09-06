@@ -29,3 +29,7 @@ dist/
 Thumbs.db
 .idea/
 .vscode/
+
+# Плагины Obsidian — стороннее, ставится самим редактором
+.obsidian/plugins/
+.obsidian/workspace.json

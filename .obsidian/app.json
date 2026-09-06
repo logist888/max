@@ -1,0 +1,18 @@
+{
+  "alwaysUpdateLinks": true,
+  "newFileLocation": "folder",
+  "newFileFolderPath": "vault/20-notes",
+  "attachmentFolderPath": "vault/attachments",
+  "useMarkdownLinks": false,
+  "showLineNumber": true,
+  "showUnsupportedFiles": false,
+  "userIgnoreFilters": [
+    "scripts/",
+    "raw/",
+    "node_modules/",
+    "__pycache__/",
+    ".html",
+    ".claude/",
+    ".git/"
+  ]
+}
