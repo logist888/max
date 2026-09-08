@@ -1,0 +1,99 @@
+---
+import '../styles/main.css';
+import Search from '../components/Search.astro';
+import { db } from '../lib/data.ts';
+import { SCREENING_URL } from '../lib/links.ts';
+
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+  jsonLd?: object[];
+}
+const { title, description, noindex = false, jsonLd = [] } = Astro.props;
+const { meta } = db();
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#8a531f" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
+  <link rel="preload" href="/fonts/inter-cyr.woff2" as="font" type="font/woff2" crossorigin />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  {noindex && <meta name="robots" content="noindex, follow" />}
+  <link rel="canonical" href={canonical} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+  {jsonLd.map((ld) => (
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+  ))}
+  <noscript>
+    <style>
+      @media (max-width: 1023px) {
+        .nav-toggle { display: none !important; }
+        .site-nav { display: flex !important; }
+      }
+    </style>
+  </noscript>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="header-top">
+        <a class="brand" href="/"><img class="brand-mark" src="/logo.png" alt="" width="41" height="30" />Куда поступать</a>
+        <div class="header-actions">
+          <a class="nav-cta" href={SCREENING_URL} target="_blank" rel="noopener">Пройти диагностику</a>
+          <button class="nav-toggle" type="button" aria-label="Меню"
+            aria-expanded="false" aria-controls="site-nav">
+            <span class="nav-toggle-bars" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+      <nav id="site-nav" class="site-nav" aria-label="Основная навигация">
+        <a href="/" class="nav-home">Главная</a>
+        <a href="/kuda-postupat-posle-11-klassa/">Куда поступать</a>
+        <a href="/proforientaciya/">Профориентация</a>
+        <a href="/vuzy/">Вузы</a>
+        <a href="/specialnosti/">Специальности</a>
+        <a href="/professiya/">Профессии</a>
+        <a href="/regiony/">Регионы</a>
+        <a href="/o-dannyh/">О данных</a>
+      </nav>
+      <Search />
+    </div>
+    <script>
+      // Мобильное меню: тумблер класса .nav-open + синхронизация aria-expanded.
+      // Прогрессивное улучшение — без JS меню раскрыто (см. <noscript> в <head>).
+      const hdr = document.querySelector('.site-header');
+      const btn = hdr?.querySelector('.nav-toggle');
+      if (hdr && btn) {
+        btn.addEventListener('click', () => {
+          const open = hdr.classList.toggle('nav-open');
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.site-nav a').forEach((a) => a.addEventListener('click', () => {
+          hdr.classList.remove('nav-open');
+          btn.setAttribute('aria-expanded', 'false');
+        }));
+      }
+    </script>
+  </header>
+  <main class="container">
+    <slot />
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <p>Источник данных: «ВУЗ-навигатор» Госуслуг, выгрузка от {meta.snapshotDate}.
+        Приёмная кампания {meta.campaignYear}. Если сведения отсутствуют в источнике,
+        на странице явно указано «Информация отсутствует» — данные не достраиваются.</p>
+    </div>
+  </footer>
+</body>
+</html>

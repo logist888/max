@@ -1,0 +1,148 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Cta from '../components/Cta.astro';
+import { graph } from '../lib/graph.ts';
+import { ldBreadcrumbs, ldFaq, plural } from '../lib/text.ts';
+import { SCREENING_URL } from '../lib/links.ts';
+
+// Рейтинг по РЕАЛЬНЫМ зарплатам Росстата (обследование по группам занятий ОКЗ,
+// октябрь 2025). В рейтинг попадают только профессии с данными — правило «не
+// выдумывать». Это средняя по группе занятий (оценка по группе, не по должности).
+const { professions } = graph();
+const rub = (n: number) => `${n.toLocaleString('ru-RU')} ₽`;
+
+const ranked = professions
+  .filter((p) => p.salary && p.salary.avgRF != null)
+  .sort((a, b) =>
+    (b.salary!.avgRF! - a.salary!.avgRF!) ||
+    ((b.salary!.avgMoscow ?? 0) - (a.salary!.avgMoscow ?? 0)) ||
+    a.nameRu.localeCompare(b.nameRu, 'ru'));
+
+// Профессии одной группы занятий делят одну оценку Росстата (средняя по группе).
+// Схлопываем их в одну строку, чтобы рейтинг не повторял одну цифру десятком
+// профессий: представитель группы (самое короткое/каноничное название) + счётчик.
+const tierMap = new Map<string, { p: typeof ranked[number]; members: typeof ranked }>();
+for (const p of ranked) {
+  const key = `${p.salary!.avgRF}|${p.salary!.avgMoscow ?? ''}`;
+  const e = tierMap.get(key);
+  if (e) {
+    e.members.push(p);
+    if (p.nameRu.length < e.p.nameRu.length) e.p = p; // представитель — короче/каноничнее
+  } else {
+    tierMap.set(key, { p, members: [p] });
+  }
+}
+const tiers = [...tierMap.values()];
+const TOP = tiers.slice(0, 50);
+const baseDate = TOP[0]?.salary?.baseDate === '2025-10' ? 'октябрь 2025' : (TOP[0]?.salary?.baseDate ?? '');
+
+const crumbs = [
+  { name: 'Главная', url: '/' },
+  { name: 'Профессии', url: '/professiya/' },
+  { name: 'Высокооплачиваемые профессии' },
+];
+const title = 'Самые высокооплачиваемые профессии в России 2025: рейтинг зарплат | Профориентация';
+const description = `Топ-${TOP.length} высокооплачиваемых профессий по данным Росстата (${baseDate}): средняя зарплата по РФ и в Москве. Оценка по группам занятий ОКЗ, не гарантированный доход.`;
+
+const faq = [
+  {
+    q: 'Какие профессии самые высокооплачиваемые в России?',
+    a: TOP.length
+      ? `По данным Росстата (${baseDate}) выше всего оплачиваются группы: ${TOP.slice(0, 5).map((t) => `«${t.p.nameRu}» (~${rub(t.p.salary!.avgRF!)}/мес по РФ)`).join(', ')}. Это средние по группам занятий, а не по конкретной должности.`
+      : 'Данные о зарплатах по группам занятий пока не загружены.',
+  },
+  {
+    q: 'Где зарплата выше — в Москве или в среднем по России?',
+    a: 'В Москве зарплаты выше по всем группам, но надбавка разная: у специалистов высшего уровня — примерно ×1,75 к среднему по РФ, у рабочих и водителей — около ×1,25 (по данным Росстата о зарплате по группам занятий и регионам). Поэтому в рейтинге показаны обе цифры.',
+  },
+  {
+    q: 'Насколько точны эти зарплаты?',
+    a: `Это официальная статистика Росстата — средняя начисленная зарплата по группе занятий (ОКЗ) за ${baseDate}. Цифра по группе, а не гарантированный доход по конкретной должности: внутри группы разброс есть. Источник и метод указаны у каждой профессии.`,
+  },
+  {
+    q: 'Какую профессию выбрать, чтобы много зарабатывать?',
+    a: 'Зарплата — только один фактор. Профессия «по себе» — где совпадают интересы и сильные стороны — приносит и доход, и устойчивость. Понять, что подходит именно вам, помогает не рейтинг, а диагностика.',
+  },
+];
+
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Самые высокооплачиваемые профессии в России',
+  numberOfItems: TOP.length,
+  itemListElement: TOP.map((t, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: new URL(`/professiya/${t.p.slug}/`, Astro.site).href,
+    name: t.p.nameRu,
+  })),
+};
+const jsonLd = [
+  ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({ name: c.name, url: new URL(c.url!, Astro.site).href }))),
+  ldFaq(faq),
+  itemList,
+];
+---
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <Breadcrumbs items={crumbs} />
+  <h1>Самые высокооплачиваемые профессии в России</h1>
+
+  <p>Топ-{TOP.length} групп профессий по средней начисленной зарплате — по данным
+    <strong>Росстата</strong> (обследование по группам занятий ОКЗ, {baseDate}). Для каждой
+    группы — средняя по РФ и оценка по Москве. Профессии одной группы занятий делят одну
+    оценку, поэтому показаны представителем группы.</p>
+
+  <p class="invite">Высокая зарплата в группе ≠ ваш будущий доход. Что подходит именно вам —
+    показывает не рейтинг, а сильные стороны. <a href={SCREENING_URL} target="_blank" rel="noopener">Пройдите тест →</a></p>
+
+  {TOP.length > 0 ? (
+    <table class="rank">
+      <thead>
+        <tr><th>#</th><th>Профессия</th><th>По РФ, ₽/мес</th><th>Москва, ₽/мес</th></tr>
+      </thead>
+      <tbody>
+        {TOP.map((t, i) => (
+          <tr>
+            <td class="num">{i + 1}</td>
+            <td>
+              <a href={`/professiya/${t.p.slug}/`}>{t.p.nameRu}</a>
+              {t.members.length > 1 && (
+                <span class="sub"> · ещё {t.members.length - 1}&nbsp;{plural(t.members.length - 1, 'профессия', 'профессии', 'профессий')} этой группы</span>
+              )}
+            </td>
+            <td class="val">{rub(t.p.salary!.avgRF!)}</td>
+            <td class="val">{t.p.salary!.avgMoscow ? rub(t.p.salary!.avgMoscow) : '—'}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <p class="missing">Данные о зарплатах пока не загружены.</p>
+  )}
+
+  <p class="meta">Источник: Росстат, обследование средней начисленной заработной платы по
+    группам занятий (ОКЗ ОК 010-2014), {baseDate}. Москва — по фактической региональной
+    надбавке группы. Приведены средние по группам занятий — <strong>оценка по группе, не
+    гарантированный доход по конкретной должности</strong>. Профессии без данных Росстата
+    (например, военные) в рейтинг не включены.</p>
+
+  <Cta pageType="ranking" zone="after-list" />
+
+  <h2>Вопросы и ответы</h2>
+  <dl class="faq">
+    {faq.map((f) => (<><dt>{f.q}</dt><dd>{f.a}</dd></>))}
+  </dl>
+
+  <p class="meta"><a href="/professiya/">Все профессии по классификации ISCO-08 →</a></p>
+
+  <style>
+    .rank { width: 100%; border-collapse: collapse; margin: var(--space-4) 0; font-size: 0.9375rem; }
+    .rank th, .rank td { text-align: left; padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--border); }
+    .rank th:nth-child(3), .rank th:nth-child(4),
+    .rank td.val { text-align: right; white-space: nowrap; }
+    .rank td.num { color: var(--text-muted); width: 2.5rem; }
+    .rank .sub { color: var(--text-muted); font-size: 0.8125rem; }
+    .rank tbody tr:hover { background: var(--surface-2, rgba(138,83,31,.05)); }
+  </style>
+</Base>

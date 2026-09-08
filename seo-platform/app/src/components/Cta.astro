@@ -1,0 +1,96 @@
+---
+// Конверсионная вставка (этап 4, обновление 11.07.2026 по замечанию
+// владельца): слой всегда видим. Пока внешняя цель из config/goals.json
+// неактивна, CTA ведёт на внутренний мост — квиз /test/. Как только
+// владелец вписывает url и active: true, кнопка начинает вести на цель
+// с UTM-метками. На самой странице квиза внутренний фолбэк не рендерится
+// (квиз не может звать сам себя).
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+interface Props {
+  pageType: string;
+  zone: string;
+}
+const { pageType, zone } = Astro.props;
+
+interface Goal {
+  code: string; title: string; url: string;
+  utm: Record<string, string>; active: boolean;
+}
+interface Config {
+  goals: Goal[];
+  placements: { pageType: string; zone: string; goal: string }[];
+}
+const config = JSON.parse(
+  readFileSync(resolve(process.cwd(), 'config/goals.json'), 'utf8'),
+) as Config;
+
+const placement = config.placements.find(
+  (p) => p.pageType === pageType && p.zone === zone,
+);
+const goal = placement
+  ? config.goals.find((g) => g.code === placement.goal && g.active && g.url)
+  : undefined;
+
+// Лид под тип страницы — один блок на всех выглядел повторно; контекст повышает отклик.
+const LEAD: Record<string, string> = {
+  'org-card': 'Факты по вузу собраны. Но подходит ли он именно вам — покажет не список, а ваши сильные стороны.',
+  catalog: 'Каталог перед вами. Сузить выбор помогает не фильтр, а понимание своих сильных сторон.',
+  direction: 'Направление и вузы — вот они. Ваше ли это — проверяется по сильным сторонам, а не по спискам.',
+  'combo-city': 'Вузы по направлению в городе — здесь. Куда именно вам — начните с понимания себя.',
+  'combo-region': 'Вузы по направлению в регионе — здесь. Куда именно вам — начните с понимания себя.',
+  city: 'Вузы города перед вами. С чего начать выбор — с понимания своих сильных сторон.',
+  region: 'Вузы региона перед вами. С чего начать выбор — с понимания своих сильных сторон.',
+  ugs: 'Направления группы — вот они. Что из этого ваше — покажет диагностика сильных сторон.',
+  profession: 'Профессия и её факты — перед вами. Ваша ли это траектория — покажут ваши сильные стороны.',
+  'profession-catalog': 'Профессии и зарплаты — факты. Что из этого ваше — покажет диагностика сильных сторон.',
+  ranking: 'Рейтинг по зарплатам — это факты рынка, не про вас. Что подходит именно вам — покажет диагностика.',
+  guide: 'Разобрались в теме — сделайте следующий шаг: поймите свои сильные стороны.',
+};
+const lead = LEAD[pageType] ?? 'Факты собраны. Но какой путь подходит именно вам — покажет не список, а понимание своих сильных сторон.';
+
+let href = '';
+let label = '';
+let external = false;
+if (goal) {
+  const url = new URL(goal.url);
+  for (const [k, v] of Object.entries(goal.utm)) {
+    url.searchParams.set(k, v.replace('{page_type}', pageType));
+  }
+  href = url.href;
+  label = goal.title;
+  external = true;
+} else if (pageType !== 'quiz') {
+  href = '/test/';
+  label = 'Пройти тест';
+}
+---
+{href && (
+  <aside class="cta-block">
+    <p class="cta-kicker">Следующий шаг</p>
+    <p class="cta-lead">{lead}</p>
+    <a class="btn btn-primary" href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}
+      data-goal={goal?.code ?? 'quiz'} data-zone={zone} data-page-type={pageType}>
+      {label}
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+    {external && <p class="cta-meta">Бесплатная «Карта выбора» · 5 минут · 40 вопросов · данные Госуслуг, Росстата и ВШЭ</p>}
+  </aside>
+)}
+
+<style>
+  .cta-block {
+    margin: var(--space-8) 0; padding: var(--space-6);
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, var(--accent-soft), transparent 70%), var(--surface);
+    border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border));
+    box-shadow: var(--shadow-1);
+  }
+  .cta-kicker {
+    margin: 0 0 var(--space-1); font-size: .78rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .06em; color: var(--accent);
+  }
+  .cta-lead { margin: 0 0 var(--space-4); max-width: 60ch; }
+  .cta-meta { margin: var(--space-3) 0 0; font-size: .8125rem; color: var(--text-muted); }
+</style>

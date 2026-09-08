@@ -1,0 +1,213 @@
+---
+// Остров поиска (этап 3, локальная фаза): индекс подгружается при фокусе,
+// матчинг и ранжирование на клиенте. При выходе на хостинг заменяется
+// запросом к Meilisearch с той же моделью документа.
+---
+<div class="search" id="site-search">
+  <input type="search" id="search-input" placeholder="Вуз, специальность, город…"
+    autocomplete="off" aria-label="Поиск по сайту" aria-expanded="false"
+    aria-controls="search-results" role="combobox" />
+  <ul id="search-results" role="listbox" hidden></ul>
+</div>
+
+<!-- Стили глобальные (is:global), потому что элементы выдачи создаются в
+     браузере через JS и не получают scoped-атрибут Astro. Якорим всё на
+     #site-search / #search-results, чтобы правила не утекали на другие узлы. -->
+<style is:global>
+  #site-search { position: relative; flex: 1; min-width: 220px; max-width: 480px; }
+  #site-search input {
+    width: 100%; padding: 8px 12px; font: inherit;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface); color: var(--text);
+  }
+  #search-results {
+    position: absolute; z-index: 10; top: calc(100% + 4px); left: 0; right: 0;
+    margin: 0; padding: 4px; list-style: none;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: var(--radius); box-shadow: 0 8px 24px rgba(0,0,0,.12);
+    max-height: 70vh; overflow-y: auto;
+  }
+  #search-results li { border-radius: 6px; }
+  #search-results li.group {
+    font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;
+    letter-spacing: .04em; padding: 10px 10px 2px; font-weight: 600;
+  }
+  #search-results li a { display: block; padding: 8px 10px; color: var(--text); }
+  #search-results li a:hover, #search-results li[aria-selected="true"] a {
+    background: var(--surface-2); text-decoration: none;
+  }
+  #search-results .title { display: block; }
+  #search-results .sub { display: block; font-size: 0.8125rem; color: var(--text-muted); margin-top: 1px; }
+  #search-results mark { background: none; color: var(--accent); font-weight: 600; }
+  #search-results li.empty { padding: 10px; color: var(--text-muted); }
+</style>
+
+<script>
+  type Doc = { t: string; n: string; s: string; u: string; p: number; a: string[] };
+  const TYPE_ORDER: Record<string, number> = { org: 5, direction: 4, city: 3, region: 2 };
+  const TYPE_LABEL: Record<string, string> = {
+    org: 'Вузы', direction: 'Специальности', city: 'Города', region: 'Регионы',
+  };
+  // Обратная раскладка: латиница, набранная вместо кириллицы.
+  const LAYOUT: Record<string, string> = {
+    q:'й',w:'ц',e:'у',r:'к',t:'е',y:'н',u:'г',i:'ш',o:'щ',p:'з','[':'х',']':'ъ',
+    a:'ф',s:'ы',d:'в',f:'а',g:'п',h:'р',j:'о',k:'л',l:'д',';':'ж','\'':'э',
+    z:'я',x:'ч',c:'с',v:'м',b:'и',n:'т',m:'ь',',':'б','.':'ю',
+  };
+  const TRANSLIT: [RegExp, string][] = [
+    [/sch/g,'щ'],[/shch/g,'щ'],[/yo/g,'е'],[/zh/g,'ж'],[/kh/g,'х'],[/ts/g,'ц'],
+    [/ch/g,'ч'],[/sh/g,'ш'],[/yu/g,'ю'],[/ya/g,'я'],[/a/g,'а'],[/b/g,'б'],
+    [/v/g,'в'],[/g/g,'г'],[/d/g,'д'],[/e/g,'е'],[/z/g,'з'],[/i/g,'и'],[/y/g,'и'],
+    [/k/g,'к'],[/l/g,'л'],[/m/g,'м'],[/n/g,'н'],[/o/g,'о'],[/p/g,'п'],[/r/g,'р'],
+    [/s/g,'с'],[/t/g,'т'],[/u/g,'у'],[/f/g,'ф'],[/h/g,'х'],[/c/g,'к'],[/w/g,'в'],
+  ];
+
+  let docs: Doc[] | null = null;
+  let loading: Promise<Doc[]> | null = null;
+  function loadIndex(): Promise<Doc[]> {
+    loading ??= fetch('/search-index.json').then((r) => r.json()).then((d) => (docs = d));
+    return loading;
+  }
+
+  function norm(q: string): string {
+    return q.trim().toLowerCase().replace(/ё/g, 'е').replace(/\s+/g, ' ');
+  }
+  function variants(q: string): string[] {
+    const out = [q];
+    if (/[a-z]/.test(q)) {
+      out.push(q.split('').map((ch) => LAYOUT[ch] ?? ch).join(''));
+      let t = q;
+      for (const [re, ru] of TRANSLIT) t = t.replace(re, ru);
+      out.push(t);
+    }
+    return [...new Set(out)].filter(Boolean);
+  }
+
+  function score(doc: Doc, qs: string[]): number {
+    let best = 0;
+    const title = doc.n.toLowerCase().replace(/ё/g, 'е');
+    for (const q of qs) {
+      if (title === q) best = Math.max(best, 100);
+      else if (doc.a.includes(q)) best = Math.max(best, 95);
+      else if (title.startsWith(q)) best = Math.max(best, 80);
+      else if (doc.a.some((al) => al.startsWith(q))) best = Math.max(best, 70);
+      else if (title.includes(q)) best = Math.max(best, 55);
+      else if (doc.a.some((al) => al.includes(q))) best = Math.max(best, 45);
+    }
+    if (best === 0) return 0;
+    return best + (TYPE_ORDER[doc.t] ?? 0) * 2 + Math.min(10, Math.log2(1 + doc.p));
+  }
+
+  const input = document.getElementById('search-input') as HTMLInputElement;
+  const list = document.getElementById('search-results') as HTMLUListElement;
+  let selected = -1;
+  let items: HTMLLIElement[] = [];
+
+  function render(results: Doc[], q: string): void {
+    list.innerHTML = '';
+    items = [];
+    selected = -1;
+    if (results.length === 0) {
+      const li = document.createElement('li');
+      li.className = 'empty';
+      li.textContent = 'Ничего не нашли. Попробуйте каталог: /vuzy/';
+      list.appendChild(li);
+    } else {
+      let lastType = '';
+      for (const doc of results) {
+        if (doc.t !== lastType) {
+          lastType = doc.t;
+          const g = document.createElement('li');
+          g.className = 'group';
+          g.textContent = TYPE_LABEL[doc.t] ?? doc.t;
+          list.appendChild(g);
+        }
+        const li = document.createElement('li');
+        li.setAttribute('role', 'option');
+        const a = document.createElement('a');
+        a.href = doc.u;
+        const name = document.createElement('span');
+        name.className = 'title';
+        const idx = doc.n.toLowerCase().replace(/ё/g, 'е').indexOf(q);
+        if (idx >= 0) {
+          name.append(doc.n.slice(0, idx));
+          const m = document.createElement('mark');
+          m.textContent = doc.n.slice(idx, idx + q.length);
+          name.append(m, doc.n.slice(idx + q.length));
+        } else {
+          name.textContent = doc.n;
+        }
+        const sub = document.createElement('span');
+        sub.className = 'sub';
+        sub.textContent = doc.s;
+        a.append(name, sub);
+        li.appendChild(a);
+        list.appendChild(li);
+        items.push(li);
+      }
+    }
+    list.hidden = false;
+    input.setAttribute('aria-expanded', 'true');
+  }
+
+  function hide(): void {
+    list.hidden = true;
+    input.setAttribute('aria-expanded', 'false');
+  }
+
+  let timer = 0;
+  input.addEventListener('focus', () => { void loadIndex(); });
+  input.addEventListener('input', () => {
+    window.clearTimeout(timer);
+    timer = window.setTimeout(async () => {
+      const q = norm(input.value);
+      if (q.length < 2) { hide(); return; }
+      await loadIndex();
+      const qs = variants(q);
+      let scored = docs!
+        .map((d) => ({ d, sc: score(d, qs) }))
+        .filter((x) => x.sc > 0)
+        .sort((a, b) => b.sc - a.sc || a.d.n.localeCompare(b.d.n, 'ru'))
+        .slice(0, 8);
+      // Падежные окончания: при нулевой выдаче повторить без 1–2 последних
+      // букв каждого слова («информатике» → «информатик»).
+      if (scored.length === 0 && q.length > 4) {
+        const stem = q.split(' ').map((w) => (w.length > 4 ? w.slice(0, -2) : w)).join(' ');
+        const qs2 = variants(stem);
+        scored = docs!
+          .map((d) => ({ d, sc: score(d, qs2) }))
+          .filter((x) => x.sc > 0)
+          .sort((a, b) => b.sc - a.sc || a.d.n.localeCompare(b.d.n, 'ru'))
+          .slice(0, 8);
+      }
+      // Группировка при сохранении порядка релевантности внутри типа.
+      scored.sort((a, b) => (TYPE_ORDER[b.d.t] ?? 0) - (TYPE_ORDER[a.d.t] ?? 0) || b.sc - a.sc);
+      render(scored.map((x) => x.d), q);
+    }, 120);
+  });
+  input.addEventListener('keydown', (e) => {
+    if (list.hidden) return;
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      const dir = e.key === 'ArrowDown' ? 1 : -1;
+      selected = (selected + dir + items.length) % Math.max(1, items.length);
+      items.forEach((li, i) => li.setAttribute('aria-selected', String(i === selected)));
+      items[selected]?.scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'Enter' && selected >= 0) {
+      e.preventDefault();
+      items[selected]?.querySelector('a')?.click();
+    } else if (e.key === 'Escape') {
+      hide();
+    }
+  });
+  document.addEventListener('click', (e) => {
+    if (!(e.target as Element).closest('#site-search')) hide();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '/' && document.activeElement !== input &&
+        !(document.activeElement instanceof HTMLInputElement)) {
+      e.preventDefault();
+      input.focus();
+    }
+  });
+</script>

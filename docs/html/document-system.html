@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MainExperts — Система корпоративной документации (DMS)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#13202F;--panel:#1A2B3E;--panel-2:#21384F;--raised:#284763;
+  --line:#33526E;--line-soft:#27415A;--ink:#E9F0F6;--ink-2:#A9BED2;--ink-3:#6F889F;
+  --steel:#7FB2D9;--steel-deep:#4E86B4;--gold:#C9A227;--gold-soft:#3a3320;
+  --ok:#4FB286;--warn:#E0A458;--crit:#D96A6A;--na:#5B7088;
+  --shadow:0 1px 0 rgba(255,255,255,.03), 0 8px 28px rgba(0,0,0,.35);--r:10px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{
+  background:radial-gradient(1200px 600px at 85% -10%, #1c3550 0%, transparent 60%),var(--canvas);
+  color:var(--ink);font-family:"IBM Plex Sans",ui-sans-serif,system-ui,"Segoe UI",Roboto,Arial,sans-serif;
+  font-size:14.5px;line-height:1.5;-webkit-font-smoothing:antialiased;
+}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+a{color:inherit}
+::selection{background:rgba(127,178,217,.28)}
+.app{display:grid;grid-template-rows:auto 1fr;height:100vh;height:100dvh}
+.topbar{display:flex;align-items:center;gap:18px;flex-wrap:wrap;padding:12px 20px;
+  border-bottom:1px solid var(--line);background:linear-gradient(180deg,#1b2d41,#16263a);position:sticky;top:0;z-index:30}
+.brand{display:flex;align-items:baseline;gap:10px;margin-right:6px}
+.brand .mark{font-family:"IBM Plex Mono";font-weight:600;letter-spacing:.14em;font-size:12px;
+  color:var(--canvas);background:var(--steel);padding:4px 8px;border-radius:5px}
+.brand .ttl{font-weight:600;letter-spacing:.01em}
+.brand .sub{color:var(--ink-3);font-size:12px}
+.topright{margin-left:auto;display:flex;align-items:center;gap:16px;color:var(--ink-3);font-size:12.5px}
+.period{display:flex;align-items:center;gap:7px}
+.period b{color:var(--ink-2);font-weight:500}
+.menutgl{display:none}
+.body{display:grid;grid-template-columns:288px 1fr;min-height:0}
+.rail{border-right:1px solid var(--line);background:var(--panel);overflow:auto;padding:14px 12px 40px}
+.rail .grp{margin:16px 6px 7px;color:var(--ink-3);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase}
+.rail .grp:first-child{margin-top:2px}
+.navitem{width:100%;text-align:left;appearance:none;border:0;background:transparent;color:var(--ink-2);
+  font:inherit;cursor:pointer;border-radius:9px;padding:9px 11px;display:grid;grid-template-columns:1fr auto;gap:10px;
+  align-items:center;transition:.13s;margin-bottom:2px}
+.navitem:hover{background:#1f3450;color:var(--ink)}
+.navitem.active{background:var(--panel-2);color:var(--ink);box-shadow:inset 2px 0 0 var(--steel)}
+.navitem .nm{display:flex;flex-direction:column;line-height:1.25}
+.navitem .nm small{color:var(--ink-3);font-size:11px;font-weight:400}
+.navitem.active .nm small{color:var(--ink-2)}
+.navitem .cnt{font-family:"IBM Plex Mono";font-size:10px;color:var(--ink-3);border:1px solid var(--line-soft);
+  border-radius:5px;padding:2px 6px;white-space:nowrap}
+.railnote{margin:18px 8px 0;padding:11px 12px;border:1px solid var(--line-soft);border-radius:9px;
+  color:var(--ink-3);font-size:11.5px;line-height:1.45;background:#172838}
+.railnote b{color:var(--ink-2);font-weight:600}
+.main{overflow:auto;padding:26px 30px 90px;min-width:0}
+.crumbs{color:var(--ink-3);font-size:12px;margin-bottom:14px;font-family:"IBM Plex Mono"}
+.crumbs b{color:var(--ink-2);font-weight:500}
+.bhead{display:flex;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:4px}
+.bhead .lvl{font-family:"IBM Plex Mono";font-size:11px;color:var(--canvas);background:var(--ink-3);
+  border-radius:5px;padding:3px 7px;margin-top:6px;letter-spacing:.08em}
+.bhead h1{font-size:25px;font-weight:600;letter-spacing:-.01em;margin:0 0 3px}
+.bhead .one{color:var(--ink-2);max-width:66ch;font-size:13.5px}
+.bmeta{margin-left:auto;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:#172838;
+  border-radius:8px;padding:7px 11px;font-size:12px;color:var(--ink-2)}
+.chip .k{color:var(--ink-3);font-size:10.5px;text-transform:uppercase;letter-spacing:.1em}
+.chip b{color:var(--ink);font-weight:500}
+.sec{margin-top:26px}
+.sec>h2{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 13px;
+  display:flex;align-items:center;gap:10px}
+.sec>h2::after{content:"";height:1px;flex:1;background:var(--line-soft)}
+.card{background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--r);box-shadow:var(--shadow)}
+.kgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.kpi{background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--r);padding:13px 14px 12px;
+  position:relative;box-shadow:var(--shadow)}
+.kpi .code{font-family:"IBM Plex Mono";font-size:10px;color:var(--ink-3);letter-spacing:.04em}
+.kpi .val{font-family:"IBM Plex Mono";font-size:26px;font-weight:500;margin-top:6px;letter-spacing:-.01em}
+.kpi .nm{color:var(--ink-2);font-size:12px;margin-top:4px}
+.kpi .strk{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:var(--r) 0 0 var(--r);background:var(--steel-deep)}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.dcard{padding:15px 16px;position:relative;cursor:pointer;transition:.14s}
+.dcard:hover{border-color:var(--line);transform:translateY(-1px)}
+.dcard .strk{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:var(--r) 0 0 var(--r)}
+.dcard .dc{font-family:"IBM Plex Mono";font-size:11px;color:var(--steel);letter-spacing:.06em}
+.dcard h3{margin:5px 0 3px;font-size:16px;font-weight:600}
+.dcard .en{color:var(--ink-3);font-size:11.5px;margin-bottom:8px}
+.dcard .pp{color:var(--ink-2);font-size:12.5px;line-height:1.45}
+.dcard .brd{margin-top:9px;font-size:11px;color:var(--ink-3)}
+.dcard .brd b{color:var(--steel);font-weight:500}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th,.tbl td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+.tbl th{color:var(--ink-3);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.08em;
+  position:sticky;top:0;background:#16273a;z-index:2;cursor:default}
+.tbl td.mono{font-family:"IBM Plex Mono";color:var(--ink-2);white-space:nowrap}
+.tbl tr:hover td{background:#17283a}
+.tbl.click tr{cursor:pointer}
+.tag{display:inline-block;font-family:"IBM Plex Mono";font-size:10px;padding:2px 6px;border-radius:5px;
+  border:1px solid var(--line-soft);color:var(--ink-2);background:#1a2c3e;white-space:nowrap}
+.tag.cr{color:var(--crit);border-color:#523035;background:rgba(217,106,106,.1)}
+.tag.h{color:var(--warn);border-color:#4d3f26;background:rgba(224,164,88,.09)}
+.tag.m{color:var(--steel);border-color:#26465f;background:#16314a}
+.tag.l{color:var(--na);background:#1a2c3e}
+.tag.must{color:var(--ok);border-color:#2c5345;background:rgba(79,178,134,.1)}
+.tag.o{color:var(--steel);border-color:#26465f}
+.tag.r{color:var(--ink-2)}
+.tag.a{color:var(--gold);border-color:#5a4d20;background:var(--gold-soft)}
+.filters{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.filters input,.filters select{appearance:none;background:#14263a;border:1px solid var(--line);color:var(--ink);
+  font:inherit;font-size:13px;padding:8px 11px;border-radius:8px}
+.filters input{min-width:220px;flex:1}
+.filters input::placeholder{color:var(--ink-3)}
+.filters .rst{appearance:none;border:1px solid var(--line);background:#16273a;color:var(--ink-2);
+  font:inherit;font-size:12.5px;padding:8px 12px;border-radius:8px;cursor:pointer}
+.filters .rst:hover{color:var(--ink)}
+.tblwrap{border:1px solid var(--line-soft);border-radius:var(--r);overflow:auto;max-height:70vh}
+.count{color:var(--ink-3);font-size:12px;margin:0 0 10px;font-family:"IBM Plex Mono"}
+.count b{color:var(--ink-2)}
+pre.tree{font-family:"IBM Plex Mono";font-size:12px;line-height:1.55;color:var(--ink-2);background:var(--panel);
+  border:1px solid var(--line-soft);border-radius:var(--r);padding:16px 18px;overflow:auto;white-space:pre}
+pre.tree b{color:var(--steel);font-weight:500}
+pre.tree .bk{color:var(--crit)}
+.note-inline{color:var(--ink-3);font-size:12.5px;background:#16273a;border:1px solid var(--line-soft);
+  border-radius:9px;padding:11px 14px;line-height:1.5}
+.note-inline b{color:var(--ink-2)}
+.note-inline.warn{border-color:#4d3f26;background:#20190f}
+.roadgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.stage{padding:15px 16px}
+.stage .st{font-family:"IBM Plex Mono";font-size:11px;color:var(--steel);letter-spacing:.06em}
+.stage h3{margin:5px 0 6px;font-size:15px;font-weight:600}
+.stage .rn{color:var(--ink-3);font-size:12px;line-height:1.45;margin-bottom:9px}
+.stage .ct{font-family:"IBM Plex Mono";font-size:20px;color:var(--ink);font-weight:500}
+.stage .ct small{font-size:11px;color:var(--ink-3);font-weight:400}
+.scrim{position:fixed;inset:0;background:rgba(8,14,22,.6);backdrop-filter:blur(2px);opacity:0;
+  pointer-events:none;transition:.18s;z-index:40}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(460px,94vw);background:var(--panel);
+  border-left:1px solid var(--line);transform:translateX(100%);transition:.22s cubic-bezier(.4,0,.2,1);
+  z-index:41;overflow:auto;box-shadow:-20px 0 50px rgba(0,0,0,.4)}
+.drawer.on{transform:none}
+.dwhead{padding:20px 22px 14px;border-bottom:1px solid var(--line-soft);position:sticky;top:0;
+  background:linear-gradient(180deg,#1d2f44,#1a2b3e)}
+.dwhead .code{font-family:"IBM Plex Mono";font-size:11px;color:var(--ink-3)}
+.dwhead h3{margin:5px 0 3px;font-size:18px;font-weight:600;max-width:34ch}
+.dwhead .pp{color:var(--ink-3);font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-top:8px;
+  display:flex;gap:6px;flex-wrap:wrap}
+.dwx{position:absolute;top:16px;right:18px;appearance:none;border:1px solid var(--line);background:#16273a;
+  color:var(--ink-2);width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:16px}
+.dwx:hover{color:var(--ink)}
+.dwbody{padding:8px 22px 40px}
+.field{padding:11px 0;border-bottom:1px solid var(--line-soft)}
+.field .fk{color:var(--ink-3);font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.field .fv{color:var(--ink);font-size:13px;line-height:1.5}
+.field .fv.mono{font-family:"IBM Plex Mono";font-size:12px;color:var(--ink-2)}
+.footer{margin-top:46px;padding-top:18px;border-top:1px solid var(--line-soft);color:var(--ink-3);
+  font-size:11.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.footer .mono{color:var(--na)}
+@media(max-width:820px){
+  .body{grid-template-columns:1fr}
+  .rail{position:fixed;left:0;top:57px;bottom:0;width:300px;z-index:25;transform:translateX(-105%);
+    transition:.2s;box-shadow:20px 0 50px rgba(0,0,0,.4)}
+  .rail.open{transform:none}
+  .menutgl{display:inline-flex;align-items:center;gap:7px;appearance:none;border:1px solid var(--line);
+    background:#16273a;color:var(--ink-2);font:inherit;font-size:13px;padding:7px 11px;border-radius:8px;cursor:pointer}
+  .main{padding:20px 18px 70px}.bhead h1{font-size:21px}.topright{display:none}
+}
+:focus-visible{outline:2px solid var(--steel);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <button class="menutgl" id="menutgl">☰ Разделы</button>
+    <div class="brand">
+      <span class="mark">DMS</span>
+      <span class="ttl">Система корпоративной документации</span>
+      <span class="sub">MainExperts</span>
+    </div>
+    <div class="topright">
+      <div class="period">снимок <b>12.07.2026</b></div>
+      <div class="period">канон <b>docs/dms/</b></div>
+    </div>
+  </header>
+  <div class="body">
+    <nav class="rail" id="rail"></nav>
+    <main class="main" id="main"></main>
+  </div>
+</div>
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true"></aside>
+
+<script>
+"use strict";
+/* ============ ДАННЫЕ ============ */
+
+var NAV=[
+  {g:"Обзор"},
+  {id:"overview",nm:"Обзор системы",sub:"устройство и статистика"},
+  {g:"Архитектура"},
+  {id:"divisions",nm:"Divisions 1–7",sub:"орг-каркас"},
+  {id:"processes",nm:"Карта процессов",sub:"12 потоков ценности"},
+  {id:"classes",nm:"Классификация",sub:"единый словарь классов"},
+  {g:"Реестр"},
+  {id:"registry",nm:"Реестр документов",sub:"поиск и фильтры"},
+  {g:"Связи"},
+  {id:"matrices",nm:"Матрицы",sub:"процесс · владелец"},
+  {id:"trees",nm:"Деревья",sub:"наследование · зависимости"},
+  {g:"Внедрение"},
+  {id:"roadmap",nm:"Roadmap",sub:"4 этапа создания"},
+  {g:"Governance"},
+  {id:"ai",nm:"AI Governance",sub:"промпты · eval · границы"},
+  {id:"data",nm:"Data Governance",sub:"словари · роли · качество"},
+  {g:"Контроль"},
+  {id:"audit",nm:"Аудит полноты",sub:"чек-лист и пробелы"}
+];
+
+var DIV=[
+  {c:"D7",n:"Executive & Strategy",en:"Офис основателя · Executive (Div 7)",pp:"Направление, стратегия, распределение ресурсов, решения, которые не может принять никто другой. Единственный слой, где метрики двух потоков консолидируются.",brd:"Owner (L0)"},
+  {c:"D1",n:"People, Org & Governance",en:"HCO (Div 1)",pp:"Люди, оргструктура, внутренние коммуникации, право, комплаенс, защита данных, ИБ, этика. Держатель Governance Office — единой точки владения политиками.",brd:"кросс-функц."},
+  {c:"D2",n:"Marketing & Sales",en:"Dissemination (Div 2)",pp:"Создавать спрос и превращать его в выручку. В SaaS маркетинг и продажи — единый Revenue-контур с двумя бордами. Строго держит границу P1/P2.",brd:"Marketing + Sales (L1)"},
+  {c:"D3",n:"Finance & Treasury",en:"Treasury (Div 3)",pp:"Деньги: учёт, платежи, юнит-экономика, ликвидность, привлечение капитала. Хранитель финансовой истины и runway; раздельный учёт P1 (₽/£) и P2.",brd:"Finance (L1)"},
+  {c:"D4",n:"Product & Engineering",en:"Production (Div 4)",pp:"Производить продукт: цифровой профиль, AI-отчёт, платформу, AI-консультантов. Ядро цифровой ценности с переменной стоимостью ≈ 0. Исполнение Data/AI Governance.",brd:"Product (L1)"},
+  {c:"D5",n:"Quality, Methodology & Enablement",en:"Qualifications (Div 5)",pp:"Гарантировать качество: продукта, методологии, AI-выходов, людей. Держатель стандартов, валидации психометрики, границы психодиагностики и СМК.",brd:"в Operations/Expert"},
+  {c:"D6",n:"Community, Expert Network & Partnerships",en:"Public (Div 6)",pp:"Растить внешнюю экосистему: сеть экспертов, партнёрства (вузы, работодатели), сообщество, поддержку, публичные каталоги (профессии/вузы/работодатели).",brd:"Expert Network (L1)"}
+];
+
+var PROC=[
+  ["P01","Стратегическое планирование и OKR-цикл","Управляющий","D7","Цели — решения основателя"],
+  ["P02","Генерация спроса и трафик","Основной","D2","ДРР — главный KPI"],
+  ["P03","Скрининг → freemium → апсейл (воронка P2)","Основной","D2→D4","Гипотеза скрининга — ставка"],
+  ["P04","Премиальная продажа (P1, high-touch)","Основной","D2/D7","Не смешивать с P2"],
+  ["P05","Производство цифрового профиля и AI-отчёта","Основной","D4","Себестоимость ≈ 0"],
+  ["P06","Управление подпиской и биллинг","Основной","D3→D4","Сведение оплат с трафиком"],
+  ["P07","Онбординг и управление сетью экспертов","Основной","D6","Онбординг вручную на старте"],
+  ["P08","Ведение каталогов (профессии/вузы/работодатели)","Основной","D6→D4","Источник+дата; только архетипы"],
+  ["P09","Найм и адаптация сотрудников","Обеспечивающий","D1","Обезличивание на выходе"],
+  ["P10","Управление данными и метриками","Обеспечивающий","D4","Единый источник истины"],
+  ["P11","AI-контур: промпты, агенты, оценка","Обеспечивающий","D4→D5","AI не утверждает решения"],
+  ["P12","Комплаенс, риски, защита данных","Управляющий","D1→D5","Дети, психодиагностика, лицензии"]
+];
+
+var CLASSES=[
+  ["POL","Политика","Policy","Намерение руководства и принципы: зачем и в каких границах. Не описывает шаги.","Стратегический"],
+  ["STD","Стандарт","Standard","Обязательная измеримая норма «как должно быть»; проверяется на соответствие.","Тактический"],
+  ["RGM","Регламент","Regulation","Обязательный порядок межфункционального взаимодействия (≥2 функции).","Тактический"],
+  ["PRC","Процедура","Procedure","Порядок одного процесса внутри одной функции.","Операционный"],
+  ["SOP","SOP","SOP","Воспроизводимый порядок одной операции для одной роли.","Операционный"],
+  ["WIN","Рабочая инструкция","Work Instruction","Пошагово на уровне экрана, кнопки, команды, инструмента.","Исполнительский"],
+  ["GDL","Гайдлайн","Guideline","Рекомендация «как лучше»; не обязателен, не проверяется.","Тактический"],
+  ["TPL","Шаблон","Template","Заготовка структуры для многократного заполнения (без содержания).","Операционный"],
+  ["FRM","Форма","Form","Носитель для сбора данных; результат — запись.","Операционный"],
+  ["CHK","Чек-лист","Checklist","Пункты контроля «сделано/не сделано» для верификации полноты.","Исполнительский"],
+  ["RGS","Реестр","Registry","Учётный перечень объектов управления с атрибутами и статусами.","Тактический"],
+  ["CAT","Каталог","Catalogue","Витрина сущностей для выбора/навигации (часто публичная).","Тактический"],
+  ["KB","База знаний","Knowledge Base","Корпус статей/ответов для самостоятельного поиска знаний.","Операционный"],
+  ["DSH","Дашборд","Dashboard","Живое представление показателей для мониторинга и решений.","Стратег.→Оперц."],
+  ["RPT","Отчёт","Report","Снимок данных за период; статичен на момент выпуска.","Тактический"],
+  ["RMP","Дорожная карта","Roadmap","Последовательность целей/инициатив во времени с горизонтами.","Стратегический"],
+  ["ARC","Архитектурный документ","Architecture Document","Описание структуры системы/данных/процессов и связей.","Тактический"],
+  ["SPC","Спецификация","Specification","Детальное описание требований к продукту/компоненту.","Тактический"],
+  ["CTR","Договор","Contract","Юридически обязывающее соглашение со стороной.","Тактический"],
+  ["AIA","AI-артефакт","AI Artifact","Управляемый объект AI-контура (промпт, агент, eval, RAG).","Операционный"],
+  ["DAT","Data-артефакт","Data Artifact","Управляемый объект данных (словарь, глоссарий, схема).","Тактический"],
+  ["PLN","План","Plan","Операционный план исполнения инициативы/проекта. [расширение]","Операционный"],
+  ["CLF","Классификатор","Classifier","Нормативный закрытый перечень кодов и категорий. [расширение]","Тактический"]
+];
+
+var COLS=["id","n","c","cat","m","cr","z","o","a","p"];
+var RAW=[
+// D7 (11)
+["D7-POL-01","Декларация миссии, видения и ценностей","POL","О","M","Cr","MVP","Owner","низ·част","P01"],
+["D7-POL-02","Политика корпоративного управления","POL","О","S","H","Gr","Owner","низ·нет","P01"],
+["D7-POL-03","Политика целеполагания (OKR)","POL","Р","S","H","Gr","CEO","низ·част","P01"],
+["D7-POL-04","Политика управления рисками (ERM)","POL","О","S","H","Sc","CEO","низ·нет","P01,P12"],
+["D7-RMP-01","Дорожная карта компании","RMP","О","M","H","MVP","Owner","сред·част","P01"],
+["D7-RGS-01","Реестр OKR","RGS","Р","M","Cr","MVP","CEO","выс·част","P01"],
+["D7-RGS-02","Реестр стратегических рисков","RGS","О","S","H","Gr","CEO","сред·част","P12"],
+["D7-RPT-01","Протокол стратегической сессии/совета","RPT","Р","C","M","Gr","Owner","низ·да","P01"],
+["D7-ARC-01","Модель бизнес-архитектуры","ARC","О","S","H","Gr","Owner","низ·част","P01"],
+["D7-DSH-01","Owner Dashboard (спецификация)","DSH","Р","M","Cr","Gr","Owner","выс·да","P01"],
+["D7-CTR-01","Учредительные документы (юрлицо)","CTR","О","M","Cr","MVP","Legal","низ·нет","P01"],
+// D1 (33)
+["D1-ARC-01","Организационная структура (Org Board)","ARC","О","M","H","MVP","COO","низ·част","P09"],
+["D1-RGM-01","Регламент найма и адаптации","RGM","О","S","H","Gr","COO","сред·част","P09"],
+["D1-TPL-01","Профиль роли / должностная (шаблон)","TPL","О","M","H","MVP","COO","сред·да","P09"],
+["D1-CHK-01","Чек-лист онбординга сотрудника","CHK","Р","S","M","Gr","COO","сред·да","P09"],
+["D1-PLN-01","План адаптации сотрудника","PLN","Р","C","M","Gr","Менеджер","сред·да","P09"],
+["D1-RGM-02","Регламент внутренних ритмов (DemoDay/1-1/ретро)","RGM","Р","S","M","Gr","COO","сред·част","P09"],
+["D1-RGS-01","Реестр сотрудников и ролей","RGS","О","S","H","Gr","COO","выс·нет","P09"],
+["D1-RGS-02","Матрица компетенций команды","RGS","Р","C","M","Sc","COO","сред·част","P09"],
+["D1-RPT-01","Отчёт по найму и текучести","RPT","Р","C","L","Sc","COO","выс·да","P09"],
+["D1-CTR-01","Шаблон трудового/партнёрского договора","CTR","О","M","Cr","MVP","Legal","низ·част","P09"],
+["D1-CTR-02","NDA (соглашение о неразглашении)","CTR","О","S","H","Gr","Legal","сред·да","P07,P09"],
+["D1-CTR-03","Пользовательское соглашение (ToS)","CTR","О","M","Cr","MVP","Legal","низ·част","P03"],
+["D1-CTR-04","Публичная оферта (услуги/подписка)","CTR","О","M","Cr","MVP","Legal","низ·част","P06"],
+["D1-RGS-03","Реестр договоров","RGS","О","S","H","Gr","Legal","сред·нет","P12"],
+["D1-POL-01","Кодекс поведения и этики","POL","О","S","H","Gr","COO","низ·част","P12"],
+["D1-POL-02","Политика конфиденциальности (Privacy)","POL","О","M","Cr","MVP","DPO","низ·част","P03,P12"],
+["D1-POL-03","Политика обработки данных несовершеннолетних","POL","О","M","Cr","MVP","DPO","низ·нет","P12"],
+["D1-POL-04","Политика хранения и удаления данных","POL","О","M","Cr","MVP","DPO","низ·част","P10,P12"],
+["D1-POL-05","Политика информационной безопасности","POL","О","S","Cr","Gr","CISO","низ·нет","P12"],
+["D1-POL-06","Политика управления доступом (RBAC)","POL","О","S","H","Gr","CTO","сред·част","P12"],
+["D1-POL-07","Политика согласий и cookie","POL","О","M","H","MVP","DPO","сред·част","P03,P12"],
+["D1-POL-08","Политика вознаграждения и мотивации","POL","Р","C","M","Sc","COO","низ·нет","P09"],
+["D1-POL-09","Политика AI (AI Policy)","POL","Р","S","H","Gr","CTO","низ·част","P11"],
+["D1-POL-10","Политика AI-безопасности (AI Security)","POL","Р","S","H","Sc","CISO","низ·нет","P11"],
+["D1-STD-01","Стандарт классификации информации (гриф)","STD","О","S","H","Gr","CISO","низ·част","P12"],
+["D1-PRC-01","Процедура реагирования на инциденты ИБ","PRC","О","S","Cr","Gr","CISO","сред·част","P12"],
+["D1-PRC-02","Процедура ответа на запросы субъектов (DSAR)","PRC","О","S","H","Sc","DPO","сред·да","P12"],
+["D1-FRM-01","DPIA-форма","FRM","О","S","Cr","Gr","DPO","сред·част","P12"],
+["D1-RGS-04","Реестр обработки ПДн (RoPA)","RGS","О","S","Cr","Gr","DPO","сред·част","P12"],
+["D1-RGS-05","Реестр согласий","RGS","О","M","Cr","MVP","DPO","выс·част","P03,P12"],
+["D1-RGS-06","Реестр рисков (единый операционный)","RGS","О","M","H","MVP","Compliance","сред·част","P12"],
+["D1-RGS-07","Реестр инцидентов","RGS","О","S","H","Gr","CISO","выс·да","P12"],
+["D1-CHK-02","Чек-лист соответствия перед трафиком","CHK","Р","M","Cr","MVP","DPO","сред·част","P02,P12"],
+// D2 (24)
+["D2-RMP-01","Маркетинговая стратегия (слои трафика)","RMP","Р","M","H","MVP","CMO","низ·част","P02"],
+["D2-RGM-01","Регламент трафика и запуска кампаний","RGM","Р","S","H","Gr","CMO","сред·част","P02"],
+["D2-CLF-01","Классификатор источников/каналов MK_","CLF","Р","M","H","MVP","CMO","выс·нет","P02"],
+["D2-CLF-02","Классификатор посадочных PG_","CLF","Р","M","H","MVP","CMO","выс·нет","P02"],
+["D2-CLF-03","Классификатор ячеек CELL_","CLF","Р","S","H","Gr","CMO","выс·нет","P02"],
+["D2-STD-01","Стандарт UTM-разметки и атрибуции","STD","Р","M","H","MVP","Analyst","выс·част","P02"],
+["D2-TPL-01","Шаблон ТЗ подрядчику (11 пунктов)","TPL","Р","M","H","MVP","CMO","сред·да","P02"],
+["D2-SOP-01","SOP запуска пары источник-посадочная","SOP","Р","S","M","Gr","Traffic","сред·да","P02"],
+["D2-GDL-01","Бренд-гайд и tone of voice","GDL","Р","S","M","Gr","CMO","низ·част","P02"],
+["D2-GDL-02","Контент-гайдлайн и SEO-стандарт","GDL","Р","C","M","Gr","CMO","сред·да","P02"],
+["D2-RGS-01","Реестр кампаний и пар (статус пары)","RGS","Р","S","M","Gr","CMO","выс·да","P02"],
+["D2-RPT-01","Отчёт по кампании/каналу (ДРР/CPL)","RPT","Р","S","H","Gr","Analyst","выс·да","P02"],
+["D2-DSH-01","Marketing Dashboard (спецификация)","DSH","Р","S","H","Gr","CMO","выс·да","P02"],
+["D2-RGM-02","Регламент воронки P2 (скрининг→freemium→апсейл)","RGM","Р","M","Cr","MVP","CMO","сред·част","P03"],
+["D2-SOP-02","SOP правил вывода текстов мини-отчёта","SOP","Р","M","H","MVP","Method","сред·част","P03"],
+["D2-FRM-01","Форма захвата e-mail (lead capture)","FRM","Р","M","H","MVP","Growth","выс·да","P03"],
+["D2-GDL-03","Гайдлайн офферов и CTA","GDL","Р","S","M","Gr","Copywriter","низ·да","P03"],
+["D2-POL-01","Ценовая политика P2 (Free/Pro/Ultima)","POL","Р","M","H","MVP","Product Owner","низ·нет","P03,P06"],
+["D2-RGM-03","Регламент продаж P2 (self-serve)","RGM","Р","S","M","Gr","Commercial Dir","сред·част","P03"],
+["D2-DSH-02","Sales Dashboard (спецификация)","DSH","Р","S","M","Gr","Commercial Dir","выс·да","P03,P04"],
+["D2-RGS-02","Реестр сделок / pipeline","RGS","Р","S","M","Gr","Commercial Dir","выс·да","P03,P04"],
+["D2-SPC-01","Спецификация CRM-контура","SPC","Р","S","M","Gr","Commercial Dir","сред·част","P03"],
+["D2-KB-01","База знаний по возражениям/скриптам","KB","Р","C","M","Sc","Commercial Dir","сред·да","P03,P04"],
+["D2-POL-02","Политика ценообразования P1 (обзор; канон в private)","POL","Р","S","H","Gr","Owner","низ·нет","P04"],
+// D3 (13)
+["D3-POL-01","Учётная (финансовая) политика","POL","О","S","H","Gr","CFO","низ·нет","P01,P06"],
+["D3-POL-02","Политика ценообразования и юнит-экономики","POL","Р","S","H","Gr","CFO","низ·част","P01"],
+["D3-POL-03","Политика возвратов и рекламаций (финчасть)","POL","О","M","H","MVP","CFO","низ·част","P06"],
+["D3-RGM-01","Регламент биллинга и подписки","RGM","Р","M","Cr","MVP","CFO","сред·част","P06"],
+["D3-PRC-01","Процедура сведения оплат с трафиком","PRC","Р","M","H","MVP","Payments","сред·част","P02,P06"],
+["D3-PRC-02","Процедура закрытия финансового периода","PRC","О","S","M","Sc","CFO","сред·да","P06"],
+["D3-SPC-01","Модель юнит-экономики и P&L по потокам","SPC","Р","M","Cr","MVP","CFO","сред·да","P01"],
+["D3-RGS-01","Реестр транзакций/платежей","RGS","О","S","H","Gr","Payments","выс·нет","P06"],
+["D3-RGS-02","Бюджет и контроль runway","RGS","Р","M","Cr","MVP","CFO","выс·да","P01"],
+["D3-RPT-01","Финансовый отчёт (P&L/Cash/Runway)","RPT","О","S","H","Gr","CFO","выс·да","P06"],
+["D3-DSH-01","Finance Dashboard (спецификация)","DSH","Р","S","H","Gr","CFO","выс·да","P01,P06"],
+["D3-CTR-01","Договоры с платёжными провайдерами","CTR","О","M","H","MVP","CFO","низ·нет","P06"],
+["D3-CHK-01","Чек-лист запуска международных платежей","CHK","Р","S","M","Gr","CFO","сред·да","P06"],
+// D4 (35)
+["D4-SPC-01","Спецификация цифрового профиля","SPC","Р","M","Cr","MVP","Product Owner","низ·част","P05"],
+["D4-SPC-02","Спецификация онбордингового квиза","SPC","Р","M","Cr","MVP","Product Owner","низ·част","P03"],
+["D4-SPC-03","Спецификация AI-отчёта (~40 стр.)","SPC","Р","M","Cr","MVP","Product Owner","сред·част","P05"],
+["D4-SPC-04","PRD подписочной модели","SPC","Р","M","H","MVP","Product Owner","низ·част","P06"],
+["D4-STD-01","Стандарт freemium-логики","STD","Р","S","H","Gr","Product Owner","сред·част","P03,P05"],
+["D4-RMP-01","Продуктовая дорожная карта (этапы 1–3)","RMP","Р","M","H","MVP","CPO","сред·да","P05"],
+["D4-RGS-01","Продуктовый бэклог","RGS","Р","M","H","MVP","Product Owner","выс·да","P05"],
+["D4-DSH-01","Product Dashboard (спецификация)","DSH","Р","S","M","Gr","CPO","выс·да","P05"],
+["D4-GDL-01","Дизайн-система / UI-kit","GDL","Р","S","M","Gr","Designer","сред·част","P05"],
+["D4-STD-02","Стандарт локализации/доступности (RU/AR)","STD","Р","C","M","Sc","Designer","низ·част","P05"],
+["D4-ARC-01","Архитектура платформы (C4/системный дизайн)","ARC","О","S","H","Gr","CTO","низ·част","P05,P10"],
+["D4-STD-03","Стандарт разработки и код-ревью","STD","О","S","M","Gr","CTO","сред·да","P05"],
+["D4-STD-04","Стандарт API и интеграций","STD","О","S","M","Gr","CTO","сред·да","P05,P06"],
+["D4-STD-05","Стандарт наблюдаемости (логи/метрики/трейсы)","STD","Р","C","M","Sc","SRE","сред·част","P05,P10"],
+["D4-SOP-01","SOP релиза и деплоя (CI/CD)","SOP","О","S","M","Gr","DevOps","выс·да","P05"],
+["D4-PRC-01","Процедура управления инцидентами (SRE)","PRC","О","S","H","Sc","DevOps","сред·да","P05"],
+["D4-SPC-05","Спецификация событийной модели (append-only)","SPC","Р","S","H","Gr","Data Eng","сред·част","P10"],
+["D4-RMP-02","Технический roadmap (.com, Stripe, инфра)","RMP","Р","S","M","Gr","CTO","сред·да","P05"],
+["D4-RGS-02","Реестр технического долга","RGS","Р","C","M","Sc","CTO","выс·да","P05"],
+["D4-KB-01","Инженерная база знаний / runbooks","KB","О","C","M","Sc","CTO","сред·да","P05"],
+["D4-DAT-01","Data Dictionary","DAT","О","M","H","Gr","Data Steward","сред·да","P10"],
+["D4-DAT-02","Словарь метрик (Metric Dictionary)","DAT","О","M","H","MVP","Data Steward","сред·да","P10"],
+["D4-DAT-03","Бизнес-глоссарий (Business Glossary)","DAT","О","S","M","Gr","Data Steward","сред·да","P10"],
+["D4-DAT-04","Каталог master-data / справочные наборы","DAT","Р","S","M","Sc","Data Steward","сред·част","P10"],
+["D4-DAT-05","Data Lineage (происхождение данных)","DAT","О","C","M","Sc","Data Eng","сред·част","P10"],
+["D4-CLF-01","Классификаторы ядра (LST_/EVT_/ORDER_)","CLF","Р","S","H","Gr","Data Steward","сред·нет","P10"],
+["D4-STD-06","Стандарт качества данных (Data Quality)","STD","О","S","H","Sc","Data Steward","сред·да","P10"],
+["D4-STD-07","Стандарт именования данных (snake_case, _ID)","STD","Р","S","M","Gr","Data Steward","сред·да","P10"],
+["D4-RGS-03","Реестр витрин/отчётов BI (v_*)","RGS","Р","C","M","Sc","Data Steward","выс·да","P10"],
+["D4-AIA-01","Библиотека промптов (Prompt Library)","AIA","Р","M","H","MVP","AI Eng","выс·да","P05,P11"],
+["D4-AIA-02","Системные промпты (System Prompts)","AIA","Р","M","H","MVP","AI Eng","выс·да","P11"],
+["D4-AIA-03","Инструкции агентов (Agent Instructions)","AIA","Р","S","H","Gr","AI Eng","выс·да","P11"],
+["D4-AIA-04","Контекст-библиотека / RAG-корпус","AIA","Р","S","H","Gr","AI Eng","сред·част","P05,P11"],
+["D4-STD-08","Стандарт версионирования промптов","STD","Р","S","M","Gr","AI Eng","выс·да","P11"],
+["D4-RGS-04","AI-аудит (журнал генераций/решений)","RGS","Р","S","H","Sc","AI Eng","выс·да","P11"],
+// D5 (19)
+["D5-POL-01","Политика качества (Quality Policy)","POL","О","S","H","Gr","Head of Quality","низ·част","P05,P11"],
+["D5-SPC-01","Методология скрининга (BFAS/RIASEC, раб.)","SPC","Р","M","Cr","MVP","Methodologist","низ·нет","P03,P05"],
+["D5-STD-01","Стандарт валидации психометрики","STD","О","S","Cr","Gr","Psychometrist","низ·нет","P05"],
+["D5-GDL-01","Дисклеймер психодиагностики","GDL","О","M","Cr","MVP","Method/Legal","сред·да","P05,P12"],
+["D5-STD-02","Стандарт качества AI-отчёта","STD","Р","S","H","Gr","Quality","сред·да","P05,P11"],
+["D5-STD-03","eval-правила AI (Evaluation Rules)","STD","Р","S","H","Gr","Quality","сред·да","P11"],
+["D5-SOP-01","SOP human review AI-выходов","SOP","Р","S","H","Gr","Quality","сред·част","P11"],
+["D5-CHK-01","Чек-лист приёмки продукта (Definition of Done)","CHK","Р","S","M","Gr","Quality","сред·да","P05"],
+["D5-STD-04","Стандарт enablement/обучения","STD","Р","C","L","Sc","Enablement","низ·да","P07,P09"],
+["D5-PRC-01","Процедура управления несоответствиями","PRC","О","S","M","Sc","Quality","сред·част","P05,P11"],
+["D5-PRC-02","Процедура корректирующих/предупр. действий","PRC","О","C","M","Sc","Quality","сред·част","P05"],
+["D5-PRC-03","Процедура внутреннего аудита","PRC","О","C","M","Ent","Quality","низ·част","P12"],
+["D5-POL-02","Политика управления документацией (СМК)","POL","О","M","H","Gr","Head of Quality","низ·част","DMS"],
+["D5-PRC-04","Процедура управления документами (9 этапов ЖЦ)","PRC","О","S","H","Gr","DMS-admin","сред·част","DMS"],
+["D5-PRC-05","Процедура управления записями","PRC","О","C","M","Sc","DMS-admin","сред·част","DMS"],
+["D5-RGS-01","Реестр документов (мастер-реестр DMS)","RGS","О","M","H","MVP","DMS-admin","выс·да","DMS"],
+["D5-TPL-01","Мета-шаблон документа","TPL","Р","M","H","MVP","Quality","сред·да","DMS"],
+["D5-STD-05","Стандарт именования/идентификации документов","STD","Р","S","M","Gr","Quality","сред·да","DMS"],
+["D5-KB-01","База знаний (внутренняя вики)","KB","Р","S","M","Gr","Knowledge Mgr","сред·да","all"],
+// D6 (17)
+["D6-RGM-01","Регламент онбординга эксперта","RGM","Р","S","H","Gr","Head of Expert Net","сред·част","P07"],
+["D6-STD-01","Стандарт качества эксперта (rating/performance)","STD","Р","S","M","Gr","Quality Mgr","сред·част","P07"],
+["D6-CHK-01","Чек-лист верификации сертификатов","CHK","Р","S","M","Gr","Support","сред·да","P07"],
+["D6-CTR-01","Оферта эксперта / договор","CTR","О","S","H","Gr","Legal","низ·част","P07"],
+["D6-POL-01","Политика подписки экспертов (3 мес бесплатно)","POL","Р","C","M","Gr","Head of Expert Net","низ·нет","P07"],
+["D6-RGS-01","Реестр экспертов","RGS","Р","S","M","Gr","Head of Expert Net","выс·нет","P07"],
+["D6-DSH-01","Expert Network Dashboard (спецификация)","DSH","Р","S","M","Gr","Head of Expert Net","выс·да","P07"],
+["D6-RPT-01","Отчёт по сети экспертов (NPS/rating/util)","RPT","Р","C","M","Sc","Head of Expert Net","выс·да","P07"],
+["D6-CAT-01","Каталог профессий","CAT","Р","M","H","Gr","Content/Data","сред·част","P08"],
+["D6-CAT-02","Каталог вузов и программ","CAT","Р","S","M","Gr","Content","сред·част","P08"],
+["D6-CAT-03","Каталог работодателей","CAT","Р","C","M","Sc","Content","сред·част","P08"],
+["D6-CLF-01","Классификатор профессий (RIASEC/Job Zones/ISCO)","CLF","Р","S","H","Gr","Data/Method","сред·нет","P08"],
+["D6-POL-02","Политика источников данных каталогов","POL","Р","M","H","MVP","Method/Data","сред·част","P08"],
+["D6-GDL-01","Гайдлайн обезличивания и архетипизации","GDL","О","M","Cr","MVP","Legal/Method","сред·част","P08,P12"],
+["D6-RGM-02","Регламент поддержки и успеха клиента","RGM","Р","C","M","Sc","Support","сред·част","P07"],
+["D6-KB-01","База знаний / help-центр для клиентов","KB","Р","S","M","Gr","Support","сред·да","P07"],
+["D6-CTR-02","Партнёрское соглашение (вузы/работодатели)","CTR","Р","C","M","Sc","Head of Partnerships","низ·нет","P08"]
+];
+var REG=RAW.map(function(r){var o={};COLS.forEach(function(k,i){o[k]=r[i];});return o;});
+
+// 20 полных карточек (нарративные поля; остальное — из реестра)
+var CARDS={
+"D7-POL-01":{alt:"Mission & Vision Statement",lvl:"Стратегический",desc:"Верхняя политика: миссия, видение, ценности, из которых выводятся стратегия и цели.",purpose:"Единая точка опоры для решений и приоритетов; корень дерева наследования.",problem:"Без неё команда оптимизирует локально, приоритеты конфликтуют.",value:"Согласованность решений; фильтр «наше/не наше».",docOwner:"Owner",procOwner:"Owner (P01)",inputs:"Позиция основателя, сегментные ценности.",outputs:"Утверждённая формулировка.",sources:"docs/01-strategy.md (мастер-формулировка 18.06).",deps:"Родитель — нет (корень); дети — D7-RMP-01, D7-RGS-01, все политики.",systems:"git (docs/) + Google Drive.",format:"md → PDF",ver:"v0.9 (миссия не финализирована)",cadence:"по вехам",approvals:"нет (прерогатива основателя); информируются все",complexity:"M · 2–4 чел-дн · Owner+фасилитатор · ≤1 нед",template:"Паспорт; Миссия; Видение; Ценности; Сегментные ценности; Границы; История."},
+"D7-RGS-01":{alt:"OKR Tracker",lvl:"Стратегич.→Тактич.",desc:"Живой перечень целей и ключевых результатов по компании и Division.",purpose:"Перевести стратегию в измеримые квартальные цели, связать с KPI бордов.",problem:"Стратегия без OKR не исполняется; цели без владельца не контролируются.",value:"Фокус, приоритизация, привязка работы к стратегии.",docOwner:"CEO",procOwner:"Owner/CEO (P01)",inputs:"Стратегия, ограничения runway.",outputs:"Утверждённый OKR-набор, статусы.",sources:"D7-POL-01, Owner Dashboard, boards/01-kpi-framework.md.",deps:"Родитель — D7-RMP-01; дети — проектные планы, KPI-каталог.",systems:"Notion/таблица → git-снимок.",format:"таблица",ver:"по кварталам",cadence:"квартал + еженедельный статус",approvals:"Owner утверждает набор; владельцы Division — свои OKR",complexity:"M · 2–4 чел-дн · CEO+владельцы · ≤1 нед/квартал",template:"Objective; 2–4 Key Results (с KPI-кодом); Владелец; Статус; Связь с KPI L0–L1; История."},
+"D1-POL-03":{alt:"Children's Data Policy",lvl:"Стратегический",desc:"Правила и границы сбора, обработки, хранения, доступа к данным несовершеннолетних 10–18 с режимом родительского согласия.",purpose:"Сделать продукт законным и безопасным до запуска трафика; снять регуляторный риск красной зоны.",problem:"Обработка детских данных без согласия/режима — прямой юридический риск и стоп-фактор для вебинара и платного трафика.",value:"Право на запуск; доверие родителей; защита от штрафов.",docOwner:"DPO/Compliance",procOwner:"DPO (P12)",inputs:"Карта детских данных, регуляторные требования РФ/СНГ/MENA.",outputs:"Правила обработки, режим согласия, сроки хранения.",sources:"docs/05-risk-compliance.md, docs/02-product.md (психомодуль), закон.",deps:"Родители — D1-POL-02, D1-POL-04; дети — D1-RGS-05, D1-FRM-01, D5-GDL-01, D6-GDL-01.",systems:"git + Drive; реализация — платформа.",format:"md → PDF (публичная выжимка на сайте)",ver:"v1.0",cadence:"≤6 мес и при смене регуляторики",approvals:"Legal, CTO, Owner",complexity:"L · 5–10 чел-дн · DPO+Legal+Method+CTO · ≤3 нед (внешняя юр-экспертиза)",template:"Паспорт; Область; Правовые основания и согласие; Принципы; Хранение/удаление; Доступ; Права субъекта/DSAR; Психомодуль (особый режим); Инцидент; Роли; История."},
+"D1-CTR-03":{alt:"Terms of Service",lvl:"Тактический",desc:"Публичный договор между платформой и пользователем: права, обязанности, ограничения ответственности.",purpose:"Юридически оформить отношения с пользователем до сбора данных и оплат.",problem:"Без ToS сбор данных и оказание услуг юридически не оформлены.",value:"Правовая защита; условие эквайринга и запуска.",docOwner:"Legal",procOwner:"Legal/DPO (P03)",inputs:"Модель продукта, режим данных.",outputs:"Опубликованный ToS.",sources:"D4-SPC-01, D1-POL-02/03.",deps:"Родитель — D1-POL-02; дети — D1-CTR-04, согласия.",systems:"сайт + git.",format:"md/HTML",ver:"v1.0",cadence:"≤12 мес / при смене продукта",approvals:"DPO, Owner",complexity:"M · 2–4 чел-дн · Legal · ≤1 нед",template:"Паспорт; Термины; Предмет; Права/обязанности; Данные (ссылка на Privacy); Оплаты; Ответственность; Изменения; Реквизиты; История."},
+"D1-RGS-05":{alt:"Consent Registry",lvl:"Тактический",desc:"Учёт данных согласий (кто, на что, когда, версия политики, отзыв).",purpose:"Доказуемость законного основания обработки, особенно детских/психоданных.",problem:"Без реестра согласий невозможно доказать основание и обработать отзыв.",value:"Аудируемость; исполнение прав субъекта; защита при проверке.",docOwner:"DPO",procOwner:"DPO (P03, P12)",inputs:"Событие согласия из воронки (EVT_), версия политики.",outputs:"Запись согласия, статус.",sources:"платформа (события), D1-POL-03/07.",deps:"Родители — D1-POL-07, D1-POL-03; дети — DSAR-процедура D1-PRC-02.",systems:"платформа (БД) → витрина.",format:"таблица/БД (append-only + отзыв)",ver:"живой",cadence:"реальное время",approvals:"Legal",complexity:"M · 2–4 чел-дн · DPO+Backend · ≤1 нед",template:"Поля: subject_id, тип согласия, объём, дата, версия политики, канал, статус, метка родителя."},
+"D2-RGM-02":{alt:"Funnel Regulation",lvl:"Тактический",desc:"Порядок сквозного пути P2: роль → квиз → мини-отчёт (6 шкал) → e-mail → 3 CTA → регистрация → Профиль 10 → апсейл 360 → оплата → выдача.",purpose:"Связать маркетинг, продукт и оплату в один управляемый межфункциональный поток.",problem:"Без регламента ответственность на стыках размыта, конверсия не диагностируется, гипотеза не проверяется чисто.",value:"Управляемая воронка; чистый прогон гипотезы; единая точка правок конверсии.",docOwner:"CMO",procOwner:"CMO/Product Owner (P03)",inputs:"Трафик (CELL_), спецификация квиза, методология.",outputs:"Регистрации, оплаты, события воронки.",sources:"D4-SPC-02, D5-SPC-01, docs/11-gtm-strategy.md.",deps:"Родители — D2-RMP-01, D2-POL-01; дети — D2-SOP-02, D2-FRM-01, D4-SPC-02. Жёсткая: D5-SPC-01 (блокер №1), D1-POL-03.",systems:"платформа, GetCourse, Метрика/GA.",format:"md + BPMN",ver:"v1.0",cadence:"≤6 мес / при A/B-итерации",approvals:"Product Owner, DPO (детские данные), Method",complexity:"L · 5–10 чел-дн · CMO+PO+Method+Backend · ≤2 нед",template:"Паспорт; Схема (BPMN); Этапы/переходы; Роли/RACI на стыках; SLA/события; Правило гипотезы; Метрики (KPI-VISITS…REV-P2); Связанные документы; История."},
+"D2-TPL-01":{alt:"Traffic Brief Template",lvl:"Операционный",desc:"Заготовка задания подрядчику: 11 фиксированных пунктов (канал MK_, рынок, ячейка CELL_, посадочная, действие, UTM, бюджет, KPI, запреты, отчёт, стоп).",purpose:"За 15 минут собрать однозначное, измеримое, атрибутируемое ТЗ.",problem:"Свободные ТЗ рвут атрибуцию и делают прогоны несравнимыми.",value:"Сопоставимость прогонов; чистая сквозная аналитика; ДРР-контроль.",docOwner:"CMO",procOwner:"CMO (P02)",inputs:"Оффер, бюджет, словари MK_/PG_/CELL_.",outputs:"Заполненное ТЗ.",sources:"docs/12-traffic-platform-decisions.md.",deps:"Родители — D2-RGM-01, D2-CLF-01/02/03, D2-STD-01; дети — D2-RPT-01.",systems:"Notion/док + git.",format:"md/форма",ver:"v1.0",cadence:"≤12 мес",approvals:"Analyst",complexity:"S · 0.5–1 чел-дн · CMO · ≤3 дн",template:"11 пунктов ТЗ дословно + блок паспорта и версии."},
+"D2-CLF-01":{alt:"Channel Classifier",lvl:"Тактический",desc:"Закрытый нормативный словарь кодов источников трафика (MK_VK_ADS, MK_META_ADS, MK_SEO_COM, MK_REF_EXPERT…).",purpose:"Единая кодировка каналов для атрибуции и сравнения.",problem:"Свободные названия каналов ломают сведение оплат и ДРР по источникам.",value:"Сопоставимость и автоматизация атрибуции; основа UTM.",docOwner:"CMO",procOwner:"CMO (P02), Data Steward (P10)",inputs:"Новые каналы (заводятся строкой, не изобретаются).",outputs:"Утверждённый код.",sources:"docs/12-traffic-platform-decisions.md.",deps:"Родитель — D4-CLF-01; дети — D2-STD-01 (UTM), CELL_.",systems:"платформа (справочник) + git.",format:"классификатор (закрытый список)",ver:"v1.0",cadence:"по мере добавления (через ревью)",approvals:"Data Steward",complexity:"S · 0.5–1 чел-дн · CMO+Data · ≤3 дн",template:"Таблица: код → значение → тип → поток (P1/P2) → статус."},
+"D3-RGM-01":{alt:"Billing Regulation",lvl:"Тактический",desc:"Порядок биллинга: тариф → оплата (Робокасса→Stripe) → активация → продление/отмена → сведение оплаты с трафиком.",purpose:"Сделать приём денег и активацию подписки надёжными и атрибутируемыми.",problem:"Cross-domain до Робокассы не связывается автоматически — оплаты и трафик сводятся вручную с ошибками.",value:"Корректная выручка по потокам; чистая атрибуция; основа юнит-экономики.",docOwner:"CFO",procOwner:"CFO/Payments (P06)",inputs:"Тариф, платёжные данные, событие оплаты.",outputs:"Активная подписка, транзакция, атрибуция.",sources:"docs/06-data-tools-payments.md, D4-SPC-04.",deps:"Родители — D3-POL-01, D1-CTR-04 (оферта); дети — D3-PRC-01, D3-RGS-01.",systems:"Робокасса/Stripe, платформа.",format:"md + BPMN",ver:"v1.0",cadence:"≤6 мес / при смене провайдера",approvals:"Backend, Legal (оферта)",complexity:"M · 2–4 чел-дн · CFO+Payments+Backend · ≤1 нед",template:"Паспорт; Тарифы; Поток оплаты; Активация/продление/отмена; Атрибуция к MK_/CELL_; Возвраты; Роли; Метрики (KPI-PAY, KPI-REV-P2); История."},
+"D3-SPC-01":{alt:"Unit Economics Model / P&L by Stream",lvl:"Тактич.→Стратег.",desc:"Модель расчёта Contribution, CAC, LTV, Payback, P&L раздельно для Потока-1 и Потока-2.",purpose:"Дать основателю правду о прибыльности каждого потока и канала.",problem:"Цель $1M невалидна, пока не расщеплена по двум потокам с разной экономикой.",value:"Решения о цене, бюджете, масштабировании на фактах, а не на смешанной выручке.",docOwner:"CFO",procOwner:"CFO (P01)",inputs:"Факты (ORDER_, расходы), kpi_definitions.",outputs:"P&L, юнит-метрики по потокам.",sources:"docs/10-data-model.md (v_pnl_listing), Finance Dashboard.",deps:"Родитель — D3-POL-02; дети — D3-RGS-02, D3-DSH-01.",systems:"таблица/BI + git.",format:"таблица + md",ver:"v1.0",cadence:"ежемесяц + при смене цены",approvals:"Owner, CMO (CAC/LTV)",complexity:"L · 5–10 чел-дн · CFO+Analyst · ≤2 нед",template:"Паспорт; Допущения; P&L Поток-1 (₽/£ раздельно); P&L Поток-2; Юнит-метрики; Разрез по каналам; Сценарии; ЗАПРЕТ суммирования потоков; История."},
+"D4-SPC-03":{alt:"AI Report Spec / PRD отчёта",lvl:"Тактический",desc:"Требования к автогенерируемому отчёту ≈40 стр.: структура, входные модули, тон, дисклеймеры, критерии качества.",purpose:"Зафиксировать, что получает клиент, и связать это с промптами и eval.",problem:"Отчёт — ядро оплаченной ценности (пакет автоматизирован); без спецификации качество невоспроизводимо.",value:"Стабильное качество; основа для eval и доверия к AI.",docOwner:"Product Owner",procOwner:"Product Owner (P05)",inputs:"Цифровой профиль, методология, RIASEC/Big Five (раб. названия).",outputs:"Структура и правила отчёта.",sources:"D4-SPC-01, D5-SPC-01.",deps:"Родители — D4-SPC-01, D5-SPC-01; дети — D4-AIA-01/02, D5-STD-02, D5-GDL-01. Жёсткая: D5-SPC-01.",systems:"платформа (генерация), git (спека).",format:"md",ver:"v1.0",cadence:"≤6 мес / при смене методологии",approvals:"Method, Quality, Legal (дисклеймер)",complexity:"L · 5–10 чел-дн · PO+Method+AI · ≤2 нед",template:"Паспорт; Аудитория; Структура разделов (~40 стр.); Вход (модули профиля); Правила текста/тон; Дисклеймеры; Критерии качества/eval; Ограничения (раб. названия); История."},
+"D4-DAT-02":{alt:"Metric Dictionary / Каталог KPI",lvl:"Тактический",desc:"Единый словарь метрик: код, имя, смысл, формула из фактов, источник, владелец, пороги — поверх kpi_definitions.",purpose:"Один расчёт на показатель; унифицировать префиксы KPI-/KPI_; закрыть Data Dictionary-пробел канона.",problem:"Два стиля кодов (KPI- vs KPI_) и метрики без формул — борды неисполнимы, цифры расходятся.",value:"Единый источник истины по метрикам; сопоставимость бордов и модели данных.",docOwner:"Data Steward",procOwner:"CTO/Data (P10)",inputs:"KPI-каталог v0, kpi_definitions, борды.",outputs:"Унифицированный словарь.",sources:"boards/01-kpi-framework.md, boards/04-stage0-mvp.md, docs/10-data-model.md.",deps:"Родители — D4-DAT-01, D4-STD-07; дети — все DSH-борды, D3-SPC-01.",systems:"БД/таблица + git.",format:"таблица",ver:"v1.0",cadence:"при добавлении/смене метрики (ревью)",approvals:"владельцы KPI, CFO (финметрики), Owner (унификация префикса)",complexity:"M · 2–4 чел-дн · Data Steward · ≤1 нед",template:"Поля: KPI-код (унифиц.), имя, смысл, формула, источник-таблицы, единица, владелец, пороги, уровень L0–L3, поток."},
+"D4-AIA-01":{alt:"Prompt Library",lvl:"Операционный",desc:"Версионируемое хранилище промптов (отчёт, консультант, анализ сертификатов) с назначением, входами, ограничениями.",purpose:"Управлять промптами как кодом: версия, автор, изменение, откат.",problem:"Промпты без версий — регресс качества незаметен, откат невозможен, знание теряется.",value:"Воспроизводимость AI-выходов; безопасные изменения; связь с eval.",docOwner:"AI Engineer",procOwner:"AI Eng/CTO (P11)",inputs:"Задача, контекст-корпус, методология.",outputs:"Версия промпта в проде.",sources:"D4-SPC-03, D4-AIA-04 (RAG).",deps:"Родитель — D1-POL-09 (AI Policy); дети — D4-AIA-02/03, D5-STD-03 (eval), D4-RGS-04.",systems:"git (как код) / OpenRouter.",format:"md / структ. файлы с версией",ver:"semver по каждому промпту",cadence:"по релизам",approvals:"Quality (eval), Method",complexity:"M · 2–4 чел-дн · AI Eng · ≤1 нед на каркас",template:"На промпт: ID/версия, назначение, вход/выход, сам промпт, ограничения, связанные eval, история."},
+"D5-SPC-01":{alt:"Screening Methodology",lvl:"Тактический",desc:"Научно-методическая основа скрининга: шкалы, вопросы, веса, правила вывода 6 зон риска — под рабочими названиями.",purpose:"Обеспечить достоверность диагностики, мини-отчёта и AI-отчёта.",problem:"Методология — активный блокер №1; без неё квиз, мини-отчёт, отчёт без основания, гипотеза непроверяема.",value:"Достоверность продукта; основа доверия; снятие ключевого блокера.",docOwner:"Methodologist",procOwner:"Method (P03, P05)",inputs:"BFAS/Big Five, RIASEC, O*NET Job Zones.",outputs:"Шкалы, веса, правила вывода.",sources:"docs/05-risk-compliance.md, docs/06-data-tools-payments.md.",deps:"Родители — D5-POL-01, D5-STD-01; дети — D4-SPC-02, D4-SPC-03, D2-SOP-02, D5-GDL-01.",systems:"git + платформа.",format:"md",ver:"v0.5 (не готова)",cadence:"до готовности итеративно; далее ≤6 мес",approvals:"Psychometrist (внешн.), Quality, Legal",complexity:"XL · 10+ чел-дн · Method+Psychometrist (внешн.) · веха проекта",template:"Паспорт; Теоретическая рамка (раб. названия); Шкалы (6 зон); Банк вопросов; Веса/алгоритм; Правила вывода; Границы/дисклеймер; Валидация; История."},
+"D5-GDL-01":{alt:"Psychodiagnostic Disclaimer",lvl:"Тактический",desc:"Правила формулирования дисклеймера «иллюстративный пример, не точная диагностика» для психомодулей на несовершеннолетних.",purpose:"Держать продукт в границах, не переходя в клиническую психодиагностику.",problem:"Психошкалы (нарциссизм, тревожность) на детях без дисклеймера — прямой регуляторный риск.",value:"Снижение юридического риска; честность перед родителем.",docOwner:"Methodologist",procOwner:"Method/Legal (P05, P12)",inputs:"Методология, границы регуляторики.",outputs:"Тексты дисклеймеров для UI/отчёта.",sources:"docs/05-risk-compliance.md.",deps:"Родители — D5-SPC-01, D1-POL-03; дети — тексты в D4-SPC-03, D2-SOP-02.",systems:"платформа (UI/отчёт) + git.",format:"md",ver:"v1.0",cadence:"при смене методологии/регуляторики",approvals:"Legal, DPO",complexity:"S · 0.5–1 чел-дн · Method+Legal · ≤3 дн",template:"Паспорт; Где применяется; Обязательные формулировки; Запрещённые формулировки; Тон; История."},
+"D5-RGS-01":{alt:"Master Document Registry",lvl:"Тактический",desc:"Единый учёт всех управляемых документов компании с паспортными атрибутами и статусами ЖЦ (docs/dms/04-registry.md в машиночитаемой форме).",purpose:"Единая точка правды о том, какие документы есть, кто владелец, какой статус/версия.",problem:"Без мастер-реестра документы дублируются, устаревают незаметно, владелец неизвестен.",value:"Управляемость всей системы; аудируемость; вход для автоматизации.",docOwner:"DMS-admin",procOwner:"Head of Quality (DMS)",inputs:"Карточки документов, статусы ЖЦ.",outputs:"Актуальный реестр, отчёты покрытия.",sources:"docs/dms/04-registry.md, карточки 05-cards.md.",deps:"Родитель — D5-POL-02; дети — все документы реестра.",systems:"Notion/таблица + git.",format:"таблица/БД",ver:"живой",cadence:"при каждом изменении документа",approvals:"владельцы Division",complexity:"M · 2–4 чел-дн · DMS-admin · ≤1 нед",template:"Поля = 30 полей карточки (сокр.) + статус ЖЦ + дата последнего/следующего пересмотра."},
+"D5-PRC-04":{alt:"Document Control Procedure",lvl:"Операционный",desc:"Порядок прохождения документа по 9 этапам ЖЦ (создание → … → удаление) с ролями и состояниями.",purpose:"Сделать создание, согласование, публикацию и вывод документов управляемыми (ISO 9001).",problem:"Без процедуры документы живут стихийно: нет согласования, версий, вывода из действия.",value:"Единый ЖЦ; аудируемость; отсутствие теневых и устаревших документов.",docOwner:"DMS-admin",procOwner:"Head of Quality (DMS)",inputs:"Новый/изменяемый документ.",outputs:"Опубликованный/архивированный документ, запись в реестре.",sources:"docs/dms/03-classification.md (4.3 ЖЦ), ISO 9001.",deps:"Родитель — D5-POL-02; дети — D5-RGS-01, D5-PRC-05.",systems:"git/Notion.",format:"md",ver:"v1.0",cadence:"≤12 мес",approvals:"Owner (для политик)",complexity:"M · 2–4 чел-дн · Quality · ≤1 нед",template:"Паспорт; 9 этапов и состояния; Роли/RACI; Правила версий; Пересмотр по критичности; Хранение/удаление; История."},
+"D6-RGM-01":{alt:"Expert Onboarding Regulation",lvl:"Тактический",desc:"Порядок ввода эксперта: заявка → авто-анализ сертификатов (AI) → ручное подтверждение → профиль → подписка → мониторинг качества.",purpose:"Обеспечить качество и законность предложения маркетплейса; управляемый рост сети.",problem:"На старте онбординг вручную; без регламента качество экспертов и проверка сертификатов непоследовательны.",value:"Доверие к сети; масштабируемый онбординг; связь с качеством и подпиской.",docOwner:"Head of Expert Network",procOwner:"Head of Expert Net (P07)",inputs:"Заявка, сертификаты.",outputs:"Активный эксперт, карточка.",sources:"docs/02-product.md, boards/15-expert-network.md.",deps:"Родитель — D6-STD-01; дети — D6-CHK-01, D6-CTR-01, D6-RGS-01.",systems:"платформа, OpenRouter.",format:"md + BPMN",ver:"v1.0",cadence:"≤12 мес",approvals:"Quality Manager, Legal (оферта)",complexity:"M · 2–4 чел-дн · Head of Expert Net+Quality · ≤1 нед",template:"Паспорт; Схема (BPMN); Этапы; Критерии подтверждения; Роли; Подписка (3 мес); Метрики (rating/NPS); История."},
+"D6-CAT-01":{alt:"Occupations Catalogue",lvl:"Тактический",desc:"Витрина профессий с индексом соответствия, рисками, доходностью, трендами — из O*NET/ESCO/hh.ru, обезличенная (архетипы).",purpose:"Дать пользователю карьерную навигацию («знаешь 7–10 профессий, а их 250 000+»).",problem:"Парсер рынка труда — блокер №2; без каталога карьерный модуль пуст.",value:"Ядро карьерной траектории продукта; апсейл-крючок.",docOwner:"Content-куратор",procOwner:"Content/Data (P08)",inputs:"O*NET 29.1, ESCO v1.2.1, hh.ru API, ISCO-SOC.",outputs:"Записи каталога.",sources:"docs/06-data-tools-payments.md.",deps:"Родители — D6-CLF-01, D6-POL-02, D6-GDL-01; дети — карьерный модуль профиля. Жёсткая: парсер (блокер №2).",systems:"платформа (БД), WordPress (SEO).",format:"каталог (БД) + витрина",ver:"v1.0",cadence:"≤3 мес / при обновлении источников",approvals:"Method (соответствие), Legal (IP/обезличивание)",complexity:"L · 5–10 чел-дн · Content+Data · ≤3 нед (зависит от блокера)",template:"Поля: код (ISCO/O*NET), название, RIASEC-профиль, Job Zone, индекс соответствия, доходность, тренд, риски, источник+дата, метка «архетип»."},
+"D6-POL-02":{alt:"Data Sourcing Policy",lvl:"Тактический",desc:"Правило: каждый факт в каталоге/премиум-материале несёт источник, дату, ссылку; профили реальных людей без согласия запрещены — только архетипы.",purpose:"Защита от галлюцинаций и юридического риска в клиентских материалах.",problem:"Без правила данные в отчётах недостоверны и юридически опасны.",value:"Достоверность премиум-материалов; защита при HNW-продажах; доверие.",docOwner:"Methodologist/Data",procOwner:"Content/Data (P08)",inputs:"Источники (O*NET/ESCO/hh.ru), правило премиум-факта.",outputs:"Правила ведения фактов.",sources:"CLAUDE.md (правило данных), docs/05-risk-compliance.md.",deps:"Родитель — D5-POL-01; дети — D6-CAT-01/02/03, D6-GDL-01.",systems:"git + платформа.",format:"md",ver:"v1.0",cadence:"≤12 мес",approvals:"Legal",complexity:"S · 0.5–1 чел-дн · Method+Data+Legal · ≤3 дн",template:"Паспорт; Правило источник+дата+ссылка; Допустимые источники; Запрет реальных профилей без согласия; Архетипизация; Проверка/аудит; История."}
+};
+
+var ROADMAP=[
+  {st:"Этап 1 — Запуск (MVP)",rn:"Только то, без чего запуск незаконен, недостоверен или неатрибутируем. Must×Critical + жёсткие блокеры.",z:"MVP"},
+  {st:"Этап 2 — Рост (Growth)",rn:"Документы, которых требует передача знания (наём) и масштабирование каналов/данных.",z:"Gr"},
+  {st:"Этап 3 — Масштаб (Scale)",rn:"Координация между функциями и надёжность под нагрузкой; единый источник истины.",z:"Sc"},
+  {st:"Этап 4 — Enterprise",rn:"Внешняя проверяемость: аудит, комплаенс, сертификация, due diligence.",z:"Ent"}
+];
+
+var AIROWS=[
+  ["Prompt Library","D4-AIA-01","AI-артефакт","AI Engineer","D5 (eval)"],
+  ["System Prompts","D4-AIA-02","AI-артефакт","AI Engineer","D5"],
+  ["Agent Instructions","D4-AIA-03","AI-артефакт","AI Engineer","D5"],
+  ["Context / RAG Knowledge Base","D4-AIA-04","AI-артефакт","AI Eng + Method","D5"],
+  ["Evaluation Rules","D5-STD-03","Стандарт","Head of Quality","D5 (владелец)"],
+  ["Prompt Versioning","D4-STD-08","Стандарт","AI Engineer","CTO"],
+  ["AI Audit (журнал)","D4-RGS-04","Реестр","AI Engineer","D5"],
+  ["Human Review (SOP)","D5-SOP-01","SOP","Head of Quality","D5 (владелец)"],
+  ["AI Policy","D1-POL-09","Политика","CTO / Governance","Owner"],
+  ["AI Security","D1-POL-10","Политика","CISO / CTO","Owner"],
+  ["Стандарт качества AI-отчёта","D5-STD-02","Стандарт","Head of Quality","D5"]
+];
+var DATAROWS=[
+  ["Data Governance Policy","D1-POL-04+","Политика","Data Owner + DPO","пробел — вводится"],
+  ["Data Dictionary","D4-DAT-01","Data-артефакт","Data Steward","частично есть (docs/10)"],
+  ["Metric Dictionary","D4-DAT-02","Data-артефакт","Data Steward","есть (kpi_definitions) — унифицировать"],
+  ["Business Glossary","D4-DAT-03","Data-артефакт","Data Steward","пробел — вводится"],
+  ["Master Data","D4-DAT-04","Data-артефакт","Data Steward","частично (ядро Product→SKU→Listing)"],
+  ["Data Lineage","D4-DAT-05","Data-артефакт","Data Engineer","пробел — вводится"],
+  ["Data Quality (стандарт)","D4-STD-06","Стандарт","Data Steward","пробел — вводится"],
+  ["Классификаторы ядра","D4-CLF-01","Классификатор","Data Steward","есть (docs/12)"],
+  ["Стандарт именования данных","D4-STD-07","Стандарт","Data Steward","есть де-факто (docs/10)"]
+];
+
+var AUDIT=[
+  ["Отсутствуют дубликаты","part","Классы и категории разведены (класс≠домен); риск дублей снят схемой ID. Остаток — G1"],
+  ["Нет пересекающихся документов","part","Лестница Регламент→Процедура→SOP→Инструкция устраняет пересечение классов; стыки разведены владением. Остаток — G2"],
+  ["Покрыты все функции","ok","Функции по Division в 01-divisions.md"],
+  ["Покрыты все подразделения","ok","D1–D7; матрица классы×Division"],
+  ["Покрыты все процессы","ok","P01–P12; матрица Документ→Процесс"],
+  ["Покрыты все уровни управления","ok","4 уровня = L0–L3"],
+  ["Покрыты все классы","ok","21 базовый + 2 расширения"],
+  ["Покрыт Data Governance","ok","Раздел 15; надстройка над docs/10"],
+  ["Покрыт AI Governance","ok","Раздел 14; все 11 артефактов"],
+  ["Покрыт Product Management","ok","D4: профиль/квиз/отчёт/PRD, бэклог, роадмап"],
+  ["Покрыт HR","ok","D1: найм, онбординг, оргструктура, компетенции"],
+  ["Покрыты финансы","ok","D3: учёт, биллинг, юнит-экономика, runway"],
+  ["Покрыт маркетинг","ok","D2: стратегия, трафик, классификаторы, воронка"],
+  ["Покрыты продажи","ok","D2: регламент продаж, pipeline, CRM"],
+  ["Покрыта разработка","ok","D4: архитектура, стандарты, CI/CD, SRE"],
+  ["Покрыта безопасность","ok","D1: ИБ, классификация, инциденты, AI Security, RBAC"],
+  ["Покрыты юридические вопросы","ok","D1: ToS, оферта, договоры, NDA, privacy"]
+];
+var GAPS=[
+  ["G1","Полнота карточек","20 полных карточек из всего реестра; остальные восстановимы из реестра+шаблона (авто-генерация)."],
+  ["G2","Остаточные пересечения на стыках","Data ↔ Compliance ↔ AI пересекаются по данным; разведены владением, но операционный RACI (PII-метка) нужен при внедрении."],
+  ["G3","Имена в снимке","Модуль внутренний, сохраняет имена команды; для внешних версий — обезличивание (направление + ответственный)."],
+  ["G4","Три расхождения канона","Владелец Revenue; префикс KPI-/KPI_; состав Strategic KPI. Требуют решения основателя."],
+  ["G5","Мобильные приложения","Входят в D4 без mobile-специфичных документов (store-политики, релиз приложений). На MVP допустимо."],
+  ["G6","MENA-специфика","Арабская локализация, местная регуляторика данных, платежи — фрагментарно; источники за пейволом."],
+  ["G7","Приоритеты — авторские","MoSCoW/критичность/зрелость/трудоёмкость — оценка для стадии 07.2026, не выверенный факт."],
+  ["G8","Operations-борд","Узкое место снято автоматизацией; полный пересмотр Operations-контура — смежная задача вне скоупа DMS."]
+];
+
+/* ============ РЕНДЕР ============ */
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+var crCls={Cr:"cr",H:"h",M:"m",L:"l"};
+var catCls={"О":"o","Р":"r","А":"a"};
+var catFull={"О":"общепринятый","Р":"рекомендуемый","А":"авторское"};
+var divName={};DIV.forEach(function(d){divName[d.c]=d.n;});
+var classRu={};CLASSES.forEach(function(c){classRu[c[0]]=c[1];});
+
+function count(pred){return REG.filter(pred).length;}
+
+var active="overview";
+function renderRail(){
+  var rail=document.getElementById("rail");rail.innerHTML="";
+  NAV.forEach(function(it){
+    if(it.g){rail.appendChild(el("div","grp",it.g));return;}
+    var b=el("button","navitem"+(it.id===active?" active":""));
+    b.innerHTML="<span class='nm'>"+it.nm+"<small>"+it.sub+"</small></span>";
+    if(it.id==="registry")b.innerHTML+="<span class='cnt'>"+REG.length+"</span>";
+    if(it.id==="divisions")b.innerHTML+="<span class='cnt'>7</span>";
+    if(it.id==="processes")b.innerHTML+="<span class='cnt'>12</span>";
+    if(it.id==="classes")b.innerHTML+="<span class='cnt'>"+CLASSES.length+"</span>";
+    b.onclick=function(){active=it.id;renderRail();renderMain();document.getElementById("rail").classList.remove("open");window.scrollTo(0,0);document.getElementById("main").scrollTop=0;};
+    rail.appendChild(b);
+  });
+  var note=el("div","railnote","<b>Как читать.</b> Три контура на одном языке L0–L3: борды MMS — <b>решения</b>, docs/10 — <b>данные</b>, DMS — <b>документы</b>. Divisions 1–7 — только орг-каркас.");
+  rail.appendChild(note);
+}
+
+function head(lvl,h1,one,chips){
+  var w=el("div");
+  var bh=el("div","bhead");
+  bh.innerHTML="<span class='lvl'>"+lvl+"</span><div><h1>"+h1+"</h1><div class='one'>"+one+"</div></div>";
+  if(chips){var m=el("div","bmeta");chips.forEach(function(ch){m.appendChild(el("span","chip","<span class='k'>"+ch[0]+"</span><b>"+ch[1]+"</b>"));});bh.appendChild(m);}
+  w.appendChild(el("div","crumbs","DMS · <b>MainExperts</b> · система корпоративной документации"));
+  w.appendChild(bh);
+  return w;
+}
+function secWrap(title){var s=el("div","sec");s.appendChild(el("h2",null,title));return s;}
+
+function renderMain(){
+  var m=document.getElementById("main");m.innerHTML="";
+  ({overview:vOverview,divisions:vDivisions,processes:vProcesses,classes:vClasses,registry:vRegistry,
+    matrices:vMatrices,trees:vTrees,roadmap:vRoadmap,ai:vAI,data:vData,audit:vAudit}[active])(m);
+  var f=el("div","footer");
+  f.innerHTML="<span>MainExperts · Система корпоративной документации (DMS) · снимок 12.07.2026</span><span class='mono'>канон: docs/13-document-system.md + docs/dms/ · рабочий контекст, не выверенный источник</span>";
+  m.appendChild(f);
+}
+
+function vOverview(m){
+  m.appendChild(head("Обзор","Система корпоративной документации",
+    "Проект документации уровня Enterprise: от бизнес-архитектуры до реестра документов с карточками, матрицами, деревьями, роадмапом и governance-слоями. Функциональный каркас — Divisions 1–7; наполнение — ISO 9001 / BPM CBOK / PMBOK / TOGAF / ITIL / COBIT и практики продуктовых компаний.",
+    [["снимок","12.07.2026"],["канон","docs/dms/"]]));
+  var s=secWrap("Статистика реестра");
+  var g=el("div","kgrid");
+  function kpi(code,val,nm){var k=el("div","kpi");k.innerHTML="<div class='strk'></div><div class='code'>"+code+"</div><div class='val'>"+val+"</div><div class='nm'>"+nm+"</div>";return k;}
+  g.appendChild(kpi("DOCS",REG.length,"документов в реестре"));
+  g.appendChild(kpi("DIV","7","подразделений (D1–D7)"));
+  g.appendChild(kpi("PROC","12","процессов (P01–P12)"));
+  g.appendChild(kpi("CLASS",CLASSES.length,"классов (21 + 2)"));
+  g.appendChild(kpi("MUST",count(function(x){return x.m==="M";}),"Must — ядро запуска"));
+  g.appendChild(kpi("CRIT",count(function(x){return x.cr==="Cr";}),"Critical по ущербу"));
+  g.appendChild(kpi("MVP",count(function(x){return x.z==="MVP";}),"нужны на Этапе 1"));
+  g.appendChild(kpi("CARDS",Object.keys(CARDS).length,"полных карточек (30 полей)"));
+  s.appendChild(g);m.appendChild(s);
+
+  var s2=secWrap("Четыре тома · 16 разделов");
+  var rows=[
+    ["Том I — Архитектура","Divisions 1–7 · карта из 12 процессов · единый словарь классов","1–3"],
+    ["Том II — Классификация и реестр","23 класса, ЖЦ, зрелость, приоритеты, схема ID · реестр "+REG.length+" документов · карточки","4–6"],
+    ["Том III — Связи","матрицы Документ→Процесс/Division/Владелец/зависимости · деревья","7–11"],
+    ["Том IV — Внедрение и governance","роадмап 4 этапов · автоматизация · AI Governance · Data Governance · аудит","12–16"]
+  ];
+  var t=el("table","tbl");t.innerHTML="<thead><tr><th>Том</th><th>Содержание</th><th>Разделы</th></tr></thead>";
+  var tb=el("tbody");rows.forEach(function(r){tb.appendChild(el("tr",null,"<td><b style='color:var(--ink)'>"+r[0]+"</b></td><td style='color:var(--ink-2)'>"+r[1]+"</td><td class='mono'>"+r[2]+"</td>"));});
+  t.appendChild(tb);s2.appendChild(t);m.appendChild(s2);
+
+  var s3=secWrap("Роль критика — что не спрятано");
+  var notes=[
+    "<b>Полнота реестра — карта, не бэклог.</b> На запуск исполняется только ~"+count(function(x){return x.m==="M"&&(x.cr==="Cr"||x.z==="MVP");})+" документов Этапа 1 (законность + достоверность + измеримость).",
+    "<b>Два жёстких блокера держат всё.</b> Методология скрининга (D5-SPC-01) держит продукт; compliance-gate (D1-POL-03 + D1-CHK-02) держит трафик — их нельзя обойти.",
+    "<b>Три расхождения канона не разрешены</b> (владелец Revenue; префикс KPI-/KPI_; состав Strategic KPI) — решение основателя.",
+    "<b>Оценки авторские.</b> MoSCoW/критичность/зрелость — оценка для стадии 07.2026; владельцы — целевая оргструктура, сейчас роли совмещены."
+  ];
+  notes.forEach(function(n){var d=el("div","note-inline",n);d.style.marginBottom="9px";s3.appendChild(d);});
+  m.appendChild(s3);
+}
+
+function vDivisions(m){
+  m.appendChild(head("Раздел 2","Divisions 1–7 — орг-каркас",
+    "Современная адаптация семи подразделений под AI/SaaS. Хаббард — только модель деления организации; практики современные, при конфликте побеждает современный менеджмент. Борд-проекция: борд — дашборд функции, Division — её орг-владелец.",null));
+  var s=secWrap("Семь подразделений");
+  var g=el("div","dgrid");
+  DIV.forEach(function(d){
+    var c=el("div","card dcard");
+    c.innerHTML="<div class='strk'></div><div class='dc'>"+d.c+"</div><h3>"+d.n+"</h3><div class='en'>"+d.en+"</div><div class='pp'>"+d.pp+"</div><div class='brd'>борд-проекция: <b>"+d.brd+"</b> · документов: "+count(function(x){return x.id.slice(0,2)===d.c;})+"</div>";
+    c.onclick=function(){active="registry";renderRail();renderMain();setTimeout(function(){var sel=document.getElementById("fDiv");if(sel){sel.value=d.c;applyFilters();}},0);};
+    g.appendChild(c);
+  });
+  s.appendChild(g);m.appendChild(s);
+  var s2=secWrap("Divisions ↔ борды MMS");
+  s2.appendChild(el("div","note-inline","Семь бордов MMS функциональны, семь Divisions орг-структурны — две проекции одной компании. «Operations» борд распределён между D4 (delivery-ops) и D5 (capacity/quality); отдельного борда D1 (People/Governance) нет — этот пробел DMS закрывает документами, а не новым бордом. Клик по карточке Division открывает его документы в реестре."));
+  m.appendChild(s2);
+}
+
+function vProcesses(m){
+  m.appendChild(head("Раздел 3","Карта процессов",
+    "Двенадцать сквозных потоков ценности. Управляющие (P01, P12) задают рамку; основные (P02–P08) создают ценность; обеспечивающие (P09–P11) — люди, данные, AI. Клик по строке — документы процесса в реестре.",null));
+  var s=secWrap("12 процессов");
+  var t=el("table","tbl click");t.innerHTML="<thead><tr><th>ID</th><th>Процесс</th><th>Группа</th><th>Division</th><th>Инвариант</th></tr></thead>";
+  var tb=el("tbody");
+  PROC.forEach(function(p){
+    var tr=el("tr",null,"<td class='mono'>"+p[0]+"</td><td style='color:var(--ink)'>"+p[1]+"</td><td>"+p[2]+"</td><td class='mono'>"+p[3]+"</td><td style='color:var(--ink-3)'>"+p[4]+"</td>");
+    tr.onclick=function(){active="registry";renderRail();renderMain();setTimeout(function(){var q=document.getElementById("fSearch");if(q){q.value=p[0];applyFilters();}},0);};
+    tb.appendChild(tr);
+  });
+  t.appendChild(tb);s.appendChild(t);m.appendChild(s);
+}
+
+function vClasses(m){
+  m.appendChild(head("Раздел 4","Классификация — единый словарь",
+    "23 класса (21 базовый + 2 расширения). Класс — форма документа; отдельно живут категория (домен) и Division (владение). Любой термин имеет одно закреплённое значение во всём модуле.",null));
+  var s=secWrap("Классы документов");
+  var t=el("table","tbl");t.innerHTML="<thead><tr><th>Код</th><th>Класс (RU)</th><th>EN</th><th>Одно закреплённое значение</th><th>Уровень</th></tr></thead>";
+  var tb=el("tbody");
+  CLASSES.forEach(function(c){tb.appendChild(el("tr",null,"<td class='mono'>"+c[0]+"</td><td style='color:var(--ink)'>"+c[1]+"</td><td style='color:var(--ink-3)'>"+c[2]+"</td><td style='color:var(--ink-2)'>"+c[3]+"</td><td>"+c[4]+"</td>"));});
+  t.appendChild(tb);s.appendChild(t);m.appendChild(s);
+  var s2=secWrap("Схема идентификатора · жизненный цикл");
+  s2.appendChild(el("pre","tree","<b>Dn-CLS-nn</b>   пример: D3-POL-01 — Политика Division 3 (Финансы), первый номер\n │  │  └ порядковый номер внутри (Division × Класс)\n │  └─── код класса (3 буквы)\n └────── Division-владелец D1..D7\n\nЖизненный цикл (9 этапов):\n  Создание → Согласование → Утверждение → Публикация → Использование →\n  Изменение → Версия (vX.Y) → Архивирование → Удаление\n\nЗрелость (когда документ нужен):  MVP → Growth → Scale → Enterprise\nПриоритет (одновременно):  MoSCoW (M/S/C/W)  ×  критичность (Cr/H/M/L)"));
+  m.appendChild(s2);
+}
+
+function vRegistry(m){
+  m.appendChild(head("Раздел 5","Реестр документов",
+    "Полный каталог из "+REG.length+" управляемых документов по семи Divisions. Клик по строке открывает паспорт документа; для приоритетного набора — полная 30-полевая карточка.",null));
+  var bar=el("div","filters");
+  bar.innerHTML=
+    "<input id='fSearch' placeholder='Поиск: ID, название, владелец…'>"+
+    selHtml("fDiv","Division",DIV.map(function(d){return [d.c,d.c+" — "+d.n];}))+
+    selHtml("fClass","Класс",CLASSES.map(function(c){return [c[0],c[0]+" "+c[1]];}))+
+    selHtml("fCr","Критичность",[["Cr","Critical"],["H","High"],["M","Medium"],["L","Low"]])+
+    selHtml("fM","MoSCoW",[["M","Must"],["S","Should"],["C","Could"]])+
+    selHtml("fZ","Зрелость",[["MVP","MVP"],["Gr","Growth"],["Sc","Scale"],["Ent","Enterprise"]])+
+    "<button class='rst' id='fRst'>Сброс</button>";
+  m.appendChild(bar);
+  m.appendChild(el("div","count","","cnt"));
+  var wrap=el("div","tblwrap");
+  var t=el("table","tbl click");
+  t.innerHTML="<thead><tr><th>ID</th><th>Документ</th><th>Класс</th><th>Кат</th><th>MoSCoW</th><th>Крит</th><th>Зрел</th><th>Владелец</th><th>Авт·AI</th><th>Проц</th></tr></thead><tbody id='regBody'></tbody>";
+  wrap.appendChild(t);m.appendChild(wrap);
+  document.getElementById("fSearch").addEventListener("input",applyFilters);
+  ["fDiv","fClass","fCr","fM","fZ"].forEach(function(id){document.getElementById(id).addEventListener("change",applyFilters);});
+  document.getElementById("fRst").onclick=function(){["fSearch","fDiv","fClass","fCr","fM","fZ"].forEach(function(id){document.getElementById(id).value="";});applyFilters();};
+  applyFilters();
+}
+function selHtml(id,label,opts){
+  var h="<select id='"+id+"'><option value=''>"+label+": все</option>";
+  opts.forEach(function(o){h+="<option value='"+o[0]+"'>"+esc(o[1])+"</option>";});
+  return h+"</select>";
+}
+function mos(v){return {M:"Must",S:"Should",C:"Could",W:"Won't"}[v]||v;}
+function applyFilters(){
+  var q=(document.getElementById("fSearch").value||"").toLowerCase().trim();
+  var fd=val("fDiv"),fc=val("fClass"),fr=val("fCr"),fm=val("fM"),fz=val("fZ");
+  var body=document.getElementById("regBody");body.innerHTML="";
+  var n=0;
+  REG.forEach(function(x){
+    if(fd&&x.id.slice(0,2)!==fd)return;
+    if(fc&&x.c!==fc)return;
+    if(fr&&x.cr!==fr)return;
+    if(fm&&x.m!==fm)return;
+    if(fz&&x.z!==fz)return;
+    if(q&&(x.id+" "+x.n+" "+x.o+" "+classRu[x.c]).toLowerCase().indexOf(q)<0)return;
+    n++;
+    var has=CARDS[x.id]?" ●":"";
+    var tr=el("tr",null,
+      "<td class='mono' style='color:var(--steel)'>"+x.id+"</td>"+
+      "<td style='color:var(--ink)'>"+esc(x.n)+"</td>"+
+      "<td><span class='tag'>"+x.c+"</span></td>"+
+      "<td><span class='tag "+catCls[x.cat]+"' title='"+catFull[x.cat]+"'>"+x.cat+"</span></td>"+
+      "<td><span class='tag "+(x.m==="M"?"must":"")+"'>"+mos(x.m)+"</span></td>"+
+      "<td><span class='tag "+crCls[x.cr]+"'>"+x.cr+"</span></td>"+
+      "<td class='mono'>"+x.z+"</td>"+
+      "<td style='color:var(--ink-2)'>"+esc(x.o)+"</td>"+
+      "<td class='mono' style='color:var(--ink-3)'>"+x.a+"</td>"+
+      "<td class='mono' style='color:var(--ink-3)'>"+x.p+has+"</td>");
+    tr.onclick=function(){openCard(x);};
+    body.appendChild(tr);
+  });
+  var c=document.querySelector(".count");
+  if(c)c.innerHTML="показано <b>"+n+"</b> из "+REG.length+" · <span style='color:var(--steel)'>●</span> = есть полная карточка";
+}
+function val(id){var e=document.getElementById(id);return e?e.value:"";}
+
+function openCard(x){
+  var d=document.getElementById("drawer");
+  var card=CARDS[x.id];
+  var h="<div class='dwhead'><button class='dwx' id='dwx'>×</button><div class='code'>"+x.id+"</div><h3>"+esc(x.n)+"</h3>"+
+    "<div class='pp'><span class='tag'>"+x.c+" "+classRu[x.c]+"</span><span class='tag "+catCls[x.cat]+"'>"+catFull[x.cat]+"</span><span class='tag "+(x.m==="M"?"must":"")+"'>"+mos(x.m)+"</span><span class='tag "+crCls[x.cr]+"'>"+x.cr+"</span><span class='tag'>"+x.z+"</span></div></div>";
+  var b="<div class='dwbody'>";
+  function f(k,v,mono){return "<div class='field'><div class='fk'>"+k+"</div><div class='fv"+(mono?" mono":"")+"'>"+v+"</div></div>";}
+  b+=f("Подразделение",(x.id.slice(0,2))+" — "+divName[x.id.slice(0,2)]);
+  b+=f("Владелец (роль)",esc(x.o));
+  b+=f("Процессы",x.p,true);
+  b+=f("Авт. ведения · AI-генерация",x.a,true);
+  if(card){
+    b+=f("Альтернативные названия",esc(card.alt));
+    b+=f("Уровень управления",card.lvl);
+    b+=f("Краткое описание",esc(card.desc));
+    b+=f("Назначение",esc(card.purpose));
+    b+=f("Бизнес-проблема",esc(card.problem));
+    b+=f("Ценность",esc(card.value));
+    b+=f("Владелец документа · процесса",esc(card.docOwner)+" · "+esc(card.procOwner));
+    b+=f("Входные данные",esc(card.inputs));
+    b+=f("Выходные данные",esc(card.outputs));
+    b+=f("Источники информации",esc(card.sources));
+    b+=f("Зависимые документы",esc(card.deps));
+    b+=f("Цифровые системы",esc(card.systems));
+    b+=f("Формат хранения",esc(card.format));
+    b+=f("Версия · периодичность",esc(card.ver)+" · "+esc(card.cadence));
+    b+=f("Необходимые согласования",esc(card.approvals));
+    b+=f("Сложность создания",esc(card.complexity));
+    b+=f("Шаблон (структура)",esc(card.template));
+  }else{
+    b+="<div class='note-inline' style='margin-top:12px'>Полная 30-полевая карточка для этого документа генерируется детерминированно из реестра + мета-шаблона (см. docs/dms/05-cards.md, поле «Возможность AI-генерации» = "+x.a.split('·')[1]+"). Здесь показаны паспортные поля из реестра.</div>";
+  }
+  b+="</div>";
+  d.innerHTML=h+b;
+  document.getElementById("dwx").onclick=closeDrawer;
+  document.getElementById("scrim").classList.add("on");
+  d.classList.add("on");d.setAttribute("aria-hidden","false");
+}
+function closeDrawer(){document.getElementById("scrim").classList.remove("on");var d=document.getElementById("drawer");d.classList.remove("on");d.setAttribute("aria-hidden","true");}
+document.getElementById("scrim").onclick=closeDrawer;
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeDrawer();});
+
+function vMatrices(m){
+  m.appendChild(head("Разделы 7–10","Матрицы связей",
+    "Связь документов с процессами и владельцами. Полные матрицы (Документ→Процесс/Division/Владелец/зависимости) — в docs/dms/06-matrices.md.",null));
+  var s=secWrap("Документ → Процесс (число документов на процесс)");
+  var t=el("table","tbl click");t.innerHTML="<thead><tr><th>Процесс</th><th>Название</th><th>Документов</th></tr></thead>";
+  var tb=el("tbody");
+  PROC.forEach(function(p){
+    var n=count(function(x){return x.p.indexOf(p[0])>=0;});
+    var tr=el("tr",null,"<td class='mono'>"+p[0]+"</td><td style='color:var(--ink-2)'>"+p[1]+"</td><td class='mono' style='color:var(--steel)'>"+n+"</td>");
+    tr.onclick=function(){active="registry";renderRail();renderMain();setTimeout(function(){var q=document.getElementById("fSearch");if(q){q.value=p[0];applyFilters();}},0);};
+    tb.appendChild(tr);
+  });
+  t.appendChild(tb);s.appendChild(t);m.appendChild(s);
+
+  var s2=secWrap("Документ → Владелец (роль → число документов)");
+  var owners={};REG.forEach(function(x){owners[x.o]=(owners[x.o]||0)+1;});
+  var arr=Object.keys(owners).map(function(k){return [k,owners[k]];}).sort(function(a,b){return b[1]-a[1];});
+  var t2=el("table","tbl");t2.innerHTML="<thead><tr><th>Роль-владелец</th><th>Документов</th></tr></thead>";
+  var tb2=el("tbody");arr.forEach(function(r){tb2.appendChild(el("tr",null,"<td style='color:var(--ink)'>"+esc(r[0])+"</td><td class='mono' style='color:var(--steel)'>"+r[1]+"</td>"));});
+  t2.appendChild(tb2);s2.appendChild(t2);m.appendChild(s2);
+  s2.appendChild(el("div","note-inline warn","<b>Расхождение канона (не разрешено):</b> владелец Revenue — Commercial Director (Том I 4.5) vs CCO (8.10). Место разрешения — D3-SPC-01 и словарь метрик D4-DAT-02."));
+}
+
+function vTrees(m){
+  m.appendChild(head("Раздел 11","Деревья наследования и зависимостей",
+    "Наследование — откуда документ берёт полномочие (сверху вниз, от миссии к чек-листу). Зависимости — без чего документ не может существовать (в т.ч. между Divisions).",null));
+  var s=secWrap("Дерево наследования");
+  s.appendChild(el("pre","tree",
+"Миссия / Ценности          <b>D7-POL-01</b>\n"+
+"  └ Стратегия              <b>D7-RMP-01</b>\n"+
+"    └ Цели / OKR           <b>D7-RGS-01</b>\n"+
+"      └ Дорожные карты     D4-RMP-01 · D2-RMP-01 · D4-RMP-02\n"+
+"        └ Проекты / Планы  D1-PLN-01\n"+
+"          └ Процессы       P01–P12\n"+
+"            ├ Политики      D1-POL-* · D3-POL-* · D5-POL-*\n"+
+"            ├ Стандарты     D2-STD-* · D4-STD-* · D5-STD-*\n"+
+"            ├ Регламенты    D2-RGM-02 · D3-RGM-01 · D6-RGM-01\n"+
+"            │  └ Процедуры  → SOP → Инструкции\n"+
+"            ├ Шаблоны/Формы/Чек-листы\n"+
+"            └ Реестры/Каталоги → Отчёты/Дашборды → Метрики (KPI)"));
+  m.appendChild(s);
+  var s2=secWrap("Три жёсткие зависимости (нельзя обойти)");
+  s2.appendChild(el("pre","tree",
+"<span class='bk'>БЛОКЕР №1 — методология</span>\n"+
+"  D5-POL-01 → D5-STD-01 (валидация) → <b>D5-SPC-01</b> (методология)\n"+
+"     → D4-SPC-02 (квиз) · D4-SPC-03 (отчёт) · D5-GDL-01 · D2-SOP-02\n"+
+"        → D2-RGM-02 (воронка P2) → генерация отчёта (P05)\n\n"+
+"<span class='bk'>БЛОКЕР — compliance-gate перед трафиком</span>\n"+
+"  D1-POL-02 → <b>D1-POL-03</b> (дети) → D1-RGS-05 · D1-FRM-01 · D1-POL-07\n"+
+"     → <b>D1-CHK-02</b> (gate) → P02 (запуск трафика) РАЗРЕШЁН\n\n"+
+"<span class='bk'>БЛОКЕР №2 — парсер рынка труда</span>\n"+
+"  D6-POL-02 · D6-CLF-01 · D6-GDL-01 → <b>D6-CAT-01</b> (каталог профессий)\n"+
+"     → карьерный модуль профиля (D4-SPC-01)\n\n"+
+"Единый источник истины по данным:\n"+
+"  D4-STD-07 → D4-DAT-01 → <b>D4-DAT-02</b> (словарь метрик) → все DSH-борды исполнимы"));
+  m.appendChild(s2);
+}
+
+function vRoadmap(m){
+  m.appendChild(head("Раздел 12","Roadmap создания",
+    "Порядок создания = топологическая сортировка зависимостей с приоритетом Must×Critical. Документ вводится, когда цена его отсутствия превышает цену ведения. Переход между этапами — по факту (триггеру), не по календарю.",null));
+  var s=secWrap("Четыре этапа");
+  var g=el("div","roadgrid");
+  ROADMAP.forEach(function(r){
+    var n=count(function(x){return x.z===r.z;});
+    var c=el("div","card stage");
+    c.innerHTML="<div class='st'>зрелость: "+r.z+"</div><h3>"+r.st+"</h3><div class='rn'>"+r.rn+"</div><div class='ct'>"+n+" <small>документов созревают здесь</small></div>";
+    g.appendChild(c);
+  });
+  s.appendChild(g);m.appendChild(s);
+  var s2=secWrap("Ядро Этапа 1 (Must × Critical/MVP)");
+  var core=REG.filter(function(x){return x.m==="M"&&(x.cr==="Cr"||x.z==="MVP");});
+  var t=el("table","tbl click");t.innerHTML="<thead><tr><th>ID</th><th>Документ</th><th>Крит</th><th>Владелец</th></tr></thead>";
+  var tb=el("tbody");core.forEach(function(x){var tr=el("tr",null,"<td class='mono' style='color:var(--steel)'>"+x.id+"</td><td style='color:var(--ink)'>"+esc(x.n)+"</td><td><span class='tag "+crCls[x.cr]+"'>"+x.cr+"</span></td><td style='color:var(--ink-2)'>"+esc(x.o)+"</td>");tr.onclick=function(){openCard(x);};tb.appendChild(tr);});
+  t.appendChild(tb);s2.appendChild(t);
+  s2.insertBefore(el("div","count","ядро запуска: <b>"+core.length+"</b> документов — законность + достоверность + измеримость"),t);
+  m.appendChild(s2);
+}
+
+function govView(m,title,sub,rows,cols,note){
+  m.appendChild(head(title[0],title[1],sub,null));
+  var s=secWrap(title[2]);
+  var t=el("table","tbl click");
+  var th="<thead><tr>";cols.forEach(function(c){th+="<th>"+c+"</th>";});th+="</tr></thead>";t.innerHTML=th;
+  var tb=el("tbody");
+  rows.forEach(function(r){
+    var tr=el("tr");
+    tr.innerHTML="<td style='color:var(--ink)'>"+esc(r[0])+"</td><td class='mono' style='color:var(--steel)'>"+r[1]+"</td><td>"+esc(r[2])+"</td><td style='color:var(--ink-2)'>"+esc(r[3])+"</td><td style='color:var(--ink-3)'>"+esc(r[4])+"</td>";
+    tr.onclick=function(){var id=r[1].replace("+","");var x=REG.filter(function(v){return v.id===id;})[0];if(x)openCard(x);};
+    tb.appendChild(tr);
+  });
+  t.appendChild(tb);s.appendChild(t);m.appendChild(s);
+  if(note){var s2=secWrap("Инвариант");s2.appendChild(el("div","note-inline warn",note));m.appendChild(s2);}
+}
+function vAI(m){
+  govView(m,["Раздел 14","AI Governance"],
+    "AI-артефакты — управляемые документы с версией, владельцем и оценкой. Исполнение — D4, оценка — D5, политика — D1.",
+    "Реестр AI-артефактов и политик",AIROWS,["Артефакт","ID","Класс","Владелец","Контроль"],
+    "<b>Сквозная граница (Принцип №11 канона):</b> AI объясняет, прогнозирует, рекомендует и генерирует черновики — но <b>не утверждает решения, не меняет KPI и не публикует документы</b>. Утверждение — всегда роль-человек. Все AI-генерации проходят human review (D5-SOP-01) и фиксируются в AI-аудите (D4-RGS-04).");
+}
+function vData(m){
+  govView(m,["Раздел 15","Data Governance"],
+    "Governance-слой над уже существующей моделью данных (docs/10, kpi_definitions): владение, роли, качество, происхождение — не дублирует, а надстраивает.",
+    "Реестр Data-документов и статус в каноне",DATAROWS,["Артефакт","ID","Класс","Владелец","Статус в каноне"],
+    "<b>Расхождение (не разрешено):</b> префикс KPI — KPI- (борды) vs KPI_ (модель данных). Место разрешения — D4-DAT-02 (Словарь метрик), решение основателя. Инвариант: у каждого объекта данных ровно один Data Owner — как у KPI запрещён показатель без ответственного.");
+}
+
+function vAudit(m){
+  m.appendChild(head("Раздел 16","Аудит полноты",
+    "Самостоятельный аудит по чек-листу запроса. Цель — найти дыры, а не подтвердить полноту. Все пробелы выведены явно.",null));
+  var s=secWrap("Чек-лист покрытия (17 пунктов)");
+  var t=el("table","tbl");t.innerHTML="<thead><tr><th>Проверка</th><th>Статус</th><th>Где / оговорка</th></tr></thead>";
+  var tb=el("tbody");
+  AUDIT.forEach(function(a){
+    var tag=a[1]==="ok"?"<span class='tag must'>✓ покрыто</span>":"<span class='tag h'>◑ частично</span>";
+    tb.appendChild(el("tr",null,"<td style='color:var(--ink)'>"+a[0]+"</td><td>"+tag+"</td><td style='color:var(--ink-3)'>"+esc(a[2])+"</td>"));
+  });
+  t.appendChild(tb);s.appendChild(t);m.appendChild(s);
+  var s2=secWrap("Перечень обнаруженных пробелов");
+  var t2=el("table","tbl");t2.innerHTML="<thead><tr><th>#</th><th>Пробел</th><th>Комментарий</th></tr></thead>";
+  var tb2=el("tbody");GAPS.forEach(function(g){tb2.appendChild(el("tr",null,"<td class='mono' style='color:var(--warn)'>"+g[0]+"</td><td style='color:var(--ink)'>"+esc(g[1])+"</td><td style='color:var(--ink-3)'>"+esc(g[2])+"</td>"));});
+  t2.appendChild(tb2);s2.appendChild(t2);m.appendChild(s2);
+  var s3=secWrap("Вывод");
+  s3.appendChild(el("div","note-inline","Модуль покрывает все 17 пунктов чек-листа и дополнительные инварианты проекта; присутствуют все 16 разделов формата результата. Пробелы G1–G8 — либо сознательные решения об объёме со способом закрытия, либо вопросы к основателю (G4), либо оговорки о статусе оценок (G7). Готовность: целевая карта системы + исполнимый набор Этапа 1, не немедленный бэклог на весь реестр."));
+  m.appendChild(s3);
+}
+
+document.getElementById("menutgl").onclick=function(){document.getElementById("rail").classList.toggle("open");};
+renderRail();renderMain();
+</script>
+</body>
+</html>

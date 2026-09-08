@@ -1,0 +1,17 @@
+---
+// Временный редирект: локальный квиз заменён внешней диагностикой (скринингом)
+// на dev.mainexperts.online. Прежний квиз из 5 вопросов — в истории git, вернуть
+// можно откатом этого файла. noindex — редирект не индексируем.
+import Base from '../layouts/Base.astro';
+import { SCREENING_URL } from '../lib/links.ts';
+
+const title = 'Диагностика профориентации — переход';
+const description = 'Переход к диагностике MainExperts.';
+---
+<Base title={title} description={description} noindex={true}>
+  <meta http-equiv="refresh" content={`0; url=${SCREENING_URL}`} />
+  <script define:vars={{ url: SCREENING_URL }}>location.replace(url);</script>
+  <h1>Открываем диагностику…</h1>
+  <p>Если переход не начался автоматически —
+    <a href={SCREENING_URL} target="_blank" rel="noopener">открыть диагностику MainExperts</a>.</p>
+</Base>

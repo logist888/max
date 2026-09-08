@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { db } from '../lib/data.ts';
+import { plural } from '../lib/text.ts';
+
+const { regions, meta } = db();
+const sorted = [...regions].sort((a, b) => b.orgCount - a.orgCount);
+const title = `Вузы по регионам России: ${regions.length} регионов | ${meta.campaignYear}`;
+const description = `Высшее образование по регионам России: ${regions.length} регионов с вузами, приём ${meta.campaignYear}.`;
+---
+<Base title={title} description={description}>
+  <Breadcrumbs items={[{ name: 'Главная', url: '/' }, { name: 'Регионы' }]} />
+  <h1>Вузы по регионам</h1>
+  <div class="columns">
+    <ul>
+      {sorted.map((r) => (
+        <li><a href={`/region/${r.slug}/`}>{r.displayName}</a>
+          — {r.orgCount} {plural(r.orgCount, 'вуз', 'вуза', 'вузов')}</li>
+      ))}
+    </ul>
+  </div>
+</Base>

@@ -1,0 +1,23 @@
+{
+  "name": "eduplatform",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "pipeline": "tsx src/pipeline/run.ts",
+    "graph": "tsx src/graph/build.ts",
+    "build": "astro build",
+    "dev": "astro dev",
+    "site": "npm run pipeline && npm run graph && astro build"
+  },
+  "devDependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "@types/node": "^22.10.0",
+    "astro": "^7.0.7",
+    "playwright-core": "^1.61.1",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

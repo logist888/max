@@ -1,0 +1,295 @@
+---
+// Универсальная панель фасетных фильтров + клиентский движок (без фреймворка,
+// прогрессивное улучшение). Карточки рендерятся server-side; JS только прячет
+// несовпавшие через класс .filtered-out по их data-* атрибутам. Состояние —
+// в query-параметрах через replaceState (canonical в Base.astro срезает query,
+// дублей в индексе нет; ссылок ?… не эмитим — краулер их не обойдёт).
+//
+// Матчинг: AND между фасетами, OR внутри мультивыбора. Типы фасетов:
+//   chip   — мультивыбор кнопок (item data-<key> — список через запятую)
+//   select — выпадающий список (тот же матч, что chip; для длинных списков: город/группа)
+//   toggle — булев тумблер (item data-<key>="1")
+//   range  — диапазон «от/до» (item data-<key>-min / data-<key>-max; пересечение)
+
+export interface FacetChip { value: string; label: string; parent?: string }
+export interface Facet {
+  key: string;
+  label: string;
+  type: 'chip' | 'select' | 'toggle' | 'range';
+  chips?: FacetChip[];
+  options?: FacetChip[];       // для select
+  toggleLabel?: string;        // для toggle
+  unit?: string;               // для range
+  min?: number; max?: number; step?: number;
+  placeholder?: string;        // для select («— Все —»)
+  dependsOn?: string;          // select зависит от другого select (город ← регион)
+}
+interface Props {
+  facets: Facet[];
+  target?: string;                      // селектор фильтруемых карточек
+  itemNoun?: [string, string, string];  // склонения для счётчика
+  persistKey?: string;                  // ключ sessionStorage: состояние наследуется на др. страницы
+}
+const { facets, target = '[data-filter-item]', itemNoun = ['результат', 'результата', 'результатов'], persistKey } = Astro.props;
+
+// Метаданные для клиента: подписи значений (для активных чипов) + типы.
+const meta: Record<string, { label: string; type: string; toggleLabel?: string; unit?: string; values: Record<string, string> }> = {};
+for (const f of facets) {
+  meta[f.key] = {
+    label: f.label, type: f.type, toggleLabel: f.toggleLabel, unit: f.unit,
+    values: Object.fromEntries([...(f.chips ?? []), ...(f.options ?? [])].map((c) => [c.value, c.label])),
+  };
+}
+---
+<div class="filters" data-filter-root data-target={target}>
+  <div class="filters-bar">
+    <button type="button" class="filters-open" aria-expanded="false" aria-controls="filters-panel">
+      <span class="filters-open-ico" aria-hidden="true"></span>Фильтры<span class="filters-badge" data-filters-badge hidden></span>
+    </button>
+    <span class="filters-count" data-filters-count aria-live="polite"></span>
+    <button type="button" class="filters-clear-top" data-filters-clear hidden>Сбросить всё</button>
+  </div>
+
+  <div class="filters-active" data-filters-active></div>
+
+  <div class="filters-panel" id="filters-panel" data-filters-panel>
+    <div class="filters-panel-head">
+      <strong>Фильтры</strong>
+      <button type="button" class="filters-close" aria-label="Закрыть фильтры">✕</button>
+    </div>
+    <div class="filters-groups">
+      {facets.map((f) => (
+        <section class="filter-group">
+          <h3 class="filter-group-title">{f.label}</h3>
+          {f.type === 'chip' && (
+            <div class="filter-chips">
+              {f.chips!.map((c) => (
+                <button type="button" class="filter-chip" data-facet={f.key} data-value={c.value} aria-pressed="false">{c.label}</button>
+              ))}
+            </div>
+          )}
+          {f.type === 'select' && (
+            <select class="filter-select" data-facet={f.key} data-depends={f.dependsOn ?? ''} aria-label={f.label}>
+              <option value="">{f.placeholder ?? '— любой —'}</option>
+              {f.options!.map((o) => <option value={o.value} data-parent={o.parent ?? ''}>{o.label}</option>)}
+            </select>
+          )}
+          {f.type === 'toggle' && (
+            <button type="button" class="filter-chip filter-toggle" data-facet={f.key} aria-pressed="false">{f.toggleLabel ?? f.label}</button>
+          )}
+          {f.type === 'range' && (
+            <div class="filter-range">
+              <input type="number" inputmode="numeric" class="filter-range-inp" data-facet={f.key} data-bound="min"
+                placeholder="от" min={f.min} max={f.max} step={f.step} aria-label={`${f.label} — от`} />
+              <span aria-hidden="true">—</span>
+              <input type="number" inputmode="numeric" class="filter-range-inp" data-facet={f.key} data-bound="max"
+                placeholder="до" min={f.min} max={f.max} step={f.step} aria-label={`${f.label} — до`} />
+              {f.unit && <span class="filter-range-unit">{f.unit}</span>}
+            </div>
+          )}
+        </section>
+      ))}
+    </div>
+    <div class="filters-panel-foot">
+      <button type="button" class="btn btn-secondary" data-filters-clear>Сбросить</button>
+      <button type="button" class="btn btn-primary filters-apply">Показать</button>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ target, itemNoun, meta, persistKey }}>
+  // define:vars — классический инлайн-скрипт: выполняется в точке вставки (выше списка
+  // карточек), поэтому запускаем движок после готовности DOM, иначе items пуст.
+  function initFilters() {
+    const root = document.querySelector('[data-filter-root]');
+    if (!root) return;
+    const items = Array.from(document.querySelectorAll(target));
+    const chips = Array.from(root.querySelectorAll('.filter-chip:not(.filter-toggle)'));
+    const toggles = Array.from(root.querySelectorAll('.filter-toggle'));
+    const selects = Array.from(root.querySelectorAll('.filter-select'));
+    const ranges = Array.from(root.querySelectorAll('.filter-range-inp'));
+    const countEl = root.querySelector('[data-filters-count]');
+    const badgeEl = root.querySelector('[data-filters-badge]');
+    const activeEl = root.querySelector('[data-filters-active]');
+    const clearEls = Array.from(root.querySelectorAll('[data-filters-clear]'));
+    const emptyEl = document.querySelector('[data-filters-empty]');
+    const panel = root.querySelector('[data-filters-panel]');
+    const openBtn = root.querySelector('.filters-open');
+    const closeBtn = root.querySelector('.filters-close');
+    const applyBtn = root.querySelector('.filters-apply');
+
+    const plural = (n) => {
+      const a = n % 10, b = n % 100;
+      return itemNoun[(a === 1 && b !== 11) ? 0 : (a >= 2 && a <= 4 && (b < 10 || b >= 20)) ? 1 : 2];
+    };
+
+    // Собрать состояние из контролов: facet → Set(значения) | true | {min,max}
+    function readState() {
+      const s = {};
+      chips.forEach((b) => { if (b.getAttribute('aria-pressed') === 'true') (s[b.dataset.facet] ??= new Set()).add(b.dataset.value); });
+      selects.forEach((sel) => { if (sel.value) (s[sel.dataset.facet] ??= new Set()).add(sel.value); });
+      toggles.forEach((b) => { if (b.getAttribute('aria-pressed') === 'true') s[b.dataset.facet] = true; });
+      ranges.forEach((inp) => {
+        const raw = inp.value.trim(); if (raw === '') return;
+        const num = Number(raw.replace(/\s/g, '')); if (!isFinite(num)) return;
+        (s[inp.dataset.facet] ??= { min: null, max: null })[inp.dataset.bound] = num;
+      });
+      return s;
+    }
+
+    function matches(item, state) {
+      for (const key in state) {
+        const cond = state[key];
+        if (cond instanceof Set) {
+          const vals = (item.dataset[key] || '').split(',').filter(Boolean);
+          if (!vals.some((v) => cond.has(v))) return false;
+        } else if (cond === true) {
+          if (item.dataset[key] !== '1') return false;
+        } else {
+          const lo = cond.min ?? -Infinity, hi = cond.max ?? Infinity;
+          const imin = item.dataset[key + 'Min'], imax = item.dataset[key + 'Max'];
+          if (imin === undefined || imin === '' || imax === undefined || imax === '') return false;
+          if (!(Number(imax) >= lo && Number(imin) <= hi)) return false;
+        }
+      }
+      return true;
+    }
+
+    function renderActive(state) {
+      activeEl.innerHTML = '';
+      for (const key in state) {
+        const cond = state[key], m = meta[key] || { values: {} };
+        const add = (label, value) => {
+          const b = document.createElement('button');
+          b.type = 'button'; b.className = 'active-chip';
+          b.dataset.facet = key; if (value != null) b.dataset.value = value;
+          b.innerHTML = label + ' <span aria-hidden="true">✕</span>';
+          b.setAttribute('aria-label', 'Убрать фильтр: ' + label);
+          activeEl.appendChild(b);
+        };
+        if (cond instanceof Set) cond.forEach((v) => add(m.values[v] || v, v));
+        else if (cond === true) add(m.toggleLabel || m.label, null);
+        else {
+          const parts = [];
+          if (cond.min != null) parts.push('от ' + cond.min.toLocaleString('ru'));
+          if (cond.max != null) parts.push('до ' + cond.max.toLocaleString('ru'));
+          add(m.label + ': ' + parts.join(' ') + (m.unit ? ' ' + m.unit : ''), null);
+        }
+      }
+    }
+
+    function syncURL(state) {
+      const p = new URLSearchParams();
+      for (const key in state) {
+        const c = state[key];
+        if (c instanceof Set) p.set(key, [...c].join(','));
+        else if (c === true) p.set(key, '1');
+        else p.set(key, (c.min ?? '') + '-' + (c.max ?? ''));
+      }
+      const qs = p.toString();
+      history.replaceState(null, '', qs ? '?' + qs + location.hash : location.pathname + location.hash);
+      // Зеркалим в sessionStorage — состояние наследуется на другие страницы (карточка вуза),
+      // «пока не сброшу»; очистка фильтра очищает и наследование.
+      if (persistKey) {
+        try { qs ? sessionStorage.setItem(persistKey, qs) : sessionStorage.removeItem(persistKey); } catch {}
+      }
+    }
+
+    // Зависимые списки: город показывает только города выбранного региона; если
+    // текущий город не из региона — сбрасываем. Идемпотентно, зовём в начале apply().
+    function syncDependents() {
+      selects.forEach((sel) => {
+        const dep = sel.dataset.depends;
+        if (!dep) return;
+        const parent = selects.find((s) => s.dataset.facet === dep);
+        const pv = parent ? parent.value : '';
+        let hideCurrent = false;
+        Array.from(sel.options).forEach((opt) => {
+          if (opt.value === '') { opt.hidden = false; return; }
+          const hide = pv !== '' && opt.dataset.parent !== pv;
+          opt.hidden = hide;
+          if (hide && opt.value === sel.value) hideCurrent = true;
+        });
+        if (hideCurrent) sel.value = '';
+      });
+    }
+
+    function apply() {
+      syncDependents();
+      const state = readState();
+      const activeCount = Object.keys(state).length;
+      let shown = 0;
+      items.forEach((it) => { const ok = matches(it, state); it.classList.toggle('filtered-out', !ok); if (ok) shown++; });
+      countEl.textContent = activeCount ? 'Показано: ' + shown + ' ' + plural(shown) : '';
+      if (badgeEl) { badgeEl.textContent = String(activeCount); badgeEl.hidden = activeCount === 0; }
+      clearEls.forEach((el) => { el.hidden = activeCount === 0; });
+      if (emptyEl) emptyEl.hidden = !(activeCount && shown === 0);
+      renderActive(state);
+      syncURL(state);
+      root.dispatchEvent(new CustomEvent('filters:change', { detail: { activeCount, shown }, bubbles: true }));
+    }
+
+    // Снять один фильтр по клику на активный чип
+    activeEl.addEventListener('click', (e) => {
+      const chip = e.target.closest('.active-chip'); if (!chip) return;
+      const { facet, value } = chip.dataset;
+      if (value != null) {
+        const btn = chips.find((b) => b.dataset.facet === facet && b.dataset.value === value);
+        if (btn) btn.setAttribute('aria-pressed', 'false');
+        const sel = selects.find((s) => s.dataset.facet === facet && s.value === value);
+        if (sel) sel.value = '';
+      } else {
+        const tog = toggles.find((b) => b.dataset.facet === facet);
+        if (tog) tog.setAttribute('aria-pressed', 'false');
+        ranges.filter((i) => i.dataset.facet === facet).forEach((i) => { i.value = ''; });
+      }
+      apply();
+    });
+
+    chips.forEach((b) => b.addEventListener('click', () => {
+      b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') === 'true' ? 'false' : 'true'); apply();
+    }));
+    toggles.forEach((b) => b.addEventListener('click', () => {
+      b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') === 'true' ? 'false' : 'true'); apply();
+    }));
+    selects.forEach((s) => s.addEventListener('change', apply));
+    let t; ranges.forEach((i) => i.addEventListener('input', () => { clearTimeout(t); t = setTimeout(apply, 250); }));
+
+    function clearAll() {
+      chips.forEach((b) => b.setAttribute('aria-pressed', 'false'));
+      toggles.forEach((b) => b.setAttribute('aria-pressed', 'false'));
+      selects.forEach((s) => { s.value = ''; });
+      ranges.forEach((i) => { i.value = ''; });
+      apply();
+    }
+    clearEls.forEach((el) => el.addEventListener('click', clearAll));
+
+    // Мобильная шторка
+    const setOpen = (o) => { panel.classList.toggle('open', o); openBtn.setAttribute('aria-expanded', String(o)); document.body.classList.toggle('filters-lock', o); };
+    openBtn.addEventListener('click', () => setOpen(!panel.classList.contains('open')));
+    if (closeBtn) closeBtn.addEventListener('click', () => setOpen(false));
+    if (applyBtn) applyBtn.addEventListener('click', () => setOpen(false));
+
+    // Восстановить из URL при загрузке; если URL чист — из sessionStorage (возврат в каталог
+    // по обычной ссылке сохраняет унаследованный фильтр).
+    (function fromURL() {
+      let src = location.search.replace(/^\?/, '');
+      if (!src && persistKey) { try { src = sessionStorage.getItem(persistKey) || ''; } catch {} }
+      const p = new URLSearchParams(src);
+      p.forEach((val, key) => {
+        const cb = chips.filter((b) => b.dataset.facet === key);
+        if (cb.length) { const set = new Set(val.split(',')); cb.forEach((b) => b.setAttribute('aria-pressed', set.has(b.dataset.value) ? 'true' : 'false')); return; }
+        const sel = selects.find((s) => s.dataset.facet === key);
+        if (sel) { sel.value = val.split(',')[0]; return; }
+        const tog = toggles.find((b) => b.dataset.facet === key);
+        if (tog && val === '1') { tog.setAttribute('aria-pressed', 'true'); return; }
+        const rr = ranges.filter((i) => i.dataset.facet === key);
+        if (rr.length) { const [mn, mx] = val.split('-'); rr.forEach((i) => { if (i.dataset.bound === 'min' && mn) i.value = mn; if (i.dataset.bound === 'max' && mx) i.value = mx; }); }
+      });
+    })();
+
+    apply();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initFilters);
+  else initFilters();
+</script>

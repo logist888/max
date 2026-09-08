@@ -15,3 +15,21 @@ scratch/
 # Сырьё ингеста (большие бинарники); каталог держим через .gitkeep
 raw/*
 !raw/.gitkeep
+
+# Учётные данные FTP для scripts/deploy-ftp.sh — НИКОГДА не коммитить
+scripts/.env.deploy
+.env.deploy
+
+# Общие правила, перенесены из initial commit Bitbucket-репозитория
+# (node_modules/, build/, dist/, .astro/ закрыты в seo-platform/app/.gitignore)
+node_modules/
+dist/
+*.log
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Плагины Obsidian — стороннее, ставится самим редактором
+.obsidian/plugins/
+.obsidian/workspace.json
