@@ -365,11 +365,36 @@ def write_md(turns, path: Path, names: dict, meta: dict) -> None:
     path.write_text("\n".join(lines), encoding="utf-8")
 
 
-def write_txt(turns, path: Path, names: dict) -> None:
-    out = []
+def write_txt(turns, path: Path, names: dict, meta: dict) -> None:
+    """То же содержание, что в Markdown, но без разметки — для чтения и вставки куда угодно."""
+    lines = [f"ТРАНСКРИПТ: {meta['source']}", ""]
+    lines += [
+        f"Длительность: {hms(meta['duration'])}",
+        f"Голосов распознано: {meta['speakers']}",
+        f"Модель распознавания: {meta['asr_model']}",
+        f"Разделение по голосам: {meta['diarization']}",
+        f"Имена участников: {meta['names_source']}",
+        f"Собрано: {meta['created']}",
+        "",
+    ]
+    st = meta.get("word_attribution")
+    if st:
+        total = sum(st.values()) or 1
+        lines += ["Откуда взята принадлежность слова говорящему: "
+                  + ", ".join(f"{k} — {v * 100 // total}%" for k, v in st.items() if v), ""]
+    lines += [
+        "Разметка автоматическая. Перекрывающаяся речь приписывается одному участнику,",
+        "короткие вставки липнут к соседней реплике, термины и суммы распознаются с",
+        "ошибками. Цифры и цитаты для внешних материалов сверяются с записью.",
+        "",
+        "-" * 70,
+        "",
+    ]
     for t in turns:
-        out.append(f"[{hms(t.start)}] {speaker_name(t.speaker, names)}: {t.text}")
-    path.write_text("\n\n".join(out), encoding="utf-8")
+        lines.append(f"[{hms(t.start)} – {hms(t.end)}] {speaker_name(t.speaker, names)}")
+        lines.append(t.text)
+        lines.append("")
+    path.write_text("\n".join(lines), encoding="utf-8")
 
 
 def write_srt(turns, path: Path, names: dict) -> None:
@@ -480,7 +505,7 @@ def main() -> None:
     if "md" in formats:
         write_md(turns, args.outdir / f"{stem}.md", names, meta); written.append("md")
     if "txt" in formats:
-        write_txt(turns, args.outdir / f"{stem}.txt", names); written.append("txt")
+        write_txt(turns, args.outdir / f"{stem}.txt", names, meta); written.append("txt")
     if "srt" in formats:
         write_srt(turns, args.outdir / f"{stem}.srt", names); written.append("srt")
     if "json" in formats:
