@@ -1,410 +1,627 @@
 #!/usr/bin/env python3
-"""Партнёрская сеть v2 — PDF-презентация (A4 портрет, ReportLab, DejaVu)."""
-import os, sys
+"""Партнёрская сеть v2.2 — PDF-презентация в стиле Demo Day (16:9, ReportLab, DejaVu).
+
+Палитра из презентации demoday202609: чёрный #101010, светлый #f8f8f8, золотой акцент #c0a870,
+белые карточки с золотыми ярлыками, крупные серые номера шагов. Тёмные титульные и разделительные
+слайды, светлые содержательные. Пути партнёра и семьи — схемами с дорожками и стрелками.
+Запуск: python3 scripts/build_partner_deck.py [выходной.pdf]
+"""
+import io, os, sys
 from reportlab.lib import colors
-from reportlab.lib.enums import TA_LEFT
-from reportlab.lib.pagesizes import A4
+from reportlab.lib.enums import TA_LEFT, TA_CENTER
 from reportlab.lib.styles import ParagraphStyle
-from reportlab.lib.units import mm
+from reportlab.lib.utils import simpleSplit
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.pdfmetrics import registerFontFamily
 from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.platypus import (BaseDocTemplate, Frame, PageTemplate, Paragraph,
-                                Spacer, Table, TableStyle, PageBreak, KeepTogether)
+from reportlab.platypus import (BaseDocTemplate, Frame, PageTemplate, Paragraph, Spacer, Table,
+                                TableStyle, PageBreak, NextPageTemplate, Flowable)
+from reportlab.graphics.shapes import Drawing, Rect, String, Line, Polygon, Circle
 
 OUT = sys.argv[1] if len(sys.argv) > 1 else "vault/40-reports/2026-09-08-partnerskaya-set-v2.pdf"
+
+# ---------- шрифты ----------
 FD = "/usr/share/fonts/truetype/dejavu/"
-def reg(n, f, fb):
+def _reg(n, f, fb):
     p = FD + f
     if not os.path.exists(p): p = FD + fb
     pdfmetrics.registerFont(TTFont(n, p))
-reg("DV", "DejaVuSans.ttf", "DejaVuSans.ttf")
-reg("DV-B", "DejaVuSans-Bold.ttf", "DejaVuSans.ttf")
-reg("DV-I", "DejaVuSans-Oblique.ttf", "DejaVuSans.ttf")
-reg("DV-BI", "DejaVuSans-BoldOblique.ttf", "DejaVuSans-Bold.ttf")
+_reg("DV", "DejaVuSans.ttf", "DejaVuSans.ttf"); _reg("DV-B", "DejaVuSans-Bold.ttf", "DejaVuSans.ttf")
+_reg("DV-I", "DejaVuSans-Oblique.ttf", "DejaVuSans.ttf"); _reg("DV-BI", "DejaVuSans-BoldOblique.ttf", "DejaVuSans-Bold.ttf")
 registerFontFamily("DV", normal="DV", bold="DV-B", italic="DV-I", boldItalic="DV-BI")
 
-INK = colors.HexColor("#2a2018"); ACC = colors.HexColor("#a86a2c"); ACCD = colors.HexColor("#7a4413")
-SURF = colors.HexColor("#faf6f0"); SURF2 = colors.HexColor("#f4ece0"); MUT = colors.HexColor("#6d5d4c")
-LINE = colors.HexColor("#e3d7c6"); WHITE = colors.white
+# ---------- палитра Demo Day ----------
+INK = colors.HexColor("#101010"); LIGHT = colors.HexColor("#f8f8f8"); CARD = colors.white
+GOLD = colors.HexColor("#c0a870"); GOLD_D = colors.HexColor("#8f7640"); GOLD_L = colors.HexColor("#ede3cc")
+GREY = colors.HexColor("#8a8a8a"); GREY_L = colors.HexColor("#c8c8c8"); GREY_T = colors.HexColor("#5f5f5f")
+LINE = colors.HexColor("#e0e0e0"); ZEBRA = colors.HexColor("#f1f1f1")
 
-TOTAL = 13
-DOC_LABEL = "ПАРТНЁРСКАЯ СЕТЬ · ВЕРСИЯ 2.1 · 9 СЕНТЯБРЯ 2026"
+PW, PH = 720, 405
+ML = MR = 30; MT = 40; MB = 26; W = PW - ML - MR
+DOC_LABEL = "ПАРТНЁРСКАЯ СЕТЬ · ВЕРСИЯ 2.2 · 9 СЕНТЯБРЯ 2026"
+TOTAL = [0]
 
 def st(name, **kw):
-    base = dict(fontName="DV", fontSize=9.6, leading=13.4, textColor=INK, alignment=TA_LEFT, spaceAfter=5)
+    base = dict(fontName="DV", fontSize=8.2, leading=11.2, textColor=INK, alignment=TA_LEFT, spaceAfter=4)
     base.update(kw); return ParagraphStyle(name, **base)
 S = {
-    "label": st("label", fontName="DV-B", fontSize=7.6, leading=10, textColor=ACC, spaceAfter=6),
-    "h1": st("h1", fontName="DV-B", fontSize=21, leading=25, spaceAfter=5),
-    "h1s": st("h1s", fontName="DV-B", fontSize=26, leading=30, spaceAfter=4),
-    "sub": st("sub", fontSize=12, leading=16, textColor=INK, spaceAfter=8),
-    "meta": st("meta", fontSize=8.4, leading=11, textColor=MUT, spaceAfter=10),
-    "h2": st("h2", fontName="DV-B", fontSize=11.5, leading=15, spaceBefore=7, spaceAfter=4),
+    "h1": st("h1", fontName="DV-B", fontSize=19, leading=22, spaceAfter=3),
+    "h1d": st("h1d", fontName="DV-B", fontSize=30, leading=34, textColor=LIGHT, spaceAfter=6),
+    "h2d": st("h2d", fontName="DV", fontSize=13, leading=17, textColor=LIGHT, spaceAfter=4),
+    "sub": st("sub", fontSize=9.4, leading=12.5, textColor=GREY_T, spaceAfter=8),
+    "subd": st("subd", fontSize=9, leading=12, textColor=GREY_L, spaceAfter=6),
+    "h2": st("h2", fontName="DV-B", fontSize=9.6, leading=12.5, spaceBefore=5, spaceAfter=3),
     "body": st("body"),
-    "small": st("small", fontSize=7.9, leading=10.6, textColor=MUT, spaceAfter=4),
-    "cell": st("cell", fontSize=8.3, leading=11.2, spaceAfter=0),
-    "cellb": st("cellb", fontName="DV-B", fontSize=8.3, leading=11.2, spaceAfter=0),
-    "head": st("head", fontName="DV-B", fontSize=8.1, leading=10.5, textColor=WHITE, spaceAfter=0),
-    "call": st("call", fontName="DV-B", fontSize=9.8, leading=13.8, spaceAfter=0),
-    "callr": st("callr", fontSize=9.4, leading=13.2, spaceAfter=0),
-    "bul": st("bul", leftIndent=9, bulletIndent=0, spaceAfter=3),
+    "bodyd": st("bodyd", textColor=LIGHT),
+    "small": st("small", fontSize=6.8, leading=9, textColor=GREY_T, spaceAfter=2),
+    "smalld": st("smalld", fontSize=6.8, leading=9, textColor=GREY_L, spaceAfter=2),
+    "cell": st("cell", fontSize=7.2, leading=9.6, spaceAfter=0),
+    "cellb": st("cellb", fontName="DV-B", fontSize=7.2, leading=9.6, spaceAfter=0),
+    "head": st("head", fontName="DV-B", fontSize=7, leading=9, textColor=LIGHT, spaceAfter=0),
+    "cardt": st("cardt", fontName="DV-B", fontSize=8, leading=10.5, spaceAfter=2),
+    "cardb": st("cardb", fontSize=6.9, leading=9.2, textColor=GREY_T, spaceAfter=0),
+    "num": st("num", fontName="DV-B", fontSize=17, leading=19, textColor=GREY_L, spaceAfter=1),
+    "call": st("call", fontName="DV-B", fontSize=8.4, leading=11.6, spaceAfter=0),
+    "callr": st("callr", fontSize=8.2, leading=11.2, spaceAfter=0),
+    "formula": st("formula", fontName="DV-B", fontSize=22, leading=26, textColor=GOLD, spaceAfter=4),
+    "bul": st("bul", leftIndent=8, spaceAfter=2.5),
+    "buld": st("buld", leftIndent=8, spaceAfter=2.5, textColor=LIGHT),
 }
 P = lambda t, s="body": Paragraph(t, S[s])
+def bullets(items, dark=False): return [Paragraph(f"•&nbsp;&nbsp;{t}", S["buld" if dark else "bul"]) for t in items]
 
-def label(n, text): return P(f"ПАРТНЁРСКАЯ СЕТЬ / {n:02d} · {text}", "label")
-def bullets(items):
-    return [Paragraph(f"•&nbsp;&nbsp;{t}", S["bul"]) for t in items]
-def table(head, rows, widths, zebra=True):
-    data = [[P(h, "head") for h in head]]
-    for r in rows:
-        data.append([P(c, "cellb") if i == 0 else P(c, "cell") for i, c in enumerate(r)])
-    t = Table(data, colWidths=widths, repeatRows=1)
-    style = [("BACKGROUND", (0, 0), (-1, 0), INK), ("VALIGN", (0, 0), (-1, -1), "TOP"),
-             ("LINEBELOW", (0, 0), (-1, -1), 0.4, LINE),
-             ("TOPPADDING", (0, 0), (-1, -1), 5), ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
-             ("LEFTPADDING", (0, 0), (-1, -1), 6), ("RIGHTPADDING", (0, 0), (-1, -1), 6)]
-    if zebra:
-        for i in range(1, len(data)):
-            if i % 2 == 0: style.append(("BACKGROUND", (0, i), (-1, i), SURF))
-    t.setStyle(TableStyle(style)); return t
-def callout(text, strong=True):
-    t = Table([[P(text, "call" if strong else "callr")]], colWidths=[W])
-    t.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, -1), SURF2), ("LINEBEFORE", (0, 0), (0, -1), 2.2, ACC),
-                           ("TOPPADDING", (0, 0), (-1, -1), 8), ("BOTTOMPADDING", (0, 0), (-1, -1), 8),
-                           ("LEFTPADDING", (0, 0), (-1, -1), 10), ("RIGHTPADDING", (0, 0), (-1, -1), 10)]))
+# ---------- компоненты ----------
+class Pill(Flowable):
+    def __init__(self, text, w=None):
+        Flowable.__init__(self); self.text = text.upper(); self.fs = 5.6
+        self.tw = pdfmetrics.stringWidth(self.text, "DV-B", self.fs); self.w = (w or self.tw + 12); self.h = 10
+    def wrap(self, aw, ah): return self.w, self.h
+    def draw(self):
+        c = self.canv; c.setFillColor(GOLD); c.roundRect(0, 0, self.w, self.h, 5, stroke=0, fill=1)
+        c.setFillColor(INK); c.setFont("DV-B", self.fs); c.drawString((self.w - self.tw) / 2, 2.9, self.text)
+
+def card(pill, title, body, w, num=None, h=None):
+    rows = []
+    if num: rows.append([P(num, "num")])
+    rows.append([Pill(pill)]); rows.append([P(title, "cardt")]); rows.append([P(body, "cardb")])
+    t = Table(rows, colWidths=[w - 16], rowHeights=None)
+    t.setStyle(TableStyle([("LEFTPADDING", (0, 0), (-1, -1), 0), ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+                           ("TOPPADDING", (0, 0), (-1, -1), 1.5), ("BOTTOMPADDING", (0, 0), (-1, -1), 1.5)]))
+    outer = Table([[t]], colWidths=[w], rowHeights=[h] if h else None)
+    outer.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, -1), CARD), ("BOX", (0, 0), (-1, -1), 0.5, LINE),
+                               ("VALIGN", (0, 0), (-1, -1), "TOP"), ("LEFTPADDING", (0, 0), (-1, -1), 8),
+                               ("RIGHTPADDING", (0, 0), (-1, -1), 8), ("TOPPADDING", (0, 0), (-1, -1), 7),
+                               ("BOTTOMPADDING", (0, 0), (-1, -1), 7)]))
+    return outer
+
+def cards_row(cards, gap=8):
+    n = len(cards); cw = (W - gap * (n - 1)) / n
+    built = [c(cw) for c in cards]
+    row, widths = [], []
+    for i, b in enumerate(built):
+        row.append(b); widths.append(cw)
+        if i < n - 1: row.append(""); widths.append(gap)
+    t = Table([row], colWidths=widths)
+    t.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"), ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                           ("RIGHTPADDING", (0, 0), (-1, -1), 0), ("TOPPADDING", (0, 0), (-1, -1), 0),
+                           ("BOTTOMPADDING", (0, 0), (-1, -1), 0)]))
     return t
 
-PW, PH = A4; ML = MR = 18 * mm; MT = 24 * mm; MB = 18 * mm; W = PW - ML - MR
+def table(head, rows, widths, fs=None):
+    cs, cb = S["cell"], S["cellb"]
+    if fs:
+        cs = ParagraphStyle("c2", parent=cs, fontSize=fs, leading=fs + 2.4); cb = ParagraphStyle("c2b", parent=cb, fontSize=fs, leading=fs + 2.4)
+    data = [[P(h, "head") for h in head]]
+    for r in rows: data.append([Paragraph(c, cb if i == 0 else cs) for i, c in enumerate(r)])
+    t = Table(data, colWidths=widths, repeatRows=1)
+    style = [("BACKGROUND", (0, 0), (-1, 0), INK), ("VALIGN", (0, 0), (-1, -1), "TOP"),
+             ("LINEBELOW", (0, 0), (-1, -1), 0.4, LINE), ("BACKGROUND", (0, 1), (-1, -1), CARD),
+             ("TOPPADDING", (0, 0), (-1, -1), 3.5), ("BOTTOMPADDING", (0, 0), (-1, -1), 3.5),
+             ("LEFTPADDING", (0, 0), (-1, -1), 5), ("RIGHTPADDING", (0, 0), (-1, -1), 5)]
+    for i in range(2, len(data), 2): style.append(("BACKGROUND", (0, i), (-1, i), ZEBRA))
+    t.setStyle(TableStyle(style)); return t
 
-def on_page(c, doc):
-    c.saveState()
-    c.setFont("DV-B", 8); c.setFillColor(INK); c.drawString(ML, PH - 13 * mm, "MAINEXPERTS")
-    c.setFont("DV", 7.4); c.setFillColor(MUT); c.drawRightString(PW - MR, PH - 13 * mm, DOC_LABEL)
-    c.setStrokeColor(LINE); c.setLineWidth(0.5); c.line(ML, PH - 15.5 * mm, PW - MR, PH - 15.5 * mm)
-    c.line(ML, MB - 4 * mm, PW - MR, MB - 4 * mm)
-    c.setFont("DV", 7.2); c.drawString(ML, MB - 8.5 * mm, "Внутренний документ · для обсуждения команды · цифры — параметры обсуждения, не решения")
-    c.drawRightString(PW - MR, MB - 8.5 * mm, f"{doc.page:02d} / {TOTAL}")
+def callout(text, strong=True, width=None):
+    t = Table([[P(text, "call" if strong else "callr")]], colWidths=[width or W])
+    t.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, -1), CARD), ("LINEBEFORE", (0, 0), (0, -1), 2.4, GOLD),
+                           ("BOX", (0, 0), (-1, -1), 0.5, LINE),
+                           ("TOPPADDING", (0, 0), (-1, -1), 6), ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
+                           ("LEFTPADDING", (0, 0), (-1, -1), 9), ("RIGHTPADDING", (0, 0), (-1, -1), 9)]))
+    return t
+
+def two_cols(left, right, lw=0.5, gap=12):
+    a = W * lw - gap / 2; b = W - a - gap
+    t = Table([[left, "", right]], colWidths=[a, gap, b])
+    t.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"), ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                           ("RIGHTPADDING", (0, 0), (-1, -1), 0), ("TOPPADDING", (0, 0), (-1, -1), 0),
+                           ("BOTTOMPADDING", (0, 0), (-1, -1), 0)]))
+    return t
+
+def _wrap_strings(d, text, x, y, maxw, fs, color=INK, font="DV", lead=None, anchor="start"):
+    lead = lead or fs + 1.8
+    for i, line in enumerate(simpleSplit(text, font, fs, maxw)):
+        d.add(String(x, y - i * lead, line, fontName=font, fontSize=fs, fillColor=color, textAnchor=anchor))
+    return len(simpleSplit(text, font, fs, maxw))
+
+def swimlane(steps, lanes, lane_h, head_h=40, label_w=72, gap=9):
+    """steps: [(num, title)], lanes: [(name, [text per step])]. Схема с дорожками и стрелками."""
+    n = len(steps); cw = (W - label_w - gap * (n - 1)) / n
+    H = head_h + sum(lane_h for _ in lanes) + gap * len(lanes)
+    d = Drawing(W, H)
+    # заголовки шагов: золотой кружок с номером, стрелки между шагами, название
+    top = H - 12
+    for i, (num, title) in enumerate(steps):
+        x0 = label_w + i * (cw + gap)
+        d.add(Circle(x0 + 9, top, 8, fillColor=GOLD, strokeColor=None))
+        d.add(String(x0 + 9, top - 3.2, str(num), fontName="DV-B", fontSize=7.5, fillColor=INK, textAnchor="middle"))
+        _wrap_strings(d, title, x0 + 21, top + 2.2, cw - 30, 6.6, font="DV-B", lead=8)
+        if i < n - 1:
+            xa = x0 + cw - 6; xb = x0 + cw + gap + 0.5
+            d.add(Line(xa, top, xb - 3, top, strokeColor=GOLD, strokeWidth=1.1))
+            d.add(Polygon([xb, top, xb - 3.5, top + 2.2, xb - 3.5, top - 2.2], fillColor=GOLD, strokeColor=None))
+    # дорожки
+    y = H - head_h
+    for li, (name, cells) in enumerate(lanes):
+        y_bot = y - lane_h
+        d.add(Rect(0, y_bot, W, lane_h, fillColor=ZEBRA if li % 2 else CARD, strokeColor=LINE, strokeWidth=0.5))
+        _wrap_strings(d, name, 6, y - 12, label_w - 10, 7, color=INK, font="DV-B", lead=8.5)
+        for i, txt in enumerate(cells):
+            x0 = label_w + i * (cw + gap)
+            d.add(Rect(x0, y_bot + 4, cw, lane_h - 8, rx=3, ry=3, fillColor=CARD, strokeColor=GREY_L, strokeWidth=0.6))
+            _wrap_strings(d, txt, x0 + 4, y - 12, cw - 8, 6.2, color=INK, lead=7.6)
+        y = y_bot - gap
+    return d
+
+def price_ladder():
+    """Схематическая линия цен z < y < x < k с зонами: расстояния условны."""
+    H = 96; d = Drawing(W, H); x0, x1 = 26, W - 26; L = x1 - x0
+    z, y, x, k = x0 + L * 0.28, x0 + L * 0.46, x0 + L * 0.70, x0 + L * 0.92
+    base = 46; bh = 16
+    d.add(Rect(x0, base, z - x0, bh, fillColor=INK, strokeColor=None))
+    d.add(Rect(z, base, y - z, bh, fillColor=GREY_L, strokeColor=None))
+    d.add(Rect(y, base, x - y, bh, fillColor=GOLD_L, strokeColor=None))
+    d.add(Rect(x, base, k - x, bh, fillColor=GOLD, strokeColor=None))
+    d.add(Rect(k, base, x1 - k, bh, fillColor=GOLD, strokeColor=None, fillOpacity=0.35))
+    for xx, name, sub in [(z, "z", "сумма платформы"), (y, "y", "МРЦ, нижняя граница"), (x, "x", "РРЦ, ориентир"), (k, "k", "цена партнёра")]:
+        d.add(Line(xx, base - 6, xx, base + bh + 6, strokeColor=INK, strokeWidth=0.8))
+        d.add(String(xx, base + bh + 10, name, fontName="DV-B", fontSize=9, fillColor=INK, textAnchor="middle"))
+        d.add(String(xx, base - 16, sub, fontName="DV", fontSize=6.3, fillColor=GREY_T, textAnchor="middle"))
+    d.add(String((x0 + z) / 2, base + 5, "платформе", fontName="DV-B", fontSize=6.2, fillColor=LIGHT, textAnchor="middle"))
+    d.add(String((z + y) / 2, base + 5, "мин. дельта", fontName="DV", fontSize=6, fillColor=INK, textAnchor="middle"))
+    d.add(String((y + x) / 2, base + 5, "коридор партнёра", fontName="DV", fontSize=6.2, fillColor=INK, textAnchor="middle"))
+    d.add(String((x + k) / 2, base + 5, "наценка", fontName="DV-B", fontSize=6.2, fillColor=INK, textAnchor="middle"))
+    d.add(String(x1, base + 5, "→", fontName="DV-B", fontSize=8, fillColor=GOLD_D, textAnchor="end"))
+    # скобка дельты
+    yb = base + bh + 26
+    d.add(Line(z, yb, k, yb, strokeColor=GOLD_D, strokeWidth=0.8)); d.add(Line(z, yb - 3, z, yb + 3, strokeColor=GOLD_D, strokeWidth=0.8)); d.add(Line(k, yb - 3, k, yb + 3, strokeColor=GOLD_D, strokeWidth=0.8))
+    d.add(String((z + k) / 2, yb + 5, "партнёрская дельта Δ = k − z", fontName="DV-B", fontSize=7.5, fillColor=GOLD_D, textAnchor="middle"))
+    d.add(String(x0, 2, "запрещено: k < y", fontName="DV", fontSize=6.2, fillColor=GREY_T))
+    d.add(String(x1, 2, "верхнего потолка нет; расстояния условны", fontName="DV", fontSize=6.2, fillColor=GREY_T, textAnchor="end"))
+    return d
+
+# ---------- шаблоны страниц ----------
+def _frame(): return Frame(ML, MB, W, PH - MT - MB, id="f", leftPadding=0, rightPadding=0, topPadding=0, bottomPadding=0)
+def on_light(c, doc): _chrome(c, doc, LIGHT, INK, GREY_T)
+def on_dark(c, doc): _chrome(c, doc, INK, LIGHT, GREY_L)
+def _chrome(c, doc, bg, fg, mut):
+    c.saveState(); c.setFillColor(bg); c.rect(0, 0, PW, PH, stroke=0, fill=1)
+    c.setFont("DV-B", 7.2); c.setFillColor(fg); c.drawString(ML, PH - 22, "MAINEXPERTS")
+    c.setFont("DV", 6.4); c.setFillColor(mut); c.drawRightString(PW - MR, PH - 22, DOC_LABEL)
+    c.setStrokeColor(GOLD if bg == INK else LINE); c.setLineWidth(0.5); c.line(ML, PH - 27, PW - MR, PH - 27)
+    c.setFont("DV", 6.2); c.setFillColor(mut)
+    c.drawString(ML, 12, "Внутренний документ · для обсуждения команды · цены и объёмы — переменные и примеры, не решения")
+    c.drawRightString(PW - MR, 12, f"{doc.page:02d} / {TOTAL[0]:02d}")
     c.restoreState()
 
-doc = BaseDocTemplate(OUT, pagesize=A4, leftMargin=ML, rightMargin=MR, topMargin=MT, bottomMargin=MB,
-                      title="MainExperts — Партнёрская сеть v2", author="MainExperts")
-doc.addPageTemplates([PageTemplate(id="p", frames=[Frame(ML, MB, W, PH - MT - MB, id="f", leftPadding=0, rightPadding=0, topPadding=0, bottomPadding=0)], onPage=on_page)])
-F = []
-def page(*items): F.extend(items); F.append(PageBreak())
+DARK, LIGHTP = "dark", "light"
+def story():
+    F = []
+    def slide(kind, *items):
+        if F: F.append(NextPageTemplate(kind)); F.append(PageBreak())
+        else: F.append(NextPageTemplate(kind))
+        F.extend(items)
 
-# ---------- 01 титул ----------
-page(
-    label(1, "РЕШЕНИЕ И ВОПРОСЫ К УТВЕРЖДЕНИЮ"),
-    P("MainExperts<br/>Партнёрская сеть", "h1s"),
-    P("Версия 2.1: «Партнёрская розница», роли партнёра, вознаграждение в формулах, пилот на 30 дней", "sub"),
-    P("Для команды MainExperts · 9 сентября 2026 · сводит концепт от 3 сентября, стратегический PDF v1.0 и созвон команды от 8 сентября с правками от 9 сентября. Все цены — переменные и примеры, не прогноз; ни одна цифра канала не измерена", "meta"),
-    callout("Основа канала — ценовая модель «Партнёрская розница»: у продукта три цены, X (РРЦ) &gt; Y (МРЦ) &gt; Z (цена платформы за прохождение), и разница между ними — доход партнёра. Партнёр продаёт по любой цене не ниже Y, в том числе выше X. Значения не назначены, в документе только переменные. Первое решение основателя — набор X, Y, Z для первой страны."),
-    Spacer(1, 5),
-    P("Что уже принято командой", "h2"),
-    *bullets([
-        "Один продукт на старте: профориентация как она есть на платформе; не смешивать с поступлением и визами. Утвердить аудиторию, цену, состав результата и срок.",
-        "Партнёр в широком смысле: любой, кто привёл деньги или обращение. Эксперт и партнёр — разные статусы одного человека.",
-        "Пять статусов жизненного цикла партнёра: потенциальный → подключённый → активированный → продающий → повторно активный.",
-        "Пилот: 10 знакомых партнёров на первой неделе. Ориентир 30–50 подключений за месяц взят из PDF и не обсуждался; расходы возможны, лимит не назначен. Амбиция 10 000 партнёров — стратегическая рамка, не план месяца.",
-    ]),
-    Spacer(1, 6),
-    P("Что не решено и где в документе предложено решение", "h2"),
-    table(["Вопрос", "Предложение в документе", "Стр."], [
-        ["Значения X, Y, Z для первой страны", "Переменные, инварианты X > Y > Z > C, две формы записи; иллюстрация в долях от X", "04, 05"],
-        ["Какие роли партнёра открыть на пилоте", "Три роли; на пилот — рекомендатели и два-три продавца, лицензиаты после юридического заключения", "05, 06"],
-        ["Схема вознаграждения рекомендателя и лицензиата", "Девять схем в формулах; на пилот А2 или А1 плюс А3 по выбору, продавцам Б0, лицензиатам Б1' или Б2", "06"],
-        ["Открытость или продажа под своим именем", "Б0 и Б2 равны по формуле; решать как брендовый и юридический вопрос, не ценовой", "06, 13"],
-        ["Правовая сторона цен и договора с партнёром-продавцом", "Правило «цена по стране семьи»; перечень проверок для юриста", "05, 13"],
-        ["Комиссия за рекомендацию экспертов против канона «без комиссий»", "Схема В с параметром g; уточнение или смена модели — решение основателя", "06, 13"],
-        ["Координатор пилота и владельцы вопросов", "Назначить в дни 1–2; вопросы разложены по владельцам", "10, 13"],
-    ], [W * 0.34, W * 0.55, W * 0.11]),
-)
+    # 01 титул (тёмный)
+    slide(DARK,
+        Spacer(1, 26), Pill("MainExperts · партнёрская сеть"), Spacer(1, 10),
+        P("Партнёрская розница", "h1d"),
+        P("Модель трёх цен, партнёрская дельта, роли партнёра, пути партнёра и семьи, пилот на 30 дней", "h2d"),
+        Spacer(1, 10),
+        P("Версия 2.2 · 9 сентября 2026 · для команды MainExperts. Сводит концепт от 3 сентября, стратегический PDF v1.0 и созвон команды от 8 сентября, правки маркетинга и внешнюю версию «Партнёрская дельта» от 9 сентября.", "subd"),
+        Spacer(1, 18),
+        P("Δ = k − z", "formula"),
+        P("Партнёрская дельта: разница между ценой партнёра k и суммой платформы z. Партнёр продаёт по любой цене не ниже МРЦ y, в том числе выше РРЦ x. Значения не назначены: в документе только переменные.", "bodyd"),
+    )
 
-# ---------- 02 источники и изменения ----------
-page(
-    label(2, "ИСТОЧНИКИ И ЧТО ИЗМЕНИЛОСЬ"),
-    P("Что изменилось относительно версии 1", "h1"),
-    P("Три источника одного дня дали разные картины канала", "sub"),
-    table(["Было в v1 (03.09)", "Стало (08.09)", "Источник"], [
-        ["Партнёр только рекомендует, продаёт платформа по фиксированной цене", "Одна ценовая модель «Партнёрская розница» (X, Y, Z) и три роли партнёра: рекомендатель, продавец, лицензиат", "Созвон, основатель; правки 09.09"],
-        ["Партнёр = репетитор или преподаватель английского", "Партнёр = любой, кто привёл деньги: специалист, довольный родитель, эксперт платформы, блогер, центр, сообщество", "Созвон; PDF стр. 5"],
-        ["Запуск после готовности цепочки скрининг → Профиль 10 → Профиль 360", "Зависимость снята: вести семью на реально доступный продукт, путь может быть частично ручным", "PDF стр. 2–3"],
-        ["Статус «эксперт платформы» как награда за рекомендации", "Коммерческий статус и квалификация разделены; рекомендации не подтверждают компетентность", "PDF стр. 3"],
-        ["Персональная презентация с фото и QR под каждого партнёра", "Имя и повод рекомендации важнее презентации; комплект упрощён", "PDF стр. 4"],
-        ["Обязательное обучение 60 минут", "Вход без обязательного вебинара, созвон по запросу; сопровождение только крупным", "PDF стр. 4"],
-        ["Остановка канала, если за 4 недели нет повторной рекомендации", "Не закрывать по одному признаку; учитывать размер базы; разбирать причины", "PDF стр. 3, 9"],
-        ["Пилот 5–10 партнёров, 4–6 недель", "10 партнёров на первой неделе (созвон); 30–50 за месяц и до 100–150 приглашений — ориентиры PDF, не обсуждались; расходы возможны, лимит не назначен", "Созвон; PDF стр. 1, 5"],
-        ["Вознаграждение: фикс плюс подписка партнёру", "Девять схем записаны формулами дохода партнёра и платформы; ни одна ставка не утверждена; появился бонусный счёт", "Созвон; PDF стр. 8; правки 09.09"],
-    ], [W * 0.34, W * 0.44, W * 0.22]),
-    Spacer(1, 8),
-    P("Источники версии", "h2"),
-    P("Созвон команды 08.09.2026 (транскрипт); стратегический PDF «Партнёрская сеть v1.0» от 08.09.2026 (10 стр.); концепт v1 от 03.09.2026; старые регламенты партнёрки от 14.04.2026 (25 стр.: продукт 10 000 ₽, комиссия 10 %, скидка до 30 %; в репозитории отсутствуют); лендинг партнёрской программы (прочитан авторами PDF 08.09)."),
-    P("Что сохранено без изменений: никаких обещаний, которых продукт не выполняет; названия методик только рабочие; данные детей не покидают платформу, партнёру виден только статус обращения и начисления; метрики канала не смешиваются с вебинаром и потоком 1; конфликт интересов репетитора и профориентолога проверяются как гипотезы, а не считаются свойствами сегментов.", "small"),
-)
+    # 02 принято / не решено
+    slide(LIGHTP,
+        P("Что принято и что ждёт решения", "h1"),
+        P("Принятое — с созвона 08.09; нерешённое — со ссылкой на слайд, где предложено решение", "sub"),
+        cards_row([
+            lambda w: card("принято", "Один продукт", "Профориентация как на платформе; не смешивать с поступлением и визами. Страна — свойство продукта.", w, "01"),
+            lambda w: card("принято", "Партнёр в широком смысле", "Любой, кто привёл деньги или обращение. Эксперт и партнёр — статусы одного человека.", w, "02"),
+            lambda w: card("принято", "Пять статусов", "Потенциальный → подключённый → активированный → продающий → повторно активный.", w, "03"),
+            lambda w: card("принято", "Пилот первой недели", "10 знакомых партнёров. Прочие объёмы — ориентиры PDF, не обсуждались; расходы возможны, лимит не назначен.", w, "04"),
+        ]),
+        Spacer(1, 8),
+        table(["Не решено", "Предложение в документе", "Слайд"], [
+            ["Значения x, y, z и валюта для первой страны", "Переменные, инварианты x > y > z > w, коэффициенты a и b, иллюстрация в долях", "06–08"],
+            ["Какие роли открыть на пилоте", "Рекомендатели и два-три продавца; лицензиаты после юридического заключения", "10"],
+            ["Схема вознаграждения", "Пять схем рекомендателя и четыре схемы продавца и лицензиата в формулах; выбор на пилот", "11–12"],
+            ["Открыто или под своим именем; маршрут денег", "Одна формула Δ = k − z; вопрос брендовый и юридический, два маршрута денег", "09, 12"],
+            ["Комиссия за рекомендацию экспертов", "Бюджет привлечения s·S с долей b; сверка с каноном «без комиссий» — решение основателя", "11"],
+            ["Координатор пилота и владельцы вопросов", "Назначить в дни 1–2; вопросы разложены по владельцам", "18, 21"],
+        ], [W * 0.30, W * 0.60, W * 0.10], fs=6.9),
+    )
 
-# ---------- 03 что зафиксировала команда ----------
-page(
-    label(3, "ИТОГИ СОЗВОНА 08.09"),
-    P("Что команда зафиксировала", "h1"),
-    P("Факты обсуждения без оценки; оценка — на следующих страницах", "sub"),
-    table(["Тема", "Что сказано", "Статус"], [
-        ["Продукт", "Один продукт на старте, профориентация как на платформе. Расширять матрицу после подтверждения канала", "Принято"],
-        ["Цена", "У продукта должны быть минимальная (МРЦ) и рекомендованная (РРЦ) цены, как в розничной дистрибуции; партнёр как «магазин» продаёт в коридоре или дороже. Пример: РРЦ 50 000, МРЦ 35 000, доля платформы 25 000", "Обсуждено, не решено"],
-        ["Альтернативы", "Подписка партнёра с безлимитом клиентов (пример конкурента: 6 000 ₽) и фикс за клиента (пример 20 000 ₽) с наценкой партнёра. Из практики агентства: до 80 % клиентов приходили от партнёров, закрывавших сделку на себя", "Обсуждено, не решено"],
-        ["Открытость", "Позиция основателя: хочется, чтобы было открыто всё. Позиция разработки: конечный клиент покупает у учителя, white-label никого не волнует", "Не решено"],
-        ["Бонусный счёт", "Для партнёров, которые не хотят зарабатывать на друзьях: начисления во внутренней валюте на услуги платформы для себя и детей", "Идея, юридический статус не обсуждался"],
-        ["Кто партнёр", "Любой, кто рекомендует; заработок опционален. Уточнение: тот, кто уже принёс деньги. Цель направления считать по платящим партнёрам, промежуточные конверсии как накопительный успех", "Принято"],
-        ["Статусы", "Потенциальный → подключённый → активированный → продающий → повторно активный", "Принято"],
-        ["Квалификация", "Этическое видео и тест из пяти вопросов, аналогия с квалифицированным инвестором", "Отложено"],
-        ["Пилот", "10 партнёров на этой неделе в управляемом хаосе, чтобы увидеть, что нужно для следующего шага", "Принято"],
-        ["Эксперты", "Нужны сами эксперты; платформа как «главный партнёр экспертов» берёт комиссию за рекомендацию и делится ею", "Требует сверки с каноном"],
-        ["Реферальный доход", "С первой оплаты; «клиент навсегда» с понижающимся процентом; высокий процент первый год с отсечкой; эксперт сам ставит процент за рекомендацию себя", "Обсуждено"],
-        ["Блогеры", "Не закупать рекламу, а переводить блогеров с результатом в партнёров с оплатой по результату", "Идея"],
-    ], [W * 0.17, W * 0.63, W * 0.20]),
-)
+    # 03 что изменилось
+    slide(LIGHTP,
+        P("Что изменилось относительно версии 1", "h1"),
+        P("Три источника одного дня и две итерации правок", "sub"),
+        table(["Было (03.09)", "Стало (08–09.09)", "Источник"], [
+            ["Партнёр только рекомендует, продаёт платформа по фиксированной цене", "Одна ценовая модель «Партнёрская розница» и три роли: рекомендатель, продавец, лицензиат", "Созвон; правки 09.09"],
+            ["Партнёр = репетитор", "Партнёр = любой, кто привёл деньги: специалист, родитель, эксперт, блогер, центр, сообщество", "Созвон; PDF стр. 5"],
+            ["Запуск после готовности цепочки скрининга", "Зависимость снята: вести семью на доступный продукт, путь может быть частично ручным", "PDF стр. 2–3"],
+            ["Статус «эксперт платформы» за рекомендации", "Коммерческий статус и квалификация разделены", "PDF стр. 3"],
+            ["Персональная презентация с фото; обучение 60 минут", "Комплект упрощён; вход без обязательного вебинара", "PDF стр. 4"],
+            ["Цены в рублях", "Только переменные x, y, z, k, L по странам; формулы дохода партнёра", "Правки 09.09; внешняя версия v3"],
+            ["Пять схем вознаграждения без формул", "Девять схем в формулах, варианты лицензии с точкой окупаемости", "Правки 09.09; внешняя версия v3"],
+        ], [W * 0.32, W * 0.46, W * 0.22]),
+        Spacer(1, 6),
+        P("Источники: созвон 08.09.2026 (транскрипт); стратегический PDF v1.0 от 08.09; концепт v1 от 03.09; регламенты партнёрки 14.04.2026 (по ссылкам PDF); лендинг партнёрской программы; внешняя версия «Партнёрская дельта» v3 от 09.09.", "small"),
+    )
 
-# ---------- 04 партнёрская розница ----------
-page(
-    label(4, "ПАРТНЁРСКАЯ РОЗНИЦА"),
-    P("Модель трёх цен X · Y · Z", "h1"),
-    P("У одного продукта три цены; разница между ними — доход партнёра. Значения не назначены, только переменные", "sub"),
-    table(["Знак", "Название", "Кто задаёт", "Смысл"], [
-        ["X", "РРЦ, рекомендованная розничная цена", "Платформа, на страну", "Цена, по которой продаёт сама платформа и которую партнёру рекомендуется держать"],
-        ["Y", "МРЦ, минимальная розничная цена", "Платформа, на страну", "Нижняя граница цены партнёра; защита бренда и других партнёров от демпинга"],
-        ["Z", "Цена платформы за прохождение", "Платформа, на страну", "Что платформа получает с каждой продажи партнёра независимо от его цены"],
-        ["C", "Себестоимость прохождения", "Платформа, внутренняя", "Проверка отчёта, ИИ, эквайринг, поддержка. Z обязан её покрывать"],
-        ["P", "Фактическая цена партнёра", "Партнёр", "Любая при P ≥ Y. Верхней границы нет"],
-        ["T(P)", "Налоги и комиссии партнёра", "Юрисдикция, статус партнёра", "Функция в формулах; значения — к юристу"],
-        ["D", "Доход партнёра с продажи", "Считается", "Главная величина, которую партнёр видит до подключения"],
-    ], [W * 0.09, W * 0.30, W * 0.22, W * 0.39]),
-    Spacer(1, 6),
-    callout("Инварианты: X &gt; Y &gt; Z &gt; C. Если Y − Z − T(Y) ≤ 0, партнёр не заработает даже на минимальной цене. Если Z ≤ C, платформа продаёт в убыток. Оба неравенства проверяются до объявления цен на каждой стране."),
-    Spacer(1, 4),
-    P("Две формы записи", "h2"),
-    P("Абсолютная: в валюте страны. Относительная, в долях от X: Y = X·(1 − d), где d — максимальная скидка партнёра; Z = X·(1 − m), где m — доля партнёра при продаже по РРЦ. Минимум партнёра на МРЦ: (m − d)·X − T. Относительная форма переносится между странами, абсолютная нужна семье и партнёру."),
-    P("Коридор и продажа выше РРЦ: запрещён только демпинг ниже Y", "h2"),
-    table(["Инструмент", "Что делает", "Готовность"], [
-        ["Промокод со скидкой", "Снижает цену с X до P в пределах [Y, X]", "Есть или близко"],
-        ["Промокод с наценкой", "Поднимает цену до P > X по коду партнёра", "Разработка: промокоды умеют только снижать"],
-        ["Личная страница партнёра", "Продукт на странице партнёра со своей ценой и именем; оплата через платформу", "Разработка; аналог — кабинет эксперта этапа 2"],
-        ["Лицензия под своим именем", "Партнёр продаёт продукт как свой по цене K, платформу не называет", "Договор и учёт; техника как у личной страницы"],
-    ], [W * 0.26, W * 0.44, W * 0.30]),
-    Spacer(1, 4),
-    P("Публичная страница платформы всегда показывает X; семья от партнёра видит его цену P и понимает, что это условия партнёра.", "small"),
-)
+    # 04 итоги созвона
+    slide(LIGHTP,
+        P("Что команда зафиксировала 08.09", "h1"),
+        P("Факты обсуждения без оценки", "sub"),
+        table(["Тема", "Что сказано", "Статус"], [
+            ["Продукт", "Один продукт на старте, профориентация как на платформе; расширять матрицу после подтверждения канала", "Принято"],
+            ["Цена", "МРЦ и РРЦ как в розничной дистрибуции; партнёр как «магазин» продаёт в коридоре или дороже, платформа получает свою часть", "Направление принято, значения нет"],
+            ["Альтернативы", "Подписка партнёра с безлимитом; фикс за клиента с наценкой партнёра. Из практики агентства до 80 % клиентов приходили от партнёров, закрывавших сделку на себя", "Обсуждено"],
+            ["Открытость", "Позиция основателя: открыто всё. Позиция разработки: конечный клиент покупает у учителя, имя платформы его не волнует", "Не решено"],
+            ["Бонусный счёт", "Начисления во внутренней валюте для тех, кто не хочет зарабатывать на друзьях", "Идея"],
+            ["Кто партнёр, статусы", "Любой, кто привёл деньги или обращение; пять статусов; цель по платящим партнёрам, промежуточные конверсии как панель", "Принято"],
+            ["Квалификация", "Этическое видео и тест из пяти вопросов", "Отложено"],
+            ["Эксперты", "Платформа как «главный партнёр экспертов» берёт комиссию за рекомендацию и делится ею", "Сверить с каноном"],
+            ["Реферальный доход", "С первой оплаты; «клиент навсегда» с понижением; отсечка на больших чеках; эксперт сам ставит процент", "Обсуждено"],
+        ], [W * 0.16, W * 0.64, W * 0.20], fs=6.9),
+    )
 
-# ---------- 05 роли и страна ----------
-page(
-    label(5, "РОЛИ ПАРТНЁРА И СТРАНА"),
-    P("Одна модель, три роли, страна как свойство продукта", "h1"),
-    P("Развилка «рекомендатель или магазин» снята: это роли одного партнёра", "sub"),
-    table(["Роль", "Кто продаёт семье", "Цена для семьи", "Доход партнёра", "Кому подходит"], [
-        ["Рекомендатель", "Платформа", "X или X·(1 − s) по коду, s ≤ d", "R: процент r·P, фикс F или бонусный счёт B", "Репетиторам, родителям, экспертам без навыка продаж"],
-        ["Партнёр-продавец", "Партнёр, оплата через платформу", "P ≥ Y, в том числе P > X", "D = P − Z − T(P)", "Активным продавцам, блогерам, экспертам с личным брендом"],
-        ["Лицензиат", "Партнёр под своим именем", "K, назначает сам", "D = K − Z − T(K) за прохождение или n·K − L − T за период", "Экспертам со своей практикой и базой"],
-    ], [W * 0.20, W * 0.18, W * 0.20, W * 0.24, W * 0.18]),
-    Spacer(1, 6),
-    P("Вторая роль партнёра (эксперт платформы, репетитор, блогер, родитель) может быть любой или отсутствовать. На учёт и вознаграждение она не влияет, только на квалификацию. Юридически различается одно: в роли рекомендателя продавец семье — платформа; в ролях продавца и лицензиата продавец или агент — партнёр, и ответственность за обещания, возвраты и претензии распределяется договором.", "small"),
-    Spacer(1, 4),
-    P("Страна как свойство продукта", "h2"),
-    P("Продукт один. У него есть свойство «страна», от которого зависят валюта и набор {X, Y, Z, C}. Внутри страны один набор цен, между странами разные, как у любого международного продукта. Это снимает спор о региональных ценах внутри одной страны."),
-    callout("Правило привязки: цена определяется страной семьи, которая покупает, а не страной партнёра. Иначе партнёр из страны с низким X продаёт семьям в стране с высоким X и ломает коридор. Платформа должна определять страну покупателя и применять её набор цен.", strong=False),
-    Spacer(1, 8),
-    P("Иллюстрация в долях от X (не решение)", "h2"),
-    table(["Цена продажи P", "Платформа получает", "Партнёр получает D"], [
-        ["По РРЦ: P = X = 100", "Z = 50", "50 − T"],
-        ["По МРЦ: P = Y = 70", "Z = 50", "20 − T"],
-        ["Выше РРЦ: P = 130", "Z = 50", "80 − T"],
-    ], [W * 0.36, W * 0.30, W * 0.34]),
-    Spacer(1, 4),
-    P("Пример при d = 30 %, m = 50 %: Y = 70, Z = 50 при X = 100. Реальные d и m назначает основатель по себестоимости C и по минимуму, который должен видеть партнёр, чтобы канал не затух.", "small"),
-)
+    # 05 разделитель (тёмный)
+    slide(DARK,
+        Spacer(1, 50), Pill("раздел 1"), Spacer(1, 10),
+        P("Партнёрская розница", "h1d"),
+        P("У одного продукта три цены. Разница между ними — доход партнёра.", "h2d"),
+        Spacer(1, 14),
+        P("x > y > z > w", "formula"),
+        P("РРЦ выше МРЦ, МРЦ выше суммы платформы, сумма платформы выше её себестоимости. Если хотя бы одно неравенство не выполняется на какой-то стране, модель на этой стране не работает.", "bodyd"),
+    )
 
-# ---------- 06 схемы в формулах ----------
-page(
-    label(6, "ВОЗНАГРАЖДЕНИЕ В ФОРМУЛАХ"),
-    P("Девять схем через одни переменные", "h1"),
-    P("Для каждой — доход партнёра, доход платформы и фраза, которую партнёр видит при подключении", "sub"),
-    table(["Схема", "Доход партнёра D", "Доход платформы", "Партнёр видит"], [
-        ["А1. Процент рекомендателю", "r·P, где P = X или X·(1 − s)", "P − D − C", "«С каждой оплаты вы получаете r %»"],
-        ["А2. Фикс рекомендателю", "F", "P − F − C", "«За каждую оплату — F»"],
-        ["А3. Бонусный счёт", "B = r·P или F, во внутренней валюте", "P − C − B·(себестоимость услуг / цена услуг)", "«На ваш счёт начислено B, потратить на себя и детей»"],
-        ["Б0. Партнёрская розница", "P − Z − T(P), при P ≥ Y", "Z − C, не зависит от P", "«Продавайте от Y до любой цены; ваши P − Z минус налоги; минимум Y − Z»"],
-        ["Б1. Лицензия за период", "n·K − L − T; окупаемость с n* = L / (K − T̄)", "L − n·C; убыток при n > L / C, нужен потолок", "«Платите L в месяц, продавайте по своей цене; окупаетесь с n* клиента»"],
-        ["Б1'. Лицензия с зачётом", "D₁ = K − L − T, далее K − T до конца периода", "Как Б1", "«Ничего вперёд: лицензия списывается с первой продажи»"],
-        ["Б2. Лицензия за прохождение", "K − Z − T(K)", "Z − C", "«С каждого клиента платформе Z, остальное ваше»"],
-        ["В. Реферал за эксперта", "q·S, где S — цена услуги эксперта", "g·S или 0: решение основателя", "«Эксперт сам назначил q % тому, кто его порекомендует»"],
-        ["Г. Пожизненный с понижением", "r₁·P₁ + r₂·ΣP последующих, r₂ < r₁", "ΣP − ΣD − ΣC", "«Первая оплата r₁ %, следующие оплаты этой семьи r₂ %»"],
-    ], [W * 0.21, W * 0.28, W * 0.22, W * 0.29]),
-    Spacer(1, 8),
-    callout("Б0 и Б2 математически одинаковы: D = P − Z − T. Разница только в том, произносит ли партнёр имя платформы. Спор «открыто или под своим именем» — не про деньги, а про бренд, ответственность и данные семьи; решать его как юридический и брендовый."),
-    Spacer(1, 6),
-    P("Комбинации: скидка семье s, бонус B и лицензия L одновременно не суммируются. На пилот: рекомендатели на А2 или А1 плюс А3 по выбору; продавцы на Б0; лицензиаты на Б1' или Б2 после юридического заключения. Партнёр при подключении видит X, Y, Z своей страны, формулу дохода своей роли и расчёт на трёх ценах.", "small"),
-)
+    # 06 обозначения, часть 1
+    slide(LIGHTP,
+        P("Обозначения: цены и лицензия", "h1"),
+        P("Цена партнёра k и лицензия L — разные буквы, потому что разные платежи", "sub"),
+        table(["Знак", "Название", "Кто задаёт", "Смысл"], [
+            ["c", "Страна предложения", "Платформа", "Индекс: у каждой страны своя валюта и свой набор цен"],
+            ["x_c", "РРЦ, рекомендованная розничная цена", "Платформа, на страну", "Цена, по которой продаёт сама платформа. Ориентир, не потолок"],
+            ["y_c", "МРЦ, минимальная розничная цена", "Платформа, на страну", "Нижняя граница фактической цены продукта. Защита бренда и партнёров от демпинга"],
+            ["z_c", "Сумма платформы за единицу", "Платформа, на страну", "Что платформа получает за одно прохождение независимо от цены партнёра. Не чистая прибыль"],
+            ["w_c", "Себестоимость единицы для платформы", "Платформа, внутренняя", "Проверка отчёта, ИИ, эквайринг, поддержка. Партнёру не показывается; z обязана её покрывать"],
+            ["k", "Цена продажи партнёра", "Партнёр", "Фактическая цена сделки после скидок, до возврата. Любая при k ≥ y, верхней границы нет"],
+            ["L_c", "Лицензионный платёж за период", "Платформа, на страну", "Право использовать продукт под своим именем за период"],
+            ["n", "Число оплаченных единиц за период", "Факт", "Для лицензионных схем"],
+        ], [W * 0.07, W * 0.30, W * 0.19, W * 0.44]),
+        Spacer(1, 6),
+        callout("Две формы записи. Абсолютная: в валюте страны. Относительная: y = a·x, z = b·x, где 0 ≤ b < a < 1. Производные по сделке: доля партнёра m = (k − z)/k; доля платформы s = z/k; скидка от РРЦ d = 1 − k/x ≤ 1 − a; наценка u = k/x − 1 при k > x.", strong=False),
+    )
 
-# ---------- 07 кто партнёр ----------
-page(
-    label(7, "КТО ПАРТНЁР"),
-    P("Определение, статусы, сегменты", "h1"),
-    P("Широкое определение принято; квалификация отложена", "sub"),
-    P("Партнёр — любой участник, который привёл платформе деньги или обращение: специалист, довольный родитель, эксперт платформы, блогер, учебный центр, сообщество. Заработок опционален. Эксперт и партнёр — статусы, не разные люди. Коммерческий статус партнёра не даёт статуса «верифицированный эксперт платформы»: последний только через проверку документов."),
-    table(["Статус", "Событие", "Как использовать"], [
-        ["Потенциальный", "Найден подходящий человек или организация", "План привлечения, не размер сети"],
-        ["Подключённый", "Принял условия, получил рабочий код", "База для оценки активации"],
-        ["Активированный", "Привёл первое целевое обращение семьи", "Действие, не обещание"],
-        ["Продающий", "Привёл первую оплату", "Коммерческий результат; цель направления"],
-        ["Повторно активный", "Привёл обращение другой семьи", "Воспроизводимость с учётом размера базы"],
-    ], [W * 0.22, W * 0.40, W * 0.38]),
-    Spacer(1, 8),
-    P("Сегменты первой волны", "h2"),
-    table(["Сегмент", "Первое действие", "Что проверяем"], [
-        ["Знакомые преподаватели основателя", "Знакомство, комплект, помощь с первой рекомендацией", "Проходит ли путь до результата семьи"],
-        ["Довольные клиенты-родители", "Предложить поделиться опытом; бонусный счёт как благодарность", "Работает ли рекомендация после пользы; считать отдельно"],
-        ["Репетиторы вне круга", "Адресные приглашения тем, кто работает с нужным возрастом", "Понятно ли предложение без доверия к основателю"],
-        ["Небольшие учебные центры", "Договор с владельцем о запуске среди части преподавателей или семей", "Подключение групп без интеграции"],
-        ["Профессиональные сообщества", "Договор об ограниченном размещении", "Активные рекомендатели, а не регистрации"],
-        ["Блогеры с результатом", "Партнёрство с оплатой по результату вместо закупки", "Готовы ли продавать сами за процент"],
-        ["Эксперты платформы", "Кросс-рекомендации услуг", "Нужен кабинет эксперта; отдельный контур"],
-    ], [W * 0.27, W * 0.40, W * 0.33]),
-    Spacer(1, 6),
-    P("Профориентологи и психологи: другое предложение (инструмент для практики или совместная услуга), не смешивать с первым запуском рекомендателей.", "small"),
-)
+    # 07 обозначения, часть 2
+    slide(LIGHTP,
+        P("Обозначения: расходы и результат партнёра", "h1"),
+        P("Партнёр видит дельту до подключения; прибыль — только после ввода своих расходов", "sub"),
+        table(["Знак", "Название", "Кто задаёт", "Смысл"], [
+            ["T, E, C", "Налоги; платёжные и валютные расходы; прочие затраты партнёра", "Юрисдикция, статус, практика партнёра", "В формулах остаются переменными; значения — к юристу и бухгалтеру партнёра"],
+            ["Δ", "Партнёрская дельта, валовая", "Считается", "Δ = k − z. Главная величина, которую партнёр видит до подключения"],
+            ["Π", "Результат партнёра после расходов", "Считается", "Π = k − z − T − E − C. Без внесённых расходов показывать дельту, а не «прибыль»"],
+            ["Z", "Сумма платформы за период", "Считается", "Z = L + Σ z по сделкам периода"],
+            ["h", "Собственные услуги партнёра в пакете", "Партнёр", "Цена пакета = k + h; МРЦ контролируется только для k; у услуг свои затраты"],
+        ], [W * 0.07, W * 0.30, W * 0.19, W * 0.44]),
+        Spacer(1, 6),
+        two_cols(
+            callout("Инварианты: x > y > z > w на каждой стране. Если y − z ≤ 0, партнёр не заработает даже на минимальной цене. Если z ≤ w, платформа продаёт в убыток. Обе проверки — до объявления цен.", width=W * 0.5 - 6),
+            callout("z фиксирована и не растёт от k: вся наценка остаётся партнёру, это и есть стимул продавать дороже. Вариант z = q·k, где платформа берёт долю фактической цены, — другая экономика; подменять незаметно нельзя.", width=W * 0.5 - 6, strong=False),
+        ),
+    )
 
-# ---------- 08 путь и комплект ----------
-page(
-    label(8, "ПУТЬ ПАРТНЁРА И КОМПЛЕКТ"),
-    P("Пять шагов и минимальный комплект", "h1"),
-    P("Без обязательного вебинара и персональной презентации", "sub"),
-    table(["Шаг", "Партнёр получает", "Команда делает"], [
-        ["1. Понять предложение", "Образец результата, кому подходит, цена, ограничения", "Показывает реальный результат, объясняет роль эксперта и ИИ без обещаний"],
-        ["2. Подключиться", "Условия на одной странице, личный код, контакт поддержки", "Фиксирует условия, выдаёт и проверяет ссылку, заводит запись"],
-        ["3. Порекомендовать", "Три коротких сообщения под ситуации семьи", "Помогает выбрать повод; рассылки по всей базе не требует"],
-        ["4. Передать обращение", "Подтверждение, что обращение закреплено", "Продаёт (модель А), отвечает, ведёт оплату и выполнение"],
-        ["5. Получить результат", "Статус, начисление, выплата в срок", "Сверяет реестр, решает споры, собирает обратную связь"],
-    ], [W * 0.22, W * 0.38, W * 0.40]),
-    Spacer(1, 8),
-    P("Комплект первой версии", "h2"),
-    P("Страница условий; обезличенный образец отчёта; короткое видео-демонстрация; три сообщения под ситуации (рубеж в занятиях, вопрос родителя о вузе, спад мотивации); FAQ; ссылка с кодом. Персональная презентация с фото и QR — по запросу, не по умолчанию. Партнёру, который хочет сначала проверить продукт на себе, дать образец отчёта или ограниченный разбор, а не переводить в клиенты."),
-    P("Три ситуации рекомендации", "h2"),
-    *bullets([
-        "После рубежа в занятиях: «Мы прошли большой путь, важно понять, куда он ведёт. Советую пройти диагностику на платформе, где я состою экспертом, и строить занятия под реальную траекторию».",
-        "Родитель сам поднял вопрос о вузе или профессии: «На этот вопрос репетитор по предмету честно ответить не может. Есть инструмент, которому я доверяю».",
-        "Спад мотивации: «Дело чаще не в предмете, а в отсутствии смысла. Посмотрим, что говорит диагностика, и вернёмся к занятиям с целью».",
-    ]),
-    Spacer(1, 6),
-    callout("Согласие: семья сама оставляет заявку; передача контакта партнёром только с согласия семьи. В стартовый пакет не включать перенос занятий на платформу, ИИ-разбор уроков, будущую подписку и обещание новых учеников — это отдельные продуктовые задачи.", strong=False),
-)
+    # 08 коридор
+    slide(LIGHTP,
+        P("Коридор цены и продажа выше РРЦ", "h1"),
+        P("Партнёр назначает k ≥ y; РРЦ — ориентир, не максимум; наценка сверх x полностью у партнёра", "sub"),
+        price_ladder(),
+        Spacer(1, 4),
+        two_cols(
+            table(["Цена k", "Дельта Δ", "Смысл для партнёра"], [
+                ["k = y", "y − z", "Минимальная цена; нижняя дельта, но ещё не гарантия прибыли"],
+                ["y < k < x", "k − z", "Собственное предложение внутри коридора"],
+                ["k = x", "x − z", "Продажа по рекомендованной цене"],
+                ["k > x", "(x − z) + (k − x)", "Наценка сверх РРЦ у партнёра; налоги и расходы могут вырасти"],
+            ], [W * 0.5 * 0.2, W * 0.5 * 0.26, W * 0.5 * 0.54 - 6], fs=6.8),
+            callout("Иллюстрация в долях от x, не решение: x = 100, a = 0,7, b = 0,5 → y = 70, z = 50. По РРЦ Δ = 50; по МРЦ Δ = 20; за 130 Δ = 80. Платформа во всех случаях получает 50. При наценке партнёр обязан ясно описывать, что покупает семья; собственные услуги h оцениваются отдельно от продукта.", width=W * 0.5 - 6, strong=False),
+        ),
+    )
 
-# ---------- 09 учёт ----------
-page(
-    label(9, "УЧЁТ И АТРИБУЦИЯ"),
-    P("Что зафиксировать до первой продажи", "h1"),
-    P("Одна система определений вместо нескольких несовместимых", "sub"),
-    P("Минимальная запись", "h2"),
-    P("ID партнёра, источник, сегмент, дата подключения, код, версия условий, первое обращение, сделка, оплата, возврат, начисление, выплата, следующее действие. У семей и сделок собственные идентификаторы, чтобы не считать их повторно. Ссылку дублировать кодом и ручным восстановлением источника при потере меток: кросс-доменная связка до платёжной системы не работает."),
-    P("Правила закрепления", "h2"),
-    *bullets([
-        "Срок закрепления семьи за партнёром.",
-        "Порядок при нескольких кодах от разных партнёров.",
-        "Работа с уже существующими клиентами платформы.",
-        "Перечень оплачиваемых продуктов, повторные оплаты, возвраты.",
-        "Если партнёр привёл семью на вебинар: источник привлечения партнёр, вебинар этап продажи. Одна сделка не попадает в итог дважды.",
-    ]),
-    P("Еженедельная панель", "h2"),
-    P("Подключения; доля и срок первой активации; целевые обращения; оплаты; повторные рекомендации; возвраты и жалобы; соблюдение сроков услуги; начислено и выплачено; расходы и время команды. Разрезы: источник подключения, сегмент, неделя подключения, продукт, модель (А или Б2)."),
-    Spacer(1, 6),
-    callout("Партнёру виден только статус обращения и начисления. Содержание диагностики ребёнка для учёта комиссии не нужно. Согласия, условия работы с данными и форма выплат требуют отдельной проверки применительно к фактической схеме.", strong=False),
-)
+    # 09 инструменты и маршруты денег
+    slide(LIGHTP,
+        P("Инструменты цены и два маршрута денег", "h1"),
+        P("Публичная страница платформы всегда показывает x; семья от партнёра видит его k", "sub"),
+        table(["Инструмент", "Что делает", "Готовность"], [
+            ["Промокод со скидкой", "Снижает цену с x до k в пределах [y, x]", "Есть или близко"],
+            ["Промокод с наценкой", "Поднимает цену до k > x по коду партнёра", "Разработка: промокоды умеют только снижать; скидочный код не считать инструментом наценки"],
+            ["Личная страница партнёра", "Продукт и цена k под именем партнёра; оплата через платформу; k > x без ручной подмены суммы", "Разработка; аналог — кабинет эксперта этапа 2"],
+            ["Лицензия под своим именем", "Партнёр продаёт продукт как свой по k, платформу может не называть; платит z и/или L", "Договор и учёт; техника как у личной страницы"],
+        ], [W * 0.22, W * 0.44, W * 0.34]),
+        Spacer(1, 8),
+        cards_row([
+            lambda w: card("маршрут 1", "Оплату принимает платформа", "Получает k от семьи, удерживает z (и L), начисляет партнёру разницу по условиям сделки. Продавец семье — платформа.", w),
+            lambda w: card("маршрут 2", "Оплату принимает партнёр", "Получает k от семьи, перечисляет платформе z и/или L, несёт согласованные обязанности перед семьёй. Продавец или агент — партнёр.", w),
+            lambda w: card("решение", "Кто продавец, кто возвращает", "Формулы в обоих маршрутах одни; различаются договор, ответственность за возвраты и претензии, налоговая база. Решение основателя с юристом до запуска ролей продавца и лицензиата.", w),
+        ]),
+    )
 
-# ---------- 10 план ----------
-page(
-    label(10, "ПЛАН НА 30 ДНЕЙ"),
-    P("Первая неделя и месяц", "h1"),
-    P("Приглашения с четвёртого дня, решение о следующей волне на тридцатый", "sub"),
-    table(["Срок", "Действия", "Направление (ответственный)"], [
-        ["Дни 1–2", "Утвердить продукт, цену, состав, срок, условия выплат и модель пилота. Пройти путь семьи руками. Назначить координатора", "Основатель; продукт; продажи; платежи"],
-        ["Дни 3–5", "Комплект первой версии; форма, коды, реестр; партнёрский вход на лендинге: отдельный вход для репетиторов, один продукт, образец результата, условия заработка, три шага, отдельная форма", "Маркетинг; координатор; точечно разработка"],
-        ["Дни 4–10", "10 знакомых партнёров (пилот первой недели); параллельно адресные приглашения вне круга и переговоры с центрами и сообществами", "Основатель даёт доступ; координатор ведёт"],
-        ["Дни 11–20", "Обработка семей, помощь партнёрам с первым действием, фиксация отказов и времени команды", "Продажи; координатор; решения — маркетинг"],
-        ["Дни 21–30", "Сверка оплат и начислений, обратная связь семей, повтор работающего способа привлечения. Решение о следующей волне", "Все"],
-    ], [W * 0.14, W * 0.56, W * 0.30]),
-    Spacer(1, 8),
-    P("Рамки", "h2"),
-    P("Объёмы первой волны (до 100–150 адресных приглашений, 10–15 переговоров с организаторами, ориентир 30–50 подключений) взяты из стратегического PDF как объём эксперимента и командой не утверждались. Расходы: возможны дополнительные расходы на форму, коды, реестр, материалы и правки лендинга сверх труда команды; лимит не обсуждался и назначается основателем. Не покупать базы, не платить за регистрацию партнёра. Организатору платить за результат из единого бюджета привлечения."),
-    P("Ритм", "h2"),
-    P("Ежедневно новые обращения и просроченные действия. Еженедельно разбор воронки по источникам, причин отказов и нагрузки. На 30-й день решение. При длинном цикле сделки отдельная дата переоценки оплат."),
-    Spacer(1, 6),
-    callout("Узкое место сохраняется: ручная проверка отчёта. До роста потока продукт подтверждает число семей, которое команда обслужит в обещанный срок."),
-)
+    # 10 роли и страна
+    slide(LIGHTP,
+        P("Три роли партнёра и страна как свойство продукта", "h1"),
+        P("Развилка «рекомендатель или магазин» снята: это роли одного партнёра внутри одной модели", "sub"),
+        cards_row([
+            lambda w: card("роль", "Рекомендатель", "Продаёт платформа по x или x·(1 − d) по коду. Партнёр получает начисление A: процент, фикс или баллы. Никакой юридической нагрузки. Репетиторам, родителям, экспертам без навыка продаж.", w, "01"),
+            lambda w: card("роль", "Партнёр-продавец", "Продаёт сам, оплата через платформу, k ≥ y и выше x. Получает Δ = k − z за сделку. Активным продавцам, блогерам, экспертам с личным брендом.", w, "02"),
+            lambda w: card("роль", "Лицензиат", "Продаёт под своим именем по k, платформу может не называть. Платит z за единицу и/или L за период. Экспертам со своей практикой и базой.", w, "03"),
+        ]),
+        Spacer(1, 8),
+        two_cols(
+            callout("Страна c — свойство продукта: валюта, язык, состав локальной версии, срок и набор {x, y, z, w, L}. Внутри страны один набор цен, между странами разные, без пересчёта единой мировой цены по курсу. Валюты не складываются: результат считается в каждой валюте, затем переводится по зафиксированному правилу.", width=W * 0.5 - 6, strong=False),
+            callout("Правило привязки: страну предложения определяет семья, которая покупает, а не местонахождение партнёра. Иначе партнёр из страны с низким x продаёт семьям в стране с высоким x и ломает коридор. Критерий определения страны покупателя — решение разработки и юриста.", width=W * 0.5 - 6),
+        ),
+        Spacer(1, 5),
+        P("Вторая роль партнёра (эксперт, репетитор, блогер, родитель, центр) любая или отсутствует; на деньги не влияет, только на квалификацию. Продажи и лицензия не дают экспертной квалификации и авторства методики.", "small"),
+    )
 
-# ---------- 11 экономика ----------
-page(
-    label(11, "ЭКОНОМИКА И РАСШИРЕНИЕ"),
-    P("Когда расширять сеть", "h1"),
-    P("Рост начинается с повторяемого результата, не с числа регистраций", "sub"),
-    P("Условие успеха", "h2"),
-    P("После скидок, возвратов, себестоимости услуги, вознаграждений и обслуживания канала остаётся положительный вклад в покрытие постоянных расходов. Труд команды считать. Будущие продления не оправдывают убыточную первую продажу, пока их нет в данных. Платное привлечение партнёров не запускать до подтверждённых результатов."),
-    P("Признаки для следующей волны", "h2"),
-    *bullets([
-        "Обращения не менее чем от десяти партнёров.",
-        "Оплаты не менее чем от трёх независимых партнёров, включая вне круга основателя.",
-        "Несколько повторных рекомендаций.",
-        "Приемлемая экономика, соблюдение сроков услуги, понятные начисления, нет нерешённых претензий по качеству.",
-    ]),
-    P("Диагностика провалов", "h2"),
-    table(["Симптом", "Где искать причину"], [
-        ["Подключаются, но не рекомендуют", "Доверие, стимул, сложность, подходящие семьи"],
-        ["Рекомендуют, но нет обращений", "Повод, сообщение, первый шаг для семьи"],
-        ["Обращаются, но не покупают", "Предложение, цена, квалификация, продажи"],
-        ["Покупают, но недовольны", "Остановить расширение; исправить выполнение"],
-    ], [W * 0.40, W * 0.60]),
-    Spacer(1, 8),
-    callout("Три причины возможного провала: подменить активных рекомендателей регистрациями и масштабировать неработающий процесс; пообещать больше, чем выполняет продукт; не учесть ручной труд и себестоимость."),
-)
+    # 11 схемы рекомендателя
+    slide(LIGHTP,
+        P("Вознаграждение рекомендателя: начисление A", "h1"),
+        P("Формулы для завершённых сделок одного периода без возвратов; денежный результат рекомендателя Π = A − T − E − C", "sub"),
+        table(["Схема", "Начисление A", "Доход платформы", "Партнёр видит", "Статус"], [
+            ["А1. Процент с первой покупки", "A = r·B, B — база (цена семьи после скидки)", "B − A − w", "«С каждой оплаты вы получаете r %»", "Прецедент 04.2026; ставка не утверждена"],
+            ["А2. Фикс за покупателя", "A = f·N", "B − f − w за покупателя", "«За каждую оплату — f»", "Кандидат на пилот"],
+            ["А3. Бонусные баллы", "A/q баллов; остаток Q = Q₀ + A/q − списания − сгоревшие", "B − w − списания по себестоимости услуг", "«Начислено A/q баллов на услуги для себя и детей»", "Право на использование, не деньги; условия — решения"],
+            ["А4. Повторные покупки с горизонтом H", "A = Σ rⱼ·Bⱼ·I(tⱼ ≤ H), rⱼ₊₁ ≤ rⱼ", "ΣB − ΣA − Σw", "«Первая оплата r₁ %, следующие rⱼ % в течение H»", "«Навсегда» = без H, не принято"],
+            ["А5. Рекомендация услуг эксперта", "A = s·S; рекомендателю b·A, платформе (1 − b)·A", "(1 − b)·s·S или 0", "«Эксперт назначил s % тому, кто его порекомендует»", "Нужен кабинет эксперта; сверить с каноном"],
+        ], [W * 0.19, W * 0.27, W * 0.16, W * 0.22, W * 0.16], fs=6.7),
+        Spacer(1, 6),
+        callout("База B должна быть определена: состав услуг, учёт скидок, возвратов и налогов. Без этого процент не является понятным условием. На пилот: А2 или А1 плюс А3 по выбору партнёра; скидку семье, баллы и лицензию одновременно не суммировать.", strong=False),
+    )
 
-# ---------- 12 неудобные находки ----------
-page(
-    label(12, "НЕУДОБНЫЕ НАХОДКИ"),
-    P("Что мешает запуску сильнее, чем кажется", "h1"),
-    P("Девять пунктов, каждый требует решения, а не обсуждения", "sub"),
-    table(["№", "Находка", "Следствие"], [
-        ["1", "Переменные без значений — ещё не цена. Партнёру при подключении нужны X, Y, Z в валюте его страны", "Пока нет набора для первой страны, условия партнёра не написать; пилот пойдёт на устных договорённостях"],
-        ["2", "Инварианты могут не сойтись: Y − Z − T(Y) &gt; 0 и Z &gt; C. Себестоимость C с ручной проверкой отчёта не посчитана", "Если C высока, коридор Y–Z схлопывается; проверить неравенства до объявления цен"],
-        ["3", "Правовая сторона цен не проверена: разные цены потребителям, региональные цены, закон о МРЦ с 01.10.2026, статус внутренней валюты, договор с партнёром-продавцом, выплаты физлицам", "Модель Б без заключения не запускать"],
-        ["4", "Расхождение цен между источниками: 50 000 на платформе, 10 000 в регламентах апреля, 5 000 в разговоре, лендинг с несколькими предложениями", "Партнёр получит противоречивую картину при первом поиске"],
-        ["5", "«Платформа берёт комиссию за рекомендацию и делится» противоречит канону «без комиссий»", "Решение и правка канона, иначе спор на каждом обсуждении"],
-        ["6", "Кейс конкурента с подпиской продаётся личным брендом и контентом про заработок, а не качеством отчёта", "Копировать модель без такого лица бессмысленно; продвижение «заработай» противоречит позиционированию для семей"],
-        ["7", "Агентский опыт: партнёры продавали услуги бизнесу по договору B2B. Здесь партнёр перепродаёт диагностику ребёнка семье", "Другая ответственность, другие данные, другой закон"],
-        ["8", "Координатор пилота не назначен", "«Управляемый хаос» станет неуправляемым на второй неделе"],
-        ["9", "Пилот раньше решений: десять партнёров при неутверждённых цене, модели и выплатах", "Первым десяти придётся менять условия; для знакомых терпимо, для внешних нет"],
-    ], [W * 0.05, W * 0.55, W * 0.40]),
-)
+    # 12 схемы продавца и лицензиата
+    slide(LIGHTP,
+        P("Продавец и лицензиат: дельта Δ и лицензия L", "h1"),
+        P("Одна формула Δ = k − z; лицензия добавляет постоянный платёж за период", "sub"),
+        table(["Схема", "Платформа за период Z", "Результат партнёра Π", "Партнёр видит"], [
+            ["Б0. Розница за единицу, L = 0", "Z = n·z", "Σkᵢ − n·z − T − E − C", "«Продавайте от y до любой цены; ваши k − z с каждой продажи; минимум y − z»"],
+            ["Б1. Лицензия плюс единицы", "Z = L + n·z", "Σkᵢ − n·z − L − T − E − C", "«L за период и z за клиента; средняя плата платформе z + L/n»"],
+            ["Б1'. Лицензия с зачётом", "Как Б1, L списывается из первой продажи периода", "Π₁ = k₁ − z − L − …; далее k − z − …", "«Ничего вперёд: лицензия списывается с первой продажи»"],
+            ["Б2. Только лицензия, z = 0", "Z = L", "Σkᵢ − L − T − E − C", "«L за период, продавайте по своей цене; окупаетесь с n* клиента»"],
+        ], [W * 0.22, W * 0.24, W * 0.24, W * 0.30], fs=6.9),
+        Spacer(1, 7),
+        cards_row([
+            lambda w: card("окупаемость", "n ≥ L / g", "g = k − z − t − e − c — результат одной продажи. При g > 0 лицензия окупается с n* = ⌈L/g⌉ клиента; при g ≤ 0 не окупается ростом продаж. При n = 0 лицензия остаётся расходом, если нет зачёта.", w),
+            lambda w: card("сравнение", "L₁ + n·z₁ < L₂ + n·z₂", "Вариант 1 дешевле по платежам платформе при одинаковом продукте и объёме. Затем сравнивать лимиты, поддержку, качество, налоги. Дешевле по тарифу не всегда выгоднее по результату.", w),
+            lambda w: card("предел", "Убыток платформы при n > L / w", "«Без платы за единицу» не означает безлимит: при Б2 нужен потолок единиц или переход на Б1. Розница в коридоре и «фикс с наценкой под своим именем» — одна формула; спор о бренде, не о деньгах.", w),
+        ]),
+    )
 
-# ---------- 13 открытые вопросы ----------
-page(
-    label(13, "ОТКРЫТЫЕ ВОПРОСЫ"),
-    P("Кто и что решает", "h1"),
-    P("Без пунктов 1–3 и 7 не пишутся ни условия, ни лендинг", "sub"),
-    table(["Владелец", "Вопросы"], [
-        ["Основатель", "1. Значения X, Y, Z (или d и m в долях) и валюта для первой страны; себестоимость C как нижняя граница Z; какие роли открыть на пилоте. 2. Продукт один со свойством «страна»; нужна ли быстрая версия с отдельным набором цен. 3. Вознаграждение рекомендателя (А1, А2 или А3) и лицензиата (Б1' или Б2): размер, основание, возвраты, дата выплаты. 4. Открытость или продажа под своим именем. 5. Комиссия за рекомендацию экспертов: уточнение или смена модели. 6. Передача HNW-семей в поток 1 и вознаграждение партнёра в этом случае. 7. Координатор пилота"],
-        ["Маркетинг и аналитика", "8. Письменные определения статусов и событий переходов. 9. Правила закрепления и атрибуции на одной странице. 10. Комплект первой версии и правки лендинга. 11. Метрика цели: платящие партнёры как главная, промежуточные конверсии как панель"],
-        ["Юридическая проверка (внешний исполнитель)", "12. Разные цены потребителям, региональные и страновые цены, закон о МРЦ с 01.10.2026. 13. Договор с партнёром в моделях А и Б2; кто продавец семье; возвраты. 14. Выплаты физлицам, юрлицо (РФ или Дубай), статус внутренней валюты. 15. Согласия: передача контакта, доступ партнёра к статусам"],
-        ["Продукт и методология", "16. Состав быстрой версии, если нужна; себестоимость обеих версий с учётом ручной проверки. 17. Пропускная способность: сколько семей в неделю в обещанный срок. 18. Образец обезличенного отчёта"],
-        ["Разработка", "19. Сроки: определение страны покупателя и набор цен по стране; промокод с наценкой; личная страница партнёра со своей ценой; реестр начислений; партнёрская форма. 20. Что закрыть ручным реестром на первый месяц"],
-        ["Платежи", "21. Сверка оплат по кодам при неработающей кросс-доменной связке; регламент выплат партнёрам"],
-    ], [W * 0.24, W * 0.76]),
-    Spacer(1, 8),
-    P("Что нужно от команды, чтобы двигаться", "h2"),
-    *bullets([
-        "Ответы основателя по пунктам 1–3 и 7.",
-        "Список первых десяти партнёров с сегментом и предполагаемой моделью.",
-        "Старые регламенты партнёрки (25 стр., 14.04.2026) в репозиторий: связь клиента с партнёром в CRM, реестр начислений, сроки выплат, комплект под сегмент — элементы, которые PDF советует не терять.",
-    ]),
-    Spacer(1, 6),
-    P("Источники: созвон команды 08.09.2026; стратегический PDF «Партнёрская сеть v1.0» от 08.09.2026; концепт v1 от 03.09.2026; регламенты партнёрки от 14.04.2026 (по ссылкам PDF); лендинг партнёрской программы. Канон проекта: docs/14-partner-network.md, версия 2. Цифры — параметры обсуждения. Правовые оценки — вопросы к проверке, не заключения.", "small"),
-)
+    # 13 разделитель (тёмный)
+    slide(DARK,
+        Spacer(1, 50), Pill("раздел 2"), Spacer(1, 10),
+        P("Пути партнёра и семьи", "h1d"),
+        P("На каждом шаге партнёр видит источник своей выгоды; на каждом этапе семья видит одну цену и одного продавца.", "h2d"),
+        Spacer(1, 14),
+        P("Семь шагов · семь этапов", "formula"),
+        P("Схемы ниже читаются слева направо. Дорожки: что делает участник и что показывает платформа. Комплект партнёра — на слайде после схем.", "bodyd"),
+    )
 
-F.pop()  # последний PageBreak
-doc.build(F)
-print("PDF:", OUT, os.path.getsize(OUT), "bytes")
+    # 14 путь партнёра
+    slide(LIGHTP,
+        P("Путь партнёра: семь шагов", "h1"),
+        P("Дорожки: действие партнёра и то, что в этот момент показывает платформа", "sub"),
+        swimlane(
+            [(1, "Выбрать рынок"), (2, "Выбрать роль"), (3, "Настроить цену"), (4, "Получить инструмент"), (5, "Привести семью"), (6, "Завершить расчёт"), (7, "Повторить")],
+            [("Партнёр делает", [
+                "Выбирает страну c и доступную версию продукта",
+                "Рекомендатель, продавец или лицензиат",
+                "Задаёт k, при желании выше x (продавец, лицензиат)",
+                "Личная страница, ссылка или код; образец результата; три сообщения",
+                "Рекомендует; ведёт продажу сам или передаёт обращение платформе",
+                "Получает выплату либо перечисляет сумму платформе",
+                "Приводит следующую семью, оценивает результат"]),
+             ("Платформа показывает", [
+                "Валюта, состав, язык, срок; x, y, z; условия L",
+                "Кто продаёт и принимает оплату; формула A или Δ",
+                "Проверка k ≥ y; Δ = k − z; отдельно влияние L и расходов",
+                "Версия предложения, итоговая цена, продукт, ID партнёра",
+                "Факт обращения и оплаты, статус услуги, сумма платформы, начисление",
+                "Возвраты и корректировки, окончательное начисление, дата расчёта",
+                "Продажи за период, Z, L, дельта; прибыль только при внесённых расходах"])],
+            lane_h=70),
+        Spacer(1, 8),
+        P("Мотивация по типам: не хочет продавать — понятное начисление и передача продажи платформе; умеет продавать — свобода цены и прозрачная z; регулярный поток — сравнение лицензии с оплатой за единицу; не хочет денег — баллы.", "small"),
+    )
+
+    # 15 путь семьи
+    slide(LIGHTP,
+        P("Путь семьи: семь этапов", "h1"),
+        P("Дорожки: что происходит с семьёй, что делает партнёр, что фиксирует платформа", "sub"),
+        swimlane(
+            [(1, "Повод"), (2, "Переход"), (3, "Цена"), (4, "Заявка и оплата"), (5, "Прохождение"), (6, "Результат"), (7, "Повтор")],
+            [("Семья", [
+                "Слышит о диагностике в подходящий момент",
+                "Открывает ссылку, страницу партнёра или вводит код",
+                "Видит одну цену k и одного продавца",
+                "Сама оставляет заявку; платит платформе или партнёру",
+                "Ребёнок проходит диагностику",
+                "Получает отчёт и следующий шаг",
+                "Рекомендует дальше или возвращается"]),
+             ("Партнёр", [
+                "Рубеж в занятиях, вопрос о вузе, спад мотивации; контакт семьи не передаёт",
+                "Даёт ссылку или код",
+                "Назначил k ≥ y (продавец, лицензиат) или скидку по коду",
+                "Ведёт продажу сам или передаёт платформе",
+                "Не участвует; содержание диагностики не видит",
+                "Видит только статус обращения и начисление",
+                "Получает повтор как отдельный признак"]),
+             ("Платформа фиксирует", [
+                "Ничего",
+                "Источник, код, версия предложения, страна",
+                "k, x, y, z, валюта на момент показа",
+                "Оплата, продавец, партнёр, модель, версия условий",
+                "Срок выполнения, статус услуги, проверка отчёта",
+                "Выдача, обратная связь, претензии",
+                "Повторное обращение; закрепление по правилам учёта"])],
+            lane_h=64),
+    )
+
+    # 16 комплект, статусы, сегменты
+    slide(LIGHTP,
+        P("Комплект партнёра, статусы и сегменты первой волны", "h1"),
+        P("Вход без обязательного вебинара; комплект — то, что партнёр получает в день подключения", "sub"),
+        two_cols(
+            table(["Составляющая", "Партнёр получает"], [
+                ["Условия на одной странице", "Роль, x, y, z, L своей страны, формула дельты, расчёт на трёх ценах"],
+                ["Образец результата", "Обезличенный отчёт и короткая демонстрация"],
+                ["Инструмент", "Ссылка, код или личная страница"],
+                ["Тексты", "Три сообщения под ситуации семьи"],
+                ["Поддержка", "Контакт, статус обращений и начислений"],
+            ], [W * 0.5 * 0.36, W * 0.5 * 0.64 - 6], fs=6.8),
+            table(["Статус", "Событие"], [
+                ["Потенциальный", "Найден подходящий человек или организация"],
+                ["Подключённый", "Принял условия, получил рабочий код"],
+                ["Активированный", "Привёл первое целевое обращение семьи"],
+                ["Продающий", "Привёл первую оплату; цель направления"],
+                ["Повторно активный", "Привёл обращение другой семьи; независимый признак, не последняя ступень"],
+            ], [W * 0.5 * 0.34, W * 0.5 * 0.66 - 6], fs=6.8),
+        ),
+        Spacer(1, 7),
+        table(["Сегмент", "Первое действие", "Что проверяем"], [
+            ["Знакомые преподаватели основателя", "Знакомство, комплект, помощь с первой рекомендацией", "Проходит ли путь до результата семьи"],
+            ["Довольные родители", "Предложить поделиться опытом; баллы как благодарность", "Работает ли рекомендация после пользы"],
+            ["Репетиторы вне круга; центры; сообщества", "Адресные приглашения; договор с владельцем или организатором", "Понятно ли предложение без доверия к основателю; группы без интеграции"],
+            ["Блогеры с результатом; эксперты платформы", "Партнёрство с оплатой по результату; кросс-рекомендации", "Готовы ли продавать сами; нужен кабинет эксперта"],
+        ], [W * 0.30, W * 0.38, W * 0.32], fs=6.8),
+    )
+
+    # 17 учёт
+    slide(LIGHTP,
+        P("Учёт, атрибуция и возвраты", "h1"),
+        P("Фиксировать до первой продажи; историю расчёта не удалять", "sub"),
+        cards_row([
+            lambda w: card("фиксация заказа", "Что сохраняется на момент заказа", "Валюта, k, x, y, z, модель, версия условий, продавец, партнёр, страна. Последующее изменение тарифа историю не меняет. У семей и сделок собственные идентификаторы.", w),
+            lambda w: card("проверка мрц", "На сервере, по итоговой цене", "После всех скидок и сочетаний кодов k < y не допускается. Ссылку дублировать кодом и ручным восстановлением источника при потере меток.", w),
+            lambda w: card("возвраты", "R = Σ(kᵢ − uᵢ); Z = L + Σ(zᵢ − ρᵢ)", "u — возврат семье, ρ — обратная корректировка суммы платформы. Δ = R − Z; Π = R − Z − T − E − C. Возвращается ли z или L, определяют условия, а не формула.", w),
+        ]),
+        Spacer(1, 8),
+        two_cols(
+            callout("Правила закрепления до продаж: срок закрепления семьи H; порядок при нескольких кодах; работа с существующими клиентами; перечень оплачиваемых продуктов; повторные оплаты; возвраты. Если партнёр привёл семью на вебинар, источник — партнёр, вебинар — этап продажи; одна сделка не попадает в итог дважды.", width=W * 0.5 - 6, strong=False),
+            callout("Партнёру виден только статус обращения и начисления, содержание диагностики ребёнка не нужно для учёта. «Платящий лицензиат» и «продающий партнёр» — разные показатели: оплата лицензии без продаж семьям не доказывает, что канал привлекает клиентов. Панель: подключения, активация, обращения, оплаты, повторы, возвраты, сроки, начислено и выплачено, расходы команды; разрезы — страна, валюта, роль, источник, когорта.", width=W * 0.5 - 6, strong=False),
+        ),
+    )
+
+    # 18 план
+    slide(LIGHTP,
+        P("План: первая неделя и 30 дней", "h1"),
+        P("Приглашения с четвёртого дня, решение о следующей волне на тридцатый", "sub"),
+        table(["Срок", "Действия", "Направление (ответственный)"], [
+            ["Дни 1–2", "Утвердить продукт, страну, x, y, z, условия L, роли пилота, маршрут денег. Пройти путь семьи руками. Назначить координатора", "Основатель; продукт; продажи; платежи"],
+            ["Дни 3–5", "Комплект первой версии; форма, коды, реестр; партнёрский вход на лендинге: один продукт, образец результата, условия заработка, три шага, отдельная форма", "Маркетинг; координатор; точечно разработка"],
+            ["Дни 4–10", "10 знакомых партнёров (пилот первой недели); параллельно адресные приглашения вне круга и переговоры с центрами и сообществами", "Основатель даёт доступ; координатор ведёт"],
+            ["Дни 11–20", "Обработка семей, помощь партнёрам с первым действием, фиксация отказов и времени команды", "Продажи; координатор; решения — маркетинг"],
+            ["Дни 21–30", "Сверка оплат и начислений, обратная связь семей, повтор работающего способа привлечения. Решение о следующей волне", "Все"],
+        ], [W * 0.11, W * 0.59, W * 0.30], fs=6.9),
+        Spacer(1, 7),
+        two_cols(
+            callout("Рамки как параметры: N_invite приглашений, N_pilot подключений, B_pilot дополнительных расходов. Числа из PDF (30–50 подключений, 100–150 приглашений) командой не обсуждались; лимит расходов не назначен. Не покупать базы, не платить за регистрацию партнёра; организатору платить за результат.", width=W * 0.5 - 6, strong=False),
+            callout("Ритм: ежедневно новые обращения и просроченные действия; еженедельно разбор воронки по источникам, причин отказов и нагрузки; на 30-й день решение. Узкое место сохраняется: ручная проверка отчёта. До роста потока продукт подтверждает число семей, которое команда обслужит в срок.", width=W * 0.5 - 6),
+        ),
+    )
+
+    # 19 экономика
+    slide(LIGHTP,
+        P("Экономика и когда расширять", "h1"),
+        P("Рост начинается с повторяемого результата, не с числа регистраций", "sub"),
+        two_cols(
+            callout("Условие успеха: после скидок, возвратов, себестоимости w, начислений и обслуживания канала остаётся положительный вклад в покрытие постоянных расходов. Результат платформы = Z − затраты на продукт − налоги и платежи платформы − сопровождение канала; для рекомендателей вместо Z — выручка от семьи минус A. Труд команды считать. Будущие продления не оправдывают убыточную первую продажу, пока их нет в данных.", width=W * 0.5 - 6, strong=False),
+            table(["Симптом", "Где искать причину"], [
+                ["Подключаются, но не рекомендуют", "Доверие, стимул, сложность, подходящие семьи"],
+                ["Рекомендуют, но нет обращений", "Повод, сообщение, первый шаг для семьи"],
+                ["Обращаются, но не покупают", "Предложение, цена k, квалификация, продажи"],
+                ["Покупают, но недовольны", "Остановить расширение; исправить выполнение"],
+                ["Платят лицензию, но не продают", "Доход периода, но не доказательство полезности модели"],
+            ], [W * 0.5 * 0.46, W * 0.5 * 0.54 - 6], fs=6.8),
+        ),
+        Spacer(1, 8),
+        cards_row([
+            lambda w: card("следующая волна", "Признаки", "Обращения не менее чем от десяти партнёров; оплаты от трёх независимых, включая вне круга основателя; несколько повторов; сроки услуги соблюдены; начисления понятны; нет претензий по качеству.", w),
+            lambda w: card("путь к 10 000", "Этапы", "Первые результаты → повторение вне личного круга → подключение групп (центры, сообщества) → массовая сеть с самостоятельным подключением, надёжным учётом и мощностью услуги.", w),
+            lambda w: card("три причины провала", "Чего не делать", "Подменить активных рекомендателей регистрациями; пообещать больше, чем выполняет продукт; не учесть ручной труд и себестоимость.", w),
+        ]),
+    )
+
+    # 20 неудобные находки
+    slide(LIGHTP,
+        P("Неудобные находки", "h1"),
+        P("Каждая требует решения, а не обсуждения", "sub"),
+        table(["№", "Находка", "Следствие"], [
+            ["1", "Переменные без значений — ещё не цена. Партнёру нужны x, y, z в валюте его страны", "Без набора для первой страны условия не написать; пилот пойдёт на устных договорённостях"],
+            ["2", "Инварианты могут не сойтись: y − z > 0 и z > w. Себестоимость w с ручной проверкой отчёта не посчитана", "Если w высока, коридор y–z схлопывается; проверить до объявления цен"],
+            ["3", "Розница в коридоре и продажа под своим именем — одна формула Δ = k − z", "Спор «открыто или под своим именем» брендовый и юридический, не ценовой"],
+            ["4", "Правовая сторона не проверена: разные цены потребителям, региональные цены, договор с партнёром-продавцом, маршрут денег, выплаты физлицам, статус баллов", "Роли продавца и лицензиата без заключения не запускать"],
+            ["5", "Расхождение цен между источниками: платформа, регламенты апреля, разговор, лендинг", "Партнёр получит противоречивую картину при первом поиске"],
+            ["6", "«Платформа берёт комиссию за рекомендацию и делится» против канона «без комиссий»", "Решение и правка канона, иначе спор на каждом обсуждении"],
+            ["7", "Кейс конкурента с подпиской продаётся личным брендом и контентом про заработок, а не отчётом", "Копировать без такого лица бессмысленно; «заработай» противоречит позиционированию для семей"],
+            ["8", "Агентский опыт — продажа услуг бизнесу; здесь партнёр перепродаёт диагностику ребёнка семье", "Другая ответственность, данные и закон"],
+            ["9", "Координатор пилота не назначен; пилот раньше решений", "Первым десяти придётся менять условия; для знакомых терпимо, для внешних нет"],
+        ], [W * 0.04, W * 0.54, W * 0.42], fs=6.7),
+    )
+
+    # 21 открытые вопросы (тёмный)
+    slide(DARK,
+        Spacer(1, 4), Pill("решения"), Spacer(1, 6),
+        P("Кто и что решает", "h1d"),
+        P("Без пунктов 1–3 и 7 не пишутся ни условия партнёра, ни лендинг", "subd"),
+        Table([[Paragraph(a, ParagraphStyle("qo", parent=S["cellb"], textColor=GOLD, fontSize=7.4)), Paragraph(b, ParagraphStyle("qq", parent=S["cell"], textColor=LIGHT, fontSize=7.1, leading=9.4))] for a, b in [
+            ["Основатель", "1. x, y, z (или a, b) и валюта первой страны; себестоимость w как нижняя граница z; роли пилота. 2. Продукт один со свойством «страна»; нужна ли быстрая версия. 3. Схема рекомендателя (А1–А3) и лицензиата (Б1', Б2), размеры, основание, возвраты, дата выплаты; маршрут денег. 4. Открытость или под своим именем; объём упоминания бренда. 5. Комиссия за рекомендацию экспертов: уточнение или смена модели. 6. HNW-семьи в поток 1 и вознаграждение партнёра. 7. Координатор пилота"],
+            ["Маркетинг и аналитика", "8. Письменные определения статусов и событий. 9. Правила закрепления, атрибуции и возвратов на одной странице. 10. Комплект первой версии и правки лендинга. 11. Метрика цели: продающие партнёры и оплаты семей раздельно"],
+            ["Юридическая проверка", "12. Разные цены потребителям, региональные и страновые цены, упомянутый закон о МРЦ с 01.10.2026. 13. Договор с партнёром в двух маршрутах денег; кто продавец семье; возвраты z и L. 14. Выплаты физлицам, юрлицо, статус баллов. 15. Согласия: передача контакта, доступ партнёра к статусам"],
+            ["Продукт и методология", "16. Состав быстрой версии, если нужна; себестоимость w обеих версий. 17. Пропускная способность в неделю. 18. Образец обезличенного отчёта"],
+            ["Разработка", "19. Определение страны покупателя и набор цен по стране; личная страница с k > x; проверка МРЦ на сервере; фиксация заказа; реестр начислений; партнёрская форма. 20. Что закрыть ручным реестром на первый месяц"],
+            ["Платежи", "21. Сверка оплат по кодам; регламент выплат и обратных перечислений; эквайринг и валютные расходы по маршрутам денег"],
+        ]], colWidths=[W * 0.18, W * 0.82], style=TableStyle([
+            ("VALIGN", (0, 0), (-1, -1), "TOP"), ("LINEBELOW", (0, 0), (-1, -1), 0.4, colors.HexColor("#3a3a3a")),
+            ("TOPPADDING", (0, 0), (-1, -1), 3.5), ("BOTTOMPADDING", (0, 0), (-1, -1), 3.5), ("LEFTPADDING", (0, 0), (-1, -1), 0), ("RIGHTPADDING", (0, 0), (-1, -1), 6)])),
+        Spacer(1, 6),
+        P("Итог следующей встречи: одна заполненная карточка предложения для первой страны, один расчёт дохода партнёра на трёх ценах, один проверенный путь сделки и список ответственных с датами. Принцип свободной наценки заново не обсуждается.", "smalld"),
+    )
+    return F
+
+def build(path):
+    def make_doc(target):
+        doc = BaseDocTemplate(target, pagesize=(PW, PH), leftMargin=ML, rightMargin=MR, topMargin=MT, bottomMargin=MB,
+                              title="MainExperts — Партнёрская сеть v2.2", author="MainExperts")
+        # первый шаблон в списке применяется к первой странице: титул тёмный
+        doc.addPageTemplates([PageTemplate(id=DARK, frames=[_frame()], onPage=on_dark),
+                              PageTemplate(id=LIGHTP, frames=[_frame()], onPage=on_light)])
+        return doc
+    buf = io.BytesIO(); d1 = make_doc(buf); d1.build(story()); TOTAL[0] = d1.page
+    d2 = make_doc(path); d2.build(story()); return d2.page
+
+if __name__ == "__main__":
+    n = build(OUT); print("PDF:", OUT, "pages:", n, "bytes:", os.path.getsize(OUT))
