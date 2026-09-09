@@ -223,60 +223,87 @@ def assign_speakers(words, segs) -> None:
         w.speaker = best if best > -1 else nearest
 
 
-def apply_video_names(words, tags_path: Path, min_share: float = 0.3):
-    """Сводит кластеры диаризации к именам участников из видеоразметки.
+def apply_video_names(words, tags_path: Path, min_share: float = 0.5):
+    """Расставляет имена участников по видеоразметке, диаризацией закрывая пробелы.
 
-    Каждому кластеру достаётся имя, на которое пришлось больше всего его речи.
-    Кластеры одного человека (диаризация нередко дробит голос) схлопываются в одно
-    имя. Кластер, у которого совпадений меньше min_share его речи, остаётся
-    безымянным — приписывать его наугад хуже, чем оставить номер.
+    Подсветка говорящего — сигнал более надёжный, чем кластеризация голосов: она
+    привязана к участнику, а не к тембру, и не разваливается на десятки кластеров.
+    Поэтому слово, попавшее в интервал с одним активным участником, получает имя
+    напрямую. Там, где активны несколько или подсветки нет, слово берёт имя своего
+    кластера — то, что чаще всего доставалось словам этого кластера напрямую.
+    Кластер, у которого прямых назначений меньше min_share, остаётся под номером:
+    приписать его наугад хуже, чем оставить номер.
     """
     import bisect
+    from collections import defaultdict
+
     data = json.loads(tags_path.read_text(encoding="utf-8"))
-    spans = [s for s in data["spans"] if not s.get("disputed")]
-    if not spans:
+    single = [s for s in data["spans"] if not s.get("disputed")]
+    multi = [s for s in data["spans"] if s.get("disputed")]
+    if not single:
         log("видеоразметка без однозначных интервалов — имена не подставлены")
         return None
-    starts = [s["start"] for s in spans]
 
-    total: dict[int, float] = {}
-    hit: dict[tuple[int, str], float] = {}
-    for w in words:
-        dur = max(w.end - w.start, 0.01)
-        total[w.speaker] = total.get(w.speaker, 0.0) + dur
+    def overlaps(spans, starts, w):
         i = max(0, bisect.bisect_left(starts, w.start) - 1)
+        out = {}
         for s in spans[i:i + 4]:
             if s["start"] > w.end:
                 break
             ov = min(w.end, s["end"]) - max(w.start, s["start"])
             if ov > 0:
-                key = (w.speaker, s["name"])
-                hit[key] = hit.get(key, 0.0) + ov
+                out[s["name"]] = out.get(s["name"], 0.0) + ov
+        return out
 
-    mapping: dict[int, str] = {}
-    for spk, spoken in total.items():
-        best_name, best = None, 0.0
-        for (c, name), sec in hit.items():
-            if c == spk and sec > best:
-                best_name, best = name, sec
-        if best_name and best >= min_share * spoken:
-            mapping[spk] = best_name
+    s_starts = [s["start"] for s in single]
+    m_starts = [s["start"] for s in multi]
 
-    named = list(dict.fromkeys(mapping[s] for s in sorted(mapping)))
-    unnamed = sorted(s for s in total if s not in mapping)
+    direct: dict[int, str] = {}
+    by_cluster: dict[int, dict[str, float]] = defaultdict(lambda: defaultdict(float))
+    spoken: dict[int, float] = defaultdict(float)
+    for idx, w in enumerate(words):
+        spoken[w.speaker] += max(w.end - w.start, 0.01)
+        ov = overlaps(single, s_starts, w)
+        if ov:
+            name = max(ov, key=ov.get)
+            direct[idx] = name
+            by_cluster[w.speaker][name] += ov[name]
+
+    # имя кластера — то, что чаще всего доставалось его словам напрямую
+    cluster_name: dict[int, str] = {}
+    for spk, hits in by_cluster.items():
+        name = max(hits, key=hits.get)
+        if sum(hits.values()) >= min_share * spoken[spk]:
+            cluster_name[spk] = name
+
+    named = list(dict.fromkeys(
+        [n for _, n in sorted(direct.items())] + list(cluster_name.values())))
     order = {name: i for i, name in enumerate(named)}
-    for i, spk in enumerate(unnamed):
-        order[f"__cluster_{spk}"] = len(named) + i
+    for spk in sorted(spoken):
+        order.setdefault(f"__cluster_{spk}", len(order))
 
-    for w in words:
-        key = mapping.get(w.speaker, f"__cluster_{w.speaker}")
+    from_video = from_cluster = 0
+    for idx, w in enumerate(words):
+        if idx in direct:
+            key, from_video = direct[idx], from_video + 1
+        else:
+            # в спорном интервале выбираем среди активных того, кто ближе кластеру
+            active = set(overlaps(multi, m_starts, w))
+            hits = by_cluster.get(w.speaker, {})
+            candidates = {n: v for n, v in hits.items() if n in active} or hits
+            if candidates:
+                key, from_cluster = max(candidates, key=candidates.get), from_cluster + 1
+            else:
+                key = cluster_name.get(w.speaker, f"__cluster_{w.speaker}")
+        order.setdefault(key, len(order))
         w.speaker = order[key]
 
     names = {str(i): n for n, i in order.items() if not n.startswith("__cluster_")}
-    unmatched = sum(total[s] for s in unnamed)
-    log(f"имена из видео: {len(named)} участников, "
-        f"{len(total)} кластеров сведено; без имени осталось {unmatched / 60:.1f} мин речи")
-    return names
+    stats = {"по видео": from_video, "по голосу": from_cluster,
+             "без имени": len(words) - from_video - from_cluster}
+    log(f"имена: {len(names)} участников; {from_video} слов размечено по видео, "
+        f"{from_cluster} — по голосу, {stats['без имени']} — без имени")
+    return names, stats
 
 
 def build_turns(words, max_gap: float = 1.5) -> list[Turn]:
@@ -309,10 +336,23 @@ def write_md(turns, path: Path, names: dict, meta: dict) -> None:
         f"- Длительность: {hms(meta['duration'])}",
         f"- Голосов распознано: {meta['speakers']}",
         f"- Модель распознавания: {meta['asr_model']}",
+        f"- Разделение по голосам: {meta['diarization']}",
+        f"- Имена участников: {meta['names_source']}",
         f"- Собрано: {meta['created']}",
         "",
-        "Метки говорящих расставлены автоматически по голосу. Соответствие голоса и имени "
-        "проверяется человеком: правится карта имён и файл пересобирается.",
+    ]
+    st = meta.get("word_attribution")
+    if st:
+        total = sum(st.values()) or 1
+        lines += [
+            "Откуда взята принадлежность слова говорящему: "
+            + ", ".join(f"{k} — {v * 100 // total}%" for k, v in st.items() if v),
+            "",
+        ]
+    lines += [
+        "Разметка автоматическая. Перекрывающаяся речь приписывается одному участнику, "
+        "короткие вставки липнут к соседней реплике, термины и суммы распознаются с "
+        "ошибками. Цифры и цитаты для внешних материалов сверяются с записью.",
         "",
         "---",
         "",
@@ -414,9 +454,11 @@ def main() -> None:
         sys.exit("речь не распознана — проверьте аудиодорожку")
 
     assign_speakers(words, segs)
+    word_stats = None
     if args.video_tags:
-        video_names = apply_video_names(words, args.video_tags)
-        if video_names:
+        result = apply_video_names(words, args.video_tags)
+        if result:
+            video_names, word_stats = result
             names = {**video_names, **names}   # ручная карта имеет приоритет
     turns = build_turns(words)
 
@@ -427,6 +469,7 @@ def main() -> None:
         "asr_model": args.model,
         "diarization": "pyannote-segmentation-3.0 + CAM++ (sherpa-onnx)" if segs else "нет",
         "names_source": "подсветка говорящего в записи" if args.video_tags else "вручную",
+        "word_attribution": word_stats,
         "created": time.strftime("%Y-%m-%d %H:%M"),
         "turns": len(turns),
         "words": len(words),
