@@ -5,10 +5,14 @@ set -euo pipefail
 MODELS_DIR="${ASR_MODELS_DIR:-$HOME/.cache/mainexperts-asr/models}"
 K2="https://github.com/k2-fsa/sherpa-onnx/releases/download"
 
-if ! command -v ffmpeg >/dev/null 2>&1; then
-  echo "[setup] ставлю ffmpeg"
+NEED=""
+command -v ffmpeg >/dev/null 2>&1 || NEED="$NEED ffmpeg"
+# tesseract — для чтения имён участников с картинки записи (video_speaker_tags.py)
+command -v tesseract >/dev/null 2>&1 || NEED="$NEED tesseract-ocr tesseract-ocr-rus"
+if [ -n "$NEED" ]; then
+  echo "[setup] ставлю:$NEED"
   DEBIAN_FRONTEND=noninteractive apt-get update -qq
-  DEBIAN_FRONTEND=noninteractive apt-get install -y -qq ffmpeg
+  DEBIAN_FRONTEND=noninteractive apt-get install -y -qq $NEED
 fi
 
 echo "[setup] ставлю python-пакеты"

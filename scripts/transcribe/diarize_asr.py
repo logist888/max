@@ -223,6 +223,62 @@ def assign_speakers(words, segs) -> None:
         w.speaker = best if best > -1 else nearest
 
 
+def apply_video_names(words, tags_path: Path, min_share: float = 0.3):
+    """Сводит кластеры диаризации к именам участников из видеоразметки.
+
+    Каждому кластеру достаётся имя, на которое пришлось больше всего его речи.
+    Кластеры одного человека (диаризация нередко дробит голос) схлопываются в одно
+    имя. Кластер, у которого совпадений меньше min_share его речи, остаётся
+    безымянным — приписывать его наугад хуже, чем оставить номер.
+    """
+    import bisect
+    data = json.loads(tags_path.read_text(encoding="utf-8"))
+    spans = [s for s in data["spans"] if not s.get("disputed")]
+    if not spans:
+        log("видеоразметка без однозначных интервалов — имена не подставлены")
+        return None
+    starts = [s["start"] for s in spans]
+
+    total: dict[int, float] = {}
+    hit: dict[tuple[int, str], float] = {}
+    for w in words:
+        dur = max(w.end - w.start, 0.01)
+        total[w.speaker] = total.get(w.speaker, 0.0) + dur
+        i = max(0, bisect.bisect_left(starts, w.start) - 1)
+        for s in spans[i:i + 4]:
+            if s["start"] > w.end:
+                break
+            ov = min(w.end, s["end"]) - max(w.start, s["start"])
+            if ov > 0:
+                key = (w.speaker, s["name"])
+                hit[key] = hit.get(key, 0.0) + ov
+
+    mapping: dict[int, str] = {}
+    for spk, spoken in total.items():
+        best_name, best = None, 0.0
+        for (c, name), sec in hit.items():
+            if c == spk and sec > best:
+                best_name, best = name, sec
+        if best_name and best >= min_share * spoken:
+            mapping[spk] = best_name
+
+    named = list(dict.fromkeys(mapping[s] for s in sorted(mapping)))
+    unnamed = sorted(s for s in total if s not in mapping)
+    order = {name: i for i, name in enumerate(named)}
+    for i, spk in enumerate(unnamed):
+        order[f"__cluster_{spk}"] = len(named) + i
+
+    for w in words:
+        key = mapping.get(w.speaker, f"__cluster_{w.speaker}")
+        w.speaker = order[key]
+
+    names = {str(i): n for n, i in order.items() if not n.startswith("__cluster_")}
+    unmatched = sum(total[s] for s in unnamed)
+    log(f"имена из видео: {len(named)} участников, "
+        f"{len(total)} кластеров сведено; без имени осталось {unmatched / 60:.1f} мин речи")
+    return names
+
+
 def build_turns(words, max_gap: float = 1.5) -> list[Turn]:
     """Слова → реплики: новый блок при смене говорящего или паузе длиннее max_gap."""
     turns: list[Turn] = []
@@ -329,6 +385,8 @@ def main() -> None:
     ap.add_argument("-t", "--threads", type=int, default=os.cpu_count() or 4)
     ap.add_argument("--beam", type=int, default=1, help="beam size: 1 быстро, 5 точнее и дольше")
     ap.add_argument("--names", type=Path, help='JSON вида {"0": "Максим", "1": "Игорь"}')
+    ap.add_argument("--video-tags", type=Path,
+                    help="JSON от video_speaker_tags.py: имена участников по подсветке в записи")
     ap.add_argument("--formats", default="md,txt,srt,json")
     ap.add_argument("--no-diarize", action="store_true", help="без разделения по голосам")
     ap.add_argument("--workdir", type=Path, help="каталог для WAV и кеша (по умолчанию рядом с выходом)")
@@ -356,6 +414,10 @@ def main() -> None:
         sys.exit("речь не распознана — проверьте аудиодорожку")
 
     assign_speakers(words, segs)
+    if args.video_tags:
+        video_names = apply_video_names(words, args.video_tags)
+        if video_names:
+            names = {**video_names, **names}   # ручная карта имеет приоритет
     turns = build_turns(words)
 
     meta = {
@@ -364,6 +426,7 @@ def main() -> None:
         "speakers": len({t.speaker for t in turns}),
         "asr_model": args.model,
         "diarization": "pyannote-segmentation-3.0 + CAM++ (sherpa-onnx)" if segs else "нет",
+        "names_source": "подсветка говорящего в записи" if args.video_tags else "вручную",
         "created": time.strftime("%Y-%m-%d %H:%M"),
         "turns": len(turns),
         "words": len(words),
