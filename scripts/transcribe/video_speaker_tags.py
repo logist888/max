@@ -29,6 +29,7 @@ import numpy as np
 
 BAND_HEIGHT = 220        # верхняя полоса с плитками участников, px
 MIN_BOX_WIDTH = 60       # уже — не плитка, а блик
+MAX_BOX_WIDTH = 420      # шире — слиплись соседние плитки
 MIN_GREEN_PIXELS = 300
 
 
@@ -45,23 +46,48 @@ def video_size(path: Path) -> tuple[int, int]:
     return int(w), int(h)
 
 
-def find_highlighted(band: np.ndarray) -> list[tuple[int, int]]:
-    """Границы подсвеченных плиток по x. Рамка активного — насыщенно-зелёная."""
+def green_mask(band: np.ndarray) -> np.ndarray:
     r = band[:, :, 0].astype(np.int16)
     g = band[:, :, 1].astype(np.int16)
     b = band[:, :, 2].astype(np.int16)
-    mask = (g > 120) & (g - r > 50) & (g - b > 50)
+    return (g > 120) & (g - r > 50) & (g - b > 50)
+
+
+def find_highlighted(band: np.ndarray) -> list[tuple[int, int]]:
+    """Границы подсвеченных плиток по x.
+
+    Опора — горизонтальные грани рамки: сплошной отрезок ровно по ширине плитки.
+    Группировать просто все зелёные пиксели нельзя: соседние подсвеченные плитки
+    разделены зазором в несколько пикселей и слипаются в одну коробку, после чего
+    OCR читает две подписи как одно имя.
+    """
+    mask = green_mask(band)
     if mask.sum() < MIN_GREEN_PIXELS:
         return []
-    cols = np.nonzero(mask.any(axis=0))[0]
-    boxes, start, prev = [], cols[0], cols[0]
-    for x in cols[1:]:
-        if x - prev > 40:           # разрыв — следующая плитка
-            boxes.append((start, prev))
-            start = x
-        prev = x
-    boxes.append((start, prev))
-    return [(a, b_) for a, b_ in boxes if b_ - a >= MIN_BOX_WIDTH]
+    per_row = mask.sum(axis=1)
+    strong = np.nonzero(per_row >= MIN_BOX_WIDTH)[0]      # строки с гранями
+    runs: list[tuple[int, int]] = []
+    for y in strong:
+        cols = np.nonzero(mask[y])[0]
+        start = prev = cols[0]
+        for x in cols[1:]:
+            if x - prev > 6:                              # зазор между плитками
+                runs.append((start, prev))
+                start = x
+            prev = x
+        runs.append((start, prev))
+
+    runs = [(a, b) for a, b in runs if MIN_BOX_WIDTH <= b - a <= MAX_BOX_WIDTH]
+    if not runs:
+        return []
+    runs.sort()
+    boxes = [list(runs[0])]
+    for a, b in runs[1:]:
+        if a <= boxes[-1][1] - 20:                        # тот же прямоугольник
+            boxes[-1][1] = max(boxes[-1][1], b)
+        else:
+            boxes.append([a, b])
+    return [(a, b) for a, b in boxes]
 
 
 def read_name(band: np.ndarray, box: tuple[int, int], cache: dict, lang: str) -> str:
@@ -166,6 +192,17 @@ def main() -> None:
 
     canon = normalize([n for _, ns in marks for n in ns])
     marks = [(t, sorted({canon.get(n, n) for n in ns})) for t, ns in marks]
+
+    # мусор OCR: обрывки в один-два символа и подписи, мелькнувшие пару раз
+    seen: dict[str, int] = {}
+    for _, ns in marks:
+        for n in ns:
+            seen[n] = seen.get(n, 0) + 1
+    junk = {n for n, c in seen.items() if len(n) < 3 or c < 5}
+    if junk:
+        log(f"отброшено как мусор OCR: {len(junk)} вариантов подписи")
+    marks = [(t, [n for n in ns if n not in junk]) for t, ns in marks]
+    marks = [(t, ns) for t, ns in marks if ns]
 
     # секунды с одним активным именем сшиваются в интервалы
     step = 1.0 / args.fps
