@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Пути семьи и партнёра</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --ink:#101010;--paper:#f8f8f8;--card:#ffffff;--gold:#c0a870;--gold-deep:#8f7640;--gold-soft:#efe6d0;
+  --muted:#6b6660;--line:#e3e0da;--zebra:#f1efeb;--lane:#faf9f6;--text:#101010;--text-inv:#f8f8f8;
+  --good:#2f7a4a;--warn:#b8741a;--bad:#b23a3a;
+  --font-display:"Manrope","Golos Text",system-ui,sans-serif;--font-body:"Golos Text",system-ui,-apple-system,"Segoe UI",sans-serif;--font-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--paper:#141414;--card:#1d1c1a;--muted:#a39d94;--line:#2e2c29;--zebra:#1a1917;--lane:#181716;--text:#f3f1ec;--gold-soft:#3a3120;--gold-deep:#d8c290;}
+}
+:root[data-theme="dark"]{--paper:#141414;--card:#1d1c1a;--muted:#a39d94;--line:#2e2c29;--zebra:#1a1917;--lane:#181716;--text:#f3f1ec;--gold-soft:#3a3120;--gold-deep:#d8c290;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.5}
+.top{background:var(--ink);color:var(--text-inv);padding:28px 24px 22px}
+.top-in{max-width:1240px;margin:0 auto;display:grid;gap:14px}
+.eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+h1{font-family:var(--font-display);font-weight:800;font-size:clamp(26px,3.4vw,38px);line-height:1.1;margin:0;text-wrap:balance;letter-spacing:-.01em}
+.lead{max-width:70ch;color:#cfcac2;margin:0;font-size:15px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tab{appearance:none;border:1px solid #3a3835;background:transparent;color:#e8e4dc;font:600 14px var(--font-body);padding:9px 16px;border-radius:999px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.tab:focus-visible,.step:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.wrap{max-width:1240px;margin:0 auto;padding:22px 24px 48px;display:grid;gap:22px}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;background:var(--card);border:1px solid var(--line);padding:16px 18px;border-radius:10px}
+.ctl label{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.ctl select,.ctl input[type=range]{width:100%}
+.ctl select{font:500 14px var(--font-body);padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--text)}
+.kval{font-family:var(--font-mono);font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
+.knote{font-size:12px;color:var(--muted)}
+.calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:4px}
+.tile .lbl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tile .val{font-family:var(--font-mono);font-size:24px;font-weight:600;font-variant-numeric:tabular-nums}
+.tile .sub{font-size:12px;color:var(--muted)}
+.tile.flag{border-left:3px solid var(--gold)}
+.val.bad{color:var(--bad)} .val.warn{color:var(--warn)} .val.good{color:var(--good)}
+.flow{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto}
+.flow h2{margin:0 0 4px;font-family:var(--font-display);font-size:20px;font-weight:800}
+.flow .sub{margin:0 0 14px;color:var(--muted);font-size:14px}
+.rail{display:grid;grid-template-columns:150px repeat(7,minmax(128px,1fr));gap:8px;min-width:1120px;align-items:stretch}
+.rail .corner{grid-column:1;grid-row:1}
+.step{grid-row:1;appearance:none;text-align:left;border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:10px 10px 10px 12px;cursor:pointer;position:relative;display:grid;gap:4px;color:var(--text)}
+.step .n{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--gold);color:var(--ink);font:600 12px var(--font-mono)}
+.step .t{font:600 14px var(--font-display)}
+.step[aria-pressed="true"]{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold);background:var(--gold-soft)}
+.step:not(:last-child)::after{content:"";position:absolute;right:-9px;top:20px;width:8px;height:2px;background:var(--gold)}
+.lane-name{background:var(--lane);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font:600 13px var(--font-display);color:var(--text)}
+.cell{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 10px;font-size:12.5px;line-height:1.4;color:var(--text)}
+.cell.hi{border-color:var(--gold)}
+.detail{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,1fr);gap:16px}
+@media (max-width:860px){.detail{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:grid;gap:14px;align-content:start}
+.panel h3{margin:0;font-family:var(--font-display);font-size:18px;font-weight:800}
+.panel h4{margin:0 0 6px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-deep)}
+.panel p{margin:0}
+.panel ul{margin:0;padding-left:18px;display:grid;gap:4px}
+.pill{display:inline-block;background:var(--gold);color:var(--ink);font:600 11px var(--font-mono);letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px}
+.ids{display:flex;flex-wrap:wrap;gap:6px}
+.id{font:500 11.5px var(--font-mono);border:1px solid var(--line);border-radius:5px;padding:2px 7px;background:var(--zebra)}
+.branch{display:grid;gap:8px}
+.branch .b{border-left:3px solid var(--gold);padding:6px 10px;background:var(--zebra);border-radius:0 6px 6px 0;font-size:13.5px}
+.branch .b.bad{border-left-color:var(--bad)}
+.legend{font-size:12.5px;color:var(--muted)}
+.foot{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="eyebrow">MainExperts · партнёрская сеть · первый запуск · по ТЗ docs/15</div>
+    <h1>Пути семьи и партнёра</h1>
+    <p class="lead">Интерактивная карта первого запуска: семь этапов семьи и семь шагов партнёра, что видит каждый, что проверяет сервер и что фиксирует учёт. Нажмите на шаг. Значения для России — рабочие значения пилота, не решения.</p>
+    <div class="tabs" role="tablist" aria-label="Путь">
+      <button class="tab" role="tab" id="tab-family" aria-selected="true" data-flow="family">Путь семьи</button>
+      <button class="tab" role="tab" id="tab-partner" aria-selected="false" data-flow="partner">Путь партнёра</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="controls" aria-label="Сценарий">
+    <div class="ctl">
+      <label for="k">Цена партнёра k</label>
+      <input type="range" id="k" min="20000" max="70000" step="1000" value="25000">
+      <div class="kval" id="kval">25 000 ₽</div>
+      <div class="knote">от МРЦ 20 000; РРЦ 35 000; сайт 50 000</div>
+    </div>
+    <div class="ctl">
+      <label for="kmax">Верхняя граница k_max</label>
+      <select id="kmax"><option value="50000" selected>50 000 (умолчание пилота)</option><option value="0">Нет границы (решение основателя)</option></select>
+    </div>
+    <div class="ctl">
+      <label for="route">Маршрут денег</label>
+      <select id="route"><option value="1" selected>1 · семья платит платформе</option><option value="2">2 · партнёр платит платформе сам (выключен до юриста)</option></select>
+    </div>
+    <div class="ctl">
+      <label for="direct">Прямая продажа по 50 000 на сайте</label>
+      <select id="direct"><option value="0" selected>Нет — зачёркнутой цены нет</option><option value="1">Да — 50 000 зачёркнута</option></select>
+    </div>
+    <div class="ctl">
+      <label for="tax">Статус партнёра для выплаты</label>
+      <select id="tax"><option value="npd" selected>Самозанятый</option><option value="ip">ИП</option><option value="fl">Физлицо без статуса</option><option value="none">Не указан</option></select>
+    </div>
+  </section>
+
+  <section class="calc" aria-label="Расчёт по сценарию" id="calc"></section>
+
+  <section class="flow" aria-live="polite">
+    <h2 id="flow-title">Путь семьи: семь этапов</h2>
+    <p class="sub" id="flow-sub">Дорожки: что происходит с семьёй, что делает партнёр, что фиксирует платформа. Нажмите на этап.</p>
+    <div class="rail" id="rail"></div>
+    <p class="legend" id="legend"></p>
+  </section>
+
+  <section class="detail">
+    <div class="panel" id="panel"></div>
+    <div class="panel" id="side"></div>
+  </section>
+
+  <p class="foot">Источник: `docs/15-partner-network-tz.md` (разделы 2.3, 2.4, 4, 5, 6, 7), `docs/14-partner-network.md`. Ставки налога с оборота 6 % и эквайринга 2,5 % — параметры, режим ИП в источниках не назван. Правовые пункты — вопросы к юристу, не заключения.</p>
+</main>
+
+<script>
+(function(){
+const Z=15000,Y=20000,X=35000,P=50000,T=0.06,A=0.025,NDFL=0.13,CONTRIB=0.30;
+const fmt=n=>new Intl.NumberFormat("ru-RU").format(Math.round(n))+" ₽";
+const state={flow:"family",k:25000,kmax:50000,route:"1",direct:false,tax:"npd",step:0};
+
+const family=[
+ {t:"Повод",lanes:["Слышит о диагностике в подходящий момент: рубеж в занятиях, вопрос о вузе, спад мотивации, публикация блогера","Рекомендует лично (К06) или публикует (К07) с раскрытием вознаграждения; контакт семьи не передаёт","Ничего. Данные семьи появляются только когда семья сама открывает ссылку"],
+  screen:"Сообщение или публикация партнёра вне платформы",
+  rules:["Фраза о вознаграждении в личном сообщении и публикации — обязательна (МАРК-04)","Публикация: «продукт предоставлен платформой», состав и цена, без «тест выбрал профессию»; маркировка рекламы — ПРАВ-09","Партнёр не собирает и не передаёт контакты семей (ПРАВ-10)"],
+  errors:["Партнёр обещает зарплатные данные или гарантию поступления — запрещено (ПРОД-08)"],
+  events:[],ids:["МАРК-04","МАРК-05","ПРОД-08","ПРАВ-09","ПРАВ-10"],
+  fail:"«Реклама» — семья закрывает сообщение. Лечится честным поводом и именем партнёра на странице",
+  personas:{u:"Мать 40–45, подросток 14–16. Доверяет учителю, не платформе",b:"Мать 32–42 после серии историй. Ждёт «магию за три часа»",e:"Семья консультанта: личная беседа, услуга партнёра описана отдельно"}},
+ {t:"Переход",lanes:["Открывает ссылку, личную страницу партнёра или вводит код","Уже дал ссылку или код; ничего не делает","LinkOpened: offer_id, источник, версия предложения, страна. Переход — не продажа"],
+  screen:"Страница семьи по предложению партнёра (ИНТ-07)",
+  rules:["Предложение active — страница показывается; stopped или expired — «предложение завершено» без подмены цены и, если есть, актуальное предложение того же партнёра","Страница noindex; приватные данные только за авторизацией","Код — короткая запись той же ссылки; неверный код — «код завершён» с альтернативой"],
+  errors:["Ссылка остановлена: сообщение и альтернатива (МАРК-09)","Страна покупателя не совпадает с SKU — заказ блокируется с объяснением"],
+  events:["LinkOpened"],ids:["ИНТ-05","ИНТ-07","МАРК-09","ДАН-02"],
+  fail:"Безликая страница: нет имени партнёра. Требование — имя партнёра и связка «партнёр → платформа»",
+  personas:{u:"Ищет имя учителя на странице",b:"Вводит код из истории; код должен приниматься и после смены цены у нового кода",e:"Цена на странице должна совпасть с обещанной в беседе — предложение неизменяемо"}},
+ {t:"Цена",lanes:["Видит одну цену k и одного продавца; зачёркнутую 50 000 — только если сайт реально продаёт по 50 000","Назначил k заранее кодом; на странице ничего не меняет","Снимок на момент показа: k, p, x, y, z, валюта, версия политики"],
+  screen:"Блок цены и состава на странице семьи",
+  rules:["Зачёркнутая p только при direct_sale_active и k < p (ПРАВ-05)","Текст состава и ограничений стандартный, одинаковый при любой k; партнёр его не редактирует (ПРОД-07)","При k ≥ p сравнение с ценой сайта не показывается"],
+  errors:["Партнёр продаёт дороже сайта: юридический риск «одна услуга, разные цены» — ПРАВ-04, решение до первой ссылки"],
+  events:[],ids:["ИНТ-07","ПРОД-07","ПРАВ-04","ПРАВ-05","ПРОД-11"],
+  fail:"«Почему у учителя дешевле сайта?» или «почему дороже?». Лечится подписью «предложение партнёра платформы» и единым составом",
+  personas:{u:"25 000 против 50 000 — понять, что входит",b:"Скидка настоящая? Если сайт не продаёт по 50 000, зачёркнутой цены быть не должно",e:"Только 70 000, без зачёркнутой; состав тот же, что за 50 000 — нужен явный текст про услугу партнёра"}},
+ {t:"Оплата",lanes:["Подтверждает e-mail, даёт согласия, платит платформе (маршрут 1) — или получает одноразовую ссылку от партнёра, который уже оплатил доступ (маршрут 2)","Маршрут 1: не участвует. Маршрут 2: платит платформе 15 000 со своей карты и получает ссылку для семьи","OrderCreated со снимком; PaymentConfirmed от шлюза; идемпотентность по (provider, txn_id)"],
+  screen:"Оформление заказа и оплата (ИНТ-08); для маршрута 2 — операция «оплатить доступ семье» в кабинете партнёра (ИНТ-10)",
+  rules:["Заказ создаётся до платежа со снимком цен, версий политики и оферты, маршрута, продавца, партнёра","Сумма платежа равна k заказа; offer_id и order_id уходят в шлюз в пользовательских параметрах (З-3)","Начисление и доступ — только по PaymentConfirmed; страница успеха в браузере не доказательство","Маршрут 2 выключен до заключения юриста (ПРАВ-07); лимит доступов на партнёра, все помечены на проверку"],
+  errors:["Ошибка или отмена платежа — повтор по тому же заказу без дубля","Повторное уведомление шлюза — один доступ, одно начисление","Опечатка в почте — подтверждение кодом до платежа (З-1); иначе восстановление по номеру заказа"],
+  events:["OrderCreated","PaymentConfirmed","AccrualCreated","SponsorPaymentConfirmed"],ids:["ИНТ-08","ИНТ-10","ИНТ-11","ДАН-01","ДАН-02","ДАН-03","ФИН-04","ПРАВ-08"],
+  fail:"Незнакомый получатель платежа (ИП). Лечится словами «продавец, исполнитель и поддержка — платформа» и раскрытием ИП на странице оплаты",
+  personas:{u:"Платит с телефона незнакомому ИП — нужна связка «партнёр → платформа»",b:"Сбой и повторное списание — повтор без дубля",e:"Кто отвечает за консультацию партнёра — открытый вопрос 11.7"}},
+ {t:"Прохождение",lanes:["Ребёнок проходит диагностику; родитель видит статус","Не участвует; содержания диагностики не видит","AccessGranted, TestStarted; статус услуги: оплачено → проходит; напоминание при незавершённом"],
+  screen:"Страница «оплата принята, что дальше» (ИНТ-09): кто проходит, сколько минут, срок отчёта",
+  rules:["Доступ сразу после PaymentConfirmed; аккаунт создаёт семья, не партнёр (ПРОД-09)","Срок выдачи отчёта назван числом до оплаты (ПРОД-03)","Оплата есть, доступа нет — сигнал владельцу обращений с приоритетом; восстановление по номеру заказа без повторной оплаты"],
+  errors:["Ребёнок бросил: напоминание, восстановление доступа","Детский вход в источниках не подтверждён (З-2) — текущая механика платформы"],
+  events:["AccessGranted","TestStarted"],ids:["ИНТ-09","ПРОД-01","ПРОД-03","ПРОД-09"],
+  fail:"Ребёнок 10 лет не удерживает тест; срок не назван. Лечится карточкой состава ПРОД-01",
+  personas:{u:"Передаёт доступ ребёнку; ждёт, что ребёнок пройдёт сам",b:"Ребёнок 13–14 лет; сколько времени займёт?",e:"Как у всех"}},
+ {t:"Результат",lanes:["Получает отчёт и следующий шаг; дальше общается с платформой; может запросить возврат","Видит только статус «отчёт выдан» и начисление; содержание не видит","ReportDelivered → hold_until_after_delivery; RefundRequested при обращении"],
+  screen:"Отчёт с разделом «как читать» и «следующие шаги» (ПРОД-10); форма возврата (ИНТ-18)",
+  rules:["Отчёт замороженной версии методики, идентификатор версии в отчёте и в заказе (ПРОД-02)","Рассмотрение возврата семье отделено от расчёта с партнёром; полный возврат обнуляет начисление, частичный — каскадом с начисления партнёра","Запрос возврата после выплаты партнёру не теряется: долг партнёра"],
+  errors:["Сбой формирования отчёта: повтор или ручная обработка, «готово» не выставляется","Претензия «одна услуга, разные цены» — ответ поддержки по снимку заказа; юрист (ПРАВ-04)"],
+  events:["ReportDelivered","RefundRequested","RefundApproved","AccrualAdjusted","AccrualReversed"],ids:["ПРОД-02","ПРОД-10","ИНТ-18","ФИН-06","ФИН-07","ПРАВ-06"],
+  fail:"«И что дальше?» — лечится разделом «следующие шаги» и контактом поддержки",
+  personas:{u:"Понятный следующий шаг без консультанта",b:"Разрыв с обещанием блогера → возврат по правилам",e:"Партнёр не оказал свою услугу — платформа её не контролирует; зона ответственности названа на странице"}},
+ {t:"Повтор",lanes:["Рекомендует дальше или возвращается; видит новый код партнёра с другой ценой","Создаёт новый код; старые заказы не меняются; при расхождении цен для одной аудитории получает предупреждение","Повторное обращение — отдельный признак; закрепление по правилам учёта; новая цена не трогает оплаченные заказы"],
+  screen:"Страница нового предложения; ответ поддержки «условия на момент покупки»",
+  rules:["Предложение неизменяемо; новая цена — новое предложение (ИНТ-05)","Условия покупки — те, что были на момент оплаты по конкретному коду; претензии по более низкой цене позже закрываются снимком заказа","Самореферал по признакам ДАН-10 — начисление в held до решения"],
+  errors:["Семья нашла цену ниже у того же партнёра — не подмена, а иное предложение; возврат только по правилам возврата"],
+  events:["LinkOpened","OrderCreated"],ids:["ИНТ-05","ИНТ-16","ДАН-10","МАРК-09"],
+  fail:"Ссылка учителя остановлена — состояние «завершено» с актуальным предложением",
+  personas:{u:"Ссылка, которой не стыдно поделиться",b:"Новый код дешевле — обида; ответ: условия на момент покупки",e:"Видит 50 000 на сайте — претензия «разные цены»; юрист до первой ссылки"}}
+];
+
+const partner=[
+ {t:"Знакомство",lanes:["Читает страницу о продукте и методике (К01), смотрит образец отчёта (К02); личный разговор с командой","Одна страница: продукт, образец результата, условия заработка словами; три цены и дельта","Реестр контактов (К12): контакт = двусторонний обмен; главный вопрос и возражение записаны"],
+  screen:"Страница партнёра (К01) вне кабинета; материалы К02, К03, К04, К09",
+  rules:["Условия называют суммы словами: сумма платформы 15 000, минимальная цена 20 000, рекомендованная 35 000, верхняя граница 50 000; букв x, y, z, k нет (ИНТ-02)","Цена сайта 50 000 партнёру не называется, пока прямая продажа по ней не действует (материалы в двух редакциях)","Только резиденты России; нерезиденты — после заключения (ПРАВ-11)"],
+  errors:["«Почему 20 000, если в интернете 12 000» — ответ на возражение К09; аргумент только качество отчёта","«Мало: 5 000 за ссылку» — честно: это начисление за продажу по минимальной цене, до налогов"],
+  events:[],ids:["МАРК-01","МАРК-08","МАРК-13","ИНТ-02","ПРАВ-11"],
+  fail:"«Что это за продукт и сколько стоит на самом деле» — нет К01–К03 до разговора",
+  personas:{u:"Учитель: неловко продавать; цена выше знакомого рынка",b:"Блогер: что надо наобещать за бесплатный продукт?",e:"Эксперт: чем объясню разницу с 50 000 на сайте?"}},
+ {t:"Подключение",lanes:["Регистрируется, принимает оферту галочкой; статус и реквизиты можно заполнить позже","Кабинет открыт; статус партнёра «не указан» — выплата заблокирована с пояснением","terms_acceptance: partner_id, terms_id, accepted_at, ip; PartnerConnected"],
+  screen:"Подключение и оферта (ИНТ-01)",
+  rules:["Без экзамена и сертификата","Предмет оферты — не агентирование (ПРАВ-02); условие «партнёр платит НДФЛ сам» для физлица не работает (ПРАВ-01)","Статус (физлицо, самозанятый, ИП) обязателен до первой выплаты, не до подключения"],
+  errors:["Оферта не принята — предложения создавать нельзя","Реквизитов нет — кабинет работает, выплата заблокирована с пояснением"],
+  events:["PartnerConnected"],ids:["ИНТ-01","ФИН-03","ПРАВ-01","ПРАВ-02"],
+  fail:"Оферта требует статус, которого нет. Лечится отложенным вводом статуса",
+  personas:{u:"Учитель без статуса самозанятого — подключается, узнаёт про удержания заранее",b:"Блогер хочет быстро — 5 минут до первой ссылки",e:"Эксперт с ИП — счёт и акт"}},
+ {t:"Цена",lanes:["Выбирает продукт пилота, ставит k на шкале 20 000…50 000 (или выше при снятой границе), видит начисление сразу","«Семья платит k, вам начисляется k − 15 000 до налогов»; предупреждение при k > 35 000; к выплате — по статусу","Проверка k ≥ y и k ≤ k_max на сервере; текст порождается из accrual_formula политики"],
+  screen:"Создание предложения (ИНТ-04)",
+  rules:["k < 20 000 или k > k_max — ошибка сервера с диапазоном; подмена k в запросе отклоняется (ДАН-05)","k > 35 000 — «дороже рекомендованной»; при k_max = нет и k ≥ 50 000 — «сравнение с ценой сайта не показывается»","Формула начисления — параметр политики; смена z переводит активные предложения в expired с уведомлением"],
+  errors:["Выше точки нуля платформы (при пустом k_max) — внутренний сигнал владельцу платежей, партнёру не показывается (ФИН-12)"],
+  events:["OfferCreated"],ids:["ИНТ-04","ДАН-05","ФИН-12","МАРК-02"],
+  fail:"Ползунок без потолка, буквы x/y/z. Лечится шкалой и словами",
+  personas:{u:"Учитель ставит 20 000–25 000 «чтобы семьям было не дорого»",b:"Блогер ставит 25 000 с кодом «со скидкой» — скидка только при реальной прямой продаже",e:"Эксперт хочет 70 000 — при умолчании k_max = 50 000 отклоняется; решение основателя 11.3"}},
+ {t:"Инструмент",lanes:["Получает ссылку и код; предпросмотр страницы семьи; образец отчёта; три сообщения (К06); сценарии публикации (К07)","Версия предложения, итоговая цена, продукт, partner_id; список предложений с переходами и оплатами","partner_offer: offer_id, policy_id, k, campaign, valid_from/to, status, terms_id, код"],
+  screen:"Список предложений (ИНТ-06); предпросмотр страницы семьи (ИНТ-07)",
+  rules:["Предложение неизменяемо: k, sku_id, terms_id не редактируются; допустимы stop и продление срока","Любое число предложений одновременно; при второй цене для одной аудитории — предупреждение (ИНТ-16)","Страница предложения — noindex"],
+  errors:["Партнёр хочет «поправить цену» — только новое предложение; старое можно остановить"],
+  events:["OfferCreated","OfferStopped"],ids:["ИНТ-05","ИНТ-06","ИНТ-16","К05","К06","К07"],
+  fail:"Ссылка ведёт на безликую страницу. Лечится предпросмотром с именем партнёра",
+  personas:{u:"Скопировать и отправить за минуту",b:"Код со сроком и лимитом покупок для первой публикации (МАРК-15)",e:"Пакет «продукт плюс консультация»: услуга описывается вне заказа"}},
+ {t:"Семья",lanes:["Рекомендует лично или публикует; при крупном чеке (маршрут 2, после юриста) платит платформе сам и получает ссылку для семьи","Статистика переходов отдельно от обращений и оплат; уведомление об оплате без имени семьи","LinkOpened, LeadCreated (по определению 11.9), OrderCreated, PaymentConfirmed; начисление в held"],
+  screen:"Результаты партнёра (ИНТ-12): номер заказа, предложение, дата, цена, начислено, статус услуги, статус начисления",
+  rules:["Партнёру не показываются данные ребёнка, содержание отчёта, чужие сделки, себестоимость (ИНТ-17, ДАН-09)","«Обращение» как событие определяется до реализации статистики (умолчание — введён e-mail при оформлении)","Покупки из круга основателя помечаются и в выводы о спросе не идут (ДАН-11)"],
+  errors:["Самореферал по признакам ДАН-10 — начисление остаётся в held до решения владельца обращений"],
+  events:["LeadCreated","PaymentConfirmed","AccrualCreated"],ids:["ИНТ-12","ИНТ-14","ИНТ-17","ДАН-09","ДАН-10","ДАН-11"],
+  fail:"Не понимает, было ли обращение. Лечится определением события и уведомлением об оплате",
+  personas:{u:"Отправил ссылку двум семьям — видит два перехода, одну оплату",b:"Десятки переходов после публикации — оплаты отдельно",e:"Маршрут 2 для миллиона — только после ПРАВ-07"}},
+ {t:"Расчёт",lanes:["Ждёт: удержание 14 дней после оплаты и 7 дней после отчёта, не дольше 60 дней; видит «начислено до налогов» и «к выплате по статусу» раздельно","Статусы: удержание → доступно → выплачивается → выплачено; возврат → отменено или скорректировано; отказ банка → ошибка с сохранением долга","HoldReleased, PayoutSent, PayoutConfirmed или PayoutFailed; снимок статуса и ставок на дату выплаты"],
+  screen:"Начисления и выплаты (ИНТ-13); расчёт партнёра (К10)",
+  rules:["available = min(max(оплата + 14, отчёт + 7), оплата + 60) и нет открытого спора по заказу (ФИН-05)","Три ветки по статусу: физлицо — удержание НДФЛ и взносы сверх Δ за счёт платформы; самозанятый — чек в день выплаты; ИП — счёт и акт (ФИН-03)","Первые 3 выплаты партнёра и все заказы дороже 35 000 подтверждаются вручную (ФИН-13)","День реестра выплат — параметр (умолчание: вторник); показывается в условиях (ФИН-14)"],
+  errors:["«Начислено 20 000, к выплате 17 400» без объяснения — обязательна ветка статуса в интерфейсе","Возврат после выплаты — долг партнёра, зачёт против будущих начислений (ФИН-07)","Отказ банка — обязательство сохраняется, повтор после исправления реквизитов"],
+  events:["HoldReleased","PayoutSent","PayoutConfirmed","PayoutFailed","DebtCreated","DebtOffset"],ids:["ИНТ-13","ФИН-03","ФИН-05","ФИН-07","ФИН-13","ФИН-14","ДАН-07"],
+  fail:"Ждал «14 дней», получил «доступно», а не перевод. Лечится днём реестра в условиях",
+  personas:{u:"Физлицо: 10 000 начислено → 8 700 к выплате; платформа ещё платит 3 000 взносов",b:"Самозанятый: 10 000 к выплате, чек в день выплаты",e:"ИП: счёт и акт; заказ дороже 35 000 — ручное подтверждение"}},
+ {t:"Повтор",lanes:["Создаёт новый код, приводит следующую семью, смотрит продажи за период","Продажи за период, удержано, доступно, выплачено, долги; прибыль не показывается — только «до ваших налогов»","Панель пилота: счётчики без процентов при n < 10; разрезы по когорте, партнёру, предложению, цене, неделе"],
+  screen:"Панель партнёра и панель пилота (7.6)",
+  rules:["Повторно активный — независимый признак: оплата или обращение второй семьи","Успешные случаи публикуются только после реальных выплат и с согласия (МАРК-11)","Панель отделена от метрик потока 1 и вебинара (МАРК-12)"],
+  errors:["Смена ценовой политики: активные предложения истекают с уведомлением, оплаченные заказы не меняются (приёмка 20)"],
+  events:["OfferCreated","AccrualAvailable"],ids:["МАРК-11","МАРК-12","МАРК-15","ДАН-08"],
+  fail:"Претензия семьи по старой цене — предложение неизменяемо, предупреждение о расхождении цен",
+  personas:{u:"2–3 продажи в год — гипотеза команды; пилот проверяет механику, не спрос",b:"Второй код после разбора первого: лимит покупок как сигнал «продешевил»",e:"Вторая волна: лицензия, планка с сертификацией — после пилота"}}
+];
+
+const laneNames={family:["Семья","Партнёр","Платформа фиксирует"],partner:["Партнёр делает","Платформа показывает","Учёт и данные"]};
+const titles={family:["Путь семьи: семь этапов","Дорожки: что происходит с семьёй, что делает партнёр, что фиксирует платформа. Нажмите на этап."],partner:["Путь партнёра: семь шагов","Дорожки: действие партнёра, что показывает платформа, что пишется в учёт. Нажмите на шаг."]};
+
+function calc(){
+ const k=state.k, kmax=state.kmax, route=state.route;
+ const cap=kmax>0 && k>kmax;
+ const delta=k-Z;
+ const fee=k*A, tax=k*T;
+ let payout=delta, contrib=0, note="";
+ if(state.tax==="fl"){payout=delta*(1-NDFL);contrib=delta*CONTRIB;note="НДФЛ 13 % удержан; взносы 30 % платит платформа сверх начисления";}
+ else if(state.tax==="npd"){note="Чек «Мой налог» в день выплаты; предмет договора — не агентирование";}
+ else if(state.tax==="ip"){note="Счёт и акт";}
+ else {payout=0;note="Статус не указан — выплата заблокирована";}
+ let platform, pnote;
+ if(route==="2"){platform=Z-Z*(T+A);pnote="Платформа получает только 15 000; продавец семье — партнёр. Маршрут выключен до заключения юриста (ПРАВ-07)";}
+ else {platform=k-fee-tax-delta-contrib;pnote="Выручка k минус эквайринг 2,5 %, налог с оборота 6 %, начисление партнёру"+(contrib?" и взносы":"")+"; себестоимость не вычтена";}
+ const showStrike=state.direct && k<P;
+ const tiles=[
+  {l:"Семья видит",v:fmt(k),s:showStrike?`Зачёркнуто ${fmt(P)}: прямая продажа действует`:(k>=P?"Без сравнения с ценой сайта":"Только k: прямой продажи по 50 000 нет"),c:""},
+  {l:"Проверка цены на сервере",v:cap?"Отклонено":(k<Y?"Отклонено":"Принято"),s:cap?`k > k_max ${fmt(kmax)}`:(k>X?"Дороже рекомендованной — предупреждение":"В коридоре 20 000–35 000"),c:cap?"bad":(k>X?"warn":"good")},
+  {l:"Начислено партнёру до налогов",v:fmt(delta),s:"Δ = k − 15 000; в held до наступления доступности",c:""},
+  {l:"К выплате партнёру",v:state.tax==="none"?"—":fmt(payout),s:note,c:state.tax==="none"?"bad":""},
+  {l:"Результат платформы до себестоимости",v:fmt(platform),s:pnote,c:platform<=0?"bad":(platform<5000?"warn":"")},
+  {l:"Доступность к выплате",v:"14 / 7 / 60 дней",s:"max(оплата + 14, отчёт + 7), не позже оплаты + 60; спор блокирует заказ",c:""},
+ ];
+ document.getElementById("calc").innerHTML=tiles.map(t=>`<div class="tile ${t.c?"flag":""}"><div class="lbl">${t.l}</div><div class="val ${t.c}">${t.v}</div><div class="sub">${t.s}</div></div>`).join("");
+}
+
+function rail(){
+ const steps=state.flow==="family"?family:partner;
+ const names=laneNames[state.flow];
+ const r=document.getElementById("rail");
+ let h=`<div class="corner"></div>`;
+ steps.forEach((s,i)=>{h+=`<button class="step" role="button" aria-pressed="${i===state.step}" data-i="${i}" style="grid-column:${i+2}"><span class="n">${i+1}</span><span class="t">${s.t}</span></button>`;});
+ names.forEach((n,li)=>{
+  h+=`<div class="lane-name" style="grid-row:${li+2};grid-column:1">${n}</div>`;
+  steps.forEach((s,i)=>{h+=`<div class="cell ${i===state.step?"hi":""}" style="grid-row:${li+2};grid-column:${i+2}">${s.lanes[li]}</div>`;});
+ });
+ r.innerHTML=h;
+ r.querySelectorAll(".step").forEach(b=>b.addEventListener("click",()=>{state.step=+b.dataset.i;rail();panel();}));
+ const [t,sub]=titles[state.flow];
+ document.getElementById("flow-title").textContent=t; document.getElementById("flow-sub").textContent=sub;
+ document.getElementById("legend").textContent=state.flow==="family"?"Персонажи: семья от учителя (регион), семья от блогера (столица), семья с ценой выше сайта.":"Персонажи: учитель с постоянными учениками, нишевый блогер-родитель, эксперт с личным брендом.";
+}
+
+function panel(){
+ const s=(state.flow==="family"?family:partner)[state.step];
+ const routeNote=state.route==="2"&&s.t==="Оплата"?`<div class="branch"><div class="b bad">Маршрут 2 выбран: семья платит партнёру, партнёр оплачивает платформе 15 000 и получает одноразовую ссылку. В пилоте выключен до заключения юриста (ПРАВ-07); лимит доступов на партнёра, все помечены на проверку.</div></div>`:"";
+ document.getElementById("panel").innerHTML=`
+  <div><span class="pill">${state.flow==="family"?"этап":"шаг"} ${state.step+1} из 7</span></div>
+  <h3>${s.t}</h3>
+  <div><h4>Экран</h4><p>${s.screen}</p></div>
+  ${routeNote}
+  <div><h4>Правила и проверки на сервере</h4><ul>${s.rules.map(x=>`<li>${x}</li>`).join("")}</ul></div>
+  <div><h4>Ошибки и исключения</h4><ul>${s.errors.map(x=>`<li>${x}</li>`).join("")}</ul></div>
+  <div><h4>Точка отказа</h4><p>${s.fail}</p></div>`;
+ const pk=state.flow==="family"?[["Семья от учителя",s.personas.u],["Семья от блогера",s.personas.b],["Семья с ценой выше сайта",s.personas.e]]:[["Учитель",s.personas.u],["Блогер-родитель",s.personas.b],["Эксперт с личным брендом",s.personas.e]];
+ document.getElementById("side").innerHTML=`
+  <div><h4>События учёта</h4><div class="ids">${s.events.length?s.events.map(e=>`<span class="id">${e}</span>`).join(""):"<span class='legend'>нет</span>"}</div></div>
+  <div><h4>Требования ТЗ</h4><div class="ids">${s.ids.map(e=>`<span class="id">${e}</span>`).join("")}</div></div>
+  <div><h4>Персонажи на этом шаге</h4><div class="branch">${pk.map(([n,t])=>`<div class="b"><strong>${n}.</strong> ${t}</div>`).join("")}</div></div>`;
+}
+
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
+ document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected","false"));
+ t.setAttribute("aria-selected","true"); state.flow=t.dataset.flow; state.step=0; rail(); panel();
+}));
+const kEl=document.getElementById("k");
+kEl.addEventListener("input",()=>{state.k=+kEl.value;document.getElementById("kval").textContent=fmt(state.k);calc();});
+document.getElementById("kmax").addEventListener("change",e=>{state.kmax=+e.target.value;calc();});
+document.getElementById("route").addEventListener("change",e=>{state.route=e.target.value;calc();panel();});
+document.getElementById("direct").addEventListener("change",e=>{state.direct=e.target.value==="1";calc();});
+document.getElementById("tax").addEventListener("change",e=>{state.tax=e.target.value;calc();});
+calc(); rail(); panel();
+})();
+</script>
+
+</body>
+</html>
