@@ -52,7 +52,7 @@ h1{font-family:var(--font-display);font-weight:800;font-size:clamp(26px,3.4vw,38
 .step[aria-pressed="true"]{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold);background:var(--gold-soft)}
 .step:not(:last-child)::after{content:"";position:absolute;right:-9px;top:20px;width:8px;height:2px;background:var(--gold)}
 .lane-name{background:var(--lane);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font:600 13px var(--font-display);color:var(--text)}
-.cell{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 10px;font-size:12.5px;line-height:1.4;color:var(--text)}
+.cell{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 10px;font-size:12.5px;line-height:1.4;color:var(--text);overflow-wrap:anywhere;word-break:normal}
 .cell.hi{border-color:var(--gold)}
 .detail{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,1fr);gap:16px}
 @media (max-width:860px){.detail{grid-template-columns:1fr}}
