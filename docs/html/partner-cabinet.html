@@ -209,7 +209,7 @@ footer{max-width:1180px;margin:0 auto;padding:0 20px 24px;font-size:.78rem;color
 <script>
 (function(){
   "use strict";
-  var Z=15000, Y=20000, X=35000, P=50000, KMAX=50000, NDFL=0.13;
+  var S=0.35, Y=20000, X=35000, P=50000, SMAX=120000, NDFL=0.13;
 
   function money(n){
     var s=Math.round(Math.abs(n)).toString().replace(/\B(?=(\d{3})+(?!\d))/g," ");
@@ -234,12 +234,12 @@ footer{max-width:1180px;margin:0 auto;padding:0 20px 24px;font-size:.78rem;color
     {id:"gate",   sec:"gate",     name:"Вход в кабинет",            note:"Тестер открывает ссылку-приглашение и входит как партнёр.", src:"П1–П2"},
     {id:"join",   sec:"join",     name:"Оферта и подключение",       note:"Без экзамена и предоплаты. До принятия оферты предложения недоступны.", src:"ИНТ-01"},
     {id:"payout", sec:"payout",   name:"Статус для выплат",          note:"Кабинет работает и без реквизитов, заблокирована только выплата.", src:"ИНТ-01, ФИН-03"},
-    {id:"terms",  sec:"terms",    name:"Условия словами",            note:"Три цены названы словами и суммами. Ни одной буквы в интерфейсе.", src:"ИНТ-02"},
-    {id:"new",    sec:"new",      name:"Цена предложения",           note:"Шкала от 20 000 до 50 000 с отметкой рекомендованной цены и мгновенным расчётом.", src:"ИНТ-04"},
+    {id:"terms",  sec:"terms",    name:"Условия словами",            note:"Цены и доля названы словами и суммами. Ни одной буквы в интерфейсе.", src:"ИНТ-02"},
+    {id:"new",    sec:"new",      name:"Цена предложения",           note:"Шкала от минимальной цены, верхней границы нет. Начисление — доля от цены, считается на лету.", src:"ИНТ-04"},
     {id:"offers", sec:"offers",   name:"Ссылка и код",               note:"Предложение неизменяемо: цена меняется только новым предложением.", src:"ИНТ-05, ИНТ-06"},
     {id:"family", sec:"offers",   name:"Страница семьи",             note:"Предпросмотр того, что видит семья: имя партнёра, цена, продавец.", src:"ИНТ-07"},
     {id:"orders", sec:"orders",   name:"Первая оплата",              note:"Строка на заказ без единого поля с данными ребёнка.", src:"ИНТ-12, ИНТ-17"},
-    {id:"hold",   sec:"money",    name:"Начисление и удержание",     note:"Начислено до налогов и дата, с которой сумма доступна.", src:"ИНТ-13, ФИН-04"},
+    {id:"hold",   sec:"money",    name:"Начисление и удержание",     note:"Начислено до налогов и дата доступности. Без выданного отчёта выплаты нет.", src:"ИНТ-13, ФИН-04"},
     {id:"pay",    sec:"money",    name:"Выплата",                    note:"Два поля раздельно и объяснение ветки по вашему статусу.", src:"ИНТ-13, ФИН-03"},
     {id:"debt",   sec:"money",    name:"Возврат после выплаты",      note:"Возврат превращается в долг и зачитывается против следующего начисления.", src:"ФИН-06, ФИН-07"},
     {id:"panel",  sec:"panel",    name:"Панель пилота",              note:"Счётчики без долей, пока наблюдений меньше десяти. Прибыль не показывается.", src:"П7, 7.6"}
@@ -267,7 +267,7 @@ footer{max-width:1180px;margin:0 auto;padding:0 20px 24px;font-size:.78rem;color
     if(st.step===stepIndex("pay")) return "07.10.2026";
     return "27.10.2026";
   }
-  function gross(){return st.offerK - Z;}
+  function gross(){return Math.round(st.offerK * S);}
 
   /* ---------- данные демонстрации ---------- */
   function orders(){
@@ -357,40 +357,40 @@ footer{max-width:1180px;margin:0 auto;padding:0 20px 24px;font-size:.78rem;color
   V.terms=function(){
     return card('Условия партнёрской программы','Редакция от 09.09.2026. Рабочие значения пилота для России.',
       '<div class="grid g2">'+
-        fact("Сумма платформы за прохождение", money(Z), "Остаётся платформе с каждой продажи.")+
+        fact("Ваше начисление", Math.round(S*100)+"\u00A0%", "Доля от цены, которую платит семья, до налогов.")+
         fact("Минимальная цена для семьи", money(Y), "Ниже этой цены предложение не создаётся.")+
         fact("Рекомендованная цена", money(X), "Ориентир. Дороже можно, это не ошибка.")+
-        fact("Верхняя граница цены", money(KMAX), "Задана на время пилота.")+
+        fact("Верхняя граница цены", "нет", "Снята 13.09.2026. Цену выше рекомендованной объясняете семье вы.")+
       '</div>'+
-      '<h3>Как считается начисление</h3>'+
+      '<h3>Как считается начисление</h3>'+'<p class="small muted">Начисление — '+Math.round(S*100)+'\u00A0% от цены, которую платит семья, до ваших налогов.</p>'+
       '<div class="tw"><table><thead><tr><th>Семья платит</th><th class="num">Начислено до налогов</th><th class="num">К выплате, '+esc(TAX[st.tax].name)+'</th></tr></thead><tbody>'+
-        [20000,28000,35000].map(function(k){
-          return '<tr><td class="num">'+money(k)+'</td><td class="num">'+money(k-Z)+'</td><td class="num">'+
-            (st.tax==="none"?'<span class="missing">укажите статус</span>':money(TAX[st.tax].net(k-Z)))+'</td></tr>';}).join("")+
+        [20000,35000,50000].map(function(k){
+          return '<tr><td class="num">'+money(k)+'</td><td class="num">'+money(k*S)+'</td><td class="num">'+
+            (st.tax==="none"?'<span class="missing">укажите статус</span>':money(TAX[st.tax].net(k*S)))+'</td></tr>';}).join("")+
       '</tbody></table></div>'+
       '<div class="notice"><b class="small">Деньги приходят по реестру выплат, день реестра — вторник</b>'+
-        '<span class="tiny muted">Сумма становится доступной через 14 дней после оплаты семьёй, а если отчёт выдан раньше — через 7 дней после выдачи отчёта.</span></div>'+
+        '<span class="tiny muted">Сумма становится доступной через 14 дней после оплаты семьёй или через 7 дней после выдачи отчёта — что наступит позже. Пока отчёт не выдан, начисление остаётся на удержании: платформа платит за оказанную услугу.</span></div>'+
       '<p class="tiny muted">Цена сайта платформы в условиях не называется: прямая продажа по ней на пилоте выключена.</p>'
     );
   };
 
   V.new=function(){
-    var k=st.k, g=k-Z, t=TAX[st.tax];
+    var k=st.k, g=Math.round(k*S), t=TAX[st.tax];
     var low=k<Y, high=k>X;
-    var pos=function(v){return ((v-Y)/(KMAX-Y))*100;};
+    var pos=function(v){return ((v-Y)/(SMAX-Y))*100;};
     var scale='<div class="scale"><div class="bar"><div class="fill" style="width:'+Math.max(0,Math.min(100,pos(k)))+'%"></div></div>'+
-      [[Y,"минимум"],[X,"рекомендованная"],[KMAX,"граница"]].map(function(m){
+      [[Y,"минимум"],[X,"рекомендованная"],[P,"цена сайта"]].map(function(m){
         return '<div class="tick'+(m[0]===X?" acc":"")+'" style="left:'+pos(m[0])+'%"><i></i>'+money(m[0])+'<br>'+m[1]+'</div>';}).join("")+'</div>';
 
     var calc='<div class="grid g3">'+
       '<div class="kpi"><span class="l">Семья платит</span><span class="v">'+money(k)+'</span></div>'+
-      '<div class="kpi accent"><span class="l">Вам начисляется до налогов</span><span class="v">'+money(g)+'</span></div>'+
+      '<div class="kpi accent"><span class="l">Вам начисляется, доля до налогов</span><span class="v">'+money(g)+'</span></div>'+
       '<div class="kpi"><span class="l">К выплате по вашему статусу</span><span class="v">'+
         (st.tax==="none"?'<span class="missing" style="font-size:.9rem">укажите статус</span>':money(t.net(g)))+'</span></div>'+
     '</div>';
 
     var msg="";
-    if(low) msg='<div class="notice risk"><b class="small">Цена ниже минимальной</b><span class="tiny muted">Допустимый диапазон — от '+money(Y)+' до '+money(KMAX)+'. Сервер такое предложение отклонит.</span></div>';
+    if(low) msg='<div class="notice risk"><b class="small">Цена ниже минимальной</b><span class="tiny muted">Минимальная цена — '+money(Y)+'. Верхней границы нет. Сервер такое предложение отклонит.</span></div>';
     else if(high) msg='<div class="notice warn"><b class="small">Дороже рекомендованной цены</b><span class="tiny muted">Это не ошибка: предложение создастся. Семье вы объясняете цену сами.</span></div>';
 
     var created=st.offerCreated
@@ -403,7 +403,7 @@ footer{max-width:1180px;margin:0 auto;padding:0 20px 24px;font-size:.78rem;color
         '<div class="field"><label for="ovt">Срок действия, необязательно</label><input class="input" id="ovt" value="31.12.2026"></div>'+
       '</div>'+
       '<div class="field"><label for="k">Цена для семьи</label>'+
-        '<input type="range" id="k" min="18000" max="'+KMAX+'" step="1000" value="'+k+'" data-act="k">'+scale+'</div>'+
+        '<input type="range" id="k" min="18000" max="'+SMAX+'" step="1000" value="'+k+'" data-act="k">'+scale+'</div>'+
       calc+msg+
       '<div class="row"><button class="btn primary" data-act="create"'+(!st.terms||low?" disabled":"")+'>Создать предложение</button>'+
         (!st.terms?'<span class="small muted">Сначала примите оферту в разделе «Подключение».</span>':"")+'</div>'+
@@ -415,17 +415,17 @@ footer{max-width:1180px;margin:0 auto;padding:0 20px 24px;font-size:.78rem;color
     if(!st.offerCreated){
       return card('Предложения','Пока ни одного.',
         '<div class="notice"><b class="small">Здесь появятся ваши ссылки и коды</b>'+
-        '<span class="tiny muted">Пример: цена '+money(28000)+' — вам начисляется '+money(28000-Z)+' до налогов.</span></div>'+
+        '<span class="tiny muted">Пример: цена '+money(28000)+' — вам начисляется '+money(28000*S)+' до налогов.</span></div>'+
         '<button class="btn primary" data-act="go-new">Создать первое предложение</button>');
     }
-    var g=st.offerK-Z, code="SOKOLOVA-28";
+    var g=gross(), code="SOKOLOVA-28";
     var rows='<tr><td><b>'+esc(st.offerName)+'</b><div class="tiny muted">создано 15.09.2026, до 31.12.2026</div></td>'+
       '<td class="num">'+money(st.offerK)+'</td><td class="num">'+money(g)+'</td>'+
       '<td>'+(st.offerStopped?'<span class="pill n">остановлено</span>':'<span class="pill ok">действует</span>')+'</td>'+
       '<td class="num">'+(at("orders")?(at("debt")?"41":at("hold")?"22":"7"):"0")+'</td>'+
       '<td class="num">'+orders().length+'</td></tr>';
     if(st.secondOffer) rows+='<tr><td><b>Осенний набор</b><div class="tiny muted">создано '+today()+'</div></td>'+
-      '<td class="num">'+money(X)+'</td><td class="num">'+money(X-Z)+'</td><td><span class="pill ok">действует</span></td><td class="num">0</td><td class="num">0</td></tr>';
+      '<td class="num">'+money(X)+'</td><td class="num">'+money(X*S)+'</td><td><span class="pill ok">действует</span></td><td class="num">0</td><td class="num">0</td></tr>';
 
     var warn=st.secondOffer?'<div class="notice warn"><b class="small">У вас два предложения с разной ценой</b>'+
       '<span class="tiny muted">Одной аудитории вы называете '+money(st.offerK)+' и '+money(X)+'. Семьи, пришедшие раньше, платят цену своей ссылки — их заказы не меняются.</span></div>':"";
@@ -494,7 +494,7 @@ footer{max-width:1180px;margin:0 auto;padding:0 20px 24px;font-size:.78rem;color
     var trail='<div class="trail">'+
       row1("done","Оплата семьёй", "18.09.2026 · заказ МЕ-1042 · "+money(st.offerK))+
       row1(at("hold")?"done":"now","Отчёт выдан","22.09.2026 · начисление "+money(g)+" до налогов")+
-      row1(at("pay")?"done":"now","Удержание до 02.10.2026","14 дней после оплаты или 7 дней после отчёта — что позже наступит из двух, но не дольше 60 дней")+
+      row1(at("pay")?"done":"now","Удержание до 02.10.2026","14 дней после оплаты или 7 дней после отчёта — что наступит позже. Без выданного отчёта начисление остаётся на удержании")+
       row1(at("pay")?"done":"","Доступно к выплате","02.10.2026")+
       row1(at("pay")?"done":"","Реестр выплат, вторник","06.10.2026 · отправлено в банк")+
       row1(at("pay")?"done":"","Выплачено","07.10.2026 · подтверждено банком")+
