@@ -30,8 +30,12 @@
   карта запуска; `audit_csv.py`, `audit_json.py`, `inventory.py` —
   воспроизводимые расчёты.
 - `.claude/skills/` — `boot`, `ingest`, `report`.
+  `setup.sh`, `requirements.txt`; `transcribe/` — расшифровка записей по голосам.
+- `transcripts/` — готовые транскрипты встреч (звук и кеш — вне git).
+- `.claude/skills/` — `boot`, `ingest`, `report`, `publish`, `transcribe`.
 
-## Два рабочих действия
+## Три рабочих действия
+- **transcribe** — расшифровать запись созвона по голосам с таймкодами.
 - **ingest** — принять файл и разложить в `vault/`.
 - **report** — собрать отчёт из `vault/` и выгрузить PDF в Drive.
 

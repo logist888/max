@@ -38,3 +38,6 @@ Thumbs.db
 .obsidian/workspace-mobile.json
 .obsidian/cache
 .obsidian/plugins/*/data.json
+# Транскрипция: сырой звук и промежуточный кеш (тяжёлое, воспроизводимое)
+transcripts/.work/
+*.wav
