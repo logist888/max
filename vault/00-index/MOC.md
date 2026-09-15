@@ -20,9 +20,16 @@ updated: 2026-06-23
 - `docs/17-partner-network-brief.md` — краткий ввод в партнёрскую сеть для разработчика: модель, правила, порядок работ, блокеры. PDF: [[../40-reports/2026-09-13-partnerka-brief-razrabotchiku.pdf]].
 - `docs/16-partner-flows-tz.md` — ТЗ по путям семьи и партнёра для разработчиков (правки 13.09.2026): шаги, экраны, запросы, правила, состояния, приёмка. Интерактивная карта — `docs/html/partner-flows.html`, прототип кабинета партнёра — `docs/html/partner-cabinet.html`. Поэкранные PDF для телефона: [[../40-reports/2026-09-13-puti-semi-partnera-ekrany.pdf]] · [[../40-reports/2026-09-13-kabinet-partnera-ekrany.pdf]]. PDF: [[../40-reports/2026-09-13-partnerskaya-set-tz-puti.pdf]].
 - `docs/14-partner-network.md` — партнёрская сеть, «Партнёрская розница» (актуально на 13.09.2026): решения команды со статусами, три конструкции расчёта и выбранная доля партнёра 35 %, слои цены, значения для России, роли, сценарный анализ, пути партнёра и семьи, учёт и право, план первого запуска, находки, вопросы. PDF: [[../40-reports/2026-09-13-partnerskaya-set-kanon.pdf]]. Источники: [[../10-sources/2026-09-13-pravki-komandy-partnerka]] ·  [[../10-sources/2026-09-08-sozvon-partnerskaya-set]] · [[../10-sources/2026-09-08-partner-network-strategy-pdf]] · [[../10-sources/2026-09-09-partnerskaya-delta-v3-chatgpt]] · [[../10-sources/2026-09-09-sozvon-partnerskaya-set-2]].
+- `docs/08-board-system.md` — система управленческих бордов MMS (обзор, иерархия L0–L3, критика); канон — `docs/boards/`.
+- `docs/boards/` — каркас борда, KPI-фреймворк (L0–L3), роли/доступ, цикл решений, стартовый контур S0–S2 (`04-stage0-mvp`), семь бордов (Owner…Product), критерии приёмки.
+- `docs/09-system-map.md` — блок-схема системы: листы и процессы (Mermaid, рендер на GitHub).
+- `docs/10-data-model.md` — реляционная модель запуска продуктов (ядро + слой целей + факты), ER-схема, демо-данные, витрины, приёмка; закрывает пробел Data Dictionary.
+- `docs/11-gtm-strategy.md` — GTM-стратегия к первому $1M (Поток-2), 10 этапов + оценка инициатив + аудит. Ревизия 08.07: автоматизация → узкое место снято, основной сценарий S1 (объём+подписка).
+- `docs/12-traffic-platform-decisions.md` — слой «Трафик → Платформа → Решения» (Поток-2, СНГ+MENA): словари MK_/PG_/LST_/REF_/CELL_, матрица источник→посадочная, учётный контур, цикл решений + шаблон ТЗ.
 - `docs/private/stream-1-hnw.md` — поток-1, HNW. **Конфиденциально, в git не идёт, без явной причины не открывать.**
 
 Дословный снимок Диска — `memory/memory.md`. Оригиналы методологий — `reference/`.
+Источники MMS — `vault/10-sources/mms-tom-1-business-architecture.md`, `…/mms-tom-2-functional-specification.md`.
 
 ## Рабочие заметки — vault/ (из новых ингестов)
 Якоря потоков и гипотезы:

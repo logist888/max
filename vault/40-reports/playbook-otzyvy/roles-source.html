@@ -1,0 +1,150 @@
+<!doctype html><html lang='ru'><head><meta charset='utf-8'><style>
+@page { size:A4; margin:20mm 20mm 18mm 20mm;
+  @bottom-left { content:"Бриф для C-level · Модель данных MainExperts";
+    font-family:'DejaVu Sans'; font-size:7.5pt; color:#64748B; }
+  @bottom-right { content:counter(page); font-family:'DejaVu Sans'; font-size:8.5pt;
+    font-weight:bold; color:#0F172A; }
+}
+@page cover { margin:0; @bottom-left{content:none} @bottom-right{content:none} }
+*{box-sizing:border-box}
+html{font-family:'DejaVu Sans',sans-serif}
+body{margin:0;color:#1E293B;font-size:11pt;line-height:1.42}
+p{margin:0 0 6pt 0}
+strong{color:#0F172A}
+h1,h2,h3{margin:0;color:#0F172A;line-height:1.15}
+
+.cover{page:cover;height:297mm;position:relative;color:#fff;
+  background:radial-gradient(1100px 480px at 80% -10%,rgba(16,185,129,.32),transparent 60%),
+  linear-gradient(150deg,#0F172A 0%,#16265c 48%,#1D4ED8 100%);overflow:hidden}
+.cover .frame{position:absolute;inset:14mm;border:1px solid rgba(255,255,255,.22)}
+.cover .in{position:absolute;inset:32mm 32mm}
+.cover .eyebrow{letter-spacing:.4em;font-size:11pt;text-transform:uppercase;color:rgba(255,255,255,.72);margin-bottom:8mm}
+.cover .kick{display:inline-block;font-size:9.5pt;letter-spacing:.26em;text-transform:uppercase;
+  color:#10B981;border:1px solid rgba(16,185,129,.5);padding:3pt 10pt;border-radius:20pt;margin-bottom:12mm}
+.cover h1{color:#fff;font-size:37pt;line-height:1.08;margin:0 0 6mm;letter-spacing:-.5pt}
+.cover .sub{font-size:13.5pt;color:rgba(255,255,255,.86);max-width:150mm;line-height:1.5}
+.cover .aud{position:absolute;left:32mm;right:32mm;bottom:40mm;display:flex;flex-wrap:wrap;gap:6pt}
+.cover .chip{font-size:9pt;color:#fff;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);
+  border-radius:16pt;padding:4pt 11pt}
+.cover .meta{position:absolute;left:32mm;right:32mm;bottom:24mm;font-size:8.5pt;color:rgba(255,255,255,.6);
+  border-top:1px solid rgba(255,255,255,.2);padding-top:5mm;display:flex;justify-content:space-between}
+.cover .wm{position:absolute;right:-30mm;top:150mm;font-size:150pt;font-weight:bold;color:rgba(255,255,255,.05)}
+
+.page{break-before:page}
+.eyebrow{font-size:8.5pt;letter-spacing:.22em;text-transform:uppercase;font-weight:bold;margin-bottom:4pt}
+.rt{font-size:26pt;font-weight:bold;letter-spacing:-.3pt}
+.rt small{font-size:13pt;color:#64748B;font-weight:normal;letter-spacing:0}
+.lead{font-size:12.5pt;color:#64748B;margin:6pt 0 4pt;max-width:150mm}
+.rule{height:4pt;border-radius:3pt;margin:9pt 0 12pt;width:70mm}
+
+.blk{border:1px solid #E2E8F0;border-radius:9pt;background:#fff;padding:10pt 13pt;margin-bottom:9pt}
+.blk .h{font-size:8.5pt;font-weight:bold;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4pt}
+.blk p{margin:0;font-size:10.5pt;line-height:1.44;text-align:justify}
+
+.chips{margin:2pt 0 10pt}
+.chips .c{display:inline-block;font-size:8.5pt;background:#F8FAFC;border:1px solid #E2E8F0;
+  border-radius:14pt;padding:3pt 9pt;margin:0 4pt 5pt 0;color:#1E293B;font-family:'DejaVu Sans'}
+.chips .lbl{font-size:8pt;letter-spacing:.08em;text-transform:uppercase;color:#64748B;margin-right:5pt}
+
+.border{background:#FEF2F2;border:1px solid #DC2626;border-left:5pt solid #DC2626;
+  border-radius:8pt;padding:10pt 13pt;margin-top:3pt}
+.border .h{font-weight:bold;color:#DC2626;font-size:10pt;margin-bottom:3pt}
+.border p{margin:0;font-size:10pt;line-height:1.42;text-align:justify}
+
+.intro h2{font-size:20pt;padding-bottom:5pt;border-bottom:2.5pt solid #1D4ED8;margin-bottom:9pt}
+.intro .big{font-size:13pt;line-height:1.5;color:#0F172A;background:linear-gradient(180deg,#fff,#F8FAFC);
+  border:1px solid #E2E8F0;border-left:6pt solid #10B981;border-radius:8pt;padding:12pt 15pt;margin-bottom:12pt}
+figure{margin:6pt 0 12pt}
+.schema{border:1px solid #E2E8F0;border-radius:10pt;background:#fff;padding:12pt}
+.schema svg{width:100%;height:auto;display:block}
+figcaption{font-size:8.5pt;color:#64748B;margin-top:7pt;padding-top:6pt;border-top:1px dashed #E2E8F0}
+.two{display:table;width:100%;border-spacing:9pt;margin:0 -9pt}
+.two .col{display:table-cell;width:50%;vertical-align:top}
+.callout{border-radius:8pt;padding:10pt 12pt;border:1px solid;font-size:10pt;line-height:1.42;height:100%}
+.c-imp{background:#FFFBEB;border-color:#F59E0B}
+.c-imp .h{font-weight:bold;color:#92400E;margin-bottom:2pt}
+.c-note{background:#EFF4FF;border-color:#1D4ED8}
+.c-note .h{font-weight:bold;color:#1D4ED8;margin-bottom:2pt}
+</style></head><body>
+<div class="cover"><div class="frame"></div><div class="wm">10</div>
+  <div class="in">
+    <div class="eyebrow">MainExperts · docs/10</div>
+    <div class="kick">Бриф для C-level</div>
+    <h1>Модель данных:<br/>запуск любого<br/>продукта где угодно</h1>
+    <div class="sub">Как одна реляционная модель — от бизнес-цели до ежедневного факта —
+      выглядит с пяти управленческих кресел. Что она даёт именно вам и где её честная граница.</div>
+  </div>
+  <div class="aud">
+    <span class="chip">CEO · Основатель</span><span class="chip">COO · Операции</span>
+    <span class="chip">CMO · Маркетинг</span><span class="chip">CPO · Продукт</span>
+    <span class="chip">CTO · Технологии</span>
+  </div>
+  <div class="meta"><div>Внутренний документ · рабочий контекст, не выверенный источник</div>
+    <div style="text-align:right">08.07.2026 · Конфиденциально</div></div>
+</div>
+<section class="page intro">
+  <div class="eyebrow" style="color:#1D4ED8">Модель в одном предложении</div>
+  <h2>Единый источник истины — от цели до факта</h2>
+  <div class="big">Единая реляционная модель, где <strong>план и факт разведены</strong>, а
+    <strong>каждая цифра раскладывается до формулы</strong> из фактовых таблиц. Она запускает любой
+    продукт (физический, цифровой, услугу, подписку) на любом рынке, языке, в любой валюте и на
+    любом канале — и управляет этим запуском от бизнес-цели до ежедневного факта.</div>
+  <figure><div class="schema"><svg viewBox="0 0 884 120" xmlns="http://www.w3.org/2000/svg" font-family="DejaVu Sans"><rect x="15" y="26" width="150" height="52" rx="11" fill="#fff" stroke="#1D4ED8" stroke-width="2"/><rect x="15" y="26" width="6" height="52" rx="3" fill="#1D4ED8"/><text x="93" y="57" fill="#0F172A" font-size="13" font-weight="bold" text-anchor="middle">Product</text><rect x="191" y="26" width="150" height="52" rx="11" fill="#fff" stroke="#1D4ED8" stroke-width="2"/><rect x="191" y="26" width="6" height="52" rx="3" fill="#1D4ED8"/><text x="269" y="57" fill="#0F172A" font-size="13" font-weight="bold" text-anchor="middle">SKU</text><rect x="367" y="26" width="150" height="52" rx="11" fill="#fff" stroke="#4338CA" stroke-width="2"/><rect x="367" y="26" width="6" height="52" rx="3" fill="#4338CA"/><text x="445" y="57" fill="#0F172A" font-size="13" font-weight="bold" text-anchor="middle">Listing</text><rect x="543" y="26" width="150" height="52" rx="11" fill="#fff" stroke="#0F172A" stroke-width="2"/><rect x="543" y="26" width="6" height="52" rx="3" fill="#0F172A"/><text x="621" y="57" fill="#0F172A" font-size="13" font-weight="bold" text-anchor="middle">Market × Channel</text><rect x="719" y="26" width="150" height="52" rx="11" fill="#fff" stroke="#10B981" stroke-width="2"/><rect x="719" y="26" width="6" height="52" rx="3" fill="#10B981"/><text x="797" y="57" fill="#0F172A" font-size="13" font-weight="bold" text-anchor="middle">Fact</text><path d="M165,52 H187" stroke="#64748B" stroke-width="2"/><path d="M187,47 l7,5 l-7,5 Z" fill="#64748B"/><path d="M341,52 H363" stroke="#64748B" stroke-width="2"/><path d="M363,47 l7,5 l-7,5 Z" fill="#64748B"/><path d="M517,52 H539" stroke="#64748B" stroke-width="2"/><path d="M539,47 l7,5 l-7,5 Z" fill="#64748B"/><path d="M693,52 H715" stroke="#64748B" stroke-width="2"/><path d="M715,47 l7,5 l-7,5 Z" fill="#64748B"/><text x="15" y="100" fill="#64748B" font-size="10">Слой 0–1: справочники, локализация, цены, налоги</text><text x="535" y="100" fill="#64748B" font-size="10">Слой 3: append-only факты</text></svg><figcaption><strong>Ядро онтологии.</strong>
+    Продукт не знает о ценах и языках; факты ссылаются на листинг, а не на продукт напрямую —
+    иначе теряется атрибуция канала и рынка.</figcaption></div></figure>
+  <div class="two">
+    <div class="col"><div class="callout c-imp"><div class="h">Сквозное правило · два потока</div>
+      Поток-1 (Founder Premium, ₽/£) и поток-2 (воронка) консолидируются только на уровне
+      собственника; ниже — своя экономика. Метрики потоков <strong>не объединять</strong> —
+      в модели это разрез по каналу и базовой валюте.</div></div>
+    <div class="col"><div class="callout c-note"><div class="h">Сквозная правда · стадия</div>
+      Это <strong>спецификация, а не работающая БД</strong>. Ценность сейчас — единый язык и
+      готовый каркас (Data Dictionary, которого не хватало бордам), к которому идём по мере
+      появления данных, а не немедленный бэклог.</div></div>
+  </div>
+</section>
+<section class="page">
+  <div class="eyebrow" style="color:#0F172A">Основатель · CEO</div>
+  <div class="rt">Основатель <small>· CEO</small></div>
+  <div class="lead">Единый язык компании: цель → факт → решение, а не графики.</div>
+  <div class="rule" style="background:#0F172A"></div>
+  <div class="blk" style="border-left:4pt solid #0F172A"><div class="h" style="color:#0F172A">Что это для вас</div><p>Один источник истины. Продукт, рынок, цена, продажа и цель живут в связанной модели, а не в головах и разрозненных файлах. Вы видите цепочку «цель → факт → решение», а не набор графиков.</p></div><div class="blk" style="border-left:4pt solid #0F172A"><div class="h" style="color:#0F172A">Что вы держите</div><p>Верх дерева целей и <strong>правило двух потоков</strong>, реализованное физически — разрезом по каналу и базовой валюте. Поток-1 (₽/£, личные продажи) и поток-2 (воронка) <strong>не сводятся в одной витрине</strong>. Это свойство схемы, а не декларация.</p></div><div class="blk" style="border-left:4pt solid #0F172A"><div class="h" style="color:#0F172A">Какие решения включает</div><p>Куда направлять деньги (P&amp;L по продукту, рынку, каналу); какие гипотезы закрыты; выполняется ли план. Модель — тот самый Data Dictionary, которого не хватало бордам: она их и питает.</p></div>
+  <div class="chips"><span class="lbl">Объекты, которыми вы управляете</span><span class="c">business_objectives</span><span class="c">правило двух потоков</span><span class="c">P&L сводно</span><span class="c">дерево целей</span></div>
+  <div class="border"><div class="h">Честная граница</div><p>Это <strong>спецификация, а не работающая база</strong> — данных пока нет. Строить сложную модель раньше выручки — риск преждевременной сложности (тот же, что с бордами). Гипотеза скрининга остаётся <strong>ставкой</strong>: модель её проверит через test_objectives, но сама не подтвердит.</p></div>
+</section>
+<section class="page">
+  <div class="eyebrow" style="color:#10B981">Операционный директор · COO</div>
+  <div class="rt">Операционный директор <small>· COO</small></div>
+  <div class="lead">Все операционные события в одном месте и append-only.</div>
+  <div class="rule" style="background:#10B981"></div>
+  <div class="blk" style="border-left:4pt solid #10B981"><div class="h" style="color:#10B981">Что это для вас</div><p>Заказы, возвраты, подписки, брони, остатки — в одном фактовом слое. Ничего не редактируется задним числом: корректировка всегда новая строка (возврат — отдельная запись, а не удаление исходной).</p></div><div class="blk" style="border-left:4pt solid #10B981"><div class="h" style="color:#10B981">Что вы держите</div><p>Фактовый слой: order_lines, subscriptions (период = строка: старт → продление → отмена), bookings (услуги), inventory_snapshots. Витрина <strong>«недели запаса»</strong> — раннее предупреждение о дефиците.</p></div><div class="blk" style="border-left:4pt solid #10B981"><div class="h" style="color:#10B981">Какие решения включает</div><p>Хватает ли товара под темп продаж; где рвётся SLA услуг; как ведёт себя отток подписок — без ручной сверки версий и файлов.</p></div>
+  <div class="chips"><span class="lbl">Объекты, которыми вы управляете</span><span class="c">order_lines</span><span class="c">inventory_snapshots</span><span class="c">subscriptions</span><span class="c">bookings</span><span class="c">недели запаса</span></div>
+  <div class="border"><div class="h">Честная граница</div><p>Остатки живут на грани <strong>SKU × склад</strong>, а не листинга (сток общий) — «недели запаса по листингу» считаются разложением. Модель <strong>не про мощность экспертов</strong>: узкое место проекта (ручная проверка отчёта) — это борд Operations, модель его не заменяет.</p></div>
+</section>
+<section class="page">
+  <div class="eyebrow" style="color:#1D4ED8">Директор по маркетингу · CMO</div>
+  <div class="rt">Директор по маркетингу <small>· CMO</small></div>
+  <div class="lead">Расход честно соединён с выручкой; ни одной метрики свободным текстом.</div>
+  <div class="rule" style="background:#1D4ED8"></div>
+  <div class="blk" style="border-left:4pt solid #1D4ED8"><div class="h" style="color:#1D4ED8">Что это для вас</div><p>Каждый KPI — запись в словаре с формулой из фактов. ROAS и ДРР считаются <strong>после комиссии канала и налога</strong>, а не по «грязной» выручке. Метрик «на глаз» в системе не существует.</p></div><div class="blk" style="border-left:4pt solid #1D4ED8"><div class="h" style="color:#1D4ED8">Что вы держите</div><p>Слой целей: campaign / channel / test objectives. Baseline и target — <strong>числами с датами</strong>, не текстом. План живёт в целях, факт — в outcomes и витринах; в одной ячейке они не смешиваются.</p></div><div class="blk" style="border-left:4pt solid #1D4ED8"><div class="h" style="color:#1D4ED8">Какие решения включает</div><p>Какой канал прибылен; где план против факта красный; достиг ли тест порога и какое решение принято. Атрибуция связывает заказ с кампанией.</p></div>
+  <div class="chips"><span class="lbl">Объекты, которыми вы управляете</span><span class="c">kpi_definitions</span><span class="c">campaign_objectives</span><span class="c">channel_objectives</span><span class="c">outcomes</span></div>
+  <div class="border"><div class="h">Честная граница</div><p>Атрибуция — <strong>одно касание (last-click)</strong>: мульти-тач вне модели, для длинного цикла принятия это упрощение. Правило потоков жёсткое: публичное соц. доказательство воронки нельзя подмешивать к приватной премиальной экономике.</p></div>
+</section>
+<section class="page">
+  <div class="eyebrow" style="color:#4338CA">Директор по продукту · CPO</div>
+  <div class="rt">Директор по продукту <small>· CPO</small></div>
+  <div class="lead">Каталог, запускающий что угодно и где угодно без переделки схемы.</div>
+  <div class="rule" style="background:#4338CA"></div>
+  <div class="blk" style="border-left:4pt solid #4338CA"><div class="h" style="color:#4338CA">Что это для вас</div><p>Продукт не знает о ценах и языках — они живут ниже, на листинге и рынке. Новый вариант, продукт, рынок или канал = <strong>новые строки, ноль структурных изменений</strong> (доказано сценариями приёмки 2 и 3).</p></div><div class="blk" style="border-left:4pt solid #4338CA"><div class="h" style="color:#4338CA">Что вы держите</div><p>Ядро Product → SKU → Listing + локализация (карточка на N языков без дублей SKU) + подписки как жизненный цикл. На вашу номенклатуру ложится прямо: Free / Pro / Ultima и Профиль 10 / 360 — это SKU и листинги; премиум-услуги (визы, релокация) — отдельные SKU.</p></div><div class="blk" style="border-left:4pt solid #4338CA"><div class="h" style="color:#4338CA">Какие решения включает</div><p>Что масштабировать по марже (P&amp;L сводно по продукту); как ведут себя тарифы и подписки; как дёшево локализовать на новый рынок.</p></div>
+  <div class="chips"><span class="lbl">Объекты, которыми вы управляете</span><span class="c">products</span><span class="c">skus</span><span class="c">listings</span><span class="c">listing_content</span><span class="c">subscriptions</span></div>
+  <div class="border"><div class="h">Честная граница</div><p>Модель — про <strong>каталог и коммерцию, не про продуктовый опыт</strong>: квиз, цифровой профиль и AI-отчёт она не описывает (это платформа на Rust). Себестоимость цифровых SKU номинальна — юнит-экономику подписки надо докрутить реальными затратами.</p></div>
+</section>
+<section class="page">
+  <div class="eyebrow" style="color:#0891B2">Технический директор · CTO</div>
+  <div class="rt">Технический директор <small>· CTO</small></div>
+  <div class="lead">Нормализованная спецификация: строгие FK, append-only, история цен.</div>
+  <div class="rule" style="background:#0891B2"></div>
+  <div class="blk" style="border-left:4pt solid #0891B2"><div class="h" style="color:#0891B2">Что это для вас</div><p>31 таблица, человекочитаемые ID, append-only факты, история цен через price_periods (заказ ссылается на период, действовавший в момент продажи). <strong>Ноль дублирования</strong>: цена — только в ценовых периодах, контент — в локализации, комиссия — в экономике канала.</p></div><div class="blk" style="border-left:4pt solid #0891B2"><div class="h" style="color:#0891B2">Что вы держите</div><p>Всю схему. Ключевые инженерные решения уже приняты и обоснованы: налог — таблицей с датами (ставка на дату факта); себестоимость — периодическим справочником; грань остатков — SKU × склад.</p></div><div class="blk" style="border-left:4pt solid #0891B2"><div class="h" style="color:#0891B2">Какие решения включает</div><p>Путь внедрения: сегодня — связанные таблицы (Sheets / Airtable / Notion), завтра — перенос на платформу Rust один-в-один (ядро и слой целей — те же сущности). Базовая валюта — конфиг <strong>на поток</strong>, не глобальная константа.</p></div>
+  <div class="chips"><span class="lbl">Объекты, которыми вы управляете</span><span class="c">31 таблица</span><span class="c">append-only</span><span class="c">price_periods</span><span class="c">fx_rates</span><span class="c">строгие FK</span></div>
+  <div class="border"><div class="h">Честная граница</div><p>Хрупкое — два места: <strong>полиморфные ссылки</strong> (objective_scope, outcomes на «любую цель» через тип+ID) разъезжаются без валидации; <strong>валютный слой</strong> — все витрины зависят от fx_rates на дату. Это спецификация, не БД: индексов, констрейнтов и ETL нет — вводить при переносе (раздел ETL/Security Тома II — пробел).</p></div>
+</section></body></html>

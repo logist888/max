@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MainExperts — Паспорт запуска рекламной кампании (квиз)</title>
+<style>
+  :root{--bg:#EEF1F5;--sf:#FFF;--sf2:#F6F8FB;--ink:#18202E;--ink2:#5A6678;--ink3:#8A93A2;
+  --ln:#DCE1E8;--ln2:#C9D0DA;--ac:#3B6FD0;--acs:#E7EEFA;--ok:#197A4B;--okb:#E8F5EE;
+  --wr:#9A6700;--wrb:#FBF3DD;--cr:#B23A36;--crb:#FBEBE9;--in:#2A6BB0;--inb:#E9F1FA;
+  --r:11px;--rs:8px;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+  *{box-sizing:border-box}html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1120px;margin:0 auto;padding:22px 18px 90px}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
+  h1{font-size:20px;margin:4px 0 2px}
+  .sub{color:var(--ink2);font-size:12.5px;max-width:840px}
+  .hypo{margin-top:10px;background:var(--wrb);border:1px solid #ecd9a8;border-radius:var(--rs);padding:8px 12px;font-size:12px;color:#7a5a14}
+  .hypo b{color:#5e450f}
+  .priv{margin-top:8px;background:var(--inb);border:1px solid #cdd9ea;border-radius:var(--rs);padding:7px 12px;font-size:11.5px;color:#2a567f}
+  .tabs{display:flex;gap:6px;margin:16px 0 0;flex-wrap:wrap}
+  .tab{border:1px solid var(--ln);background:var(--sf);border-radius:9px;padding:6px 12px;cursor:pointer;font-size:12.5px;color:var(--ink2)}
+  .tab:hover{border-color:var(--ac);color:var(--ac)}
+  .tab.active{background:var(--ac);border-color:var(--ac);color:#fff;font-weight:600}
+  .toolbar{display:flex;gap:7px;margin:11px 0 0;flex-wrap:wrap;align-items:center}
+  .btn{border:1px solid var(--ln);background:var(--sf);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12.5px;color:var(--ink2)}
+  .btn:hover{border-color:var(--ac);color:var(--ac)}
+  .btn.warn:hover{border-color:var(--cr);color:var(--cr)}
+  .view{display:none;margin-top:16px}.view.on{display:block}
+  .sec{margin:18px 0}
+  .sec>h2{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin:0 0 9px;font-family:var(--mono)}
+  .sec>h2 .note{letter-spacing:0;text-transform:none;font-family:var(--sans);font-size:12px;font-weight:400}
+  .card{background:var(--sf);border:1px solid var(--ln);border-radius:var(--r);padding:13px 14px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .fld{background:var(--sf);border:1px solid var(--ln);border-radius:var(--rs);padding:9px 11px}
+  .fld label{font-size:11px;color:var(--ink2);font-weight:600;display:block}
+  .fld .hint{font-size:10px;color:var(--ink3)}
+  .fld input,.fld select,.fld textarea{width:100%;border:1px solid var(--ln);border-radius:6px;padding:5px 8px;font:inherit;font-size:12.5px;margin-top:5px;background:#fff;color:var(--ink)}
+  .fld textarea{resize:vertical;min-height:34px}
+  .fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--ac);outline:none}
+  table.t{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--sf);border:1px solid var(--ln);border-radius:var(--r);overflow:hidden}
+  table.t th,table.t td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--ln);vertical-align:top}
+  table.t th{background:var(--sf2);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink3);font-family:var(--mono);white-space:nowrap}
+  table.t tr:last-child td{border-bottom:0}
+  table.t input,table.t select,table.t textarea{width:100%;border:1px solid transparent;background:transparent;border-radius:5px;padding:3px 5px;font:inherit;font-size:12px;color:var(--ink)}
+  table.t textarea{resize:vertical;min-height:30px}
+  table.t input:hover,table.t select:hover{border-color:var(--ln2)}
+  table.t input:focus,table.t select:focus,table.t textarea:focus{border-color:var(--ac);outline:none;background:var(--acs)}
+  .stagehdr td{background:var(--sf2);font-weight:700;font-size:12px;color:var(--ink2)}
+  .rowdel{border:0;background:none;color:var(--ink3);cursor:pointer;font-size:14px}
+  .rowdel:hover{color:var(--cr)}
+  .addrow{margin-top:8px}
+  .rule{background:var(--sf2);border:1px solid var(--ln);border-radius:var(--rs);padding:7px 11px;font-size:11.5px;color:var(--ink2)}
+  .rule b{color:var(--ink)}
+  .gate{border-radius:var(--rs);padding:10px 13px;font-weight:700;font-size:13px;display:flex;gap:9px;align-items:center}
+  .gate.no{background:var(--crb);color:var(--cr);border:1px solid #ecc7c4}
+  .gate.yes{background:var(--okb);color:var(--ok);border:1px solid #bfe0cd}
+  .kan{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .kcol{background:var(--sf2);border:1px solid var(--ln);border-radius:var(--r);padding:9px;min-height:220px}
+  .kcol h3{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin:0 0 8px;font-family:var(--mono)}
+  .kcard{background:var(--sf);border:1px solid var(--ln);border-radius:var(--rs);padding:7px 9px;margin-bottom:7px;font-size:12px;cursor:grab}
+  .kcard:active{cursor:grabbing}
+  .kcard .kc-meta{font-size:10px;color:var(--ink3);font-family:var(--mono);margin-top:3px}
+  .kcol.over{border-color:var(--ac);background:var(--acs)}
+  .gwrap{overflow-x:auto;background:var(--sf);border:1px solid var(--ln);border-radius:var(--r);padding:10px}
+  .grow{position:relative;height:26px;margin:3px 0}
+  .glabel{position:absolute;left:0;width:230px;font-size:11px;color:var(--ink2);top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .garea{position:absolute;left:240px;right:0;top:0;bottom:0}
+  .gbar{position:absolute;height:16px;top:5px;background:var(--ac);border-radius:4px;cursor:grab;min-width:8px}
+  .gbar span{position:absolute;left:6px;top:-1px;font-size:10px;color:#fff;white-space:nowrap}
+  .gbar .ghandle{position:absolute;right:0;top:0;bottom:0;width:7px;cursor:ew-resize;border-radius:0 4px 4px 0;background:rgba(255,255,255,.35)}
+  .gtoday{position:absolute;top:0;bottom:0;width:2px;background:var(--cr)}
+  .gdep{position:absolute;height:2px;background:var(--ln2)}
+  .gaxis{position:relative;height:18px;margin-left:240px;font-size:9.5px;color:var(--ink3);font-family:var(--mono)}
+  .gaxis span{position:absolute;top:0}
+  pre.brief{white-space:pre-wrap;font-family:var(--mono);font-size:11.5px;background:var(--sf2);border:1px solid var(--ln);border-radius:var(--rs);padding:12px;max-height:480px;overflow:auto}
+  .chain{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .chip{background:var(--sf);border:1px solid var(--ln);border-radius:7px;padding:5px 10px;font-size:12px;font-weight:600}
+  .carr{color:var(--ink3)}
+  .chk{display:flex;gap:9px;align-items:flex-start;background:var(--sf);border:1px solid var(--ln);border-radius:var(--rs);padding:8px 11px;margin-bottom:7px}
+  .chk input[type=checkbox]{width:16px;height:16px;accent-color:var(--ok);margin-top:2px;flex:none}
+  .chk .cb{font-size:12.5px}
+  .chk .blk{font-family:var(--mono);font-size:10px;color:var(--cr);background:var(--crb);border-radius:5px;padding:0 6px}
+  footer{margin-top:30px;color:var(--ink3);font-size:11px;line-height:1.6;border-top:1px solid var(--ln);padding-top:11px}
+  @media print{.tabs,.toolbar,.btn{display:none!important}.view{display:block!important;page-break-inside:avoid}body{background:#fff}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="eyebrow">MainExperts · Поток 2 · платный трафик · квиз-посадочная</div>
+  <h1>Паспорт запуска рекламной кампании</h1>
+  <div class="sub">Единый инструмент планирования, контроля и передачи таргетологу: паспорт → план работ → спринт-доска → Гант →
+  бриф → чек-лист готовности → риски → план измерений. Шаблон: даты пустые, поля «[заполнить]» закрывает владелец кампании.
+  Параметризован — вебинарная ячейка собирается заменой оффера, шага после посадочной и цепочки событий (вкладка «Измерения»).</div>
+  <div class="hypo"><b>Невалидированная гипотеза.</b> «Скрининг оцифровывает страхи родителя → родитель покупает диагностику,
+  чтобы их закрыть» — не проверена рынком. Эта кампания и есть её проверка; так и трактовать результаты.</div>
+  <div class="priv">Данные хранятся только в этом браузере (localStorage); резервная копия — «Экспорт JSON».
+  Данные Потока 1 в этот инструмент и отчёты кампании не попадают.</div>
+</header>
+
+<div class="tabs" id="tabs">
+  <button class="tab active" data-v="pass">Паспорт</button>
+  <button class="tab" data-v="plan">План работ</button>
+  <button class="tab" data-v="kan">Спринт-доска</button>
+  <button class="tab" data-v="gantt">Гант</button>
+  <button class="tab" data-v="brief">Бриф таргетологу</button>
+  <button class="tab" data-v="check">Чек-лист запуска</button>
+  <button class="tab" data-v="risk">Риски</button>
+  <button class="tab" data-v="meas">Измерения</button>
+</div>
+<div class="toolbar">
+  <button class="btn" id="btnExport">Экспорт JSON</button>
+  <button class="btn" id="btnImport">Импорт JSON</button>
+  <input type="file" id="fileImport" accept=".json" style="display:none">
+  <button class="btn" onclick="window.print()">Печать</button>
+  <button class="btn warn" id="btnReset">Сбросить к шаблону</button>
+</div>
+
+<!-- ПАСПОРТ -->
+<div class="view on" id="v-pass">
+  <div class="sec"><h2>Шапка кампании</h2><div class="grid" id="passGrid"></div></div>
+  <div class="sec"><h2>Развилка флоу <span class="note">— решение с датой, не данность</span></h2>
+    <div class="grid">
+      <div class="fld"><label>Шаг после квиза: оплата до или после скрининга</label>
+        <div class="hint">канон 18.06.26: скрининг бесплатный, e-mail до результата, оплата после — кандидат; свежий ввод считает развилку открытой</div>
+        <select data-p="flow"><option>[заполнить]</option><option>оплата после скрининга (флоу 18.06)</option><option>оплата до скрининга</option></select></div>
+      <div class="fld"><label>Дата решения по флоу</label><input type="date" data-p="flowDate"></div>
+      <div class="fld"><label>Кто принял решение (роль)</label><input type="text" data-p="flowWho" placeholder="владелец кампании"></div>
+    </div></div>
+  <div class="sec"><h2>Направления (роли, без имён)</h2>
+    <div class="card" style="font-size:12.5px">таргет · посадочная · аналитика · платежи · методология · юридическое · владелец кампании</div></div>
+  <div class="sec"><h2>Принадлежность</h2>
+    <div class="rule"><b>Поток 2 (платформа).</b> Из трёх целей раннего привлечения — <b>проверка гипотезы скрининга</b>.
+    Метрики потоков не объединяются. Названия методик в клиентских текстах запрещены — только рабочие переименования.</div></div>
+</div>
+
+<!-- ПЛАН -->
+<div class="view" id="v-plan">
+  <div class="sec"><h2>План работ <span class="note">— статус синхронизирован со спринт-доской; даты питают Гант</span></h2>
+    <table class="t" id="planTbl"><thead><tr>
+      <th>#</th><th style="min-width:210px">Задача</th><th style="min-width:150px">Артефакт на выходе</th>
+      <th>Направление</th><th>Начало</th><th>Срок</th><th>Зависит от #</th><th>Статус</th><th></th></tr></thead><tbody></tbody></table>
+    <button class="btn addrow" id="addTask">+ Задача</button></div>
+</div>
+
+<!-- KANBAN -->
+<div class="view" id="v-kan">
+  <div class="sec"><h2>Спринт-доска <span class="note">— карточки переносятся мышью; статус меняется и в плане</span></h2>
+    <div class="kan" id="kan"></div></div>
+</div>
+
+<!-- GANTT -->
+<div class="view" id="v-gantt">
+  <div class="sec"><h2>Гант <span class="note">— тяни полосу (сдвиг), правый край (срок); зависимые задачи сдвигаются автоматически</span></h2>
+    <div class="gwrap" id="gantt"></div></div>
+</div>
+
+<!-- BRIEF -->
+<div class="view" id="v-brief">
+  <div class="sec"><h2>Бриф таргетологу <span class="note">— собирается из текущих данных паспорта и порогов</span></h2>
+    <button class="btn" id="btnCopy">Копировать текст брифа</button>
+    <pre class="brief" id="briefTxt" style="margin-top:10px"></pre></div>
+</div>
+
+<!-- CHECKLIST -->
+<div class="view" id="v-check">
+  <div class="sec"><h2>Чек-лист готовности к запуску</h2>
+    <div class="gate no" id="gate"></div>
+    <div id="checks" style="margin-top:10px"></div>
+    <button class="btn addrow" id="addChk">+ Пункт</button></div>
+</div>
+
+<!-- RISKS -->
+<div class="view" id="v-risk">
+  <div class="sec"><h2>Реестр рисков</h2>
+    <table class="t" id="riskTbl"><thead><tr>
+      <th style="min-width:180px">Риск</th><th>Вероятн.</th><th>Эффект</th><th style="min-width:180px">Действие</th><th style="min-width:140px">Триггер</th><th></th></tr></thead><tbody></tbody></table>
+    <button class="btn addrow" id="addRisk">+ Риск</button></div>
+</div>
+
+<!-- MEASURE -->
+<div class="view" id="v-meas">
+  <div class="sec"><h2>Цепочка событий <span class="note">— редактируется: вебинарная ячейка = другая цепочка</span></h2>
+    <div class="card"><div class="chain" id="chainView"></div>
+    <textarea id="chainEdit" style="width:100%;margin-top:10px;border:1px solid var(--ln);border-radius:7px;padding:7px;font:12px var(--mono);min-height:70px"></textarea>
+    <div class="hint" style="font-size:10.5px;color:var(--ink3);margin-top:4px">один шаг на строку; отвал меряется между соседними шагами</div></div></div>
+  <div class="sec"><h2>Формулы</h2>
+    <div class="rule">ДРР = расход на рекламу ÷ выручка кампании × 100% (ключевой KPI) ·
+    CPL = расход ÷ лиды (прокси) · конверсия шага = следующий шаг ÷ предыдущий.
+    Выручка — только оплаты Потока 2, атрибутированные кампании (сведение с источником — вручную, cross-domain до платёжки).</div></div>
+  <div class="sec"><h2>Пороги решений <span class="note">— используются в стоп-правилах брифа</span></h2>
+    <div class="grid" id="measGrid"></div></div>
+  <div class="sec"><h2>Правило</h2>
+    <div class="rule"><b>Данные Потока 1 в отчёты кампании не попадают.</b> Решения по порогам: стоп → правка → масштабирование;
+    порядок разбора отклонений: кампания → креатив → аудитория → посадочная.</div></div>
+</div>
+
+<footer>
+  Паспорт запуска · Поток 2 · проверка гипотезы скрининга. Внутренние нормативы помечены; внешних цифр без источника нет.
+  Канон проекта: docs/01-strategy, 02-product (флоу 18.06, блокеры), 06-data-tools-payments (ДРР/CPL, UTM, Робокасса 10%), 05-risk-compliance.
+</footer>
+</div>
+
+<script>
+"use strict";
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const KEY="me_kvz_passport_v1";
+const ROLES=["таргет","посадочная","аналитика","платежи","методология","юридическое","владелец кампании"];
+const STATUSES=["Очередь","В работе","Проверка","Готово"];
+const STAGES=["0 · Доступы и кабинеты","1 · Посадочная-квиз","2 · Аналитика","3 · Платёж и правовое",
+ "4 · Креативы и аудитории","5 · Настройка кампаний и маркировка","6 · Тестовый запуск",
+ "7 · Разбор теста и решение","8 · Масштабирование","9 · Отчётность и ретроспектива"];
+const T=(st,name,art,role,dep)=>({stage:st,name,artifact:art,role,start:"",due:"",dep:dep??"",status:"Очередь"});
+function defTasks(){return [
+ T(0,"Рекламные кабинеты VK и Meta: создать/проверить, биллинг","доступы к кабинетам","таргет"),
+ T(0,"Доступы: Метрика, GA, Data Studio","доступы аналитики","аналитика"),
+ T(1,"Логика вопросов квиза (~18 вопросов, 6 шкал; e-mail до результата — флоу 18.06)","сценарий квиза","методология","",),
+ T(1,"Экраны: истории + карусель, 5 слоганов-вариаций","макеты экранов","посадочная",3),
+ T(1,"Мобильная версия и скорость загрузки","посадочная прошла проверку с телефона","посадочная",4),
+ T(2,"Пиксели VK/Meta и события по цепочке","события летят","аналитика",1),
+ T(2,"Карта UTM и шаблон ссылки","карта UTM","аналитика"),
+ T(2,"Сквозная связка до оплаты (ручное сведение с источником)","регламент сведения","аналитика",6),
+ T(3,"Тестовая транзакция Robokassa (комиссия 10% — канон)","чек тестовой оплаты","платежи"),
+ T(3,"Оферта и согласия на посадочной","тексты размещены","юридическое"),
+ T(3,"Возрастная логика и согласие родителя (несовершеннолетние)","механика согласия","юридическое",10),
+ T(4,"Пять слоганов под A/B (заглушка: «Определи будущее твоего ребёнка»)","список слоганов","посадочная"),
+ T(4,"Аудитории и исключения: родители 38–50, СНГ (VK) / MENA (Meta)","карта аудиторий","таргет"),
+ T(5,"Сборка кампаний в кабинетах (ячейки VK×СНГ, Meta×MENA)","кампании в черновиках","таргет",13),
+ T(5,"Маркировка РФ: ОРД, erid","erid получены","юридическое",14),
+ T(6,"Лимиты и стоп-правила теста согласованы","стоп-правила в брифе","владелец кампании"),
+ T(6,"Тестовый запуск ячеек","кампании активны","таргет",15),
+ T(7,"Разбор теста по порогам измерений","отчёт разбора","аналитика",17),
+ T(7,"Решение: стоп / правка / масштабирование","зафиксированное решение с датой","владелец кампании",18),
+ T(8,"Перенос бюджета на связки-победители","обновлённые кампании","таргет",19),
+ T(9,"Финальный отчёт: ДРР, CPL, конверсии по шагам","отчёт кампании","аналитика",20),
+ T(9,"Ретроспектива и уроки","заметка в базу знаний","владелец кампании",21)];}
+function defChecks(){return [
+ {t:"Методология скрининга принята (блокер №1 канона)",done:false},
+ {t:"Профиль после скрининга не пустой (продуктовый блокер)",done:false},
+ {t:"Квиз проходится с телефона за целевое время",done:false},
+ {t:"События летят насквозь до оплаты",done:false},
+ {t:"Тестовая транзакция Robokassa прошла",done:false},
+ {t:"Оферта и согласия на посадочной",done:false},
+ {t:"Маркировка (ОРД, erid) настроена",done:false},
+ {t:"Стоп-правила согласованы",done:false},
+ {t:"Выбор флоу (оплата до/после скрининга) зафиксирован с датой",done:false}];}
+function defRisks(){return [
+ {r:"Юридический: данные несовершеннолетних, согласие родителя",p:"средняя",e:"высокий",a:"возрастная логика; согласие; минимизация ПДн детей",tr:"жалоба / претензия / блок площадки"},
+ {r:"Продуктовый: пустой профиль после скрининга",p:"высокая",e:"высокий",a:"не запускать до закрытия блокера (чек-лист)",tr:"тест прохождения квиза"},
+ {r:"Аналитический: разрывы атрибуции; ограничения Meta по iOS",p:"высокая",e:"средний",a:"ручное сведение оплат с источником; окно атрибуции",tr:"расхождение платёжки и кабинета"},
+ {r:"Платёжный: отклонение карт; комиссия 10%",p:"средняя",e:"средний",a:"тестовые транзакции; Stripe — параллельно, не блокер",tr:"доля отклонённых оплат"},
+ {r:"Модерация площадок: категория «дети», обещания результата",p:"средняя",e:"средний",a:"тексты без запрещённых обещаний; запас креативов",tr:"реджект кампании"},
+ {r:"Гео/валютные ограничения MENA",p:"средняя",e:"средний",a:"проверка оплат из MENA до масштабирования",tr:"провал оплат по гео"},
+ {r:"Центральная гипотеза не валидирована",p:"—",e:"критический",a:"кампания = проверка; трактовать результат как тест гипотезы",tr:"конверсия скрининг→оплата"}];}
+const DEF={
+ pass:{name:"",goal:"Проверка гипотезы скрининга платным трафиком до целевых ДРР/CPL",
+  cell1:"VK → квиз · рынок СНГ",cell2:"Meta → квиз · рынок MENA",
+  offer:"Продаём профориентацию; скрининг — бесплатная проба",
+  budget1:"",budget2:"",period:"",kpiDRR:"",kpiCPL:"",kpiQuiz:"",status:"черновик",
+  flow:"[заполнить]",flowDate:"",flowWho:""},
+ tasks:defTasks(),checks:defChecks(),risks:defRisks(),
+ meas:{stopSpend:"",cplCap:"",minSample:"",drrTarget:"",reportFreq:"2 раза в неделю",
+  chain:"Показ\nКлик\nОткрытие квиза\nСтарт квиза\nШаги квиза (отвал по шагам)\nЗавершение квиза\nКонтакт (e-mail до результата)\nЦелевое действие\nОплата"}};
+let D=load();
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY));if(x&&x.pass)return Object.assign(JSON.parse(JSON.stringify(DEF)),x);}catch(e){}return JSON.parse(JSON.stringify(DEF));}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(D));}catch(e){}}
+const esc=s=>String(s??"").replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
+
+$("#tabs").addEventListener("click",e=>{const b=e.target.closest(".tab");if(!b)return;
+ $$(".tab").forEach(t=>t.classList.toggle("active",t===b));
+ $$(".view").forEach(v=>v.classList.toggle("on",v.id==="v-"+b.dataset.v));
+ if(b.dataset.v==="gantt")renderGantt(); if(b.dataset.v==="brief")renderBrief(); if(b.dataset.v==="kan")renderKan();});
+
+/* ---- паспорт ---- */
+const PASS=[["name","Название кампании","text","например: KVZ-2026-01"],
+ ["goal","Цель","text",""],["cell1","Ячейка 1 (канал × рынок)","text",""],["cell2","Ячейка 2 (канал × рынок)","text",""],
+ ["offer","Оффер","text",""],
+ ["budget1","Бюджет ячейки 1, $","text","минимум 400 $ — внутренний норматив"],
+ ["budget2","Бюджет ячейки 2, $","text","минимум 400 $ — внутренний норматив"],
+ ["period","Период","text","[заполнить]"],
+ ["kpiDRR","KPI: ДРР-цель, %","text","ключевой KPI (канон)"],
+ ["kpiCPL","KPI: CPL-потолок, $","text","прокси"],
+ ["kpiQuiz","KPI: конверсия квиза, %","text","завершение ÷ старт"],
+ ["status","Статус","select:черновик|к запуску|тест|масштабирование|завершена",""]];
+function renderPass(){
+ const g=$("#passGrid");g.innerHTML="";
+ PASS.forEach(([k,label,type,hint])=>{
+  const f=document.createElement("div");f.className="fld";
+  let inp;
+  if(type.startsWith("select")){inp=document.createElement("select");
+   type.split(":")[1].split("|").forEach(o=>{const op=document.createElement("option");op.textContent=o;inp.appendChild(op);});}
+  else{inp=document.createElement("input");inp.type="text";inp.placeholder="[заполнить]";}
+  inp.value=D.pass[k]??"";
+  inp.addEventListener("input",()=>{D.pass[k]=inp.value;save();});
+  f.innerHTML=`<label>${label}</label>${hint?`<div class="hint">${hint}</div>`:""}`;
+  f.appendChild(inp);g.appendChild(f);});
+ $$("#v-pass [data-p]").forEach(el=>{el.value=D.pass[el.dataset.p]??"";
+  el.addEventListener("input",()=>{D.pass[el.dataset.p]=el.value;save();});});
+}
+
+/* ---- план работ ---- */
+function renderPlan(){
+ const tb=$("#planTbl tbody");tb.innerHTML="";
+ let lastStage=-1;
+ D.tasks.forEach((t,i)=>{
+  if(t.stage!==lastStage){lastStage=t.stage;
+   const hr=document.createElement("tr");hr.className="stagehdr";
+   hr.innerHTML=`<td colspan="9">Этап ${esc(STAGES[t.stage]||t.stage)}</td>`;tb.appendChild(hr);}
+  const tr=document.createElement("tr");
+  tr.innerHTML=`<td class="m" style="font-family:var(--mono);font-size:11px">${i+1}</td>`;
+  const mk=(k,type)=>{const td=document.createElement("td");let inp;
+   if(type==="sel"){inp=document.createElement("select");ROLES.forEach(r=>{const o=document.createElement("option");o.textContent=r;inp.appendChild(o);});}
+   else if(type==="st"){inp=document.createElement("select");STATUSES.forEach(r=>{const o=document.createElement("option");o.textContent=r;inp.appendChild(o);});}
+   else if(type==="area"){inp=document.createElement("textarea");}
+   else{inp=document.createElement("input");inp.type=type;}
+   inp.value=t[k]??"";
+   inp.addEventListener("input",()=>{t[k]=inp.value;save();if(k==="status")renderKan();if(k==="start"||k==="due"||k==="dep")renderGantt();});
+   td.appendChild(inp);return td;};
+  tr.append(mk("name","area"),mk("artifact","area"),mk("role","sel"),mk("start","date"),mk("due","date"),mk("dep","text"),mk("status","st"));
+  const del=document.createElement("td");del.innerHTML='<button class="rowdel">×</button>';
+  del.firstChild.onclick=()=>{if(confirm("Удалить задачу?")){D.tasks.splice(i,1);save();renderPlan();renderKan();}};
+  tr.appendChild(del);tb.appendChild(tr);});
+}
+$("#addTask").onclick=()=>{const st=D.tasks.length?D.tasks[D.tasks.length-1].stage:0;
+ D.tasks.push(T(st,"","","владелец кампании"));save();renderPlan();renderKan();};
+
+/* ---- kanban ---- */
+function renderKan(){
+ const k=$("#kan");k.innerHTML="";
+ STATUSES.forEach(st=>{
+  const col=document.createElement("div");col.className="kcol";col.dataset.st=st;
+  col.innerHTML=`<h3>${st} · ${D.tasks.filter(t=>t.status===st).length}</h3>`;
+  D.tasks.forEach((t,i)=>{if(t.status!==st)return;
+   const c=document.createElement("div");c.className="kcard";c.draggable=true;c.dataset.i=i;
+   c.innerHTML=`${esc(t.name)||"<i>без названия</i>"}<div class="kc-meta">#${i+1} · этап ${t.stage} · ${esc(t.role)}${t.due?" · срок "+t.due:""}</div>`;
+   c.addEventListener("dragstart",e=>e.dataTransfer.setData("text/plain",String(i)));
+   col.appendChild(c);});
+  col.addEventListener("dragover",e=>{e.preventDefault();col.classList.add("over");});
+  col.addEventListener("dragleave",()=>col.classList.remove("over"));
+  col.addEventListener("drop",e=>{e.preventDefault();col.classList.remove("over");
+   const i=+e.dataTransfer.getData("text/plain");if(D.tasks[i]){D.tasks[i].status=st;save();renderKan();renderPlan();}});
+  k.appendChild(col);});
+}
+
+/* ---- gantt ---- */
+const DAY=864e5;
+const p2d=s=>s?new Date(s+"T00:00:00"):null;
+const d2s=d=>d.toISOString().slice(0,10);
+function cascade(idx){
+ D.tasks.forEach((t,i)=>{
+  if(String(t.dep).trim()===String(idx+1)&&t.start&&t.due&&D.tasks[idx].due){
+   const depEnd=p2d(D.tasks[idx].due),st=p2d(t.start);
+   if(st<depEnd){const shift=Math.round((depEnd-st)/DAY);
+    t.start=d2s(new Date(+p2d(t.start)+shift*DAY));t.due=d2s(new Date(+p2d(t.due)+shift*DAY));
+    cascade(i);}}});
+}
+function renderGantt(){
+ const g=$("#gantt");
+ const dated=D.tasks.map((t,i)=>({t,i})).filter(x=>x.t.start&&x.t.due);
+ if(!dated.length){g.innerHTML='<div style="color:var(--ink3);font-size:12.5px;padding:10px">Задай даты «начало» и «срок» в плане работ — Гант построится сам (шаблон собран с пустыми датами).</div>';return;}
+ let min=Math.min(...dated.map(x=>+p2d(x.t.start))),max=Math.max(...dated.map(x=>+p2d(x.t.due)));
+ min-=2*DAY;max+=3*DAY;
+ const days=Math.round((max-min)/DAY),pxd=Math.max(18,Math.min(34,900/days));
+ const W=days*pxd;
+ let html=`<div class="gaxis" style="width:${W}px">`;
+ for(let d=0;d<=days;d+=Math.ceil(days/12)||1){
+  const dt=new Date(min+d*DAY);html+=`<span style="left:${d*pxd}px">${String(dt.getDate()).padStart(2,"0")}.${String(dt.getMonth()+1).padStart(2,"0")}</span>`;}
+ html+="</div>";
+ g.innerHTML=html;
+ const today=new Date();today.setHours(0,0,0,0);
+ dated.forEach(({t,i})=>{
+  const row=document.createElement("div");row.className="grow";
+  const x=(+p2d(t.start)-min)/DAY*pxd, w=Math.max((+p2d(t.due)-+p2d(t.start))/DAY*pxd,pxd*.6);
+  row.innerHTML=`<div class="glabel">#${i+1} ${esc(t.name)}</div>
+   <div class="garea" style="width:${W}px">
+    ${(+today>=min&&+today<=max)?`<div class="gtoday" style="left:${(+today-min)/DAY*pxd}px"></div>`:""}
+    <div class="gbar" data-i="${i}" style="left:${x}px;width:${w}px"><span>${t.dep?("← #"+esc(t.dep)):""}</span><div class="ghandle"></div></div>
+   </div>`;
+  g.appendChild(row);});
+ let drag=null;
+ g.onmousedown=e=>{const bar=e.target.closest(".gbar");if(!bar)return;
+  const i=+bar.dataset.i,mode=e.target.classList.contains("ghandle")?"resize":"move";
+  drag={i,mode,x0:e.clientX,start:p2d(D.tasks[i].start),due:p2d(D.tasks[i].due)};e.preventDefault();};
+ document.onmousemove=e=>{if(!drag)return;
+  const dd=Math.round((e.clientX-drag.x0)/pxd);if(!dd)return;
+  const t=D.tasks[drag.i];
+  if(drag.mode==="move"){t.start=d2s(new Date(+drag.start+dd*DAY));t.due=d2s(new Date(+drag.due+dd*DAY));}
+  else{const nd=new Date(+drag.due+dd*DAY);if(nd>p2d(t.start))t.due=d2s(nd);}
+  cascade(drag.i);save();renderGantt();renderPlan();
+  drag.x0=e.clientX;drag.start=p2d(t.start);drag.due=p2d(t.due);};
+ document.onmouseup=()=>{drag=null;};
+}
+
+/* ---- бриф ---- */
+function briefText(){
+ const p=D.pass,m=D.meas,fill=v=>v&&v!=="[заполнить]"?v:"[заполнить]";
+ return `БРИФ ТАРГЕТОЛОГУ — ${fill(p.name)} (MainExperts, Поток 2)
+Статус: ${p.status}. Оффер: ${p.offer}. Шаг после квиза: ${fill(p.flow)}${p.flowDate?" (решение от "+p.flowDate+")":""}.
+
+1. ДОСТУПЫ
+- Рекламные кабинеты: VK [заполнить], Meta [заполнить]
+- Пиксели VK/Meta: [заполнить] · Яндекс.Метрика: [заполнить] · GA: [заполнить] · Data Studio: [заполнить]
+
+2. КАРТА UTM (шаблон ссылки)
+https://mainexperts.online/[посадочная]?utm_source={vk|meta}&utm_medium=cpc&utm_campaign=${fill(p.name)}&utm_content={креатив}&utm_term={аудитория}
+Домен .ru с Meta-рекламой не работает — только mainexperts.online (канон).
+
+3. ЯЧЕЙКИ, ГЕО, АУДИТОРИИ
+- Ячейка 1: ${p.cell1}; бюджет ${fill(p.budget1)} $ (минимум 400 $ — внутренний норматив)
+- Ячейка 2: ${p.cell2}; бюджет ${fill(p.budget2)} $ (минимум 400 $ — внутренний норматив)
+- Аудитория закупки: родители 38–50 (персонажи кастдева). Развилка «клиент: родитель или подросток» не закрыта — закупка на родителя.
+- Исключения: [заполнить]
+
+4. ФОРМАТЫ И КРЕАТИВЫ
+- Посадочная: серия коротких экранов (истории + карусель); видео — следующим шагом.
+- Слоганы: 5 вариаций под A/B; заглушка на старт — «Определи будущее твоего ребёнка».
+- ЗАПРЕЩЕНО: названия методик (лицензии нет — только рабочие переименования); персональные данные детей; обещания гарантированного результата.
+
+5. СТОП-ПРАВИЛА ТЕСТА
+- Расход без лида: стоп связки при ${fill(m.stopSpend)} $ без лида
+- Потолок CPL: ${fill(m.cplCap)} $ (CPL — прокси; ключевой KPI — ДРР, цель ${fill(p.kpiDRR)} %)
+- Минимальная выборка до решения: ${fill(m.minSample)} лидов
+- Порядок разбора отклонений: кампания → креатив → аудитория → посадочная
+
+6. МАРКИРОВКА И ПОЛИТИКИ
+- РФ: регистрация в ОРД, erid на каждый креатив — обязательны.
+- Политики площадок: категория «дети», обещания результата, тематика здоровья — тексты согласовывать до модерации.
+
+7. ОТЧЁТНОСТЬ
+- Частота: ${m.reportFreq}. Формат: расход, показы, клики, CPL, лиды, шаги квиза, оплаты, ДРР по ячейке.
+- Данные Потока 1 в отчёты не включаются.
+
+8. КОНТАКТНЫЕ ТОЧКИ (по направлениям, без имён)
+таргет · посадочная · аналитика · платежи · методология · юридическое · владелец кампании
+
+Гипотеза кампании не валидирована — кампания и есть её проверка.`;
+}
+function renderBrief(){$("#briefTxt").textContent=briefText();}
+$("#btnCopy").onclick=async()=>{const txt=briefText();
+ try{await navigator.clipboard.writeText(txt);$("#btnCopy").textContent="Скопировано ✓";}
+ catch(e){const ta=document.createElement("textarea");ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();$("#btnCopy").textContent="Скопировано ✓";}
+ setTimeout(()=>$("#btnCopy").textContent="Копировать текст брифа",1500);};
+
+/* ---- чек-лист ---- */
+function renderChecks(){
+ const c=$("#checks");c.innerHTML="";
+ D.checks.forEach((ch,i)=>{
+  const d=document.createElement("div");d.className="chk";
+  const cb=document.createElement("input");cb.type="checkbox";cb.checked=!!ch.done;
+  cb.addEventListener("input",()=>{ch.done=cb.checked;save();gate();});
+  const inp=document.createElement("input");inp.type="text";inp.value=ch.t;inp.style.cssText="flex:1;border:1px solid transparent;background:transparent;font:12.5px var(--sans);border-radius:5px;padding:2px 5px";
+  inp.addEventListener("input",()=>{ch.t=inp.value;save();});
+  const del=document.createElement("button");del.className="rowdel";del.textContent="×";
+  del.onclick=()=>{if(confirm("Удалить пункт?")){D.checks.splice(i,1);save();renderChecks();}};
+  d.append(cb,inp,del);c.appendChild(d);});
+ gate();
+}
+function gate(){const done=D.checks.filter(c=>c.done).length,all=D.checks.length;
+ const g=$("#gate");const ok=done===all&&all>0;
+ g.className="gate "+(ok?"yes":"no");
+ g.innerHTML=ok?`✓ ГОТОВ К ЗАПУСКУ — все ${all} пунктов «да»`:`■ ЗАПУСК ЗАПРЕЩЁН — ${done} из ${all} «да». Правило: без всех «да» запуск запрещён.`;}
+$("#addChk").onclick=()=>{D.checks.push({t:"",done:false});save();renderChecks();};
+
+/* ---- риски ---- */
+function renderRisks(){
+ const tb=$("#riskTbl tbody");tb.innerHTML="";
+ D.risks.forEach((r,i)=>{
+  const tr=document.createElement("tr");
+  [["r","area"],["p","text"],["e","text"],["a","area"],["tr","area"]].forEach(([k,type])=>{
+   const td=document.createElement("td");
+   const inp=type==="area"?document.createElement("textarea"):document.createElement("input");
+   if(type!=="area")inp.type="text";inp.value=r[k]??"";
+   inp.addEventListener("input",()=>{r[k]=inp.value;save();});
+   td.appendChild(inp);tr.appendChild(td);});
+  const del=document.createElement("td");del.innerHTML='<button class="rowdel">×</button>';
+  del.firstChild.onclick=()=>{if(confirm("Удалить риск?")){D.risks.splice(i,1);save();renderRisks();}};
+  tr.appendChild(del);tb.appendChild(tr);});
+}
+$("#addRisk").onclick=()=>{D.risks.push({r:"",p:"",e:"",a:"",tr:""});save();renderRisks();};
+
+/* ---- измерения ---- */
+const MEAS=[["drrTarget","ДРР-цель, % (= паспорт)","ключевой KPI"],
+ ["cplCap","Потолок CPL, $","прокси; связка стоп при превышении на выборке"],
+ ["stopSpend","Расход без лида до стопа, $","стоп-правило"],
+ ["minSample","Мин. выборка до решения, лидов","до неё решений не принимать"],
+ ["reportFreq","Частота отчёта таргетолога","в бриф"]];
+function renderMeas(){
+ const g=$("#measGrid");g.innerHTML="";
+ MEAS.forEach(([k,label,hint])=>{
+  const f=document.createElement("div");f.className="fld";
+  f.innerHTML=`<label>${label}</label><div class="hint">${hint}</div>`;
+  const inp=document.createElement("input");inp.type="text";inp.placeholder="[заполнить]";inp.value=D.meas[k]??"";
+  inp.addEventListener("input",()=>{D.meas[k]=inp.value;save();});
+  f.appendChild(inp);g.appendChild(f);});
+ const ce=$("#chainEdit");ce.value=D.meas.chain;
+ ce.oninput=()=>{D.meas.chain=ce.value;save();chainView();};
+ chainView();
+}
+function chainView(){
+ const cv=$("#chainView");cv.innerHTML="";
+ D.meas.chain.split("\n").map(s=>s.trim()).filter(Boolean).forEach((s,i,arr)=>{
+  cv.appendChild(Object.assign(document.createElement("span"),{className:"chip",textContent:s}));
+  if(i<arr.length-1)cv.appendChild(Object.assign(document.createElement("span"),{className:"carr",textContent:"→"}));});
+}
+
+/* ---- toolbar ---- */
+$("#btnExport").onclick=()=>{const blob=new Blob([JSON.stringify(D,null,2)],{type:"application/json"});
+ const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+ a.download="kvz-passport-"+new Date().toISOString().slice(0,10)+".json";a.click();URL.revokeObjectURL(a.href);};
+$("#btnImport").onclick=()=>$("#fileImport").click();
+$("#fileImport").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;
+ const rd=new FileReader();rd.onload=()=>{try{const x=JSON.parse(rd.result);if(!x.pass)throw 0;
+  D=Object.assign(JSON.parse(JSON.stringify(DEF)),x);save();init();}catch(err){alert("Не удалось прочитать JSON");}};
+ rd.readAsText(f);e.target.value="";});
+$("#btnReset").onclick=()=>{if(confirm("Сбросить всё к пустому шаблону?")){D=JSON.parse(JSON.stringify(DEF));save();init();}};
+
+function init(){renderPass();renderPlan();renderKan();renderChecks();renderRisks();renderMeas();renderBrief();renderGantt();}
+init();
+</script>
+</body>
+</html>

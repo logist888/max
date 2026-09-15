@@ -1,0 +1,858 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MainExperts — Система управленческих бордов (MMS)</title>
+<style>
+  :root{
+    --bg:#EEF1F5; --surface:#FFFFFF; --surface-2:#F6F8FB;
+    --ink:#18202E; --ink-2:#5A6678; --ink-3:#8A93A2;
+    --line:#DCE1E8; --line-2:#C9D0DA;
+    --nav:#172338; --nav-2:#1F2F4A; --nav-line:#2A3C5C; --nav-ink:#C7D2E6; --nav-ink-2:#8595B5;
+    --accent:#3B6FD0; --accent-soft:#E7EEFA;
+    --ok:#2F7D5B; --ok-bg:#E7F2EC; --ok-line:#BBDCC9;
+    --warn:#B5852A; --warn-bg:#F7EEDB; --warn-line:#E7D2A2;
+    --risk:#B0463C; --risk-bg:#F7E7E4; --risk-line:#E8C3BC;
+    --info:#3F6090; --info-bg:#E9EFF7;
+    --radius:11px; --radius-s:8px;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14.5px;line-height:1.5;
+    -webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+  .app{display:grid;grid-template-columns:268px 1fr;min-height:100vh}
+
+  /* ---- Sidebar ---- */
+  .side{background:var(--nav);color:var(--nav-ink);position:sticky;top:0;height:100vh;overflow:auto;
+    border-right:1px solid var(--nav-line);display:flex;flex-direction:column}
+  .brand{padding:18px 18px 14px;border-bottom:1px solid var(--nav-line)}
+  .brand b{color:#fff;font-size:15px;letter-spacing:.01em}
+  .brand .sub{color:var(--nav-ink-2);font-size:11.5px;margin-top:3px;font-family:var(--mono);letter-spacing:.04em}
+  .navgrp{padding:14px 12px 4px}
+  .navgrp .lbl{color:var(--nav-ink-2);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+    padding:2px 8px 8px;font-family:var(--mono)}
+  .nav{display:block;width:100%;text-align:left;border:0;background:transparent;color:var(--nav-ink);
+    padding:9px 10px;border-radius:var(--radius-s);cursor:pointer;font-size:13.5px;display:flex;
+    align-items:center;gap:9px;line-height:1.25}
+  .nav:hover{background:var(--nav-2);color:#fff}
+  .nav.active{background:var(--accent);color:#fff}
+  .nav .lv{font-family:var(--mono);font-size:10px;padding:1px 5px;border-radius:5px;background:rgba(255,255,255,.12);
+    color:#dfe8fb;flex:none}
+  .nav.active .lv{background:rgba(255,255,255,.22)}
+  .nav .dot{width:7px;height:7px;border-radius:50%;flex:none}
+  .side .foot{margin-top:auto;padding:14px 18px;border-top:1px solid var(--nav-line);
+    color:var(--nav-ink-2);font-size:11px;line-height:1.5}
+  .side .foot a{color:#9db6e6}
+
+  /* ---- Topbar ---- */
+  .main{min-width:0;display:flex;flex-direction:column}
+  .top{position:sticky;top:0;z-index:5;background:var(--surface);border-bottom:1px solid var(--line);
+    padding:10px 22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .filters{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+  .chip{font-size:12px;color:var(--ink-2);background:var(--surface-2);border:1px solid var(--line);
+    border-radius:20px;padding:4px 11px;display:inline-flex;gap:6px;align-items:center;cursor:default}
+  .chip b{color:var(--ink);font-weight:600}
+  .spacer{flex:1}
+  .toggle{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-2);cursor:pointer;
+    user-select:none}
+  .toggle input{accent-color:var(--accent);width:15px;height:15px}
+  .demobar{background:var(--warn-bg);color:#7a5a14;border-bottom:1px solid var(--warn-line);
+    font-size:12px;padding:6px 22px;font-family:var(--mono);letter-spacing:.02em}
+  .demobar b{color:#5e450f}
+
+  .content{padding:22px;max-width:1200px;width:100%}
+
+  /* ---- View header ---- */
+  .vhead{margin-bottom:16px}
+  .vhead .row{display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+  .vhead h1{font-size:21px;margin:0;letter-spacing:-.01em}
+  .vhead .en{color:var(--ink-3);font-size:14px;font-weight:500}
+  .badge{font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:6px;background:var(--accent-soft);
+    color:var(--accent);font-weight:600}
+  .vhead .meta{color:var(--ink-2);font-size:12.5px;margin-top:7px;display:flex;gap:16px;flex-wrap:wrap}
+  .vhead .meta b{color:var(--ink)}
+  .src{color:var(--ink-3);font-size:11.5px;margin-top:6px;font-family:var(--mono)}
+
+  /* ---- Cards / sections ---- */
+  .sec{margin:22px 0}
+  .sec > h2{font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);
+    margin:0 0 11px;font-family:var(--mono)}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 15px}
+
+  .kpigrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(212px,1fr));gap:12px}
+  .kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:13px 14px;
+    cursor:pointer;transition:border-color .12s,box-shadow .12s;position:relative;overflow:hidden}
+  .kpi:hover{border-color:var(--accent);box-shadow:0 3px 14px rgba(40,70,130,.09)}
+  .kpi .k-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+  .kpi .k-name{font-size:12.5px;color:var(--ink-2);font-weight:600;line-height:1.3}
+  .kpi .k-stat{width:9px;height:9px;border-radius:50%;flex:none;margin-top:3px}
+  .kpi .k-val{font-size:23px;font-weight:700;margin:7px 0 2px;letter-spacing:-.02em}
+  .kpi .k-bot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px}
+  .delta{font-size:12px;font-weight:600;font-family:var(--mono)}
+  .delta.up{color:var(--ok)} .delta.down{color:var(--risk)} .delta.flat{color:var(--ink-3)}
+  .kpi .k-desc{font-size:11px;color:var(--ink-3);margin-top:8px;line-height:1.35;border-top:1px dashed var(--line);
+    padding-top:7px}
+  .spark{display:block}
+  .aibtn{font-size:10.5px;font-family:var(--mono);color:var(--accent);background:var(--accent-soft);
+    border-radius:5px;padding:2px 6px}
+  .st-ok{background:var(--ok)} .st-warn{background:var(--warn)} .st-crit{background:var(--risk)}
+
+  /* hide-demo mode */
+  body.hide-demo .k-val, body.hide-demo .delta, body.hide-demo .spark,
+  body.hide-demo .demo-num{visibility:hidden;position:relative}
+  body.hide-demo .kpi .k-val::after{content:"— — —";visibility:visible;position:absolute;left:0;color:var(--ink-3);
+    font-size:18px}
+  body.hide-demo .demobar{background:var(--info-bg);color:#33507a;border-color:#cdd9ea}
+
+  /* zones strip */
+  .zones{display:flex;flex-direction:column;gap:6px}
+  .zrow{display:flex;gap:8px;flex-wrap:wrap}
+  .zone{flex:1;min-width:120px;background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius-s);
+    padding:9px 11px}
+  .zone .zt{font-size:12px;font-weight:600;color:var(--ink)}
+  .zone .zd{font-size:11px;color:var(--ink-3);margin-top:2px;line-height:1.3}
+
+  /* drill-down */
+  .drill{display:flex;flex-direction:column;gap:10px}
+  .tree{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  .tree-h{padding:11px 14px;cursor:pointer;display:flex;align-items:center;gap:9px;font-weight:600;font-size:13px;
+    user-select:none}
+  .tree-h:hover{background:var(--surface-2)}
+  .tree-h .caret{transition:transform .15s;color:var(--accent);font-size:12px}
+  .tree.open .tree-h .caret{transform:rotate(90deg)}
+  .tree-b{display:none;padding:4px 14px 14px}
+  .tree.open .tree-b{display:block}
+  .node{display:flex;align-items:center;gap:10px;padding:2px 0;cursor:pointer}
+  .node .lvl{font-family:var(--mono);font-size:10px;color:var(--ink-3);width:26px;flex:none}
+  .node .pill{font-family:var(--mono);font-size:12px;padding:4px 10px;border-radius:7px;background:var(--surface-2);
+    border:1px solid var(--line);color:var(--ink);transition:.12s}
+  .node:hover .pill{border-color:var(--accent);color:var(--accent)}
+  .node.lit .pill{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .node .arm{height:14px;width:1px;background:var(--line-2);margin-left:13px}
+  .hint{font-size:11.5px;color:var(--ink-3);margin-top:4px}
+
+  /* alerts */
+  .alerts{display:flex;flex-direction:column;gap:8px}
+  .alert{display:flex;gap:11px;align-items:flex-start;border:1px solid var(--line);border-left-width:4px;
+    border-radius:var(--radius-s);padding:10px 13px;background:var(--surface);cursor:pointer}
+  .alert:hover{background:var(--surface-2)}
+  .alert.sev-crit{border-left-color:var(--risk)} .alert.sev-warn{border-left-color:var(--warn)}
+  .alert.sev-info{border-left-color:var(--info)}
+  .alert .a-ic{font-family:var(--mono);font-size:11px;padding:2px 7px;border-radius:5px;flex:none;margin-top:1px}
+  .sev-crit .a-ic{background:var(--risk-bg);color:var(--risk)} .sev-warn .a-ic{background:var(--warn-bg);color:var(--warn)}
+  .sev-info .a-ic{background:var(--info-bg);color:var(--info)}
+  .alert .a-tx{font-size:13px}
+  .alert .a-meta{font-size:11px;color:var(--ink-3);margin-top:2px;font-family:var(--mono)}
+
+  /* lists / tables */
+  .list{display:flex;flex-direction:column;gap:7px}
+  .li{display:flex;gap:10px;align-items:flex-start;font-size:13px;background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--radius-s);padding:9px 12px}
+  .li .n{font-family:var(--mono);font-size:11px;color:var(--accent);flex:none;margin-top:1px}
+  table.t{width:100%;border-collapse:collapse;font-size:13px;background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--radius);overflow:hidden}
+  table.t th,table.t td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line)}
+  table.t th{background:var(--surface-2);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);
+    font-family:var(--mono)}
+  table.t tr:last-child td{border-bottom:0}
+  table.t td.mono,table.t td .mono{font-family:var(--mono);font-size:12px}
+  .tag{font-family:var(--mono);font-size:11px;padding:2px 7px;border-radius:5px}
+  .tag.ok{background:var(--ok-bg);color:var(--ok)} .tag.warn{background:var(--warn-bg);color:var(--warn)}
+  .tag.crit{background:var(--risk-bg);color:var(--risk)} .tag.n{background:var(--surface-2);color:var(--ink-2)}
+
+  .gap{background:var(--info-bg);border:1px solid #cdd9ea;border-radius:var(--radius-s);padding:9px 12px;
+    font-size:12px;color:#33507a;display:flex;gap:9px;align-items:flex-start}
+  .gap b{color:#22406a}
+  .gap .g-ic{font-family:var(--mono);font-size:10px;background:#dbe6f5;color:#33507a;padding:2px 6px;border-radius:5px;flex:none}
+
+  .ai-q{display:flex;flex-direction:column;gap:6px}
+  .ai-q .q{font-size:13px;background:var(--surface-2);border:1px solid var(--line);border-radius:18px;padding:7px 13px;
+    cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+  .ai-q .q:hover{border-color:var(--accent);color:var(--accent)}
+  .ai-q .q::before{content:"AI";font-family:var(--mono);font-size:9px;background:var(--accent);color:#fff;
+    padding:2px 5px;border-radius:4px}
+
+  .links{display:flex;gap:8px;flex-wrap:wrap}
+  .links a{font-size:12px;background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:5px 10px;
+    font-family:var(--mono)}
+  .links a:hover{border-color:var(--accent)}
+
+  /* matrix */
+  .matrix{display:grid;grid-template-columns:auto 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:0;
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;max-width:560px}
+  .matrix .axl{font-size:11px;color:var(--ink-3);font-family:var(--mono);display:flex;align-items:center;
+    justify-content:center;padding:8px;text-align:center}
+  .quad{padding:18px 14px;border:1px solid var(--line);min-height:96px;display:flex;flex-direction:column;
+    justify-content:center;gap:4px}
+  .quad b{font-size:13px}.quad span{font-size:11px;color:var(--ink-3)}
+  .quad.hi{background:var(--ok-bg)} .quad.mid{background:var(--warn-bg)} .quad.lo{background:var(--surface-2)}
+  .quad.empty{background:repeating-linear-gradient(45deg,#f3f5f9,#f3f5f9 7px,#eceff4 7px,#eceff4 14px);color:var(--ink-3)}
+
+  /* cycle */
+  .cycle{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .cstep{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-s);padding:9px 13px;
+    font-size:13px;font-weight:600}
+  .cstep .cn{font-family:var(--mono);font-size:10px;color:var(--accent);display:block}
+  .carr{color:var(--ink-3);font-size:16px}
+
+  /* drawer */
+  .scrim{position:fixed;inset:0;background:rgba(20,30,50,.34);opacity:0;pointer-events:none;transition:.18s;z-index:40}
+  .scrim.on{opacity:1;pointer-events:auto}
+  .drawer{position:fixed;top:0;right:0;height:100vh;width:420px;max-width:92vw;background:var(--surface);
+    border-left:1px solid var(--line);box-shadow:-12px 0 40px rgba(20,30,50,.18);transform:translateX(100%);
+    transition:transform .2s;z-index:41;display:flex;flex-direction:column}
+  .drawer.on{transform:none}
+  .dr-h{padding:15px 18px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:10px}
+  .dr-h .ai{font-family:var(--mono);font-size:11px;background:var(--accent);color:#fff;padding:3px 7px;border-radius:5px;
+    flex:none;margin-top:2px}
+  .dr-h h3{margin:0;font-size:15px}
+  .dr-h .x{margin-left:auto;cursor:pointer;color:var(--ink-3);font-size:20px;line-height:1;background:none;border:0}
+  .dr-b{padding:16px 18px;overflow:auto;font-size:13.5px;line-height:1.55}
+  .dr-b h4{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:16px 0 7px;
+    font-family:var(--mono)}
+  .dr-b h4:first-child{margin-top:0}
+  .dr-b ul{margin:0;padding-left:18px} .dr-b li{margin:3px 0}
+  .dr-b .note{font-size:11.5px;color:var(--ink-3);border-top:1px dashed var(--line);padding-top:10px;margin-top:14px}
+
+  .crit{background:#fff;border:1px solid var(--risk-line);border-left:4px solid var(--risk);border-radius:var(--radius);
+    padding:14px 16px}
+  .crit h2{color:var(--risk);margin:0 0 8px;font-size:14px}
+  .crit ol{margin:0;padding-left:20px;font-size:13px;line-height:1.55} .crit li{margin:6px 0}
+  .intro{font-size:13.5px;color:var(--ink-2);line-height:1.6;max-width:760px}
+  @media(max-width:820px){.app{grid-template-columns:1fr}.side{position:static;height:auto}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand">
+      <b>MainExperts · MMS</b>
+      <div class="sub">Система управленческих бордов</div>
+    </div>
+    <div class="navgrp" id="nav-boards"><div class="lbl">Борды</div></div>
+    <div class="navgrp" id="nav-system"><div class="lbl">Система</div></div>
+    <div class="foot">
+      Источник: MMS Том I+II · снимок 27.06.2026 · Google&nbsp;Drive (1.pdf, 2.pdf).<br>
+      Канон: <span class="mono">docs/boards/</span><br>
+      Это макет интерфейса по спецификации, не работающая система.
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="top">
+      <div class="filters" id="filters"></div>
+      <div class="spacer"></div>
+      <label class="toggle"><input type="checkbox" id="demoToggle" checked> Демо-значения</label>
+    </div>
+    <div class="demobar" id="demobar">
+      <b>ДЕМО-ДАННЫЕ</b> — числа иллюстративны и не являются реальными показателями MainExperts.
+      Структура бордов, KPI, drill-down и alerts взяты из спецификации MMS Том II (27.06.2026).
+    </div>
+    <div class="content" id="view"></div>
+  </div>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer">
+  <div class="dr-h"><span class="ai">AI Explain</span><h3 id="drTitle">—</h3><button class="x" id="drClose">×</button></div>
+  <div class="dr-b" id="drBody"></div>
+</aside>
+
+<script>
+/* ===================== ДАННЫЕ (из канона docs/boards/) ===================== */
+const sp = a => a; // sparkline points helper (identity)
+const FILTERS = ["Период: 30 дней","Страна: все","Продукт: все","Валюта: ₽","Сегмент: все"];
+
+const BOARDS = [
+ {id:"owner",name:"Owner Dashboard",en:"",level:"L0",owner:"Owner",access:"CEO, CFO, Совет директоров",
+  q:["Что происходит с компанией?","Что изменилось со вчерашнего дня?","Какие риски появились?",
+     "Какие решения принять сегодня?","Требуется ли вмешательство собственника?"],
+  rule:"Ответ на каждый вопрос — менее чем за 2 минуты, иначе борд спроектирован неверно.",
+  brief:{rev:"Revenue +3.8%",con:"Contribution +5.1%",run:"Runway −0.4 мес"},
+  zones:[["AI Morning Brief","Авто-обзор: изменения, события, риски, решения"],["Strategic KPI Cards","Показатели верхнего уровня"],
+    ["Financial Health · Growth · Operations · AI","Четыре тематических блока"],["Critical Alerts","Только критические (макс. 10)"],
+    ["Decision Queue","Решения на утверждение собственником"],["Strategic Trends","Динамика KPI по периодам"],
+    ["Forecast","Revenue / Contribution / Cash / Runway / Capacity"],["Active Initiatives","Стратегические проекты"],["Footer","(в источнике не раскрыт)"]],
+  kpis:[
+   {n:"Revenue",v:"₽ 4.2M",d:"+3.8%",s:"ok",sp:[3.5,3.6,3.7,3.6,3.9,4.0,4.1,4.2],desc:"Выручка (денежное значение)"},
+   {n:"Contribution",v:"₽ 2.6M",d:"+5.1%",s:"ok",sp:[2.1,2.2,2.3,2.3,2.4,2.5,2.55,2.6],desc:"Маржинальный вклад"},
+   {n:"EBITDA",v:"₽ 0.4M",d:"+2.0%",s:"ok",sp:[.3,.32,.31,.34,.36,.37,.39,.4],desc:"Операционная прибыль"},
+   {n:"Cash",v:"₽ 7.8M",d:"−1.5%",s:"warn",sp:[8.6,8.4,8.3,8.2,8.1,8.0,7.9,7.8],desc:"Остаток денежных средств"},
+   {n:"Runway",v:"5.2 мес",d:"−0.4",s:"crit",sp:[6.4,6.2,6.0,5.8,5.6,5.5,5.3,5.2],desc:"Финансовый запас"},
+   {n:"Enterprise Value",v:"₽ 180M",d:"+1.2%",s:"ok",sp:[170,172,173,175,176,178,179,180],desc:"Стоимость компании"},
+   {n:"Active Customers",v:"1 240",d:"+6.0%",s:"ok",sp:[1050,1090,1120,1150,1175,1200,1220,1240],desc:"Активные клиенты (кол-во)"},
+   {n:"NRR",v:"108%",d:"+0",s:"ok",sp:[104,105,106,106,107,107,108,108],desc:"Net Revenue Retention (%)"}],
+  blocks:[
+   {t:"Financial Health",k:["Cash ₽7.8M","Operating Cash Flow ₽0.3M","Burn Rate ₽1.5M/мес","Gross Margin 62%","Deferred Revenue ₽1.1M","Accounts Receivable ₽0.6M","Accounts Payable ₽0.4M"]},
+   {t:"Growth",k:["New Customers 210","LTV ₽18.5K","CAC ₽4.2K","DRR 22%","Retention 84%","Repeat Purchases 1.9","Average Check ₽9.9K"]},
+   {t:"Operations",k:["Expert Capacity 1 280 ч","Capacity Utilization 87%","Queue Length 34","SLA 94%","Avg Delivery 38 ч","Open Tasks 12"]},
+   {t:"AI",k:["AI Requests 24.5K","AI Cost ₽0.18M","Avg Response 1.4 с","AI Adoption 71%","AI Contribution ₽0.5M","Cost per Request ₽7.3"]}],
+  drills:[{t:"Revenue",nodes:["Revenue","Platform","Subscription","Career Navigator","Germany","Orders","Payments"]}],
+  alerts:[
+   {sev:"crit",ic:"Финансы",tx:"Runway снизился до 5.2 месяца",meta:"KPI: Runway · CFO · PB-002"},
+   {sev:"crit",ic:"Клиенты",tx:"Отток в когорте «весна» выше нормы",meta:"KPI: Retention · CCO"},
+   {sev:"warn",ic:"Capacity",tx:"Capacity AI достигла 87%",meta:"KPI: AI Capacity · CTO · PB-005"},
+   {sev:"warn",ic:"Продукт",tx:"Career Navigator EN ушёл в отрицательный Contribution",meta:"KPI: Contribution · CPO"},
+   {sev:"info",ic:"Маркетинг",tx:"DRR вырос выше допустимого диапазона",meta:"KPI: DRR · CMO · PB-003"}],
+  queue:[["Поднять цену Pro на 10%","CMO · влияние: высокое"],["Нанять 3 экспертов (DE)","COO · влияние: высокое"],
+    ["Остановить кампанию Meta-7","CMO · влияние: среднее"],["Пересмотр бюджета AI","CTO · влияние: среднее"],
+    ["Заморозить Career Navigator EN","CPO · влияние: среднее"]],
+  inits:[["Запуск вебинара 04.07","75% · риск: средний"],["Сборка freemium-воронки","40% · риск: высокий"],
+    ["Перевод тестов в рабочие названия","60% · риск: низкий"]],
+  ai:["Что изменилось со вчерашнего дня?","Почему снизился Runway?","Какие 5 решений важнее всего сегодня?","Где главное ограничение роста?"],
+  filters:["период","страна","продукт","направление","эксперт","сегмент клиентов","валюта"],
+  perf:[["Загрузка Dashboard","≤2 сек"],["Drill Down","≤1 сек"],["AI Explain","≤5 сек"],["Обновление KPI","≤5 минут"]],
+  accept:["отображаются все стратегические KPI","все карточки поддерживают Drill Down","работает AI Morning Brief",
+    "отображаются Critical Alerts","Decision Queue обновляется автоматически","доступны прогнозы",
+    "соблюдены требования по производительности","данные соответствуют официальному каталогу KPI"],
+  links:["10-owner.md","00-framework.md","03-decision-loop.md"]},
+
+ {id:"finance",name:"Финансы",en:"Finance Dashboard",level:"L1",owner:"CFO",access:"Owner, CEO, аналитики, бухгалтерия, Совет директоров",
+  q:["Компания прибыльна?","Достаточно ли денежных средств?","Насколько устойчив бизнес?","Где основные финансовые потери?","Какие решения принять сегодня?"],
+  zones:[["Financial Summary","Ключевые финансовые показатели"],["P&L · Cash Flow","Отчёт о прибылях; движение денег"],
+    ["Balance Sheet · Runway","Баланс; финансовый запас"],["Contribution · Unit Economics","Вклад в покрытие; юнит-экономика"],
+    ["Forecast · Scenario Modeling","Прогноз; сценарии"],["Financial Alerts","Финансовые предупреждения"]],
+  kpis:[
+   {n:"Revenue",v:"₽ 4.2M",d:"+3.8%",s:"ok",sp:[3.5,3.6,3.7,3.6,3.9,4.0,4.1,4.2],desc:"Общая выручка"},
+   {n:"Contribution",v:"₽ 2.6M",d:"+5.1%",s:"ok",sp:[2.1,2.2,2.3,2.3,2.4,2.5,2.55,2.6],desc:"Вклад в покрытие"},
+   {n:"EBITDA",v:"₽ 0.4M",d:"+2.0%",s:"ok",sp:[.3,.32,.31,.34,.36,.37,.39,.4],desc:"Операционная прибыль"},
+   {n:"Net Profit",v:"₽ 0.12M",d:"−4.0%",s:"warn",sp:[.18,.17,.16,.15,.14,.13,.125,.12],desc:"Чистая прибыль"},
+   {n:"Cash",v:"₽ 7.8M",d:"−1.5%",s:"warn",sp:[8.6,8.4,8.3,8.2,8.1,8.0,7.9,7.8],desc:"Остаток денежных средств"},
+   {n:"Burn Rate",v:"₽ 1.5M/мес",d:"+6.0%",s:"crit",sp:[1.2,1.25,1.3,1.35,1.4,1.45,1.48,1.5],desc:"Скорость расходования"},
+   {n:"Runway",v:"5.2 мес",d:"−0.4",s:"crit",sp:[6.4,6.2,6.0,5.8,5.6,5.5,5.3,5.2],desc:"Финансовый запас"},
+   {n:"Gross Margin",v:"62%",d:"+1",s:"ok",sp:[59,60,60,61,61,62,62,62],desc:"Валовая маржа"}],
+  drills:[
+   {t:"P&L",nodes:["Revenue","COGS","Gross Profit","Operating Expenses","EBITDA","Depreciation","EBIT","Taxes","Net Profit"]},
+   {t:"Contribution → Variable Costs",nodes:["Revenue","Variable Costs","Experts","AI","Payment Processing","Partners","Other"]},
+   {t:"Burn по статьям",nodes:["Burn","Payroll","Marketing","Infrastructure","AI","Operations"]}],
+  alerts:[
+   {sev:"crit",ic:"Runway",tx:"Runway < 6 месяцев",meta:"PB-002 · CFO"},
+   {sev:"crit",ic:"Burn",tx:"Burn выше бюджета на 6%",meta:"PB-002 · CFO"},
+   {sev:"warn",ic:"ДЗ",tx:"Просроченная дебиторская задолженность",meta:"CFO"},
+   {sev:"info",ic:"Ликвид.",tx:"Снижение ликвидности",meta:"CFO"}],
+  ai:["Почему снизилась прибыль?","Почему вырос Burn?","Почему уменьшился Cash?","Какие расходы оптимизировать?","Как изменится Runway при сокращении расходов на 15%?"],
+  filters:["период","юрлицо","страна","валюта","продукт","подразделение","ЦФО"],
+  perf:[["Загрузка Dashboard","≤2 сек"],["Построение P&L","≤3 сек"],["Forecast","≤5 сек"],["Drill Down","≤1 сек"],["AI Explain","≤5 сек"]],
+  accept:["автоматически строится P&L","корректно рассчитывается Contribution","отображается Cash Flow","отображается Balance Sheet",
+    "работает Runway","доступны прогнозы","поддерживается сценарное моделирование","все KPI поддерживают Drill Down",
+    "AI Explain использует официальные определения KPI","соблюдены требования по производительности"],
+  links:["11-finance.md","01-kpi-framework.md","03-decision-loop.md"]},
+
+ {id:"marketing",name:"Маркетинг",en:"Marketing Dashboard",level:"L1",owner:"CMO",access:"Owner, CEO, Product Owners",
+  q:["Какие каналы приносят прибыль?","Где теряются клиенты?","Какие кампании масштабировать?","Какие кампании остановить?","Какая ожидается стоимость роста?"],
+  rule:"Цель — не максимум лидов, а максимум Contribution после всех маркетинговых затрат.",
+  funnel:["Impressions","Clicks","Visitors","Leads","Qualified Leads","Meetings","Sales","Payments"],
+  zones:[["Marketing Summary","Агрегированные KPI"],["Acquisition Funnel","Полная воронка на экране"],
+    ["Channels · Campaigns","Каналы; кампании"],["CAC/LTV · DRR/ROMI","Юнит-экономика"],["Cohorts · Attribution","Когорты; атрибуция"],
+    ["Forecast · AI Recommendations","Прогноз; рекомендации AI"],["Marketing Alerts","Предупреждения"]],
+  kpis:[
+   {n:"Marketing Spend",v:"₽ 0.9M",d:"+4%",s:"warn",sp:[.7,.74,.78,.8,.84,.86,.88,.9],desc:"Общие расходы"},
+   {n:"New Leads",v:"2 350",d:"+9%",s:"ok",sp:[1800,1900,2000,2100,2180,2250,2300,2350],desc:"Новые лиды"},
+   {n:"Qualified Leads",v:"640",d:"+5%",s:"ok",sp:[520,540,560,580,600,615,628,640],desc:"Квалифицированные лиды"},
+   {n:"CAC",v:"₽ 4.2K",d:"+22%",s:"crit",sp:[3.4,3.5,3.6,3.8,3.9,4.0,4.1,4.2],desc:"Стоимость привлечения"},
+   {n:"DRR",v:"22%",d:"+3",s:"warn",sp:[18,19,19,20,21,21,22,22],desc:"Доля расходов на привлечение"},
+   {n:"ROMI",v:"185%",d:"−12",s:"warn",sp:[210,205,200,198,195,190,188,185],desc:"Возврат инвестиций"},
+   {n:"LTV",v:"₽ 18.5K",d:"+2%",s:"ok",sp:[17.5,17.8,18.0,18.1,18.2,18.3,18.4,18.5],desc:"Пожизненная ценность"},
+   {n:"Payback",v:"4.8 мес",d:"+0.3",s:"warn",sp:[4.2,4.3,4.4,4.5,4.6,4.7,4.75,4.8],desc:"Срок окупаемости"}],
+  drills:[
+   {t:"Revenue по источнику",nodes:["Revenue","Channel","Campaign","Ad Group","Creative","Click","Lead","Order"]},
+   {t:"CAC по уровням",nodes:["CAC","Channel","Campaign","Audience","Creative"]}],
+  alerts:[
+   {sev:"crit",ic:"CAC",tx:"CAC вырос более чем на 20%",meta:"PB-003 · CMO"},
+   {sev:"crit",ic:"ROMI",tx:"ROMI кампании Meta-7 стал отрицательным",meta:"CMO"},
+   {sev:"warn",ic:"DRR",tx:"DRR превысил целевое значение",meta:"PB-003 · CMO"},
+   {sev:"warn",ic:"CTR",tx:"CTR резко снизился (креатив A-12)",meta:"CMO"}],
+  ai:["Какие кампании отключить?","Куда перераспределить бюджет?","Почему вырос CAC?","Какие аудитории протестировать?"],
+  filters:["период","страна","продукт","рекл. сеть","кампания","аудитория","устройство","источник","UTM"],
+  perf:[["Загрузка Dashboard","≤2 сек"],["Drill Down","≤1 сек"],["Построение когорт","≤3 сек"],["Forecast","≤5 сек"],["AI Explain","≤5 сек"]],
+  accept:["корректно отображается воронка","автоматически рассчитываются CAC, LTV, DRR, ROMI","поддерживаются когорты",
+    "реализована атрибуция","все показатели поддерживают Drill Down","AI формирует рекомендации","Alerts создаются автоматически",
+    "соблюдены требования производительности"],
+  links:["12-marketing.md","06-data-tools-payments.md","13-sales.md"]},
+
+ {id:"sales",name:"Продажи",en:"Sales Dashboard",level:"L1",owner:"Commercial Director / Head of Sales",access:"Owner, CEO, CFO, Product Owners",
+  q:["Выполняется ли план продаж?","Где теряются сделки?","Какие менеджеры эффективнее?","Какие сделки в зоне риска?","Какая выручка ожидается?"],
+  rule:"Управление прогнозируемостью выручки, а не количеством сделок.",
+  funnel:["Qualified Lead","Discovery","Proposal","Negotiation","Agreement","Payment"],
+  zones:[["Sales Summary","Ключевые показатели"],["Sales Funnel","Воронка продаж"],["Pipeline · Forecast","Сделки; прогноз"],
+    ["Managers · Lost Deals","Эффективность; проигрыши"],["Velocity · Conversion","Скорость; конверсия"],["AI Copilot · Alerts","Ассистент; предупреждения"]],
+  kpis:[
+   {n:"Qualified Leads",v:"640",d:"+5%",s:"ok",sp:[520,540,560,580,600,615,628,640],desc:"Квалифицированные лиды"},
+   {n:"Active Deals",v:"118",d:"+3%",s:"ok",sp:[98,102,106,108,112,114,116,118],desc:"Активные сделки"},
+   {n:"Closed Won",v:"42",d:"+8%",s:"ok",sp:[32,34,36,37,39,40,41,42],desc:"Успешные сделки"},
+   {n:"Closed Lost",v:"19",d:"+11%",s:"warn",sp:[12,13,14,15,16,17,18,19],desc:"Проигранные сделки"},
+   {n:"Win Rate",v:"31%",d:"−2",s:"warn",sp:[35,34,34,33,32,32,31,31],desc:"Конверсия в продажу"},
+   {n:"Sales Velocity",v:"14 дн",d:"+1",s:"warn",sp:[12,12,13,13,13,14,14,14],desc:"Скорость прохождения сделки"},
+   {n:"Average Deal",v:"₽ 96K",d:"+4%",s:"ok",sp:[88,89,90,92,93,94,95,96],desc:"Средний чек"},
+   {n:"Revenue Forecast",v:"₽ 4.6M",d:"+5%",s:"ok",sp:[4.1,4.2,4.3,4.4,4.4,4.5,4.55,4.6],desc:"Прогнозируемая выручка"}],
+  drills:[
+   {t:"Revenue по менеджеру",nodes:["Revenue","Manager","Deal","Proposal","Invoice","Payment"]},
+   {t:"Win Rate",nodes:["Win Rate","Product","Manager","Lead Source","Opportunity"]}],
+  alerts:[
+   {sev:"crit",ic:"Клиент",tx:"Высокая вероятность потери крупного клиента",meta:"CCO"},
+   {sev:"warn",ic:"Pipeline",tx:"Pipeline уменьшился за неделю",meta:"Head of Sales"},
+   {sev:"warn",ic:"Win",tx:"Win Rate снизился",meta:"Head of Sales"},
+   {sev:"info",ic:"Сделка",tx:"Сделка без активности более 14 дней",meta:"Sales Manager"}],
+  ai:["Какие сделки в зоне риска?","Какой следующий шаг по сделке?","Кто из менеджеров отстаёт от плана?","Приоритет клиентов на сегодня?"],
+  filters:["период","менеджер","страна","продукт","сегмент","источник","стадия","валюта"],
+  perf:[["Загрузка Dashboard","≤2 сек"],["Pipeline","≤2 сек"],["Forecast","≤5 сек"],["Drill Down","≤1 сек"],["AI Explain","≤5 сек"]],
+  accept:["автоматически строится Pipeline","рассчитывается Forecast","отображается полная воронка","анализируются причины проигрышей",
+    "поддерживается Drill Down","AI формирует рекомендации","автоматически создаются Sales Alerts","соблюдены требования производительности"],
+  links:["13-sales.md","12-marketing.md","11-finance.md"]},
+
+ {id:"operations",name:"Операции",en:"Operations Dashboard",level:"L1",owner:"COO",access:"Owner, CEO, Product Owners",
+  q:["Способна ли компания выполнить спрос без потери качества?"],
+  rule:"Связующее звено между продажами, экспертной сетью, AI и финансами.",
+  zones:[["Operations Summary","Агрегированные показатели"],["Capacity · Utilization","Мощность; утилизация"],
+    ["Expert Network · Client Queue","Сеть; очередь"],["SLA · Workload","SLA; распределение нагрузки"],
+    ["Forecast · AI Capacity","Прогноз; мощность AI"],["Operational Alerts","Предупреждения"]],
+  kpis:[
+   {n:"Total Capacity",v:"1 480 ч",d:"+2%",s:"ok",sp:[1400,1420,1430,1450,1460,1470,1475,1480],desc:"Общая мощность"},
+   {n:"Used Capacity",v:"1 288 ч",d:"+7%",s:"warn",sp:[1100,1150,1180,1210,1240,1260,1275,1288],desc:"Используемая мощность"},
+   {n:"Capacity Utilization",v:"87%",d:"+5",s:"crit",sp:[78,80,82,83,85,86,86,87],desc:"Утилизация мощности"},
+   {n:"Active Experts",v:"38",d:"+2",s:"ok",sp:[32,33,34,35,36,37,37,38],desc:"Активные эксперты"},
+   {n:"Active Clients",v:"1 240",d:"+6%",s:"ok",sp:[1050,1090,1120,1150,1175,1200,1220,1240],desc:"Активные клиенты"},
+   {n:"Queue Length",v:"34",d:"+19%",s:"crit",sp:[18,21,24,27,29,31,33,34],desc:"Размер очереди"},
+   {n:"SLA Compliance",v:"94%",d:"−2",s:"warn",sp:[97,97,96,96,95,95,94,94],desc:"Выполнение SLA"},
+   {n:"Avg Delivery Time",v:"38 ч",d:"+9%",s:"warn",sp:[31,32,33,34,35,36,37,38],desc:"Среднее время оказания"}],
+  util:[["< 50%","Недозагрузка","n"],["50–85%","Оптимальная загрузка","ok"],["85–95%","Высокая загрузка","warn"],["> 95%","Критическая перегрузка → Alert","crit"]],
+  drills:[
+   {t:"Capacity",nodes:["Capacity","Country","Specialization","Expert","Calendar","Booking"]},
+   {t:"Queue",nodes:["Queue","Product","Country","Client","Request"]}],
+  alerts:[
+   {sev:"crit",ic:"Capacity",tx:"Capacity Utilization > 95% (DE, профориентация)",meta:"PB-004 · COO"},
+   {sev:"crit",ic:"Queue",tx:"Очередь превышает допустимый уровень",meta:"COO"},
+   {sev:"warn",ic:"SLA",tx:"Нарушение SLA по продукту «Профиль 360»",meta:"COO"},
+   {sev:"warn",ic:"Эксперты",tx:"Недостаток экспертов на следующий месяц",meta:"COO / Head of Expert Network"},
+   {sev:"info",ic:"AI",tx:"Рост Failure Rate AI",meta:"CTO · PB-005"}],
+  ai:["Какие эксперты перегружены?","Где возникло ограничение роста?","Кого необходимо нанять?","Что станет следующим ограничением бизнеса?"],
+  filters:["период","страна","эксперт","язык","специализация","продукт","тип клиента"],
+  perf:[["Загрузка Dashboard","≤2 сек"],["Capacity Forecast","≤5 сек"],["Drill Down","≤1 сек"],["AI Explain","≤5 сек"]],
+  accept:["автоматически рассчитывается Capacity","отображается Utilization","отображается очередь клиентов","контролируется SLA",
+    "работает прогноз мощности","автоматически создаются Alerts","поддерживается Drill Down","AI формирует рекомендации","соблюдены требования производительности"],
+  links:["14-operations.md","15-expert-network.md","04-operations.md"]},
+
+ {id:"expert",name:"Экспертная сеть",en:"Expert Network Dashboard",level:"L1",owner:"Head of Expert Network",access:"COO, Quality Manager, Owner, CEO, Product Owners",
+  q:["Насколько эффективна сама экспертная сеть?","Кто лучшие специалисты?","Где зоны риска?","Какова будущая загрузка?"],
+  zones:[["Expert Summary","Агрегаты по сети"],["Capacity · Quality","Загрузка; качество"],["Performance · Revenue","Эффективность; выручка"],
+    ["Ratings · Client Satisfaction","Рейтинги; удовлетворённость"],["Development · Forecast","Развитие; прогноз"],["Expert Alerts","Предупреждения"]],
+  kpis:[
+   {n:"Active Experts",v:"38",d:"+2",s:"ok",sp:[32,33,34,35,36,37,37,38],desc:"Активные эксперты"},
+   {n:"Available Capacity",v:"192 ч",d:"−8%",s:"warn",sp:[260,250,240,225,215,205,198,192],desc:"Доступная мощность"},
+   {n:"Average Utilization",v:"87%",d:"+5",s:"crit",sp:[78,80,82,83,85,86,86,87],desc:"Средняя загрузка"},
+   {n:"Average Rating",v:"4.6",d:"+0.0",s:"ok",sp:[4.5,4.5,4.6,4.6,4.6,4.6,4.6,4.6],desc:"Средний рейтинг"},
+   {n:"Active Clients",v:"1 240",d:"+6%",s:"ok",sp:[1050,1090,1120,1150,1175,1200,1220,1240],desc:"Активные клиенты"},
+   {n:"Average NPS",v:"58",d:"−3",s:"warn",sp:[64,63,62,61,60,59,58,58],desc:"Средний NPS"},
+   {n:"Contribution",v:"₽ 1.9M",d:"+4%",s:"ok",sp:[1.6,1.65,1.7,1.75,1.8,1.85,1.88,1.9],desc:"Contribution сети"},
+   {n:"Revenue",v:"₽ 3.0M",d:"+5%",s:"ok",sp:[2.5,2.6,2.7,2.8,2.85,2.9,2.95,3.0],desc:"Общая выручка"}],
+  rating:[["Клиенты","40%"],["Повторные покупки","20%"],["SLA","15%"],["Внутренний аудит","15%"],["AI Quality Score","10%"]],
+  matrix:{kind:"expert"},
+  drills:[
+   {t:"Contribution",nodes:["Contribution","Expert","Client","Consultation","Invoice","Payment"]},
+   {t:"Rating",nodes:["Rating","Survey","Client","Session","Feedback"]}],
+  alerts:[
+   {sev:"crit",ic:"Уход",tx:"Высокая вероятность увольнения (эксперт #17)",meta:"Head of Expert Network"},
+   {sev:"warn",ic:"Util",tx:"Utilization > 95% у 4 экспертов",meta:"COO"},
+   {sev:"warn",ic:"Rating",tx:"Снижение рейтинга у 2 экспертов",meta:"Quality Manager"},
+   {sev:"info",ic:"NPS",tx:"Падение NPS в сегменте Premium",meta:"Quality Manager"}],
+  ai:["Какие эксперты готовы принять новых клиентов?","Кто перегружен?","Кто показывает лучший рост?","Кто в зоне риска ухода?"],
+  filters:["период","страна","язык","специализация","продукт","статус","уровень эксперта","тип клиента"],
+  perf:[["Загрузка Dashboard","≤2 сек"],["Expert Card","≤1 сек"],["Drill Down","≤1 сек"],["Forecast","≤5 сек"],["AI Explain","≤5 сек"]],
+  accept:["отображаются все активные эксперты","автоматически рассчитывается Performance Score","рассчитывается Rating","отображается Capacity",
+    "строится прогноз нагрузки","AI формирует рекомендации","автоматически создаются Expert Alerts","поддерживается Drill Down","соблюдены требования производительности"],
+  links:["15-expert-network.md","14-operations.md","11-finance.md"]},
+
+ {id:"product",name:"Продукты",en:"Product Dashboard",level:"L1",owner:"Chief Product Officer / Product Owners",access:"Owner, CEO, CFO, COO, CMO",
+  q:["Какие продукты масштабировать?","Какие становятся убыточными?","Какие ограничивают рост?","Какие закрыть?","Где инвестировать ресурсы?"],
+  zones:[["Product Portfolio Summary","Агрегаты портфеля"],["Product Matrix · Revenue","Матрица; выручка"],["Contribution · Lifecycle","Вклад; жизненный цикл"],
+    ["Adoption · Satisfaction","Использование; удовлетворённость"],["Forecast · AI Insights","Прогноз; AI-аналитика"],["Product Alerts","Предупреждения"]],
+  kpis:[
+   {n:"Active Products",v:"7",d:"+1",s:"ok",sp:[5,5,6,6,6,7,7,7],desc:"Активные продукты"},
+   {n:"Total Revenue",v:"₽ 4.2M",d:"+3.8%",s:"ok",sp:[3.5,3.6,3.7,3.6,3.9,4.0,4.1,4.2],desc:"Общая выручка"},
+   {n:"Total Contribution",v:"₽ 2.6M",d:"+5.1%",s:"ok",sp:[2.1,2.2,2.3,2.3,2.4,2.5,2.55,2.6],desc:"Общий Contribution"},
+   {n:"Average Margin",v:"58%",d:"+1",s:"ok",sp:[55,56,56,57,57,58,58,58],desc:"Средняя маржинальность"},
+   {n:"Product NPS",v:"55",d:"−2",s:"warn",sp:[60,59,58,57,57,56,55,55],desc:"Средний NPS"},
+   {n:"Product Adoption",v:"68%",d:"+4",s:"ok",sp:[58,60,62,63,65,66,67,68],desc:"Использование продуктов"},
+   {n:"Active Customers",v:"1 240",d:"+6%",s:"ok",sp:[1050,1090,1120,1150,1175,1200,1220,1240],desc:"Активные клиенты"},
+   {n:"Product ROI",v:"142%",d:"+6",s:"ok",sp:[120,124,128,132,135,138,140,142],desc:"Доходность портфеля"}],
+  matrix:{kind:"product"},
+  lifecycle:["Discovery","Validation","Launch","Growth","Maturity","Optimization","Sunset"],
+  drills:[{t:"Contribution продукта",nodes:["Revenue","Variable Costs","Contribution","Fixed Allocation","Operating Profit"]}],
+  alerts:[],
+  alertsGap:"Раздел Product Alerts в извлечении PDF отсутствует (§10 оборван на 10.11) — не достроен.",
+  ai:[],
+  aiGap:"Раздел AI Product Insights в извлечении PDF отсутствует — не достроен. Общий механизм AI Explain — на каркасе.",
+  filters:["продукт","страна","сегмент","подписка","эксперт","канал продаж","период"],
+  filtersGap:"Отдельный раздел фильтров в источнике не специфицирован; приведены разрезы Revenue Analysis.",
+  perf:[],
+  perfGap:"Раздел требований к производительности в извлечении PDF отсутствует.",
+  accept:[],
+  acceptGap:"Раздел критериев приёмки в извлечении PDF отсутствует (§10 оборван).",
+  links:["16-product.md","11-finance.md","02-product.md"]}
+];
+
+/* ---- системные виды ---- */
+const HIERARCHY = [
+ ["L0","Strategic KPIs","Собственник и топ-менеджмент","Revenue, Contribution, EBITDA, Operating Cash Flow, Runway, Enterprise Value, LTV, NRR"],
+ ["L1","Management KPIs","Руководители функций","DRR, CAC, ROMI · Win Rate, Sales Cycle · Capacity Utilization, Rating · Gross Margin, Burn Rate"],
+ ["L2","Operational KPIs","Линейные руководители","Кол-во консультаций, время ожидания, новые эксперты, AI-запросы, скорость ответа"],
+ ["L3","Diagnostic Metrics","Для поиска причин","Average Check, Orders, Traffic, CTR, Creative …"]
+];
+const CYCLE = ["Событие","Изменение KPI","Alert","Drill Down","Root Cause","Decision","Execution","Verification","Knowledge"];
+const PB = [
+ ["Revenue ↓","Revenue","CCO","PB-001"],["Burn ↑","Burn Rate","CFO","PB-002"],["DRR ↑","Marketing","CMO","PB-003"],
+ ["Capacity > 95%","Capacity","COO","PB-004"],["AI Cost ↑","AI Cost","CTO","PB-005"]];
+const ROLES = [
+ ["Owner","Полный доступ: все борды, KPI, прогнозы, настройки"],["CEO","Все управленческие функции; без системных настроек"],
+ ["CFO","Финансы, бюджет, Runway, Cash, Forecast"],["COO","Эксперты, Capacity, Operations"],
+ ["CMO","Маркетинг, продажи, продукты"],["CTO","AI, инфраструктура, интеграции, мониторинг"],
+ ["Product Owner","Только собственные продукты"],["Expert","Только собственная аналитика"],
+ ["Analyst","Просмотр данных; без изменения конфигурации"],["Support","Техническая поддержка"]];
+const ACCESS = [["Dashboard","✔","—","—"],["KPI","✔","—","—"],["Forecast","✔","—","—"],["Alerts","✔","✔","—"],
+ ["Users","—","—","✔"],["Roles","—","—","✔"],["AI Settings","—","—","✔"]];
+
+/* AI Explain demo-тексты по KPI */
+const AIX = {
+ "Runway":{ch:["Runway −0.4 мес → 5.2 мес"],cause:["Рост постоянных расходов (Payroll +6%)","Burn Rate вырос до ₽1.5M/мес"],
+   rel:["Burn Rate","Cash","Contribution"],rec:["Сократить переменные расходы на 15% → +1.1 мес","Перейти к финансовому борду, сценарий «−15% costs»"],pb:"PB-002 (CFO)"},
+ "CAC":{ch:["CAC +22% → ₽4.2K"],cause:["Рост CPC в канале Meta","Падение Conversion на лендинге A-12"],
+   rel:["DRR","ROMI","Conversion Rate"],rec:["Отключить кампанию Meta-7 (ROMI<0)","Перераспределить бюджет в Referral/Organic"],pb:"PB-003 (CMO)"},
+ "Capacity Utilization":{ch:["Utilization +5 → 87% (зона «высокая»)"],cause:["Рост спроса из продаж (Pipeline +3%)","Очередь выросла до 34"],
+   rel:["Queue Length","SLA","Available Capacity"],rec:["Hiring Forecast: +3 эксперта (DE)","Сместить нагрузку на недозагруженных"],pb:"PB-004 (COO)"}
+};
+const AIX_DEFAULT = {ch:["Показатель в пределах плана"],cause:["Существенных отклонений не обнаружено"],
+   rel:["—"],rec:["Действий не требуется; наблюдение"],pb:"—"};
+</script>
+
+<script>
+/* ===================== РЕНДЕР ===================== */
+const $=(s,r=document)=>r.querySelector(s);
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;};
+const esc=s=>String(s).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
+const STAT={ok:"st-ok",warn:"st-warn",crit:"st-crit"};
+const SEVIC={crit:"crit",warn:"warn",info:"info"};
+let CUR="owner";
+
+function sparkSVG(arr,stat){
+  const w=120,h=30,p=3,mn=Math.min(...arr),mx=Math.max(...arr),rg=(mx-mn)||1;
+  const pts=arr.map((v,i)=>[p+i*(w-2*p)/(arr.length-1),h-p-(v-mn)/rg*(h-2*p)]);
+  const col=stat==="crit"?"#B0463C":stat==="warn"?"#B5852A":"#2F7D5B";
+  const d=pts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ");
+  const area=`M${pts[0][0]},${h-p} L`+d+` L${pts[pts.length-1][0]},${h-p} Z`;
+  return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+    <path d="${area}" fill="${col}" opacity=".10"/>
+    <polyline points="${d}" fill="none" stroke="${col}" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="${pts[pts.length-1][0].toFixed(1)}" cy="${pts[pts.length-1][1].toFixed(1)}" r="2.4" fill="${col}"/></svg>`;
+}
+function deltaCls(d){return /^-|−/.test(d)?"down":/^\+/.test(d)?"up":"flat";}
+
+function kpiCard(k){
+  const c=el("div","kpi");
+  c.innerHTML=`<div class="k-top"><div class="k-name">${esc(k.n)}</div><div class="k-stat ${STAT[k.s]}"></div></div>
+    <div class="k-val">${esc(k.v)}</div>
+    <div class="k-bot"><span class="delta ${deltaCls(k.d)}">${esc(k.d)}</span>${sparkSVG(k.sp,k.s)}</div>
+    <div class="k-desc">${esc(k.desc)} <span class="aibtn">AI Explain →</span></div>`;
+  c.onclick=()=>openAI(k);
+  return c;
+}
+function section(title,node){const s=el("div","sec");if(title)s.appendChild(el("h2",null,title));s.appendChild(node);return s;}
+
+function treeEl(tr){
+  const t=el("div","tree");
+  const head=el("div","tree-h",`<span class="caret">▸</span>${esc(tr.t)} <span style="color:var(--ink-3);font-weight:400;font-size:11px">· ${tr.nodes.length} уровней</span>`);
+  const body=el("div","tree-b");
+  tr.nodes.forEach((n,i)=>{
+    if(i)body.appendChild(el("div","arm"));
+    const node=el("div","node",`<span class="lvl">${i===0?"KPI":"↓"+i}</span><span class="pill">${esc(n)}</span>`);
+    node.onclick=e=>{e.stopPropagation();[...body.querySelectorAll(".node")].forEach((x,j)=>x.classList.toggle("lit",j<=i));};
+    body.appendChild(node);
+  });
+  body.appendChild(el("div","hint","Клик по узлу — подсветить путь раскрытия до первичного события."));
+  head.onclick=()=>t.classList.toggle("open");
+  t.append(head,body);return t;
+}
+
+function funnelEl(steps){
+  const wrap=el("div","drill");
+  const t=el("div","tree open");
+  const head=el("div","tree-h",`<span class="caret">▸</span>Воронка · ${steps.length} этапов`);
+  const body=el("div","tree-b");
+  steps.forEach((n,i)=>{
+    if(i)body.appendChild(el("div","arm"));
+    const node=el("div","node",`<span class="lvl">${i+1}</span><span class="pill">${esc(n)}</span>`);
+    node.onclick=()=>[...body.querySelectorAll(".node")].forEach((x,j)=>x.classList.toggle("lit",j<=i));
+    body.appendChild(node);
+  });
+  head.onclick=()=>t.classList.toggle("open");
+  t.append(head,body);wrap.appendChild(t);return wrap;
+}
+
+function alertsEl(list){
+  const w=el("div","alerts");
+  list.forEach(a=>{
+    const e=el("div","alert sev-"+a.sev,`<span class="a-ic">${esc(a.ic)}</span><div><div class="a-tx">${esc(a.tx)}</div><div class="a-meta">${esc(a.meta)}</div></div>`);
+    e.onclick=()=>openAlert(a);w.appendChild(e);
+  });return w;
+}
+
+function expertMatrix(){
+  const m=el("div","matrix");
+  m.innerHTML=`<div class="axl"></div><div class="axl">Low Revenue</div><div class="axl">High Revenue</div>
+   <div class="axl" style="writing-mode:vertical-rl;transform:rotate(180deg)">Высокое&nbsp;качество</div>
+   <div class="quad empty">не подписан<span>выс. качество · низкая выручка</span></div>
+   <div class="quad hi"><b>★ Stars</b><span>выс. качество · высокая выручка</span></div>
+   <div class="axl" style="writing-mode:vertical-rl;transform:rotate(180deg)">Низкое&nbsp;качество</div>
+   <div class="quad lo"><b>Improvement</b><span>низ. качество · низкая выручка</span></div>
+   <div class="quad mid"><b>Revenue Risk</b><span>низ. качество · высокая выручка</span></div>`;
+  return m;
+}
+function productMatrix(){
+  const m=el("div","matrix");
+  m.innerHTML=`<div class="axl"></div><div class="axl">Low Growth</div><div class="axl">High Growth</div>
+   <div class="axl" style="writing-mode:vertical-rl;transform:rotate(180deg)">Высокий&nbsp;Contribution</div>
+   <div class="quad hi"><b>Strategic Products</b><span>колонка роста в источнике не разделена</span></div>
+   <div class="quad empty">не подписан<span>выс. Contribution</span></div>
+   <div class="axl" style="writing-mode:vertical-rl;transform:rotate(180deg)">Низкий&nbsp;Contribution</div>
+   <div class="quad lo"><b>Legacy Products</b><span>низ. Contribution · низкий рост</span></div>
+   <div class="quad mid"><b>Experimental</b><span>низ. Contribution · высокий рост</span></div>`;
+  return m;
+}
+
+function chips(arr){const w=el("div","links");arr.forEach(f=>w.appendChild(el("a",null,esc(f))));return w;}
+function gapBox(t){return el("div","gap",`<span class="g-ic">ПРОБЕЛ</span><div>${esc(t)}</div>`);}
+
+function renderBoard(b){
+  const v=$("#view");v.innerHTML="";
+  // header
+  const h=el("div","vhead");
+  h.innerHTML=`<div class="row"><h1>${esc(b.name)}</h1>${b.en?`<span class="en">${esc(b.en)}</span>`:""}<span class="badge">${b.level}</span></div>
+    <div class="meta"><span>Владелец: <b>${esc(b.owner)}</b></span><span>Доступ (просмотр): ${esc(b.access)}</span></div>
+    <div class="src">Источник: MMS Том II${b.id==="owner"?" гл. 4 + Том I гл. 10":""} · снимок 27.06.2026 · канон docs/boards/${b.links[0]}</div>`;
+  v.appendChild(h);
+
+  // назначение
+  const purpose=el("div","card");
+  purpose.innerHTML=`<div style="font-size:13px;color:var(--ink-2)">${b.rule?esc(b.rule)+'<br><br>':''}<b style="color:var(--ink)">Отвечает на вопросы:</b></div>`;
+  const ol=el("div","list");b.q.forEach((q,i)=>ol.appendChild(el("div","li",`<span class="n">${i+1}</span>${esc(q)}`)));
+  purpose.appendChild(ol);
+  v.appendChild(section(null,purpose));
+
+  // owner-специфика
+  if(b.id==="owner"){
+    const brief=el("div","card");
+    brief.innerHTML=`<div style="display:flex;gap:10px;align-items:center;margin-bottom:8px"><span class="aibtn" style="font-size:11px">AI Morning Brief · 08:00</span></div>
+      <div style="display:flex;gap:18px;flex-wrap:wrap;font-size:14px"><span class="delta up demo-num">${esc(b.brief.rev)}</span><span class="delta up demo-num">${esc(b.brief.con)}</span><span class="delta down demo-num">${esc(b.brief.run)}</span></div>
+      <div style="font-size:12px;color:var(--ink-3);margin-top:8px">Главные события (≤5), основные риски и до пяти приоритетных решений формируются автоматически.</div>`;
+    v.appendChild(section("AI Morning Brief",brief));
+  }
+
+  // KPI
+  const grid=el("div","kpigrid");b.kpis.forEach(k=>grid.appendChild(kpiCard(k)));
+  v.appendChild(section("Strategic KPI Cards · клик → AI Explain",grid));
+
+  // тематические блоки (owner)
+  if(b.blocks){
+    const wrap=el("div","zones");
+    const row=el("div","zrow");
+    b.blocks.forEach(bl=>{
+      const z=el("div","zone");
+      z.innerHTML=`<div class="zt">${esc(bl.t)}</div><div class="zd demo-num">${bl.k.map(esc).join(" · ")}</div>`;
+      row.appendChild(z);
+    });
+    wrap.appendChild(row);v.appendChild(section("Financial Health · Growth · Operations · AI",wrap));
+  }
+
+  // структура экрана
+  const zwrap=el("div","zones");let zr=el("div","zrow");
+  b.zones.forEach((z,i)=>{
+    if(i&&i%3===0){zwrap.appendChild(zr);zr=el("div","zrow");}
+    zr.appendChild(el("div","zone",`<div class="zt">${esc(z[0])}</div><div class="zd">${esc(z[1])}</div>`));
+  });
+  zwrap.appendChild(zr);v.appendChild(section("Структура экрана",zwrap));
+
+  // воронка
+  if(b.funnel)v.appendChild(section("Воронка",funnelEl(b.funnel)));
+
+  // матрица
+  if(b.matrix){v.appendChild(section("Матрица "+(b.matrix.kind==="expert"?"эффективности (качество × Revenue)":"продуктов (Contribution × Growth)"),
+    b.matrix.kind==="expert"?expertMatrix():productMatrix()));}
+
+  // рейтинг весов / util
+  if(b.rating){const t=el("table","t");t.innerHTML="<tr><th>Источник рейтинга</th><th>Вес</th></tr>"+b.rating.map(r=>`<tr><td>${esc(r[0])}</td><td class="mono">${esc(r[1])}</td></tr>`).join("");v.appendChild(section("Веса Expert Rating",t));}
+  if(b.util){const t=el("table","t");t.innerHTML="<tr><th>Диапазон Utilization</th><th>Статус</th></tr>"+b.util.map(r=>`<tr><td class="mono">${esc(r[0])}</td><td><span class="tag ${r[2]}">${esc(r[1])}</span></td></tr>`).join("");v.appendChild(section("Статусы Utilization",t));}
+  if(b.lifecycle){v.appendChild(section("Жизненный цикл продукта",chips(b.lifecycle)));}
+
+  // drill-down
+  if(b.drills&&b.drills.length){const d=el("div","drill");b.drills.forEach(tr=>d.appendChild(treeEl(tr)));v.appendChild(section("Drill-down (деревья причин) · клик по заголовку",d));}
+
+  // alerts
+  if(b.alerts&&b.alerts.length)v.appendChild(section("Alerts → Playbook · клик → AI Explain",alertsEl(b.alerts)));
+  else if(b.alertsGap)v.appendChild(section("Alerts → Playbook",gapBox(b.alertsGap)));
+
+  // queue / inits (owner)
+  if(b.queue){const w=el("div","list");b.queue.forEach((q,i)=>w.appendChild(el("div","li",`<span class="n">${i+1}</span><div><b>${esc(q[0])}</b><div style="font-size:11px;color:var(--ink-3);font-family:var(--mono)">${esc(q[1])}</div></div>`)));v.appendChild(section("Decision Queue · сортировка по влиянию на стоимость",w));}
+  if(b.inits){const w=el("div","list");b.inits.forEach(q=>w.appendChild(el("div","li",`<span class="n">▣</span><div><b>${esc(q[0])}</b><div style="font-size:11px;color:var(--ink-3);font-family:var(--mono)">${esc(q[1])}</div></div>`)));v.appendChild(section("Active Initiatives",w));}
+
+  // AI
+  if(b.ai&&b.ai.length){const w=el("div","ai-q");b.ai.forEach(q=>{const e=el("div","q",esc(q));e.onclick=()=>openAIText(b.name+" — AI Copilot",q);w.appendChild(e);});v.appendChild(section("AI Copilot · примеры запросов",w));}
+  else if(b.aiGap)v.appendChild(section("AI Copilot / AI Explain",gapBox(b.aiGap)));
+
+  // фильтры
+  v.appendChild(section("Фильтры (синхронно)",b.filtersGap?(()=>{const w=el("div");w.appendChild(chips(b.filters));w.appendChild(el("div","",""));w.appendChild(gapBox(b.filtersGap));return w;})():chips(b.filters)));
+
+  // perf
+  if(b.perf&&b.perf.length){const t=el("table","t");t.innerHTML="<tr><th>Функция</th><th>Требование</th></tr>"+b.perf.map(r=>`<tr><td>${esc(r[0])}</td><td class="mono">${esc(r[1])}</td></tr>`).join("");v.appendChild(section("Производительность",t));}
+  else if(b.perfGap)v.appendChild(section("Производительность",gapBox(b.perfGap)));
+
+  // accept
+  if(b.accept&&b.accept.length){const w=el("div","list");b.accept.forEach(a=>w.appendChild(el("div","li",`<span class="n">✓</span>${esc(a)}`)));v.appendChild(section("Критерии приёмки",w));}
+  else if(b.acceptGap)v.appendChild(section("Критерии приёмки",gapBox(b.acceptGap)));
+
+  // связи
+  v.appendChild(section("Связи (канон)",chips(b.links)));
+  window.scrollTo(0,0);
+}
+
+/* системные виды */
+function renderHierarchy(){
+  const v=$("#view");v.innerHTML="";
+  v.appendChild(el("div","vhead",`<div class="row"><h1>Иерархия KPI</h1><span class="badge">L0–L3</span></div>
+    <div class="src">Источник: MMS Том I гл. 9 · docs/boards/01-kpi-framework.md</div>`));
+  v.appendChild(section(null,el("div","intro","Каждый уровень отвечает на свой набор вопросов; руководитель работает только со своим уровнем, детализация — через Drill Down. Собственник видит только L0.")));
+  const t=el("table","t");
+  t.innerHTML="<tr><th>Уровень</th><th>Класс</th><th>Кто использует</th><th>Примеры</th></tr>"+
+    HIERARCHY.map(r=>`<tr><td><span class="badge">${r[0]}</span></td><td><b>${esc(r[1])}</b></td><td>${esc(r[2])}</td><td style="font-size:12px;color:var(--ink-2)">${esc(r[3])}</td></tr>`).join("");
+  v.appendChild(section("Уровни",t));
+  const pass=el("table","t");
+  pass.innerHTML="<tr><th>Раздел паспорта KPI</th><th>Содержание</th></tr>"+
+   [["Общая информация","Код · Название · Описание"],["Формула","Полное мат. определение"],["Источник","Таблицы · API · Интеграции"],
+    ["Ответственный","Единственный владелец KPI"],["Частота","Online · 5 мин · ежедневно · еженедельно"],
+    ["Пороги","Норма · Предупреждение · Критическое"],["Drill Down","Последовательность раскрытия"],["Связанные KPI","Изменяются вместе"]]
+   .map(r=>`<tr><td><b>${esc(r[0])}</b></td><td>${esc(r[1])}</td></tr>`).join("");
+  v.appendChild(section("Паспорт KPI",pass));
+  v.appendChild(section(null,gapBox("Формулы конкретных KPI и числовые пороги в источнике не приведены — каталог KPI задаёт структуру, а не заполнение.")));
+  window.scrollTo(0,0);
+}
+function renderCycle(){
+  const v=$("#view");v.innerHTML="";
+  v.appendChild(el("div","vhead",`<div class="row"><h1>Цикл решений</h1><span class="badge">Decision Architecture</span></div>
+    <div class="src">Источник: MMS Том I гл. 4, 8 · docs/boards/03-decision-loop.md</div>`));
+  const c=el("div","cycle");
+  CYCLE.forEach((s,i)=>{c.appendChild(el("div","cstep",`<span class="cn">${String(i+1).padStart(2,"0")}</span>${esc(s)}`));if(i<CYCLE.length-1)c.appendChild(el("span","carr","→"));});
+  v.appendChild(section("Жизненный цикл решения · ни один этап не пропускается",c));
+  const t=el("table","t");
+  t.innerHTML="<tr><th>Событие</th><th>KPI</th><th>Ответственный</th><th>Playbook</th></tr>"+
+    PB.map(r=>`<tr><td class="mono">${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td><span class="tag n">${esc(r[3])}</span></td></tr>`).join("");
+  v.appendChild(section("Матрица решений (Alert → KPI → владелец → Playbook)",t));
+  const al=el("table","t");
+  al.innerHTML="<tr><th>Тип Alert</th><th>Значение</th></tr>"+
+   [["Information","Изменение не требует действий","n"],["Warning","Необходимо наблюдение","warn"],["Critical","Вмешательство руководителя","crit"],["Emergency","Немедленное реагирование","crit"]]
+   .map(r=>`<tr><td><span class="tag ${r[2]}">${esc(r[0])}</span></td><td>${esc(r[1])}</td></tr>`).join("");
+  v.appendChild(section("Типы Alert",al));
+  v.appendChild(section(null,gapBox("Расхождение источника: владельца Revenue Том I называет Commercial Director (4.5) и CCO (матрица 8.10) — зафиксировано, не разрешено.")));
+  window.scrollTo(0,0);
+}
+function renderRoles(){
+  const v=$("#view");v.innerHTML="";
+  v.appendChild(el("div","vhead",`<div class="row"><h1>Роли и доступ</h1><span class="badge">RBAC</span></div>
+    <div class="src">Источник: MMS Том II гл. 2 · docs/boards/02-roles-access.md</div>`));
+  const t=el("table","t");
+  t.innerHTML="<tr><th>Роль</th><th>Полномочия</th></tr>"+ROLES.map(r=>`<tr><td><b>${esc(r[0])}</b></td><td>${esc(r[1])}</td></tr>`).join("");
+  v.appendChild(section("Роли",t));
+  const a=el("table","t");
+  a.innerHTML="<tr><th>Объект</th><th>Read</th><th>Write</th><th>Admin</th></tr>"+
+    ACCESS.map(r=>`<tr><td><b>${esc(r[0])}</b></td><td class="mono">${r[1]}</td><td class="mono">${r[2]}</td><td class="mono">${r[3]}</td></tr>`).join("");
+  v.appendChild(section("Матрица доступа",a));
+  v.appendChild(section(null,gapBox("В источнике матрица дана набором отметок без явной привязки прав к ролям — сопоставление интерпретировано.")));
+  window.scrollTo(0,0);
+}
+function renderAccept(){
+  const v=$("#view");v.innerHTML="";
+  v.appendChild(el("div","vhead",`<div class="row"><h1>Критерии приёмки и производительность</h1></div>
+    <div class="src">Источник: MMS Том II гл. 3–10 · docs/boards/90-acceptance.md</div>`));
+  const t=el("table","t");
+  t.innerHTML="<tr><th>Борд</th><th>Загрузка</th><th>Drill Down</th><th>AI Explain</th><th>Дополнительно</th></tr>"+
+   [["Owner","≤2 с","≤1 с","≤5 с","Обновление KPI ≤5 мин"],["Финансы","≤2 с","≤1 с","≤5 с","P&L ≤3 с · Forecast ≤5 с"],
+    ["Маркетинг","≤2 с","≤1 с","≤5 с","Когорты ≤3 с"],["Продажи","≤2 с","≤1 с","≤5 с","Pipeline ≤2 с"],
+    ["Операции","≤2 с","≤1 с","≤5 с","Capacity Forecast ≤5 с"],["Экспертная сеть","≤2 с","≤1 с","≤5 с","Expert Card ≤1 с"],
+    ["Продукты","—","—","—","пробел извлечения"]]
+   .map(r=>`<tr><td><b>${esc(r[0])}</b></td><td class="mono">${esc(r[1])}</td><td class="mono">${esc(r[2])}</td><td class="mono">${esc(r[3])}</td><td style="font-size:12px;color:var(--ink-2)">${esc(r[4])}</td></tr>`).join("");
+  v.appendChild(section("Производительность по бордам",t));
+  v.appendChild(section(null,el("div","crit",`<h2>Применимость к стадии проекта (критический слой)</h2>
+   <ol><li><b>Разрыв амбиции и стадии.</b> MMS — enterprise-grade Management OS, проект — подготовка первого вебинара, эксперты вручную, узкое место — ручная проверка отчёта. Дашборды раньше данных = шум (по V4.1).</li>
+   <li><b>Это видение, не ТЗ.</b> Большинство KPI без формул и порогов; Data Dictionary отсутствует.</li>
+   <li><b>Неполнота источника.</b> Извлечение Тома II оборвано на §10.11; разделы IV–XIV помечены пробелом.</li>
+   <li><b>Ответственные C-level</b> — целевая орг-структура, не текущая.</li></ol>
+   <div style="font-size:12px;color:var(--ink-3);margin-top:10px">Полный разбор — docs/08-board-system.md</div>`)));
+  window.scrollTo(0,0);
+}
+
+/* drawer */
+function openAI(k){
+  const x=AIX[k.n]||AIX_DEFAULT;
+  $("#drTitle").textContent=k.n+" · "+k.v;
+  $("#drBody").innerHTML=
+    `<h4>Что изменилось</h4><ul>${x.ch.map(s=>`<li>${esc(s)}</li>`).join("")}</ul>
+     <h4>Вероятные причины</h4><ul>${x.cause.map(s=>`<li>${esc(s)}</li>`).join("")}</ul>
+     <h4>Связанные KPI</h4><ul>${x.rel.map(s=>`<li>${esc(s)}</li>`).join("")}</ul>
+     <h4>Рекомендации</h4><ul>${x.rec.map(s=>`<li>${esc(s)}</li>`).join("")}</ul>
+     <h4>Playbook</h4><div>${esc(x.pb)}</div>
+     <div class="note">AI объясняет, ищет причины и предлагает сценарии, но <b>не утверждает решения и не меняет KPI</b> — финальное решение за человеком. Текст — демо-иллюстрация.</div>`;
+  showDrawer();
+}
+function openAlert(a){
+  $("#drTitle").textContent="Alert · "+a.ic;
+  $("#drBody").innerHTML=
+    `<h4>Событие</h4><div>${esc(a.tx)}</div>
+     <h4>Маршрут</h4><div class="mono" style="font-size:12px">${esc(a.meta)}</div>
+     <h4>Playbook</h4><ul><li>Описание ситуации</li><li>Последовательность действий</li><li>Ожидаемый результат</li><li>Реальные результаты применения</li><li>Рекомендации по улучшению</li></ul>
+     <div class="note">Каждый Alert ведёт к Playbook и далее в цикл решений (Decision Architecture). Демо-иллюстрация.</div>`;
+  showDrawer();
+}
+function openAIText(title,q){
+  $("#drTitle").textContent="AI Copilot";
+  $("#drBody").innerHTML=`<h4>Запрос</h4><div>${esc(q)}</div>
+   <h4>Ответ (демо)</h4><div>AI формирует объяснение со ссылками на KPI, причинами, прогнозом и рекомендациями — на основе официального каталога KPI и утверждённых формул.</div>
+   <div class="note">Граница: AI не утверждает решения и не меняет KPI. Это макет, реальный ответ требует подключённых данных.</div>`;
+  showDrawer();
+}
+function showDrawer(){$("#drawer").classList.add("on");$("#scrim").classList.add("on");}
+function hideDrawer(){$("#drawer").classList.remove("on");$("#scrim").classList.remove("on");}
+
+/* навигация */
+function go(id){
+  CUR=id;
+  document.querySelectorAll(".nav").forEach(n=>n.classList.toggle("active",n.dataset.id===id));
+  if(id==="sys-hier")return renderHierarchy();
+  if(id==="sys-cycle")return renderCycle();
+  if(id==="sys-roles")return renderRoles();
+  if(id==="sys-accept")return renderAccept();
+  renderBoard(BOARDS.find(b=>b.id===id));
+}
+function buildNav(){
+  const nb=$("#nav-boards"),ns=$("#nav-system");
+  BOARDS.forEach(b=>{
+    const btn=el("button","nav");btn.dataset.id=b.id;
+    btn.innerHTML=`<span class="lv">${b.level}</span><span>${esc(b.name)}</span>`;
+    btn.onclick=()=>go(b.id);nb.appendChild(btn);
+  });
+  [["sys-hier","Иерархия KPI"],["sys-cycle","Цикл решений"],["sys-roles","Роли и доступ"],["sys-accept","Критерии приёмки"]].forEach(s=>{
+    const btn=el("button","nav");btn.dataset.id=s[0];btn.innerHTML=`<span class="dot" style="background:var(--accent)"></span><span>${esc(s[1])}</span>`;
+    btn.onclick=()=>go(s[0]);ns.appendChild(btn);
+  });
+}
+function buildFilters(){const f=$("#filters");FILTERS.forEach(x=>{const[a,b]=x.split(": ");f.appendChild(el("span","chip",`${esc(a)}: <b>${esc(b)}</b>`));});}
+
+/* init */
+buildNav();buildFilters();
+$("#demoToggle").addEventListener("change",e=>document.body.classList.toggle("hide-demo",!e.target.checked));
+$("#drClose").onclick=hideDrawer;$("#scrim").onclick=hideDrawer;
+document.addEventListener("keydown",e=>{if(e.key==="Escape")hideDrawer();});
+go("owner");
+</script>
+</body>
+</html>

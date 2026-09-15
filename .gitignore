@@ -33,3 +33,8 @@ Thumbs.db
 # Плагины Obsidian — стороннее, ставится самим редактором
 .obsidian/plugins/
 .obsidian/workspace.json
+# Obsidian: конфиг хранилища коммитим, локально-изменчивое — нет
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+.obsidian/plugins/*/data.json

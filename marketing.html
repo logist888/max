@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MainExperts — Marketing Operating System (MOS)</title>
+<style>
+  :root{
+    --bg:#F6F7F9; --panel:#FFFFFF; --panel-2:#FBFCFD; --sb:#FFFFFF; --sb-line:#ECEEF2;
+    --ink:#1A1D24; --ink-2:#5B6472; --ink-3:#8A93A1; --line:#E6E9EE; --line-2:#D7DCE3;
+    --accent:#5B5BD6; --accent-2:#4B49C8; --accent-soft:#EEEEFB;
+    --ok:#197A4B; --ok-bg:#E8F5EE; --warn:#9A6700; --warn-bg:#FBF3DD; --risk:#B23A36; --risk-bg:#FBEBE9;
+    --info:#2A6BB0; --info-bg:#E9F1FA;
+    --r:10px; --r-s:7px;
+    --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
+  .app{display:grid;grid-template-columns:236px 1fr;min-height:100vh}
+
+  /* sidebar */
+  .sb{background:var(--sb);border-right:1px solid var(--sb-line);position:sticky;top:0;height:100vh;overflow:auto;display:flex;flex-direction:column}
+  .sb .logo{padding:15px 16px;border-bottom:1px solid var(--sb-line);display:flex;align-items:center;gap:9px}
+  .sb .logo .mk{width:26px;height:26px;border-radius:7px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+  .sb .logo b{font-size:13.5px}
+  .sb .logo .sub{font-size:10.5px;color:var(--ink-3);font-family:var(--mono)}
+  .sbgrp{padding:11px 9px 3px}
+  .sbgrp .t{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);padding:3px 8px 6px;font-family:var(--mono)}
+  .nav{display:flex;align-items:center;gap:9px;width:100%;border:0;background:none;text-align:left;padding:7px 9px;border-radius:var(--r-s);cursor:pointer;font-size:13px;color:var(--ink-2);line-height:1.2}
+  .nav:hover{background:var(--panel-2);color:var(--ink)}
+  .nav.active{background:var(--accent-soft);color:var(--accent-2);font-weight:600}
+  .nav .ic{width:16px;text-align:center;flex:none;font-size:13px}
+  .nav .hs{margin-left:auto;font-family:var(--mono);font-size:10px;padding:1px 5px;border-radius:5px}
+  .sb .foot{margin-top:auto;padding:12px 16px;border-top:1px solid var(--sb-line);font-size:10.5px;color:var(--ink-3);line-height:1.5}
+
+  /* topbar */
+  .main{min-width:0;display:flex;flex-direction:column}
+  .top{position:sticky;top:0;z-index:6;background:var(--panel);border-bottom:1px solid var(--line);padding:8px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .crumbs{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink-3);font-family:var(--mono);flex-wrap:wrap}
+  .crumbs b{color:var(--ink);font-weight:600}
+  .crumbs .sep{color:var(--line-2)}
+  .sp{flex:1}
+  .gf{display:flex;gap:6px;flex-wrap:wrap}
+  .pill{font-size:11.5px;color:var(--ink-2);background:var(--panel-2);border:1px solid var(--line);border-radius:7px;padding:3px 9px;cursor:default;white-space:nowrap}
+  .pill b{color:var(--ink)}
+  .btn{font-size:12px;border:1px solid var(--line);background:var(--panel);border-radius:7px;padding:5px 10px;cursor:pointer;color:var(--ink-2);display:inline-flex;align-items:center;gap:6px}
+  .btn:hover{border-color:var(--accent);color:var(--accent)}
+  .btn kbd{font-family:var(--mono);font-size:10px;background:var(--panel-2);border:1px solid var(--line);border-radius:4px;padding:0 4px}
+  .toggle{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-2);cursor:pointer;user-select:none}
+  .toggle input{accent-color:var(--accent)}
+  .demobar{background:var(--warn-bg);color:#7a5a14;border-bottom:1px solid #ecd9a8;font-size:11.5px;padding:5px 18px;font-family:var(--mono)}
+  .demobar b{color:#5e450f}
+  body.hide-demo .demobar{background:var(--info-bg);color:#2a567f;border-color:#cfe0f1}
+
+  .wrap{padding:18px;max-width:1240px;width:100%}
+  .vh{margin-bottom:14px}
+  .vh h1{font-size:19px;margin:0;letter-spacing:-.01em}
+  .vh .d{color:var(--ink-2);font-size:12.5px;margin-top:4px}
+  .vh .src{color:var(--ink-3);font-size:11px;font-family:var(--mono);margin-top:5px}
+  .sec{margin:18px 0}
+  .sec>h2{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:0 0 9px;font-family:var(--mono);display:flex;align-items:center;gap:8px}
+  .sec>h2 .cnt{color:var(--accent-2);background:var(--accent-soft);border-radius:5px;padding:0 6px;font-size:10px}
+
+  /* kpi cards */
+  .kgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(206px,1fr));gap:10px}
+  .k{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:11px 12px;cursor:pointer;transition:.12s}
+  .k:hover{border-color:var(--accent);box-shadow:0 2px 12px rgba(91,91,214,.08)}
+  .k .kt{display:flex;justify-content:space-between;gap:6px;align-items:flex-start}
+  .k .kn{font-size:11.5px;color:var(--ink-2);font-weight:600}
+  .k .kd{font-family:var(--mono);font-size:11.5px;font-weight:600}
+  .kd.up{color:var(--ok)} .kd.down{color:var(--risk)} .kd.flat{color:var(--ink-3)}
+  .k .kv{font-size:21px;font-weight:700;margin:5px 0 1px;letter-spacing:-.02em;font-feature-settings:"tnum"}
+  .k .kmeta{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:5px}
+  .k .ktar{font-size:10.5px;color:var(--ink-3);font-family:var(--mono)}
+  .k .kai{font-size:10px;font-family:var(--mono);color:var(--accent);background:var(--accent-soft);border-radius:4px;padding:1px 5px}
+  body.hide-demo .kv,body.hide-demo .kd,body.hide-demo .spark,body.hide-demo .dnum{visibility:hidden}
+  body.hide-demo .k .kv::after{content:"—";visibility:visible;color:var(--ink-3)}
+
+  /* layered kpi label */
+  .layer{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-family:var(--mono);color:var(--ink-3)}
+  .dot{width:7px;height:7px;border-radius:50%}
+  .l-op{background:#8a93a1}.l-perf{background:var(--info)}.l-biz{background:var(--accent)}
+
+  /* channel portfolio cards */
+  .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:11px}
+  .cc{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:13px;cursor:pointer;transition:.12s;display:flex;flex-direction:column;gap:9px}
+  .cc:hover{border-color:var(--accent);box-shadow:0 3px 14px rgba(91,91,214,.09)}
+  .cc .ch{display:flex;align-items:center;gap:9px}
+  .cc .ico{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff;flex:none}
+  .cc .nm{font-weight:600;font-size:13.5px}
+  .cc .ow{font-size:11px;color:var(--ink-3);font-family:var(--mono)}
+  .st{font-size:10px;font-family:var(--mono);padding:1px 7px;border-radius:20px;border:1px solid}
+  .st.active{color:var(--ok);background:var(--ok-bg);border-color:#bfe0cd}
+  .st.planned{color:var(--ink-3);background:var(--panel-2);border-color:var(--line)}
+  .st.paused{color:var(--warn);background:var(--warn-bg);border-color:#ecd9a8}
+  .st.pilot{color:var(--info);background:var(--info-bg);border-color:#cfe0f1}
+  .ccrow{display:flex;justify-content:space-between;gap:8px;font-size:12px}
+  .ccrow .lbl{color:var(--ink-3)} .ccrow .v{font-family:var(--mono);font-weight:600}
+  .health{height:5px;border-radius:4px;background:var(--line);overflow:hidden}
+  .health i{display:block;height:100%;border-radius:4px}
+  .ccfoot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:8px;margin-top:2px}
+  .open{font-size:11.5px;color:var(--accent);font-weight:600}
+
+  /* tables */
+  table.t{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  table.t th,table.t td{text-align:left;padding:8px 11px;border-bottom:1px solid var(--line)}
+  table.t th{background:var(--panel-2);font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3);font-family:var(--mono)}
+  table.t tr:last-child td{border-bottom:0}
+  table.t td.m,table.t .m{font-family:var(--mono);font-feature-settings:"tnum"}
+  .bar{height:6px;border-radius:4px;background:var(--line);overflow:hidden;min-width:60px}
+  .bar i{display:block;height:100%;background:var(--accent);border-radius:4px}
+  .tag{font-size:10.5px;font-family:var(--mono);padding:1px 6px;border-radius:5px}
+  .tag.ok{background:var(--ok-bg);color:var(--ok)} .tag.warn{background:var(--warn-bg);color:var(--warn)} .tag.crit{background:var(--risk-bg);color:var(--risk)} .tag.n{background:var(--panel-2);color:var(--ink-2)}
+
+  /* alerts / lists / cards */
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:13px 14px}
+  .alerts{display:flex;flex-direction:column;gap:7px}
+  .al{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-left-width:3px;border-radius:var(--r-s);padding:9px 12px;background:var(--panel);cursor:pointer}
+  .al:hover{background:var(--panel-2)}
+  .al.c-crit{border-left-color:var(--risk)}.al.c-warn{border-left-color:var(--warn)}.al.c-info{border-left-color:var(--info)}
+  .al .ic{font-family:var(--mono);font-size:10px;padding:1px 6px;border-radius:4px;flex:none;margin-top:1px}
+  .c-crit .ic{background:var(--risk-bg);color:var(--risk)}.c-warn .ic{background:var(--warn-bg);color:var(--warn)}.c-info .ic{background:var(--info-bg);color:var(--info)}
+  .al .tx{font-size:12.5px}.al .mt{font-size:10.5px;color:var(--ink-3);font-family:var(--mono);margin-top:1px}
+  .list{display:flex;flex-direction:column;gap:6px}
+  .li{display:flex;gap:9px;align-items:flex-start;font-size:12.5px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r-s);padding:8px 11px}
+  .li .n{font-family:var(--mono);font-size:10px;color:var(--accent);flex:none;margin-top:2px}
+  .briefrow{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;font-family:var(--mono)}
+
+  .chain{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .cnode{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-s);padding:6px 11px;font-size:12px;font-weight:600;cursor:pointer}
+  .cnode:hover,.cnode.lit{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+  .carr{color:var(--ink-3)}
+  .gap{background:var(--info-bg);border:1px solid #cfe0f1;border-radius:var(--r-s);padding:8px 11px;font-size:11.5px;color:#2a567f;display:flex;gap:8px}
+  .gap .g{font-family:var(--mono);font-size:9px;background:#d6e6f6;color:#2a567f;padding:1px 5px;border-radius:4px;flex:none}
+  .crit{background:var(--panel);border:1px solid #ecc7c4;border-left:3px solid var(--risk);border-radius:var(--r);padding:13px 15px}
+  .crit h3{color:var(--risk);margin:0 0 7px;font-size:13px}.crit ol{margin:0;padding-left:18px;font-size:12.5px;line-height:1.5}.crit li{margin:5px 0}
+  .ai-q{display:flex;flex-direction:column;gap:6px}
+  .ai-q .q{font-size:12.5px;background:var(--panel-2);border:1px solid var(--line);border-radius:16px;padding:6px 12px;cursor:pointer;display:inline-flex;gap:7px;align-items:center}
+  .ai-q .q:hover{border-color:var(--accent);color:var(--accent)}
+  .ai-q .q::before{content:"AI";font-family:var(--mono);font-size:8px;background:var(--accent);color:#fff;padding:1px 4px;border-radius:3px}
+
+  .spark{display:block}
+  /* drawer */
+  .scrim{position:fixed;inset:0;background:rgba(20,24,34,.32);opacity:0;pointer-events:none;transition:.16s;z-index:40}
+  .scrim.on{opacity:1;pointer-events:auto}
+  .drawer{position:fixed;top:0;right:0;height:100vh;width:410px;max-width:92vw;background:var(--panel);border-left:1px solid var(--line);box-shadow:-12px 0 36px rgba(20,24,34,.16);transform:translateX(100%);transition:.18s;z-index:41;display:flex;flex-direction:column}
+  .drawer.on{transform:none}
+  .dh{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;gap:9px;align-items:flex-start}
+  .dh .ai{font-family:var(--mono);font-size:10px;background:var(--accent);color:#fff;padding:2px 6px;border-radius:4px;flex:none;margin-top:2px}
+  .dh h3{margin:0;font-size:14px}.dh .x{margin-left:auto;border:0;background:none;font-size:19px;color:var(--ink-3);cursor:pointer}
+  .db{padding:14px 16px;overflow:auto;font-size:13px;line-height:1.5}
+  .db h4{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin:14px 0 6px;font-family:var(--mono)}.db h4:first-child{margin-top:0}
+  .db ul{margin:0;padding-left:17px}.db li{margin:2px 0}
+  .db .note{font-size:11px;color:var(--ink-3);border-top:1px dashed var(--line);padding-top:9px;margin-top:12px}
+
+  /* command palette */
+  .cmd{position:fixed;inset:0;display:none;z-index:50;align-items:flex-start;justify-content:center;padding-top:12vh;background:rgba(20,24,34,.3)}
+  .cmd.on{display:flex}
+  .cmdbox{width:560px;max-width:92vw;background:var(--panel);border:1px solid var(--line-2);border-radius:12px;box-shadow:0 24px 70px rgba(20,24,34,.28);overflow:hidden}
+  .cmdbox input{width:100%;border:0;border-bottom:1px solid var(--line);padding:14px 16px;font-size:15px;font-family:var(--sans);outline:none}
+  .cmdlist{max-height:50vh;overflow:auto;padding:6px}
+  .cmdit{display:flex;align-items:center;gap:10px;padding:8px 11px;border-radius:7px;cursor:pointer;font-size:13px}
+  .cmdit:hover,.cmdit.sel{background:var(--accent-soft);color:var(--accent-2)}
+  .cmdit .k{font-family:var(--mono);font-size:10px;color:var(--ink-3)}
+  @media(max-width:860px){.app{grid-template-columns:1fr}.sb{position:static;height:auto}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sb">
+    <div class="logo"><div class="mk">M</div><div><b>Marketing OS</b><div class="sub">MainExperts · v0.2</div></div></div>
+    <div class="sbgrp" id="nav-main"></div>
+    <div class="sbgrp" id="nav-an"></div>
+    <div class="foot">Источник интерфейса: «Marketing Operating System Design» + борд v0.1.<br>Демо-прототип, не работающая система.</div>
+  </aside>
+
+  <div class="main">
+    <div class="top">
+      <div class="crumbs" id="crumbs"></div>
+      <div class="sp"></div>
+      <div class="gf" id="gf"></div>
+      <button class="btn" id="cmdBtn">Поиск <kbd>⌘K</kbd></button>
+      <button class="btn" id="aiBtn">AI Copilot</button>
+      <label class="toggle"><input type="checkbox" id="demo" checked> Демо</label>
+    </div>
+    <div class="demobar"><b>ДЕМО-ДАННЫЕ</b> — числа и статусы каналов иллюстративны. Структура (портфель каналов, 3 слоя KPI, drill-down, AI) — из «Marketing Operating System Design». Большинство каналов на стадии проекта ещё не запущено.</div>
+    <div class="wrap" id="view"></div>
+  </div>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer">
+  <div class="dh"><span class="ai">AI Copilot</span><h3 id="drT">—</h3><button class="x" id="drX">×</button></div>
+  <div class="db" id="drB"></div>
+</aside>
+
+<div class="cmd" id="cmd"><div class="cmdbox"><input id="cmdIn" placeholder="Перейти к экрану или каналу…" autocomplete="off"><div class="cmdlist" id="cmdList"></div></div></div>
+
+<script>
+/* ============ ДАННЫЕ (combine: борд v0.1 + Marketing OS Design) ============ */
+const GF=["Страна: RU","Бренд: MainExperts","Продукт: все","Период: 30 дней","Команда: все","Язык: RU","Устройство: все"];
+
+// KPI: n name, v current, t target, d delta, s status, sp trend, ow owner, layer
+const k=(n,v,t,d,s,sp,ow)=>({n,v,t,d,s,sp:sp||[],ow:ow||"CMO"});
+
+const EXEC=[
+ k("Marketing Spend","₽ 0.9M","₽ 1.0M","+4%","warn",[.7,.74,.78,.8,.84,.86,.88,.9],"CMO"),
+ k("Revenue","₽ 4.2M","₽ 4.5M","+3.8%","ok",[3.5,3.6,3.7,3.6,3.9,4,4.1,4.2]),
+ k("Contribution","₽ 2.6M","₽ 2.8M","+5.1%","ok",[2.1,2.2,2.3,2.3,2.4,2.5,2.55,2.6]),
+ k("ROMI","185%","200%","−12","warn",[210,205,200,198,195,190,188,185]),
+ k("CAC","₽ 4.2K","₽ 3.5K","+22%","crit",[3.4,3.5,3.6,3.8,3.9,4,4.1,4.2]),
+ k("LTV","₽ 18.5K","₽ 18K","+2%","ok",[17.5,17.8,18,18.1,18.2,18.3,18.4,18.5]),
+ k("DRR","22%","18%","+3","warn",[18,19,19,20,21,21,22,22]),
+ k("Marketing Health Score","72","80","+3","warn",[66,67,68,69,70,71,71,72]),
+ k("Pipeline Generated","₽ 6.1M","₽ 6.5M","+7%","ok",[5,5.3,5.5,5.7,5.8,5.9,6,6.1]),
+ k("Marketing Contribution %","38%","42%","+1","ok",[35,36,36,37,37,38,38,38]),
+ k("Forecast (Revenue 30d)","₽ 4.6M","—","+5%","ok",[4.1,4.2,4.3,4.4,4.4,4.5,4.55,4.6])
+];
+
+const BRIEF={
+ changed:["CAC +22% → ₽4.2K","ROMI −12 → 185%","Telegram: лиды +30%","SEO трафик +18%"],
+ opp:["Referral ROMI 320% — кандидат на масштабирование","SEO растёт органически — усилить контент-план"],
+ risk:["Meta Ads: ROMI отрицательный (кампания Meta-7)","CAC растёт 3-ю неделю — общий тренд"],
+ dec:["Отключить Meta-7","Удвоить бюджет Referral","Запустить TikTok-пилот","Нанять SEO-копирайтера"]
+};
+const ALERTS=[
+ {c:"crit",ic:"ROMI",tx:"Meta Ads: ROMI отрицательный (Meta-7)",mt:"Канал: Meta Ads · PB-003 · Игорь"},
+ {c:"crit",ic:"CAC",tx:"CAC вырос более чем на 20%",mt:"KPI: CAC · CMO · PB-003"},
+ {c:"warn",ic:"DRR",tx:"DRR превысил целевое значение (18%)",mt:"KPI: DRR · CMO"},
+ {c:"warn",ic:"CTR",tx:"CTR резко снизился (креатив A-12)",mt:"Канал: Meta Ads"},
+ {c:"info",ic:"Reach",tx:"Instagram: охват −15% за неделю",mt:"Канал: Instagram Organic"}
+];
+const DECQ=[["Отключить кампанию Meta-7","CMO · влияние: высокое · ROMI<0"],
+ ["Удвоить бюджет Referral","CMO · влияние: высокое · ROMI 320%"],
+ ["Запустить TikTok-пилот","CMO · влияние: среднее · гипотеза"],
+ ["Нанять SEO-копирайтера","CMO · влияние: среднее · рост органики"]];
+
+// drill chain (Design): Company→Marketing→Channel→Campaign→Creative→Lead→Customer→Revenue→Contribution
+const CHAIN=["Company","Marketing","Channel","Campaign","Creative","Lead","Customer","Revenue","Contribution"];
+
+// channel-specific extra sections (plan/actual etc.) from Design
+function planActual(rows){return {type:"pa",rows}} // rows: [name, plan, actual]
+function tableSec(title,head,rows){return {type:"tbl",title,head,rows}}
+
+const CH=[
+ {id:"meta",name:"Meta Ads",ico:"M",col:"#1877F2",grp:"Платные",owner:"Игорь",status:"active",health:48,rev:"₽ 0.6M",contr:"₽ 0.1M",plan:80,ai:42,trend:[.9,.85,.8,.7,.66,.6,.55,.5],
+  layers:{op:[k("Campaigns","6","—","0","flat"),k("Ad Sets","18","—","+2","flat"),k("Creatives","42","—","+6","flat"),k("Spend","₽ 0.6M","₽ 0.5M","+20%","crit")],
+   perf:[k("CTR","0.9%","1.5%","−0.3","warn"),k("CPC","₽ 36","₽ 28","+18%","warn"),k("Leads","210","320","−12%","warn"),k("CPA","₽ 2.9K","₽ 2K","+22%","crit")],
+   biz:[k("Revenue","₽ 0.6M","₽ 1.0M","−10%","crit"),k("Contribution","₽ 0.1M","₽ 0.4M","−40%","crit"),k("CAC","₽ 4.8K","₽ 3.5K","+30%","crit"),k("ROAS","0.9","2.0","−15%","crit"),k("ROMI","−10%","150%","−30","crit")]},
+  sections:[tableSec("Структура Meta",["Уровень","Объект","Spend","ROAS"],[["Campaign","Meta-7 (профориентация)","₽ 0.28M","0.7"],["Ad Set","DE · 25-44 · interests","₽ 0.12M","0.9"],["Creative","video-A12","₽ 0.05M","0.6"]]),
+   {type:"kv",title:"Доп. метрики",rows:[["Frequency","3.2 (высокая)"],["Learning Status","Limited"],["Pixel","OK · события: Lead, Purchase"],["Conversions","210"]]}],
+  aiSug:["Отключить Meta-7 (ROAS 0.7)","Заменить креатив A-12 (CTR упал)","Сузить частоту показа <2.5","Перелить бюджет в Referral"],
+  drill:["Meta Ads","Campaign","Ad Set","Ad","Creative","Click","Lead","Order"]},
+
+ {id:"google",name:"Google Ads",ico:"G",col:"#34A853",grp:"Платные",owner:"Игорь",status:"active",health:70,rev:"₽ 0.9M",contr:"₽ 0.5M",plan:75,ai:68,trend:[.7,.72,.74,.75,.78,.8,.82,.84],
+  layers:{op:[k("Keywords","320","—","+15","flat"),k("Search Terms","1 240","—","+90","flat"),k("Budget","₽ 0.3M","₽ 0.3M","0","ok"),k("Quality Score","7.2","8","+0.3","ok")],
+   perf:[k("CTR","4.1%","4%","+0.2","ok"),k("CPC","₽ 22","₽ 24","−8%","ok"),k("Leads","260","250","+5%","ok"),k("CPA","₽ 1.9K","₽ 2K","−5%","ok")],
+   biz:[k("Revenue","₽ 0.9M","₽ 0.85M","+6%","ok"),k("Contribution","₽ 0.5M","₽ 0.45M","+7%","ok"),k("CAC","₽ 3.2K","₽ 3.5K","−9%","ok"),k("ROMI","210%","200%","+10","ok")]},
+  sections:[tableSec("Типы кампаний",["Тип","Spend","Leads","ROMI"],[["Search","₽ 0.18M","180","240%"],["Performance Max","₽ 0.08M","60","190%"],["Display","₽ 0.02M","12","120%"],["YouTube","₽ 0.02M","8","90%"]])],
+  aiSug:["Поднять ставки по brand-keywords","Минус-слова из Search Terms","Расширить PMax на новые аудитории"],
+  drill:["Google Ads","Campaign","Ad Group","Keyword","Search Term","Click","Lead","Order"]},
+
+ {id:"instagram",name:"Instagram Organic",ico:"I",col:"#E1306C",grp:"Органика",owner:"Контент (Игорь)",status:"active",health:65,rev:"₽ 0.3M",contr:"₽ 0.2M",plan:60,ai:58,trend:[.6,.62,.61,.63,.6,.58,.56,.55],
+  layers:{op:[k("Posts","18","24","−6","warn"),k("Stories","60","90","−30","warn"),k("Reels","8","12","−4","warn"),k("UGC","3","6","−3","warn")],
+   perf:[k("Reach","42K","55K","−15%","warn"),k("Profile Visits","3.1K","4K","−9%","warn"),k("Clicks","640","800","−12%","warn"),k("Leads","58","80","−18%","warn")],
+   biz:[k("Revenue","₽ 0.3M","₽ 0.4M","−8%","warn"),k("Contribution","₽ 0.2M","₽ 0.28M","−10%","warn"),k("CAC","₽ 2.1K","₽ 2K","+5%","warn"),k("ROMI","260%","280%","−7","warn")]},
+  sections:[{type:"pa",title:"Контент-план (план / факт)",rows:[["Posts",24,18],["Stories",90,60],["Reels",12,8],["Lives",4,1],["Collaborations",6,3],["UGC",6,3]]},
+   {type:"kv",title:"Engagement",rows:[["Likes","12.4K"],["Comments","820"],["Shares","410"],["Saves","1.1K"],["ER","3.6%"]]}],
+  aiSug:["Сместить фокус на Reels (выше охват)","Лучшее время: 19:00–21:00","Тренд: «как выбрать профессию» — снять","Восстановить частоту Stories"],
+  drill:["Instagram","Content Type","Post","Click","Landing","Lead","Order"]},
+
+ {id:"telegram",name:"Telegram",ico:"T",col:"#229ED9",grp:"Органика",owner:"Контент (Игорь)",status:"active",health:78,rev:"₽ 0.4M",contr:"₽ 0.3M",plan:90,ai:80,trend:[.6,.64,.68,.7,.74,.76,.78,.8],
+  layers:{op:[k("Posts","26","28","−2","ok"),k("Publishing","90%","100%","+5","ok")],
+   perf:[k("Views","48K","45K","+7%","ok"),k("ERR","32%","28%","+4","ok"),k("Subscribers","8.4K","8K","+5%","ok"),k("CTR","6.1%","5%","+1.1","ok"),k("Leads","120","90","+30%","ok")],
+   biz:[k("Revenue","₽ 0.4M","₽ 0.35M","+12%","ok"),k("Contribution","₽ 0.3M","₽ 0.25M","+15%","ok"),k("CAC","₽ 1.6K","₽ 2K","−20%","ok"),k("ROMI","300%","250%","+30","ok")]},
+  sections:[{type:"kv",title:"Сообщество",rows:[["Community Growth","+420 / мес"],["Traffic → сайт","6.1% CTR"],["Топ-пост","«Гайд по профориентации»"]]}],
+  aiSug:["Удержать частоту 1 пост/день","Запустить рубрику Q&A","Кросс-пром с экспертами"],
+  drill:["Telegram","Post","View","Click","Lead","Order"]},
+
+ {id:"seo",name:"SEO",ico:"S",col:"#0F9D58",grp:"Органика",owner:"Контент (Игорь)",status:"active",health:74,rev:"₽ 0.5M",contr:"₽ 0.4M",plan:55,ai:70,trend:[.5,.54,.58,.62,.66,.7,.72,.74],
+  layers:{op:[k("Published Articles","12","20","−8","warn"),k("Indexed Pages","340","—","+24","flat"),k("Keywords (top-10)","86","120","−34","warn")],
+   perf:[k("Avg Position","14.2","10","−1.1","warn"),k("Organic Traffic","18K","16K","+18%","ok"),k("Leads","140","120","+12%","ok")],
+   biz:[k("Revenue","₽ 0.5M","₽ 0.45M","+9%","ok"),k("Contribution","₽ 0.4M","₽ 0.35M","+11%","ok"),k("CAC","₽ 0.9K","₽ 1.5K","−40%","ok"),k("ROMI","420%","300%","+40","ok")]},
+  sections:[{type:"kv",title:"Технический SEO",rows:[["Core Web Vitals","2/3 OK (LCP)"],["Backlinks","DR 28 · +14 / мес"],["Technical issues","6 (средние)"]]},
+   tableSec("Кластеры контента",["Кластер","Статей","Трафик","Лиды"],[["Профориентация","6","8.2K","64"],["Профессии (O*NET/ESCO)","3","5.1K","41"],["Тесты личности","3","4.7K","35"]])],
+  aiSug:["Добить кластер «профессии» (есть спрос)","Исправить LCP на лендингах","Внутренняя перелинковка top-страниц"],
+  drill:["SEO","Cluster","Page","Keyword","Visit","Lead","Order"]},
+
+ {id:"email",name:"Email Marketing",ico:"@",col:"#7B61FF",grp:"Owned",owner:"CRM (Александр)",status:"active",health:71,rev:"₽ 0.3M",contr:"₽ 0.24M",plan:70,ai:64,trend:[.66,.67,.68,.69,.7,.7,.71,.71],
+  layers:{op:[k("Campaigns","8","10","−2","warn"),k("Automation Flows","5","—","+1","flat"),k("Subscribers","12.4K","12K","+3%","ok")],
+   perf:[k("Open Rate","34%","32%","+2","ok"),k("CTR","4.8%","4%","+0.8","ok"),k("CTOR","14%","12%","+2","ok"),k("Deliverability","97%","98%","−1","warn")],
+   biz:[k("Revenue","₽ 0.3M","₽ 0.32M","−4%","warn"),k("Contribution","₽ 0.24M","₽ 0.25M","−3%","warn"),k("CAC","₽ 0.6K","₽ 0.8K","−25%","ok"),k("ROMI","380%","350%","+30","ok")]},
+  sections:[{type:"kv",title:"Автоматизации",rows:[["Welcome flow","OK · 3 письма"],["Триггер после отчёта","48ч FAQ / 24ч план"],["Реактивация","черновик"]]}],
+  aiSug:["Догреть после отчёта (CJM 48ч)","A/B тема письма реактивации","Сегментация по Профиль 10/360"],
+  drill:["Email","Campaign","Flow","Send","Open","Click","Lead","Order"]},
+
+ {id:"webinars",name:"Webinars",ico:"W",col:"#FF7A00",grp:"События",owner:"Макс / команда",status:"active",health:60,rev:"—",contr:"—",plan:75,ai:55,trend:[.4,.45,.5,.55,.58,.6,.6,.6],
+  layers:{op:[k("Webinars","1","1","0","ok"),k("Регистрации","—","300","—","flat"),k("Дата","04.07","—","—","flat")],
+   perf:[k("Доходимость","—","45%","—","flat"),k("Лиды","—","135","—","flat")],
+   biz:[k("Revenue","—","—","—","flat"),k("Contribution","—","—","—","flat")]},
+  sections:[{type:"note",text:"Первый вебинар (предв. 04.07.2026) — ключевая веха воронки потока-2. Метрики появятся после проведения."}],
+  aiSug:["Прогрев перед вебинаром (Email+Telegram)","Скрипт оффера в конце","Пост-вебинарная цепочка"],
+  drill:["Webinars","Webinar","Registration","Attendee","Lead","Order"]},
+
+ {id:"referral",name:"Referral",ico:"R",col:"#197A4B",grp:"Партнёрства",owner:"CMO",status:"active",health:88,rev:"₽ 0.7M",contr:"₽ 0.6M",plan:65,ai:90,trend:[.7,.74,.78,.82,.85,.86,.88,.9],
+  layers:{op:[k("Активные рефереры","42","—","+8","flat"),k("Приглашения","310","—","+60","flat")],
+   perf:[k("Конверсия инвайта","18%","15%","+3","ok"),k("Leads","56","40","+40%","ok")],
+   biz:[k("Revenue","₽ 0.7M","₽ 0.5M","+40%","ok"),k("Contribution","₽ 0.6M","₽ 0.42M","+43%","ok"),k("CAC","₽ 0.4K","₽ 1K","−60%","ok"),k("ROMI","320%","250%","+70","ok")]},
+  sections:[{type:"note",text:"Лучший канал по ROMI и CAC. Кандидат №1 на масштабирование (см. Decision Queue)."}],
+  aiSug:["Усилить реферальную механику (бонус обеим сторонам)","Реферальный виджет в ЛК","Топ-рефереров — в амбассадоры"],
+  drill:["Referral","Referrer","Invite","Signup","Lead","Order"]},
+
+ {id:"influencers",name:"Influencers",ico:"★",col:"#E91E63",grp:"Партнёрства",owner:"CMO",status:"pilot",health:55,rev:"₽ 0.15M",contr:"₽ 0.08M",plan:40,ai:50,trend:[.4,.42,.45,.5,.52,.53,.54,.55],
+  layers:{op:[k("Активные инфлюенсеры","4","—","+1","flat"),k("Кампании","3","—","0","flat")],perf:[k("Clicks","2.4K","—","+0","flat"),k("Leads","38","—","+0","flat")],
+   biz:[k("Revenue","₽ 0.15M","—","—","flat"),k("Contribution","₽ 0.08M","—","—","flat"),k("ROI","160%","200%","−","warn")]},
+  sections:[tableSec("Инфлюенсеры (по строке на каждого)",["Инфлюенсер","Платформа","Подписчики","Cost","Промокод","Leads","Sales","ROI","Повтор"],
+    [["@career_mom","Instagram","85K","₽ 60K","MOM10","18","6","180%","★★★"],["@edu_blog","Telegram","42K","₽ 30K","EDU10","12","3","140%","★★"],["@psy_talk","YouTube","120K","₽ 90K","PSY10","8","2","90%","★"]])],
+  aiSug:["Продлить с @career_mom (ROI 180%)","Не продлевать @psy_talk (ROI<100%)","Тест nano-инфлюенсеров"],
+  drill:["Influencers","Influencer","Promo/UTM","Click","Lead","Sale"]},
+
+ {id:"partners",name:"Partners",ico:"P",col:"#5B5BD6",grp:"Партнёрства",owner:"CMO",status:"active",health:75,rev:"₽ 0.4M",contr:"₽ 0.3M",plan:55,ai:66,trend:[.6,.63,.66,.68,.7,.72,.74,.75],
+  layers:{op:[k("Активные партнёры","6","10","−4","warn"),k("План встреч","12","20","−8","warn")],perf:[k("Leads","48","60","−20%","warn"),k("Конверсия","22%","20%","+2","ok")],
+   biz:[k("Revenue","₽ 0.4M","₽ 0.5M","−20%","warn"),k("Contribution","₽ 0.3M","₽ 0.36M","−17%","warn"),k("CAC","₽ 1.2K","₽ 1.5K","−20%","ok"),k("LTV","₽ 22K","₽ 20K","+10%","ok"),k("ROMI","240%","220%","+20","ok")]},
+  sections:[tableSec("Партнёры (план / факт)",["Партнёр","План","Факт","Leads","Revenue","Health"],
+    [["Школа №1","20","14","18","₽ 0.18M","OK"],["EdTech-платформа","15","9","12","₽ 0.12M","Риск"],["Центр карьеры","10","8","9","₽ 0.10M","OK"]])],
+  aiSug:["Реактивировать спящих партнёров","Совместный вебинар с EdTech","Партнёрский реферальный код"],
+  drill:["Partners","Partner","Deal","Lead","Order"]},
+
+ // не запущенные / планируемые — портфельная карточка + generic
+ {id:"linkedin",name:"LinkedIn Ads",ico:"in",col:"#0A66C2",grp:"Платные",owner:"—",status:"planned",health:0,rev:"—",contr:"—",plan:0,ai:0,trend:[]},
+ {id:"tiktok",name:"TikTok Ads",ico:"tk",col:"#000000",grp:"Платные",owner:"—",status:"pilot",health:0,rev:"—",contr:"—",plan:10,ai:0,trend:[]},
+ {id:"fb",name:"Facebook Organic",ico:"f",col:"#1877F2",grp:"Органика",owner:"—",status:"paused",health:0,rev:"—",contr:"—",plan:0,ai:0,trend:[]},
+ {id:"youtube",name:"YouTube",ico:"▶",col:"#FF0000",grp:"Органика",owner:"—",status:"planned",health:0,rev:"—",contr:"—",plan:0,ai:0,trend:[],
+  sections:[{type:"note",text:"Дашборд канала по Design: Publishing Plan, Videos, Subscribers, Watch Time, Retention, CTR, Traffic, Revenue, Contribution, AI Content Suggestions — наполнится при запуске."}]},
+ {id:"content",name:"Content Marketing",ico:"¶",col:"#5B6472",grp:"Органика",owner:"Контент (Игорь)",status:"active",health:66,rev:"₽ 0.2M",contr:"₽ 0.15M",plan:50,ai:60,trend:[.6,.61,.62,.64,.65,.65,.66,.66]},
+ {id:"affiliate",name:"Affiliate",ico:"%",col:"#9A6700",grp:"Партнёрства",owner:"—",status:"planned",health:0,rev:"—",contr:"—",plan:0,ai:0,trend:[]},
+ {id:"communities",name:"Communities",ico:"◍",col:"#2A6BB0",grp:"Партнёрства",owner:"Контент",status:"active",health:62,rev:"₽ 0.1M",contr:"₽ 0.07M",plan:45,ai:55,trend:[.55,.57,.58,.6,.61,.61,.62,.62]},
+ {id:"pr",name:"PR",ico:"!",col:"#B23A36",grp:"Партнёрства",owner:"—",status:"planned",health:0,rev:"—",contr:"—",plan:0,ai:0,trend:[]},
+ {id:"offline",name:"Offline Events",ico:"⚑",col:"#9A6700",grp:"События",owner:"—",status:"planned",health:0,rev:"—",contr:"—",plan:0,ai:0,trend:[]},
+ {id:"podcast",name:"Podcast",ico:"🎙",col:"#7B61FF",grp:"События",owner:"—",status:"planned",health:0,rev:"—",contr:"—",plan:0,ai:0,trend:[]},
+ {id:"marketplace",name:"Marketplace",ico:"▦",col:"#197A4B",grp:"Партнёрства",owner:"—",status:"planned",health:0,rev:"—",contr:"—",plan:0,ai:0,trend:[]}
+];
+const GROUPS=["Платные","Органика","Owned","Партнёрства","События"];
+
+/* ============ РЕНДЕР ============ */
+const $=(s,r=document)=>r.querySelector(s);
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;};
+const esc=s=>String(s).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
+const ST={ok:"ok",warn:"warn",crit:"crit",flat:"n"};
+let VIEW="overview", CRUMB=["Marketing"];
+
+function spark(a,s){if(!a||!a.length)return"";const w=110,h=26,p=3,mn=Math.min(...a),mx=Math.max(...a),rg=(mx-mn)||1;
+ const pts=a.map((v,i)=>[p+i*(w-2*p)/(a.length-1),h-p-(v-mn)/rg*(h-2*p)]);
+ const col=s==="crit"?"#B23A36":s==="warn"?"#9A6700":"#197A4B";const d=pts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ");
+ return `<svg class="spark" width="${w}" height="${h}"><polyline points="${d}" fill="none" stroke="${col}" stroke-width="1.6"/></svg>`;}
+function dcls(d){return /^-|−/.test(d)?"down":/^\+/.test(d)?"up":"flat";}
+
+function kcard(x,layer){
+ const c=el("div","k");
+ c.innerHTML=`<div class="kt"><span class="kn">${esc(x.n)}</span><span class="kd ${dcls(x.d)}">${esc(x.d)}</span></div>
+  <div class="kv">${esc(x.v)}</div>
+  <div class="kmeta"><span class="ktar">цель ${esc(x.t)}</span>${spark(x.sp,x.s)}</div>
+  <div class="kmeta"><span class="ktar">${esc(x.ow||'CMO')}</span><span class="kai">AI Explain →</span></div>`;
+ c.onclick=()=>aiKpi(x);return c;
+}
+function sec(t,node,cnt){const s=el("div","sec");if(t)s.appendChild(el("h2",null,esc(t)+(cnt!=null?` <span class="cnt">${cnt}</span>`:"")));s.appendChild(node);return s;}
+function kgrid(arr){const g=el("div","kgrid");arr.forEach(x=>g.appendChild(kcard(x)));return g;}
+
+function setCrumbs(){const c=$("#crumbs");c.innerHTML="";
+ const base=["MainExperts","Marketing"].concat(CRUMB.slice(1));
+ base.forEach((b,i)=>{if(i)c.appendChild(el("span","sep","›"));c.appendChild(el("span",i===base.length-1?"":"",`<b>${esc(b)}</b>`));});}
+
+/* ---- views ---- */
+function vOverview(){
+ const v=$("#view");v.innerHTML="";CRUMB=["Marketing"];setCrumbs();
+ v.appendChild(el("div","vh",`<h1>Marketing Overview</h1><div class="d">Маркетинг как портфель каналов. Каждый канал — бизнес-юнит со своим P&L, планом и AI.</div><div class="src">Источник: «Marketing Operating System Design» + борд v0.1 · демо</div>`));
+ // exec kpi
+ v.appendChild(sec("Executive KPIs",kgrid(EXEC),EXEC.length));
+ // AI brief
+ const b=el("div","card");
+ b.innerHTML=`<div style="display:flex;gap:9px;align-items:center;margin-bottom:8px"><span class="kai" style="font-size:11px">AI Morning Brief</span></div>
+  <div class="briefrow dnum"><span class="kd down">CAC +22%</span><span class="kd down">ROMI −12</span><span class="kd up">Telegram лиды +30%</span><span class="kd up">SEO +18%</span></div>`;
+ const grid=el("div");grid.style.cssText="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px";
+ grid.innerHTML=`<div><h4 style="font-family:var(--mono);font-size:10px;color:var(--ink-3);text-transform:uppercase;margin:0 0 5px">Возможности</h4><div class="list">${BRIEF.opp.map(x=>`<div class="li"><span class="n">↑</span>${esc(x)}</div>`).join("")}</div></div>
+  <div><h4 style="font-family:var(--mono);font-size:10px;color:var(--ink-3);text-transform:uppercase;margin:0 0 5px">Риски</h4><div class="list">${BRIEF.risk.map(x=>`<div class="li"><span class="n" style="color:var(--risk)">!</span>${esc(x)}</div>`).join("")}</div></div>`;
+ b.appendChild(grid);
+ v.appendChild(sec("AI Morning Brief",b));
+ // alerts + decision queue
+ const two=el("div");two.style.cssText="display:grid;grid-template-columns:1fr 1fr;gap:14px";
+ const aw=el("div","alerts");ALERTS.forEach(a=>{const e=el("div","al c-"+a.c,`<span class="ic">${esc(a.ic)}</span><div><div class="tx">${esc(a.tx)}</div><div class="mt">${esc(a.mt)}</div></div>`);e.onclick=()=>aiAlert(a);aw.appendChild(e);});
+ const dw=el("div","list");DECQ.forEach((d,i)=>dw.appendChild(el("div","li",`<span class="n">${i+1}</span><div><b>${esc(d[0])}</b><div style="font-size:10.5px;color:var(--ink-3);font-family:var(--mono)">${esc(d[1])}</div></div>`)));
+ const c1=el("div");c1.appendChild(el("h2",null,"Critical Alerts"));c1.querySelector("h2").className="";c1.firstChild.style.cssText="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-family:var(--mono);margin:0 0 9px";c1.appendChild(aw);
+ const c2=el("div");const h2=el("div",null,"Decision Queue");h2.style.cssText="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-family:var(--mono);margin:0 0 9px";c2.appendChild(h2);c2.appendChild(dw);
+ two.appendChild(c1);two.appendChild(c2);
+ v.appendChild(sec(null,two));
+ v.appendChild(sec("Drill-down (без потери контекста)",chainEl(CHAIN,1)));
+ window.scrollTo(0,0);
+}
+
+function chainEl(chain,litTo){const w=el("div","chain");chain.forEach((n,i)=>{if(i)w.appendChild(el("span","carr","→"));const nd=el("div","cnode"+(i<litTo?" lit":""),esc(n));nd.onclick=()=>[...w.querySelectorAll(".cnode")].forEach((x,j)=>x.classList.toggle("lit",j<=i));w.appendChild(nd);});return w;}
+
+function vPortfolio(){
+ const v=$("#view");v.innerHTML="";CRUMB=["Marketing","Channel Portfolio"];setCrumbs();
+ v.appendChild(el("div","vh",`<h1>Channel Portfolio</h1><div class="d">${CH.length} каналов как независимые бизнес-юниты. Статус отражает реальную стадию проекта.</div>`));
+ GROUPS.forEach(g=>{
+  const list=CH.filter(c=>c.grp===g);if(!list.length)return;
+  const grid=el("div","cgrid");list.forEach(c=>grid.appendChild(ccard(c)));
+  v.appendChild(sec(g,grid,list.length));
+ });
+ window.scrollTo(0,0);
+}
+function ccard(c){
+ const card=el("div","cc");
+ const hcol=c.health>=75?"#197A4B":c.health>=50?"#9A6700":c.health>0?"#B23A36":"#D7DCE3";
+ const stl={active:"Активен",planned:"Не запущен",paused:"На паузе",pilot:"Пилот"}[c.status];
+ card.innerHTML=`<div class="ch"><div class="ico" style="background:${c.col}">${esc(c.ico)}</div>
+   <div style="flex:1"><div class="nm">${esc(c.name)}</div><div class="ow">${esc(c.owner)}</div></div>
+   <span class="st ${c.status}">${stl}</span></div>
+  <div class="ccrow"><span class="lbl">Health</span><span class="v">${c.health?c.health:"—"}</span></div>
+  <div class="health"><i style="width:${c.health}%;background:${hcol}"></i></div>
+  <div class="ccrow dnum"><span class="lbl">Revenue</span><span class="v">${esc(c.rev)}</span></div>
+  <div class="ccrow dnum"><span class="lbl">Contribution</span><span class="v">${esc(c.contr)}</span></div>
+  <div class="ccrow"><span class="lbl">Plan</span><span class="v">${c.plan}%</span></div>
+  <div class="bar"><i style="width:${c.plan}%"></i></div>
+  <div class="ccfoot"><span class="ow">AI ${c.ai?c.ai:"—"}</span><span class="open">Open Dashboard →</span></div>`;
+ card.onclick=()=>vChannel(c.id);return card;
+}
+
+function vChannel(id){
+ const c=CH.find(x=>x.id===id);if(!c)return;
+ const v=$("#view");v.innerHTML="";CRUMB=["Marketing","Channel Portfolio",c.name];setCrumbs();
+ const stl={active:"Активен",planned:"Не запущен",paused:"На паузе",pilot:"Пилот"}[c.status];
+ v.appendChild(el("div","vh",`<div style="display:flex;align-items:center;gap:11px"><div class="ico" style="width:34px;height:34px;border-radius:9px;background:${c.col};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">${esc(c.ico)}</div><h1>${esc(c.name)}</h1><span class="st ${c.status}">${stl}</span></div><div class="d">Владелец: <b>${esc(c.owner)}</b> · группа: ${esc(c.grp)} · уникальный дашборд канала (3 слоя KPI).</div>`));
+ if(!c.layers){
+  v.appendChild(sec(null,el("div","gap",`<span class="g">СТАТУС</span><div>Канал «${esc(c.name)}» — ${stl.toLowerCase()}. Детальный дашборд (3 слоя KPI, спец-секции, AI) по дизайну MOS наполнится при запуске. Это честный пробел, не заглушка.</div>`)));
+  if(c.sections)c.sections.forEach(s=>v.appendChild(renderSection(s)));
+  v.appendChild(backBtn());window.scrollTo(0,0);return;
+ }
+ v.appendChild(sec(`Operational KPIs · ежедневное исполнение`,kgrid(c.layers.op)));
+ v.appendChild(sec(`Performance KPIs · трафик → лиды → клиенты`,kgrid(c.layers.perf)));
+ v.appendChild(sec(`Business KPIs · экономика канала`,kgrid(c.layers.biz)));
+ if(c.sections)c.sections.forEach(s=>v.appendChild(renderSection(s)));
+ if(c.drill)v.appendChild(sec("Drill-down канала",chainEl(c.drill,1)));
+ if(c.aiSug)v.appendChild(sec("AI Copilot · рекомендации",(()=>{const w=el("div","ai-q");c.aiSug.forEach(q=>{const e=el("div","q",esc(q));e.onclick=()=>aiText(c.name+" — AI",q);w.appendChild(e);});return w;})()));
+ v.appendChild(backBtn());window.scrollTo(0,0);
+}
+function backBtn(){const b=el("button","btn",'‹ Channel Portfolio');b.style.marginTop="6px";b.onclick=()=>vPortfolio();const w=el("div","sec");w.appendChild(b);return w;}
+
+function renderSection(s){
+ if(s.type==="note")return sec(null,el("div","gap",`<span class="g">ИНФО</span><div>${esc(s.text)}</div>`));
+ if(s.type==="kv"){const t=el("table","t");t.innerHTML="<tr><th>"+esc(s.title)+"</th><th></th></tr>"+s.rows.map(r=>`<tr><td>${esc(r[0])}</td><td class="m dnum">${esc(r[1])}</td></tr>`).join("");return sec(s.title,t);}
+ if(s.type==="tbl"){const t=el("table","t");t.innerHTML="<tr>"+s.head.map(h=>`<th>${esc(h)}</th>`).join("")+"</tr>"+s.rows.map(r=>"<tr>"+r.map((c,i)=>`<td class="${i?'m dnum':''}">${esc(c)}</td>`).join("")+"</tr>").join("");return sec(s.title,t);}
+ if(s.type==="pa"){const t=el("table","t");t.innerHTML="<tr><th>Активность</th><th>План</th><th>Факт</th><th>Выполнение</th></tr>"+
+   s.rows.map(r=>{const pct=Math.round(r[2]/r[1]*100);return `<tr><td>${esc(r[0])}</td><td class="m dnum">${r[1]}</td><td class="m dnum">${r[2]}</td><td><div style="display:flex;align-items:center;gap:8px"><div class="bar"><i style="width:${pct}%;background:${pct>=80?'#197A4B':pct>=50?'#9A6700':'#B23A36'}"></i></div><span class="m" style="font-size:11px">${pct}%</span></div></td></tr>`;}).join("");
+  return sec(s.title,t);}
+ return el("div");
+}
+
+function vAnalytics(){
+ const v=$("#view");v.innerHTML="";CRUMB=["Marketing","Lead → Revenue → Contribution"];setCrumbs();
+ v.appendChild(el("div","vh",`<h1>Воронка и экономика</h1><div class="d">Сквозной путь из борда v0.1, встроенный в drill-цепочку MOS.</div>`));
+ const funnel=["Impressions","Clicks","Visitors","Leads","Qualified Leads","Meetings","Sales","Payments"];
+ const vals=["1.2M","48K","31K","2 350","640","180","42","42"];
+ const t=el("table","t");t.innerHTML="<tr><th>Этап</th><th>Значение</th><th>Conversion</th></tr>"+funnel.map((f,i)=>`<tr><td>${esc(f)}</td><td class="m dnum">${vals[i]}</td><td class="m dnum">${i?(["4%","65%","7.6%","27%","28%","23%","100%"][i-1]):"—"}</td></tr>`).join("");
+ v.appendChild(sec("Acquisition Funnel",t));
+ v.appendChild(sec("Drill-down: Company → Contribution",chainEl(CHAIN,CHAIN.length)));
+ v.appendChild(sec("Атрибуция (модели)",(()=>{const w=el("div","ai-q");["First Click","Last Click","Linear","Time Decay","Position Based","Data Driven"].forEach(m=>w.appendChild(el("div","q",esc(m))));return w;})()));
+ window.scrollTo(0,0);
+}
+function vForecast(){
+ const v=$("#view");v.innerHTML="";CRUMB=["Marketing","Forecast"];setCrumbs();
+ v.appendChild(el("div","vh",`<h1>Forecast</h1><div class="d">Прогноз по ключевым KPI. Горизонты 30 / 90 / 180 дней.</div>`));
+ const t=el("table","t");t.innerHTML="<tr><th>KPI</th><th>30 дней</th><th>90 дней</th><th>180 дней</th></tr>"+
+  [["Leads","2.5K","8.2K","18K"],["CAC","₽ 4.0K","₽ 3.6K","₽ 3.2K"],["DRR","21%","19%","18%"],["Revenue","₽ 4.6M","₽ 15M","₽ 34M"],["Contribution","₽ 2.9M","₽ 9.4M","₽ 21M"],["Marketing Spend","₽ 0.95M","₽ 2.9M","₽ 6.1M"]]
+  .map(r=>"<tr><td>"+esc(r[0])+"</td>"+r.slice(1).map(c=>`<td class="m dnum">${esc(c)}</td>`).join("")+"</tr>").join("");
+ v.appendChild(sec("Прогноз (демо, с доверительным интервалом)",t));
+ v.appendChild(sec(null,el("div","gap",`<span class="g">ПРОБЕЛ</span><div>Прогноз демонстрационный. Реальная модель требует исторических данных по каналам, которых на стадии проекта почти нет.</div>`)));
+ window.scrollTo(0,0);
+}
+function vAI(){
+ const v=$("#view");v.innerHTML="";CRUMB=["Marketing","AI Insights"];setCrumbs();
+ v.appendChild(el("div","vh",`<h1>AI Insights</h1><div class="d">Сводные рекомендации AI по всем каналам. AI объясняет и предлагает, но не утверждает решения.</div>`));
+ const rows=[];CH.filter(c=>c.aiSug).forEach(c=>c.aiSug.forEach(s=>rows.push([c.name,s])));
+ const w=el("div","list");rows.forEach(r=>w.appendChild(el("div","li",`<span class="n">AI</span><div><b>${esc(r[0])}</b> — ${esc(r[1])}</div>`)));
+ v.appendChild(sec("Рекомендации по каналам",w,rows.length));
+ v.appendChild(sec(null,el("div","crit",`<h3>Применимость к стадии проекта (критический слой)</h3>
+  <ol><li><b>Это видение enterprise-уровня (HubSpot/Salesforce-класс), а не текущее состояние.</b> Проект — до первого вебинара (04.07), платного маркетинга почти нет, узкое место — ручная проверка отчёта.</li>
+  <li><b>22 канала как бизнес-юниты с AI у каждого</b> — дорожная карта на годы, не бэклог на сейчас. Реалистичный старт: 3–5 каналов (Referral, SEO, Telegram, Email, Webinars).</li>
+  <li><b>Демо-данные.</b> Большинство каналов помечены «Не запущен» — это честный статус, не заполненная витрина.</li>
+  <li><b>Два потока не смешивать.</b> Этот MOS — про поток-2 (воронка). Поток-1 (HNW, личные продажи Макса) сюда не сводится.</li></ol>`)));
+ window.scrollTo(0,0);
+}
+
+/* ---- AI drawer ---- */
+const AIX={
+ "CAC":{ch:["CAC +22% → ₽4.2K"],ca:["Рост CPC в Meta","Падение конверсии лендинга A-12"],rel:["DRR","ROMI","Conversion"],rec:["Отключить Meta-7","Перелить бюджет в Referral/SEO"],pb:"PB-003 (CMO)"},
+ "ROMI":{ch:["ROMI −12 → 185%"],ca:["Убыточная кампания Meta-7","Рост CAC"],rel:["CAC","Contribution"],rec:["Перераспределить бюджет в каналы с ROMI>250%"],pb:"PB-003 (CMO)"}};
+const AIDEF={ch:["В пределах плана"],ca:["Существенных отклонений нет"],rel:["—"],rec:["Наблюдение"],pb:"—"};
+function aiKpi(x){const a=AIX[x.n]||AIDEF;$("#drT").textContent=x.n+" · "+x.v;
+ $("#drB").innerHTML=`<h4>Что изменилось</h4><ul>${a.ch.map(s=>`<li>${esc(s)}</li>`).join("")}</ul>
+  <h4>Текущее / цель</h4><div class="m">${esc(x.v)} / ${esc(x.t)} · владелец ${esc(x.ow||'CMO')}</div>
+  <h4>Причины</h4><ul>${a.ca.map(s=>`<li>${esc(s)}</li>`).join("")}</ul>
+  <h4>Связанные KPI</h4><ul>${a.rel.map(s=>`<li>${esc(s)}</li>`).join("")}</ul>
+  <h4>Рекомендации</h4><ul>${a.rec.map(s=>`<li>${esc(s)}</li>`).join("")}</ul>
+  <h4>Playbook</h4><div>${esc(a.pb)}</div>
+  <div class="note">Карточка KPI по Design: Current · Target · Delta · Trend · Forecast · Owner · AI Explain · Drill Down · History. AI не утверждает решения. Демо.</div>`;openDr();}
+function aiAlert(a){$("#drT").textContent="Alert · "+a.ic;$("#drB").innerHTML=`<h4>Событие</h4><div>${esc(a.tx)}</div><h4>Маршрут</h4><div class="m" style="font-size:12px">${esc(a.mt)}</div><h4>Playbook</h4><ul><li>Описание ситуации</li><li>Действия</li><li>Ожидаемый результат</li><li>Факт после применения</li></ul><div class="note">Каждый Alert ведёт в цикл решений. Демо.</div>`;openDr();}
+function aiText(t,q){$("#drT").textContent=t;$("#drB").innerHTML=`<h4>Запрос</h4><div>${esc(q)}</div><h4>Ответ (демо)</h4><div>AI формирует объяснение со ссылками на KPI, причинами, ожидаемым финансовым эффектом и планом действий.</div><div class="note">Граница: AI не меняет KPI и не утверждает решения.</div>`;openDr();}
+function openDr(){$("#drawer").classList.add("on");$("#scrim").classList.add("on");}
+function closeDr(){$("#drawer").classList.remove("on");$("#scrim").classList.remove("on");}
+
+/* ---- nav ---- */
+const MAIN=[["overview","◳","Marketing Overview"],["portfolio","▦","Channel Portfolio"]];
+const ANV=[["analytics","⫿","Воронка и экономика"],["forecast","∿","Forecast"],["ai","✦","AI Insights"]];
+function go(id){VIEW=id;document.querySelectorAll(".nav").forEach(n=>n.classList.toggle("active",n.dataset.id===id));
+ closeDr();
+ ({overview:vOverview,portfolio:vPortfolio,analytics:vAnalytics,forecast:vForecast,ai:vAI}[id]||vOverview)();}
+function buildNav(){
+ const m=$("#nav-main");m.appendChild(el("div","t","Маркетинг"));
+ MAIN.forEach(([id,ic,nm])=>{const b=el("button","nav");b.dataset.id=id;b.innerHTML=`<span class="ic">${ic}</span>${esc(nm)}`;b.onclick=()=>go(id);m.appendChild(b);});
+ const a=$("#nav-an");a.appendChild(el("div","t","Аналитика"));
+ ANV.forEach(([id,ic,nm])=>{const b=el("button","nav");b.dataset.id=id;b.innerHTML=`<span class="ic">${ic}</span>${esc(nm)}`;b.onclick=()=>go(id);a.appendChild(b);});
+ // quick channels under nav
+ const ct=el("div","t","Каналы (топ)");a.appendChild(ct);
+ CH.filter(c=>c.layers).slice(0,6).forEach(c=>{const b=el("button","nav");b.innerHTML=`<span class="ic" style="color:${c.col}">●</span>${esc(c.name)}<span class="hs" style="background:${c.health>=75?'var(--ok-bg)':c.health>=50?'var(--warn-bg)':'var(--risk-bg)'};color:${c.health>=75?'var(--ok)':c.health>=50?'var(--warn)':'var(--risk)'}">${c.health}</span>`;b.onclick=()=>vChannel(c.id);a.appendChild(b);});
+}
+function buildGF(){const g=$("#gf");GF.forEach(x=>{const[a,b]=x.split(": ");g.appendChild(el("span","pill",`${esc(a)}: <b>${esc(b)}</b>`));});}
+
+/* ---- command palette ---- */
+const CMD=[...MAIN.map(m=>["view",m[0],m[2]]),...ANV.map(m=>["view",m[0],m[2]]),...CH.map(c=>["chan",c.id,"Канал · "+c.name])];
+let cmdSel=0,cmdShown=CMD;
+function openCmd(){$("#cmd").classList.add("on");$("#cmdIn").value="";cmdShown=CMD;cmdSel=0;renderCmd();$("#cmdIn").focus();}
+function closeCmd(){$("#cmd").classList.remove("on");}
+function renderCmd(){const l=$("#cmdList");l.innerHTML="";cmdShown.forEach((it,i)=>{const d=el("div","cmdit"+(i===cmdSel?" sel":""),`<span>${esc(it[2])}</span><span class="k">${it[0]==='chan'?'канал':'экран'}</span>`);d.onclick=()=>runCmd(it);l.appendChild(d);});}
+function runCmd(it){closeCmd();if(it[0]==="chan")vChannel(it[1]);else go(it[1]);}
+$("#cmdIn") &&0;
+
+/* init */
+buildNav();buildGF();setCrumbs();
+$("#demo").addEventListener("change",e=>document.body.classList.toggle("hide-demo",!e.target.checked));
+$("#aiBtn").onclick=()=>aiText("Marketing Copilot","Что сделать сегодня по маркетингу?");
+$("#drX").onclick=closeDr;$("#scrim").onclick=()=>{closeDr();};
+$("#cmdBtn").onclick=openCmd;
+document.addEventListener("keydown",e=>{
+ if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();openCmd();}
+ else if(e.key==="Escape"){closeCmd();closeDr();}
+ else if($("#cmd").classList.contains("on")){
+   if(e.key==="ArrowDown"){e.preventDefault();cmdSel=Math.min(cmdSel+1,cmdShown.length-1);renderCmd();}
+   else if(e.key==="ArrowUp"){e.preventDefault();cmdSel=Math.max(cmdSel-1,0);renderCmd();}
+   else if(e.key==="Enter"){if(cmdShown[cmdSel])runCmd(cmdShown[cmdSel]);}
+ }});
+$("#cmdIn").addEventListener("input",e=>{const q=e.target.value.toLowerCase();cmdShown=CMD.filter(it=>it[2].toLowerCase().includes(q));cmdSel=0;renderCmd();});
+$("#cmd").addEventListener("click",e=>{if(e.target.id==="cmd")closeCmd();});
+go("overview");
+</script>
+</body>
+</html>

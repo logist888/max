@@ -1,0 +1,466 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8">
+<style>
+:root {
+  --primary:#1D4ED8; --secondary:#0F172A; --accent:#10B981;
+  --warning:#F59E0B; --error:#DC2626; --ink:#1E293B; --muted:#64748B;
+  --line:#E2E8F0; --bg:#F8FAFC;
+}
+
+/* ---- Постраничная модель ---- */
+@page {
+  size: A4;
+  margin: 20mm 20mm 20mm 20mm;
+  @bottom-left  { content: "PLAYBOOK · Система получения отзывов MainExperts";
+                  font-family:'DejaVu Sans'; font-size:7.5pt; color:#64748B; }
+  @bottom-right { content: counter(page);
+                  font-family:'DejaVu Sans'; font-size:8.5pt; font-weight:bold; color:#0F172A; }
+  @top-right    { content: string(chaptitle);
+                  font-family:'DejaVu Sans'; font-size:7.5pt; color:#64748B; }
+}
+@page cover  { margin:0;
+  @bottom-left{content:none} @bottom-right{content:none} @top-right{content:none} }
+@page chapter { @top-right{content:none} @bottom-left{content:none} }
+
+/* ---- База ---- */
+* { box-sizing:border-box; }
+html { font-family:'DejaVu Sans', sans-serif; }
+body {
+  margin:0; color:var(--ink); font-size:11.5pt; line-height:1.4;
+  -weasy-hyphens:none;
+}
+p { margin:0 0 7pt 0; text-align:justify; }
+strong { color:var(--secondary); }
+h1,h2,h3 { font-weight:bold; color:var(--secondary); margin:0; line-height:1.2; }
+h1 { font-size:26pt; }
+h2 { font-size:20pt; }
+h3 { font-size:16pt; }
+ul,ol { margin:0 0 8pt 0; padding-left:16pt; }
+li { margin:0 0 4pt 0; }
+a { color:var(--primary); text-decoration:none; }
+.small { font-size:9pt; color:var(--muted); }
+
+/* ---- Обложка ---- */
+.cover { page:cover; height:297mm; position:relative; color:#fff;
+  background:
+    radial-gradient(1200px 500px at 78% -8%, rgba(16,185,129,.35), transparent 60%),
+    linear-gradient(150deg, #0F172A 0%, #16265c 46%, #1D4ED8 100%);
+  overflow:hidden; }
+.cover .frame { position:absolute; inset:14mm; border:1px solid rgba(255,255,255,.22); }
+.cover .inner { position:absolute; inset:14mm; padding:16mm 16mm; display:block; }
+.cover .eyebrow { letter-spacing:.42em; font-size:11pt; color:rgba(255,255,255,.72);
+  text-transform:uppercase; margin-bottom:8mm; }
+.cover .kicker { display:inline-block; font-size:9.5pt; letter-spacing:.28em;
+  text-transform:uppercase; color:#10B981; border:1px solid rgba(16,185,129,.55);
+  padding:3pt 10pt; border-radius:20pt; margin-bottom:10mm; }
+.cover h1 { color:#fff; font-size:41pt; line-height:1.08; margin:0 0 6mm 0; letter-spacing:-.5pt; }
+.cover .sub { font-size:14pt; color:rgba(255,255,255,.86); max-width:150mm; line-height:1.45; }
+.cover .ver { position:absolute; left:32mm; bottom:46mm; font-size:12pt; color:#fff; }
+.cover .ver b { font-size:15pt; }
+.cover .meta { position:absolute; left:32mm; right:32mm; bottom:18mm;
+  display:flex; justify-content:space-between; align-items:flex-end;
+  font-size:8.5pt; color:rgba(255,255,255,.66);
+  border-top:1px solid rgba(255,255,255,.2); padding-top:5mm; }
+.cover .wm { position:absolute; right:-40mm; top:120mm; font-size:190pt; font-weight:bold;
+  color:rgba(255,255,255,.05); letter-spacing:-6pt; }
+
+/* ---- Заголовки элементов главы (плашка) ---- */
+.eltag { display:inline-block; font-size:8.5pt; font-weight:bold; letter-spacing:.16em;
+  text-transform:uppercase; color:#fff; background:var(--primary);
+  padding:3.5pt 10pt; border-radius:4pt; margin-bottom:7pt; }
+.eltag.accent { background:var(--accent); }
+.eltag.dark { background:var(--secondary); }
+.eltag.warn { background:var(--warning); color:#0F172A; }
+.eyebrow { font-size:8.5pt; letter-spacing:.24em; text-transform:uppercase;
+  color:var(--primary); font-weight:bold; margin-bottom:4pt; }
+
+section { margin-bottom:14pt; }
+.newpage { break-before:page; }
+.keep { break-inside:avoid; break-after:avoid; }
+.goalbox, .checklist, .summary, .grow, .recs { break-inside:avoid; }
+h2 { margin-top:2pt; margin-bottom:8pt; padding-bottom:5pt;
+  border-bottom:2.5pt solid var(--primary); break-after:avoid; }
+h3 { margin-top:10pt; margin-bottom:5pt; color:var(--primary); break-after:avoid; }
+.eltag { break-after:avoid; }
+.lead-in { break-after:avoid; }
+
+/* ---- Титул главы ---- */
+.chapter-title { page:chapter; break-before:page; height:255mm; position:relative;
+  display:flex; flex-direction:column; justify-content:center; }
+.chapter-title .no { font-size:15pt; letter-spacing:.4em; color:var(--primary);
+  text-transform:uppercase; font-weight:bold; }
+.chapter-title .bar { width:64mm; height:5pt; background:var(--accent); margin:9pt 0 12pt; border-radius:3pt; }
+.chapter-title h1 { font-size:33pt; line-height:1.12; max-width:150mm; }
+.chapter-title .lead { font-size:13pt; color:var(--muted); max-width:140mm; margin-top:10pt; line-height:1.5; }
+.chapter-title .foot { position:absolute; bottom:0; left:0; right:0; font-size:8.5pt;
+  color:var(--muted); border-top:1px solid var(--line); padding-top:6pt;
+  display:flex; justify-content:space-between; }
+
+/* ---- Цель ---- */
+.goalbox { background:linear-gradient(180deg,#fff, #F8FAFC);
+  border:1px solid var(--line); border-left:6pt solid var(--accent);
+  border-radius:8pt; padding:12pt 15pt; }
+.goalbox .big { font-size:13.5pt; line-height:1.45; color:var(--secondary); }
+
+/* ---- Карточки понятий ---- */
+.grid2 { display:table; width:100%; border-collapse:separate; border-spacing:9pt; margin:0 -9pt; }
+.grow { display:table-row; }
+.gcell { display:table-cell; width:50%; vertical-align:top; }
+.concept { border:1px solid var(--line); border-top:3pt solid var(--primary);
+  border-radius:8pt; padding:10pt 12pt; background:#fff; height:100%; }
+.concept .term { font-size:11.5pt; font-weight:bold; color:var(--secondary); margin-bottom:3pt; }
+.concept .def { font-size:10pt; color:var(--ink); line-height:1.38; text-align:left; }
+.concept .tagline { display:inline-block; margin-top:5pt; font-size:8pt; letter-spacing:.06em;
+  color:var(--primary); background:#EFF4FF; border-radius:12pt; padding:2pt 8pt; }
+
+/* ---- Схемы ---- */
+figure { margin:11pt 0; break-inside:avoid; }
+.schema { border:1px solid var(--line); border-radius:10pt; background:#fff;
+  padding:12pt 12pt 6pt; }
+.schema svg { width:100%; height:auto; display:block; }
+figcaption { font-size:8.7pt; color:var(--muted); margin-top:7pt; padding-top:6pt;
+  border-top:1px dashed var(--line); }
+figcaption b { color:var(--primary); }
+
+/* ---- Таблицы ---- */
+.tablewrap { border:1px solid var(--line); border-radius:9pt; overflow:hidden; margin:10pt 0; }
+table.data { width:100%; border-collapse:collapse; font-size:9.6pt; }
+table.data thead th { background:var(--primary); color:#fff; text-align:left;
+  padding:7pt 9pt; font-size:9pt; letter-spacing:.02em; border-right:1px solid rgba(255,255,255,.16); }
+table.data thead th:last-child { border-right:none; }
+table.data td { padding:6.5pt 9pt; border-top:1px solid var(--line); vertical-align:top; line-height:1.34; }
+table.data tbody tr:nth-child(even) { background:#F8FAFC; }
+table.data td.k { font-weight:bold; color:var(--secondary); white-space:nowrap; }
+.pill { display:inline-block; font-size:8pt; font-weight:bold; padding:1.5pt 7pt; border-radius:10pt; }
+.pill.p1 { background:#FEF3C7; color:#92400E; }
+.pill.p2 { background:#DBEAFE; color:#1E40AF; }
+.pill.both { background:#D1FAE5; color:#065F46; }
+
+/* ---- Callout ---- */
+.callout { display:table; width:100%; border-radius:8pt; padding:10pt 12pt; margin:10pt 0;
+  border:1px solid; break-inside:avoid; }
+.callout .ic { display:table-cell; width:26pt; vertical-align:top; padding-right:9pt; }
+.callout .bd { display:table-cell; vertical-align:top; font-size:10pt; line-height:1.42; text-align:left; }
+.callout .hd { font-weight:bold; font-size:10.5pt; margin-bottom:2pt; }
+.c-imp  { background:#FFFBEB; border-color:#F59E0B; }
+.c-imp  .hd { color:#92400E; }
+.c-note { background:#EFF4FF; border-color:#1D4ED8; }
+.c-note .hd { color:#1D4ED8; }
+.c-tip  { background:#ECFDF5; border-color:#10B981; }
+.c-tip  .hd { color:#065F46; }
+.c-risk { background:#FEF2F2; border-color:#DC2626; }
+.c-risk .hd { color:#DC2626; }
+
+/* ---- Боковая заметка ---- */
+.sidenote { float:right; width:44%; margin:0 0 8pt 12pt; background:#F8FAFC;
+  border:1px solid var(--line); border-left:4pt solid var(--secondary);
+  border-radius:6pt; padding:9pt 11pt; font-size:9pt; line-height:1.4; text-align:left; }
+.sidenote .t { font-weight:bold; color:var(--secondary); font-size:9.2pt; margin-bottom:3pt;
+  letter-spacing:.04em; }
+
+/* ---- Пример ---- */
+.example { border:1px solid var(--line); border-radius:8pt; overflow:hidden; margin:9pt 0; break-inside:avoid; }
+.example .top { background:var(--secondary); color:#fff; padding:6pt 11pt; font-size:9.5pt; font-weight:bold; }
+.example .top .tag { float:right; font-size:8pt; font-weight:normal; opacity:.85; }
+.example .bdy { padding:9pt 11pt; font-size:9.8pt; line-height:1.42; }
+.example .bdy .step { margin-bottom:4pt; }
+.example .bef { color:#DC2626; font-weight:bold; }
+.example .aft { color:#065F46; font-weight:bold; }
+
+/* ---- Рекомендации ---- */
+.recs { display:table; width:100%; border-spacing:8pt; margin:0 -8pt; }
+.rec { display:table-cell; width:33.33%; vertical-align:top; background:#fff;
+  border:1px solid var(--line); border-radius:8pt; padding:9pt 10pt; }
+.rec .n { display:inline-flex; width:20pt; height:20pt; align-items:center; justify-content:center;
+  background:var(--primary); color:#fff; border-radius:50%; font-weight:bold; font-size:10pt; margin-bottom:5pt; }
+.rec .rt { font-weight:bold; font-size:10pt; color:var(--secondary); margin-bottom:3pt; }
+.rec .rd { font-size:9pt; color:var(--ink); line-height:1.36; text-align:left; }
+
+/* ---- Чек-лист ---- */
+.checklist { border:1px solid var(--line); border-top:4pt solid var(--accent);
+  border-radius:9pt; padding:11pt 13pt; background:#fff; }
+.checklist .ci { display:table; width:100%; margin-bottom:6pt; }
+.checklist .box { display:table-cell; width:20pt; vertical-align:top; padding-top:1pt; }
+.checklist .txt { display:table-cell; vertical-align:top; font-size:10pt; line-height:1.38; text-align:left; }
+.checklist .txt b { color:var(--secondary); }
+
+/* ---- Резюме ---- */
+.summary { background:linear-gradient(160deg,#0F172A,#1e2f66); color:#fff;
+  border-radius:10pt; padding:14pt 16pt; }
+.summary h3 { color:#fff; margin-top:0; }
+.summary ol { margin:6pt 0 0; padding-left:16pt; }
+.summary li { margin-bottom:5pt; font-size:10.3pt; line-height:1.4; color:rgba(255,255,255,.94); }
+.summary li b { color:#10B981; }
+
+/* ---- Переход ---- */
+.transition { display:table; width:100%; background:#EFF4FF; border:1px solid #BFD3FF;
+  border-radius:10pt; padding:13pt 15pt; margin-top:12pt; }
+.transition .l { display:table-cell; vertical-align:middle; }
+.transition .r { display:table-cell; width:56pt; vertical-align:middle; text-align:right; }
+.transition .nx { font-size:8.5pt; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--primary); font-weight:bold; }
+.transition h3 { margin:3pt 0 4pt; color:var(--secondary); }
+.transition p { margin:0; font-size:10pt; color:var(--ink); text-align:left; }
+
+/* ---- Разделитель ---- */
+.divider { display:flex; align-items:center; gap:9pt; margin:13pt 0; color:var(--line); }
+.divider::before,.divider::after { content:""; flex:1; height:1px; background:var(--line); }
+.divider .dot { width:7pt; height:7pt; background:var(--accent); transform:rotate(45deg); }
+
+.lead-in { font-size:11.5pt; color:var(--muted); line-height:1.5; margin-bottom:9pt; }
+
+/* ---- «О плейбуке» ---- */
+.audience { display:table; width:100%; border-spacing:6pt; margin:6pt -6pt; }
+.audrow { display:table-row; }
+.aud { display:table-cell; width:33.33%; background:#fff; border:1px solid var(--line);
+  border-radius:7pt; padding:7pt 9pt; font-size:9pt; vertical-align:middle; }
+.aud b { color:var(--secondary); }
+.toc2 { display:table; width:100%; border-spacing:9pt 0; margin:0 -9pt; }
+.toccol { display:table-cell; width:50%; vertical-align:top; }
+.toc { border:1px solid var(--line); border-radius:9pt; overflow:hidden; }
+.toc .row { display:table; width:100%; border-top:1px solid var(--line); }
+.toc .row:first-child { border-top:none; }
+.toc .num { display:table-cell; width:30pt; background:#F8FAFC; text-align:center;
+  font-weight:bold; color:var(--primary); vertical-align:middle; padding:6pt 4pt; }
+.toc .lbl { display:table-cell; padding:6pt 9pt; font-size:9pt; vertical-align:middle; line-height:1.3; }
+.toc .lbl b { color:var(--secondary); }
+
+.chapter-title h1 { string-set: chaptitle "Глава 1 · Философия системы получения отзывов"; }
+</style></head><body>
+<div class="cover">
+  <div class="frame"></div>
+  <div class="wm">01</div>
+  <div class="inner">
+    <div style="padding:18mm 18mm;">
+      <div class="eyebrow">MainExperts · Playbook</div>
+      <div class="kicker">Корпоративный стандарт</div>
+      <h1>Система получения<br/>отзывов<br/>MainExperts</h1>
+      <div class="sub">Отзыв как стратегический актив компании,
+        сопровождающей семью на всём пути — от выбора профессии подростком
+        до его первого рабочего места.</div>
+    </div>
+  </div>
+  <div class="ver">Версия <b>1.0</b>&nbsp;&nbsp;·&nbsp;&nbsp;Глава 1. Философия системы</div>
+  <div class="meta">
+    <div>Внутренний документ. Рабочий контекст, не выверенный источник —<br/>
+      перед клиентскими материалами факт перепроверяется с источником и датой.</div>
+    <div style="text-align:right">Дата выпуска: 07.07.2026<br/>Конфиденциально</div>
+  </div>
+</div>
+<div class="newpage"></div>
+<div class="eyebrow">О документе</div>
+<h2>Как устроен этот плейбук</h2>
+<p class="lead-in">Плейбук — рабочий стандарт, а не теория. Он отвечает на три вопроса:
+      <strong>зачем</strong> компании система отзывов, <strong>где</strong> и <strong>как</strong>
+      она собирает свидетельства, и <strong>кто</strong> за это отвечает. Глава 1 закладывает
+      философию: без неё любые механики сбора превращаются в разрозненные просьбы «оставьте отзыв».</p>
+<h3>Для кого</h3>
+<div class="audience">
+      <div class="audrow">
+        <div class="aud"><b>CEO / COO</b><br/>владелец системы и ресурса</div>
+        <div class="aud"><b>CMO / Head of Marketing</b><br/>применение отзыва в воронке</div>
+        <div class="aud"><b>Head of Customer Success</b><br/>сбор на пути сопровождения</div>
+      </div>
+      <div class="audrow">
+        <div class="aud"><b>Сопровождение</b><br/>исполнители на этапах пути</div>
+        <div class="aud"><b>Методологи</b><br/>достоверность и границы</div>
+        <div class="aud"><b>Эксперты и маркетологи</b><br/>носители и распространители</div>
+      </div>
+    </div>
+<h3>Структура каждой главы — 11 элементов</h3>
+<div class="toc2"><div class="toccol"><div class="toc"><div class="row"><div class="num">01</div><div class="lbl"><b>Титульный лист главы</b> — визуальный вход в тему</div></div><div class="row"><div class="num">02</div><div class="lbl"><b>Цель главы</b> — что читатель сможет делать после</div></div><div class="row"><div class="num">03</div><div class="lbl"><b>Ключевые понятия</b> — единый язык и определения</div></div><div class="row"><div class="num">04</div><div class="lbl"><b>Основная часть</b> — содержание — раскрытие темы</div></div><div class="row"><div class="num">05</div><div class="lbl"><b>Схемы</b> — рисованные диаграммы и модели</div></div><div class="row"><div class="num">06</div><div class="lbl"><b>Таблицы</b> — структурированные данные</div></div></div></div><div class="toccol"><div class="toc"><div class="row"><div class="num">07</div><div class="lbl"><b>Примеры</b> — как это выглядит в жизни компании</div></div><div class="row"><div class="num">08</div><div class="lbl"><b>Практические рекомендации</b> — что делать на практике</div></div><div class="row"><div class="num">09</div><div class="lbl"><b>Чек-лист</b> — самопроверка готовности</div></div><div class="row"><div class="num">10</div><div class="lbl"><b>Резюме</b> — главное в сжатом виде</div></div><div class="row"><div class="num">11</div><div class="lbl"><b>Переход к следующей главе</b> — логическая связка</div></div></div></div></div>
+<div class="callout c-note"><div class="ic"><svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="none" stroke="#1D4ED8" stroke-width="2"/><circle cx="12" cy="7.6" r="1.4" fill="#1D4ED8"/><rect x="10.7" y="10.6" width="2.6" height="7" rx="1.3" fill="#1D4ED8"/></svg></div><div class="bd"><div class="hd">Единый визуальный язык</div>Пять цветов бренда несут смысл на всех страницах: <b>синий</b> — основное и структура, <b>тёмный</b> — акценты текста, <b>зелёный</b> — ценность и результат, <b>жёлтый</b> — «важно», <b>красный</b> — риск и запрет («не смешивать потоки»). Схемы всегда нарисованы, а не описаны словами.</div></div>
+
+<div class="chapter-title">
+  <div class="no">Глава 1</div>
+  <div class="bar"></div>
+  <h1>Философия системы<br/>получения отзывов<br/>MainExperts</h1>
+  <div class="lead">Почему для компании, которая сопровождает семью годами, отзыв —
+    не любезность клиента в конце, а стратегический актив, который собирается на всём пути
+    и работает на доверие, выручку и качество сопровождения.</div>
+  <div class="foot">
+    <div>PLAYBOOK · Система получения отзывов MainExperts · Версия 1.0</div>
+    <div>Глава 1&nbsp;·&nbsp;Философия системы</div>
+  </div>
+</div>
+<section>
+<span class="eltag accent">02 · Цель главы</span>
+<h2>Цель главы</h2>
+<div class="goalbox"><div class="big">Сформировать у всей команды единое понимание:
+      <strong>отзыв — это управляемый стратегический актив компании</strong>, а не побочный
+      продукт удачной услуги. После главы читатель различает отзыв-«событие» и отзыв-«актив»,
+      понимает, почему длинный путь сопровождения делает свидетельство критически важным,
+      и видит, где отзыв рождается и где он работает — раздельно для двух клиентов и двух
+      потоков выручки.</div></div>
+<p style="margin-top:9pt">Это не инструкция «как попросить отзыв». Это фундамент,
+      на котором в следующих главах строятся карта точек сбора, роли, форматы и метрики.
+      Механика без философии даёт разрозненные просьбы; философия без механики остаётся
+      лозунгом. Глава 1 закрывает первую половину.</p>
+</section>
+<section class="newpage">
+<span class="eltag">03 · Ключевые понятия</span>
+<h2>Ключевые понятия</h2>
+<p class="lead-in">Единый язык — первое условие системы. Ниже — термины, которыми мы пользуемся во всём плейбуке.</p>
+<div class="grid2">
+<div class="grow">
+<div class="gcell"><div class="concept"><div class="term">Отзыв-свидетельство</div><div class="def">Задокументированное свидетельство изменения в жизни семьи или в работе эксперта: «было → стало». Не оценка «понравилось / нет», а факт пути.</div><span class="tagline">ядро системы</span></div></div>
+<div class="gcell"><div class="concept"><div class="term">Актив vs событие</div><div class="def">Событие — разовая похвала, которая теряется. Актив — свидетельство, которое собрано, сохранено и работает на компанию годами.</div><span class="tagline">различение №1</span></div></div>
+</div>
+<div class="grow">
+<div class="gcell"><div class="concept"><div class="term">Путь сопровождения</div><div class="def">Длинная траектория семьи от выбора профессии подростком до его первого места работы. 11 этапов, каждый — точка ценности и точка отзыва.</div><span class="tagline">контекст продукта</span></div></div>
+<div class="gcell"><div class="concept"><div class="term">Два клиента</div><div class="def">Семьи (родители и подросток) и Эксперты. У каждого — свой голос: семья свидетельствует о результате, эксперт — о процессе и платформе.</div><span class="tagline">два источника</span></div></div>
+</div>
+<div class="grow">
+<div class="gcell"><div class="concept"><div class="term">Два потока</div><div class="def">Founder Premium (личные продажи HNW) и Platform (воронка). Отзыв работает в обоих, но механикой и метриками они не смешиваются.</div><span class="tagline">жёсткое правило</span></div></div>
+<div class="gcell"><div class="concept"><div class="term">Петля ценности</div><div class="def">Свидетельство возвращается в компанию как знание и улучшает продукт и сопровождение — по методологии управления ценностью V4.1.</div><span class="tagline">обратная связь</span></div></div>
+</div>
+</div>
+</section>
+<section class="newpage">
+<span class="eltag dark">04 · Основная часть</span>
+<h2>Почему отзыв для MainExperts — стратегия, а не любезность</h2>
+<h3>Что такое MainExperts на самом деле</h3>
+<div class="sidenote"><div class="t">Ставка, а не факт</div>
+      Центральная гипотеза проекта — «скрининг оцифровывает страхи родителя, и родитель
+      покупает диагностику, чтобы их закрыть» — пока <b>не подтверждена</b>. Система отзывов —
+      именно тот механизм, который может её проверить: если свидетельства показывают снятую
+      тревогу, гипотеза получает опору. До этого — помечаем как ставку.</div>
+<p>MainExperts — не разовая услуга «сделали профориентацию и попрощались».
+      Это платформа, которая <strong>сопровождает семью годами</strong>: от первого вопроса
+      «кем быть» до момента, когда вчерашний подросток выходит на первое рабочее место.
+      Между этими точками — профориентация, диагностика, выбор профессии и университета,
+      обучение и дополнительные предметы, поступление, визовая поддержка, релокация,
+      адаптация. Одиннадцать этапов одного пути.</p>
+<p>Из этого вырастает всё остальное. Родитель платит <strong>заранее — за будущее
+      ребёнка, которого ещё нет</strong>. В точке решения у него нет результата на руках;
+      есть только тревога и цена ошибки. Единственное, что снижает эту тревогу, — свидетельство
+      другой семьи, которая этот путь уже прошла. Поэтому отзыв здесь — не финальный
+      «спасибо», а условие самой продажи.</p>
+<figure><div class="schema"><svg viewBox="0 0 840 302" xmlns="http://www.w3.org/2000/svg" font-family="DejaVu Sans"><rect x="15" y="8" width="254" height="198" rx="12" fill="#ffffff" stroke="#1D4ED8" stroke-width="1.6"/><path d="M27,8 H257 A12,12 0 0 1 269,20 V42 H15 V20 A12,12 0 0 1 27,8 Z" fill="#1D4ED8"/><text x="142" y="30" fill="#ffffff" font-size="12.5" font-weight="bold" text-anchor="middle">Фаза 1 · Выбор пути</text><rect x="27" y="54" width="230" height="30" rx="7" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/><circle cx="41" cy="69" r="4" fill="#1D4ED8"/><text x="55" y="73" fill="#1E293B" font-size="11.5">Профориентация</text><rect x="27" y="92" width="230" height="30" rx="7" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/><circle cx="41" cy="107" r="4" fill="#1D4ED8"/><text x="55" y="111" fill="#1E293B" font-size="11.5">Диагностика способностей</text><rect x="27" y="130" width="230" height="30" rx="7" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/><circle cx="41" cy="145" r="4" fill="#1D4ED8"/><text x="55" y="149" fill="#1E293B" font-size="11.5">Выбор профессии</text><rect x="293" y="8" width="254" height="198" rx="12" fill="#ffffff" stroke="#4338CA" stroke-width="1.6"/><path d="M305,8 H535 A12,12 0 0 1 547,20 V42 H293 V20 A12,12 0 0 1 305,8 Z" fill="#4338CA"/><text x="420" y="30" fill="#ffffff" font-size="12.5" font-weight="bold" text-anchor="middle">Фаза 2 · Поступление</text><rect x="305" y="54" width="230" height="30" rx="7" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/><circle cx="319" cy="69" r="4" fill="#4338CA"/><text x="333" y="73" fill="#1E293B" font-size="11.5">Выбор университета</text><rect x="305" y="92" width="230" height="30" rx="7" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/><circle cx="319" cy="107" r="4" fill="#4338CA"/><text x="333" y="111" fill="#1E293B" font-size="11.5">Обучение</text><rect x="305" y="130" width="230" height="30" rx="7" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/><circle cx="319" cy="145" r="4" fill="#4338CA"/><text x="333" y="149" fill="#1E293B" font-size="11.5">Доп. предметы</text><rect x="305" y="168" width="230" height="30" rx="7" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/><circle cx="319" cy="183" r="4" fill="#4338CA"/><text x="333" y="187" fill="#1E293B" font-size="11.5">Поступление</text><rect x="571" y="8" width="254" height="198" rx="12" fill="#ffffff" stroke="#10B981" stroke-width="1.6"/><path d="M583,8 H813 A12,12 0 0 1 825,20 V42 H571 V20 A12,12 0 0 1 583,8 Z" fill="#10B981"/><text x="698" y="30" fill="#ffffff" font-size="12.5" font-weight="bold" text-anchor="middle">Фаза 3 · Переход в жизнь</text><rect x="583" y="54" width="230" height="30" rx="7" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/><circle cx="597" cy="69" r="4" fill="#10B981"/><text x="611" y="73" fill="#1E293B" font-size="11.5">Визовая поддержка</text><rect x="583" y="92" width="230" height="30" rx="7" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/><circle cx="597" cy="107" r="4" fill="#10B981"/><text x="611" y="111" fill="#1E293B" font-size="11.5">Релокация</text><rect x="583" y="130" width="230" height="30" rx="7" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/><circle cx="597" cy="145" r="4" fill="#10B981"/><text x="611" y="149" fill="#1E293B" font-size="11.5">Адаптация</text><rect x="583" y="168" width="230" height="30" rx="7" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/><circle cx="597" cy="183" r="4" fill="#10B981"/><text x="611" y="187" fill="#1E293B" font-size="11.5">Первое место работы</text><path d="M273,99 L291,107 L273,115 Z" fill="#64748B"/><path d="M551,99 L569,107 L551,115 Z" fill="#64748B"/><rect x="15" y="236" width="810" height="46" rx="12" fill="#ECFDF5" stroke="#10B981" stroke-width="1.6"/><circle cx="41" cy="259" r="11" fill="#10B981"/><path d="M36,259 l4,4 l7,-8" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><text x="61" y="257" fill="#065F46" font-size="12" font-weight="bold">Поток свидетельств: отзыв рождается на каждом этапе пути,</text><text x="61" y="273" fill="#065F46" font-size="12">а не только в его финале.</text><path d="M142,206 V236" stroke="#10B981" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="142" cy="236" r="3.5" fill="#10B981"/><path d="M420,206 V236" stroke="#10B981" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="420" cy="236" r="3.5" fill="#10B981"/><path d="M698,206 V236" stroke="#10B981" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="698" cy="236" r="3.5" fill="#10B981"/></svg><figcaption><b>Схема 1.</b> Путь сопровождения семьи: три фазы, одиннадцать этапов. Свидетельство собирается вдоль всего пути, а не только на выходе — каждая точка ценности является потенциальной точкой отзыва.</figcaption></div></figure>
+<h3>Два клиента — два голоса</h3>
+<p>У компании два клиента, и это не деталь, а развилка всей системы. <strong>Семьи</strong>
+      свидетельствуют о результате: что изменилось в ребёнке и в спокойствии родителя.
+      <strong>Эксперты</strong> свидетельствуют о процессе и о платформе: работает ли методика,
+      удобен ли инструмент, честна ли экономика. Это два разных отзыва, с разным содержанием
+      и разным применением — их нельзя собирать одним шаблоном.</p>
+<figure><div class="schema"><svg viewBox="0 0 840 278" xmlns="http://www.w3.org/2000/svg" font-family="DejaVu Sans"><rect x="300" y="8" width="240" height="46" rx="10" fill="#0F172A"/><text x="420" y="30" fill="#fff" font-size="12.5" font-weight="bold" text-anchor="middle">MainExperts</text><text x="420" y="46" fill="rgba(255,255,255,.8)" font-size="10" text-anchor="middle">платформа сопровождения</text><path d="M420,54 C420,82 210,72 210,100" fill="none" stroke="#1D4ED8" stroke-width="2"/><path d="M420,54 C420,82 630,72 630,100" fill="none" stroke="#10B981" stroke-width="2"/><rect x="60" y="100" width="300" height="42" rx="9" fill="#1D4ED8"/><text x="210" y="120" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">СЕМЬИ</text><text x="210" y="135" fill="rgba(255,255,255,.9)" font-size="9.5" text-anchor="middle">родители и подросток</text><rect x="60" y="152" width="300" height="56" rx="8" fill="#fff" stroke="#1D4ED8" stroke-width="1.3"/><text x="74" y="170" fill="#0F172A" font-size="11" font-weight="bold">Свидетельствуют о результате</text><text x="74" y="185" fill="#1E293B" font-size="9.5">«было → стало»: тревога снята,</text><text x="74" y="198" fill="#1E293B" font-size="9.5">путь ребёнка виден</text><rect x="60" y="216" width="300" height="52" rx="8" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/><text x="74" y="233" fill="#64748B" font-size="8.5" font-weight="bold" letter-spacing="1">ГДЕ РАБОТАЕТ</text><text x="74" y="247" fill="#1E293B" font-size="9.5">Публичное соц. доказательство</text><text x="74" y="260" fill="#1E293B" font-size="9.5">для новых семей</text><rect x="480" y="100" width="300" height="42" rx="9" fill="#10B981"/><text x="630" y="120" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">ЭКСПЕРТЫ</text><text x="630" y="135" fill="rgba(255,255,255,.9)" font-size="9.5" text-anchor="middle">те, кто ведёт сопровождение</text><rect x="480" y="152" width="300" height="56" rx="8" fill="#fff" stroke="#10B981" stroke-width="1.3"/><text x="494" y="170" fill="#0F172A" font-size="11" font-weight="bold">Свидетельствуют о процессе</text><text x="494" y="185" fill="#1E293B" font-size="9.5">качество платформы</text><text x="494" y="198" fill="#1E293B" font-size="9.5">и методики в работе</text><rect x="480" y="216" width="300" height="52" rx="8" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/><text x="494" y="233" fill="#64748B" font-size="8.5" font-weight="bold" letter-spacing="1">ГДЕ РАБОТАЕТ</text><text x="494" y="247" fill="#1E293B" font-size="9.5">Калибровка сети · доказательство</text><text x="494" y="260" fill="#1E293B" font-size="9.5">компетенции эксперта</text></svg><figcaption><b>Схема 2.</b> Два источника свидетельств. Голос семьи доказывает результат новым семьям; голос эксперта калибрует сеть и подтверждает компетенцию. Смешивать их в один поток — терять смысл обоих.</figcaption></div></figure>
+<h3>Отзыв как актив: накопительный эффект</h3>
+<p>Разовая похвала в переписке греет самолюбие и исчезает. Свидетельство, которое
+      собрано, оформлено и сохранено, начинает работать как <strong>актив на балансе доверия</strong>:
+      снижает стоимость привлечения новой семьи, повышает конверсию на входе в воронку,
+      укрепляет позиции эксперта и возвращается в продукт как знание. Один раз собранный отзыв
+      работает годами — и чем их больше, тем сильнее эффект. Отсюда — рабочая петля ценности.</p>
+<figure><div class="schema"><svg viewBox="0 0 840 300" xmlns="http://www.w3.org/2000/svg" font-family="DejaVu Sans"><rect x="12" y="96" width="148" height="62" rx="10" fill="#fff" stroke="#1D4ED8" stroke-width="1.8"/><rect x="12" y="96" width="5" height="62" rx="2.5" fill="#1D4ED8"/><text x="89" y="123" fill="#0F172A" font-size="11" font-weight="bold" text-anchor="middle">Впечатление</text><text x="89" y="138" fill="#0F172A" font-size="11" font-weight="bold" text-anchor="middle">на этапе</text><rect x="180" y="96" width="148" height="62" rx="10" fill="#fff" stroke="#1D4ED8" stroke-width="1.8"/><rect x="180" y="96" width="5" height="62" rx="2.5" fill="#1D4ED8"/><text x="257" y="123" fill="#0F172A" font-size="11" font-weight="bold" text-anchor="middle">Сбор</text><text x="257" y="138" fill="#0F172A" font-size="11" font-weight="bold" text-anchor="middle">свидетельства</text><rect x="348" y="96" width="148" height="62" rx="10" fill="#fff" stroke="#10B981" stroke-width="1.8"/><rect x="348" y="96" width="5" height="62" rx="2.5" fill="#10B981"/><text x="425" y="123" fill="#0F172A" font-size="11" font-weight="bold" text-anchor="middle">Библиотека</text><text x="425" y="138" fill="#0F172A" font-size="11" font-weight="bold" text-anchor="middle">отзывов — актив</text><rect x="516" y="96" width="148" height="62" rx="10" fill="#fff" stroke="#1D4ED8" stroke-width="1.8"/><rect x="516" y="96" width="5" height="62" rx="2.5" fill="#1D4ED8"/><text x="593" y="123" fill="#0F172A" font-size="11" font-weight="bold" text-anchor="middle">Снижение риска</text><text x="593" y="138" fill="#0F172A" font-size="11" font-weight="bold" text-anchor="middle">у новой семьи</text><rect x="684" y="96" width="148" height="62" rx="10" fill="#fff" stroke="#0F172A" stroke-width="1.8"/><rect x="684" y="96" width="5" height="62" rx="2.5" fill="#0F172A"/><text x="761" y="123" fill="#0F172A" font-size="11" font-weight="bold" text-anchor="middle">Рост доверия</text><text x="761" y="138" fill="#0F172A" font-size="11" font-weight="bold" text-anchor="middle">и сопровождения</text><path d="M160,127 H176" stroke="#64748B" stroke-width="1.8"/><path d="M176,122 l6,5 l-6,5 Z" fill="#64748B"/><path d="M328,127 H344" stroke="#64748B" stroke-width="1.8"/><path d="M344,122 l6,5 l-6,5 Z" fill="#64748B"/><path d="M496,127 H512" stroke="#64748B" stroke-width="1.8"/><path d="M512,122 l6,5 l-6,5 Z" fill="#64748B"/><path d="M664,127 H680" stroke="#64748B" stroke-width="1.8"/><path d="M680,122 l6,5 l-6,5 Z" fill="#64748B"/><path d="M758,96 C758,20 86,20 86,96" fill="none" stroke="#1D4ED8" stroke-width="1.8" stroke-dasharray="6 4"/><path d="M81,92 l5,6 l5,-6 Z" fill="#1D4ED8"/><text x="420" y="17" fill="#1D4ED8" font-size="10" font-weight="bold" text-anchor="middle">накопительный эффект — цикл повторяется</text><path d="M422,158 V188" stroke="#10B981" stroke-width="1.8"/><path d="M417,188 l5,6 l5,-6 Z" fill="#10B981"/><rect x="242" y="194" width="360" height="46" rx="10" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/><text x="422" y="216" fill="#065F46" font-size="11" font-weight="bold" text-anchor="middle">Знание → улучшение продукта и сопровождения</text><text x="422" y="231" fill="#065F46" font-size="9.5" text-anchor="middle">отзыв замыкает петлю управления ценностью (V4.1)</text></svg><figcaption><b>Схема 3.</b> Петля ценности отзыва. Впечатление на этапе превращается в свидетельство, свидетельство пополняет актив, актив снижает риск у новой семьи и возвращается в компанию как знание — цикл повторяется с накоплением.</figcaption></div></figure>
+<h3>Два потока — две механики (не смешивать)</h3>
+<p>Отзыв работает в обоих потоках выручки, но <strong>совершенно по-разному</strong>,
+      и это жёсткое правило компании. В <strong>потоке премиальных личных продаж</strong>
+      свидетельство — это приватная рекомендация внутри узкого круга, валюта репутации;
+      оно не публикуется и не выносится в воронку. В <strong>потоке воронки</strong> отзыв —
+      публичное социальное доказательство, которое живёт на лендинге и в рассылке и снижает
+      стоимость лида. Механики, метрики и даже само определение «хорошего отзыва» у них разные.</p>
+<figure><div class="schema"><svg viewBox="0 0 840 214" xmlns="http://www.w3.org/2000/svg" font-family="DejaVu Sans"><rect x="15" y="8" width="360" height="198" rx="12" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.8"/><rect x="15" y="8" width="360" height="6" rx="3" fill="#F59E0B"/><text x="33" y="42" fill="#92400E" font-size="13" font-weight="bold">Поток 1 · Founder Premium</text><text x="33" y="60" fill="#1E293B" font-size="9.5">Личные продажи по рекомендации (HNW / UHNW)</text><circle cx="37" cy="82" r="3.2" fill="#F59E0B"/><text x="49" y="86" fill="#1E293B" font-size="10.3">Отзыв = приватная рекомендация в узком кругу</text><circle cx="37" cy="108" r="3.2" fill="#F59E0B"/><text x="49" y="112" fill="#1E293B" font-size="10.3">Валюта — доверие и репутация, не контент</text><circle cx="37" cy="134" r="3.2" fill="#F59E0B"/><text x="49" y="138" fill="#1E293B" font-size="10.3">Не публикуется, не выносится в воронку</text><rect x="465" y="8" width="360" height="198" rx="12" fill="#EFF4FF" stroke="#1D4ED8" stroke-width="1.8"/><rect x="465" y="8" width="360" height="6" rx="3" fill="#1D4ED8"/><text x="483" y="42" fill="#1E40AF" font-size="13" font-weight="bold">Поток 2 · Platform</text><text x="483" y="60" fill="#1E293B" font-size="9.5">Воронка самообслуживания (freemium → апсейл)</text><circle cx="487" cy="82" r="3.2" fill="#1D4ED8"/><text x="499" y="86" fill="#1E293B" font-size="10.3">Отзыв = публичное социальное доказательство</text><circle cx="487" cy="108" r="3.2" fill="#1D4ED8"/><text x="499" y="112" fill="#1E293B" font-size="10.3">Работает на лендинге, в рассылке, в отчёте</text><circle cx="487" cy="134" r="3.2" fill="#1D4ED8"/><text x="499" y="138" fill="#1E293B" font-size="10.3">Снижает стоимость лида и повышает конверсию</text><line x1="420" y1="20" x2="420" y2="194" stroke="#DC2626" stroke-width="2" stroke-dasharray="5 5"/><circle cx="420" cy="107" r="30" fill="#fff" stroke="#DC2626" stroke-width="2"/><text x="420" y="104" fill="#DC2626" font-size="20" font-weight="bold" text-anchor="middle">≠</text><text x="420" y="120" fill="#DC2626" font-size="8" font-weight="bold" text-anchor="middle">НЕ смешивать</text></svg><figcaption><b>Схема 4.</b> Одна философия — две механики. Приватная рекомендация премиального потока и публичное доказательство воронки не смешиваются ни в сборе, ни в применении, ни в отчётности.</figcaption></div></figure>
+<div class="callout c-imp"><div class="ic"><svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><path d="M12 3 L22 20 H2 Z" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linejoin="round"/><rect x="10.8" y="9" width="2.4" height="6" rx="1.2" fill="#F59E0B"/><circle cx="12" cy="17.4" r="1.3" fill="#F59E0B"/></svg></div><div class="bd"><div class="hd">Важно · правило двух потоков</div>Метрики и свидетельства двух потоков <b>никогда не объединяются</b>. Публичный отзыв из воронки нельзя выдавать за премиальную рекомендацию, а приватную рекомендацию HNW-круга — публиковать как соц. доказательство. Это разные каналы с разной экономикой и разными обязательствами перед клиентом.</div></div>
+<h3>Восемь принципов философии отзыва</h3>
+<p class="lead-in">Всё сказанное сворачивается в восемь принципов — на них опираются механики следующих глав.</p>
+<div class="tablewrap"><table class="data"><thead><tr><th style="width:34pt">№</th><th style="width:33%">Принцип</th><th>Что он означает на практике</th></tr></thead><tbody>
+<tr><td class="k">1</td><td class="k">Актив, а не побочный продукт</td><td>Отзывом управляют системно, как ресурсом, а не собирают случайно.</td></tr>
+<tr><td class="k">2</td><td class="k">Весь путь, а не финал</td><td>Свидетельство собирается на каждом этапе, а не один раз в конце.</td></tr>
+<tr><td class="k">3</td><td class="k">Свидетельство, а не оценка</td><td>Фиксируем изменение «было → стало», а не «понравилось / нет».</td></tr>
+<tr><td class="k">4</td><td class="k">Два клиента — два голоса</td><td>Голос семьи — о результате, голос эксперта — о процессе. Раздельно.</td></tr>
+<tr><td class="k">5</td><td class="k">Два потока — две механики</td><td>Приватная рекомендация и публичное доказательство не смешиваются.</td></tr>
+<tr><td class="k">6</td><td class="k">Достоверность выше объёма</td><td>Один проверяемый отзыв с источником ценнее десяти анонимных.</td></tr>
+<tr><td class="k">7</td><td class="k">Этика прежде всего</td><td>Данные несовершеннолетних, согласие и границы диагностики — нерушимы.</td></tr>
+<tr><td class="k">8</td><td class="k">Замкнутая петля</td><td>Отзыв возвращается в продукт как знание (V4.1), а не только в маркетинг.</td></tr>
+</tbody></table></div>
+</section>
+<section>
+<span class="eltag">06 · Таблицы</span>
+<h2>Где рождается и где работает отзыв</h2>
+<p class="lead-in">Сводная таблица связывает этап пути, содержание свидетельства и место его применения. Метка потока показывает, в какой механике отзыв уместен.</p>
+<div class="tablewrap"><table class="data"><thead><tr><th>Этап пути</th><th>Что свидетельствует</th><th>Где работает</th><th>Поток</th></tr></thead><tbody><tr><td class="k">Профориентация и диагностика</td><td>«Ребёнка впервые услышали», снятая растерянность</td><td>Вход в воронку, лендинг скрининга</td><td><span class="pill p2">П2</span></td></tr><tr><td class="k">Выбор профессии и университета</td><td>Ясность вместо тревоги, обоснованное решение</td><td>Кейсы, апсейл на диагностику</td><td><span class="pill both">оба</span></td></tr><tr><td class="k">Обучение и поступление</td><td>Достигнутый результат: поступление, прогресс</td><td>Публичные истории, отчёт</td><td><span class="pill p2">П2</span></td></tr><tr><td class="k">Визы, релокация, адаптация</td><td>Компания не бросила на сложном отрезке</td><td>Премиальная рекомендация</td><td><span class="pill p1">П1</span></td></tr><tr><td class="k">Первое место работы</td><td>Финальное «путь сработал» — сильнейшее свидетельство</td><td>Флагманский кейс, оба потока</td><td><span class="pill both">оба</span></td></tr><tr><td class="k">Работа эксперта (сквозной)</td><td>Качество методики и платформы в деле</td><td>Калибровка сети, найм экспертов</td><td><span class="pill p2">П2</span></td></tr></tbody></table></div>
+<div class="small" style="margin-top:-4pt">П1 — Founder Premium (приватно); П2 — Platform (публично); «оба» — уместно в обеих механиках при раздельном оформлении.</div>
+<h3>Отзыв-событие против отзыва-актива</h3>
+<div class="tablewrap"><table class="data"><thead><tr><th>Параметр</th><th>Отзыв-событие</th><th>Отзыв-актив</th></tr></thead><tbody><tr><td class="k">Горизонт</td><td>разовый, живёт минуты</td><td>накопительный, работает годами</td></tr><tr><td class="k">Управление</td><td>случайный, по настроению</td><td>системный, по регламенту</td></tr><tr><td class="k">Форма</td><td>реплика в переписке</td><td>оформленное свидетельство «было → стало»</td></tr><tr><td class="k">Ценность</td><td>приятно, но не масштабируется</td><td>снижает CAC, растит конверсию и доверие</td></tr><tr><td class="k">Судьба</td><td>теряется</td><td>сохранён, размечен, переиспользуется</td></tr></tbody></table></div>
+</section>
+<section>
+<span class="eltag dark">07 · Примеры</span>
+<h2>Как это выглядит в жизни компании</h2>
+<div class="example"><div class="top">Пример 1. Родитель на входе в воронку<span class="tag">Поток 2 · публично</span></div><div class="bdy"><div class="step">Мать 14-летнего подростка колеблется на лендинге скрининга: платить ли за диагностику будущего ребёнка.</div><div class="step">Рядом — свидетельство другой семьи, чей сын прошёл путь до поступления: <span class="bef">было</span> — «не понимали, куда он вообще»; <span class="aft">стало</span> — «выбрал направление осознанно и поступил».</div><div class="step"><b>Эффект:</b> воспринимаемый риск падает, тревога получает опору, конверсия входа в скрининг растёт. Отзыв здесь — часть продающей логики, а не украшение.</div></div></div>
+<div class="example"><div class="top">Пример 2. Свидетельство эксперта<span class="tag">Поток 2 · сеть</span></div><div class="bdy"><div class="step">Эксперт после сопровождения оставляет отзыв о процессе: методика применима, платформа не мешает, экономика прозрачна.</div><div class="step"><b>Эффект:</b> отзыв идёт не в маркетинг, а в калибровку сети и в найм новых экспертов как доказательство того, что «здесь можно работать честно». Голос эксперта решает другую задачу, чем голос семьи.</div></div></div>
+<div class="example"><div class="top">Пример 3. Премиальная рекомендация<span class="tag">Поток 1 · приватно · не публикуется</span></div><div class="bdy"><div class="step">Семья из премиального круга проходит полный путь, включая визы и релокацию, и рекомендует компанию знакомой семье того же круга.</div><div class="step"><b>Эффект:</b> рекомендация работает как валюта доверия внутри сети HNW. Её <b>нельзя</b> вынести на лендинг или превратить в публичный кейс — это нарушило бы и правило двух потоков, и обязательства перед клиентом.</div></div></div>
+<div class="callout c-tip"><div class="ic"><svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="none" stroke="#10B981" stroke-width="2"/><path d="M7.5 12.5 L10.7 15.5 L16.5 8.6" fill="none" stroke="#10B981" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="bd"><div class="hd">Общий знаменатель трёх примеров</div>Во всех случаях ценность несёт не похвала, а <b>зафиксированное изменение</b> и <b>правильный адрес применения</b>. Один и тот же факт в неверной механике теряет силу или нарушает правило.</div></div>
+</section>
+<section>
+<span class="eltag accent">08 · Практические рекомендации</span>
+<h2>Что делать с этой философией на практике</h2>
+<p class="lead-in">Девять установок, которые переводят принципы в поведение команды уже сегодня — до появления автоматизации.</p>
+<div class="recs">
+<div class="rec"><div class="n">1</div><div class="rt">Встройте сбор в путь</div><div class="rd">Планируйте точку отзыва на каждом этапе сопровождения, а не «когда вспомним».</div></div>
+<div class="rec"><div class="n">2</div><div class="rt">Спрашивайте «было → стало»</div><div class="rd">Фиксируйте изменение, а не удовлетворённость. Это и есть свидетельство.</div></div>
+<div class="rec"><div class="n">3</div><div class="rt">Разведите два голоса</div><div class="rd">Разные вопросы и форматы для семьи и для эксперта. Не один шаблон.</div></div>
+</div>
+<div class="recs">
+<div class="rec"><div class="n">4</div><div class="rt">Держите потоки раздельно</div><div class="rd">Публичное — в воронку, приватное — в круг. Никогда не переносить между ними.</div></div>
+<div class="rec"><div class="n">5</div><div class="rt">Берите согласие явно</div><div class="rd">Особенно на данные подростка. Без согласия свидетельства не существует.</div></div>
+<div class="rec"><div class="n">6</div><div class="rt">Проверяемость обязательна</div><div class="rd">У отзыва есть источник и дата. Анонимную похвалу активом не считаем.</div></div>
+</div>
+<div class="recs">
+<div class="rec"><div class="n">7</div><div class="rt">Не гонитесь за объёмом</div><div class="rd">Десять честных сильнее ста наведённых. Достоверность — первый приоритет.</div></div>
+<div class="rec"><div class="n">8</div><div class="rt">Возвращайте в продукт</div><div class="rd">Свидетельства читает не только маркетинг: это вход в улучшение сопровождения.</div></div>
+<div class="rec"><div class="n">9</div><div class="rt">Считайте отзыв ресурсом</div><div class="rd">У актива есть владелец и место хранения. Назначьте их до старта сбора.</div></div>
+</div>
+<div class="callout c-risk"><div class="ic"><svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><path d="M12 2 L21 6 V12 C21 17 17 20.5 12 22 C7 20.5 3 17 3 12 V6 Z" fill="none" stroke="#DC2626" stroke-width="2" stroke-linejoin="round"/><rect x="10.8" y="8" width="2.4" height="6" rx="1.2" fill="#DC2626"/><circle cx="12" cy="16.4" r="1.2" fill="#DC2626"/></svg></div><div class="bd"><div class="hd">Осторожно · чего не делать</div>Не покупайте и не «наводите» отзывы, не публикуйте свидетельства без согласия, не выдавайте оценку транзакции за свидетельство пути и <b>никогда</b> не смешивайте приватную премиальную рекомендацию с публичным контентом воронки.</div></div>
+</section>
+<section>
+<span class="eltag">09 · Чек-лист</span>
+<h2>Самопроверка: готовы ли собирать отзыв как актив</h2>
+<p class="lead-in">Пройдите список прежде, чем запускать механики следующих глав. Каждый непоставленный флажок — риск превратить систему в набор случайных просьб.</p>
+<div class="checklist">
+<div class="ci"><div class="box"><svg viewBox="0 0 24 24" width="15" height="15" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="2.5" width="19" height="19" rx="4" fill="#fff" stroke="#1D4ED8" stroke-width="2"/></svg></div><div class="txt">Команда различает <b>отзыв-событие</b> и <b>отзыв-актив</b> и говорит на одном языке.</div></div>
+<div class="ci"><div class="box"><svg viewBox="0 0 24 24" width="15" height="15" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="2.5" width="19" height="19" rx="4" fill="#fff" stroke="#1D4ED8" stroke-width="2"/></svg></div><div class="txt">Для каждого из <b>11 этапов пути</b> определено, какое свидетельство на нём рождается.</div></div>
+<div class="ci"><div class="box"><svg viewBox="0 0 24 24" width="15" height="15" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="2.5" width="19" height="19" rx="4" fill="#fff" stroke="#1D4ED8" stroke-width="2"/></svg></div><div class="txt">Разделены <b>два голоса</b>: отдельные вопросы для семьи и для эксперта.</div></div>
+<div class="ci"><div class="box"><svg viewBox="0 0 24 24" width="15" height="15" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="2.5" width="19" height="19" rx="4" fill="#fff" stroke="#1D4ED8" stroke-width="2"/></svg></div><div class="txt">Зафиксировано правило <b>двух потоков</b>: что публично, что приватно, и почему.</div></div>
+<div class="ci"><div class="box"><svg viewBox="0 0 24 24" width="15" height="15" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="2.5" width="19" height="19" rx="4" fill="#fff" stroke="#1D4ED8" stroke-width="2"/></svg></div><div class="txt">Формат отзыва требует изменения <b>«было → стало»</b>, а не оценки «понравилось».</div></div>
+<div class="ci"><div class="box"><svg viewBox="0 0 24 24" width="15" height="15" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="2.5" width="19" height="19" rx="4" fill="#fff" stroke="#1D4ED8" stroke-width="2"/></svg></div><div class="txt">Определён порядок <b>согласия</b>, включая данные несовершеннолетних.</div></div>
+<div class="ci"><div class="box"><svg viewBox="0 0 24 24" width="15" height="15" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="2.5" width="19" height="19" rx="4" fill="#fff" stroke="#1D4ED8" stroke-width="2"/></svg></div><div class="txt">У каждого отзыва есть <b>источник и дата</b>; анонимное активом не считается.</div></div>
+<div class="ci"><div class="box"><svg viewBox="0 0 24 24" width="15" height="15" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="2.5" width="19" height="19" rx="4" fill="#fff" stroke="#1D4ED8" stroke-width="2"/></svg></div><div class="txt">Назначены <b>владелец</b> актива отзывов и <b>место хранения</b>.</div></div>
+<div class="ci"><div class="box"><svg viewBox="0 0 24 24" width="15" height="15" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="2.5" width="19" height="19" rx="4" fill="#fff" stroke="#1D4ED8" stroke-width="2"/></svg></div><div class="txt">Понятно, как свидетельство <b>возвращается в продукт</b> (петля ценности V4.1).</div></div>
+<div class="ci"><div class="box"><svg viewBox="0 0 24 24" width="15" height="15" xmlns="http://www.w3.org/2000/svg"><rect x="2.5" y="2.5" width="19" height="19" rx="4" fill="#fff" stroke="#1D4ED8" stroke-width="2"/></svg></div><div class="txt">Гипотеза скрининга помечена как <b>ставка</b>, и отзыв рассматривается как её проверка.</div></div>
+</div>
+</section>
+<section>
+<span class="eltag dark">10 · Резюме</span>
+<h2>Главное из главы 1</h2>
+<div class="summary"><h3>Отзыв — стратегический актив длинного пути</h3>
+      <ol>
+        <li><b>Длинный путь меняет роль отзыва.</b> Родитель платит за будущее заранее —
+          свидетельство другой семьи снижает тревогу и становится условием продажи.</li>
+        <li><b>Актив, а не событие.</b> Собранное и сохранённое свидетельство работает годами:
+          снижает стоимость привлечения, растит конверсию и доверие.</li>
+        <li><b>Два клиента — два голоса.</b> Семья свидетельствует о результате, эксперт —
+          о процессе и платформе. Разное содержание, разное применение.</li>
+        <li><b>Два потока — две механики.</b> Приватная премиальная рекомендация и публичное
+          доказательство воронки не смешиваются никогда.</li>
+        <li><b>Достоверность и этика — рамка.</b> Источник, дата, согласие и «было → стало»
+          важнее объёма; отзыв замыкает петлю ценности и возвращается в продукт.</li>
+      </ol></div>
+</section>
+<section>
+<span class="eltag">11 · Переход к следующей главе</span>
+<div class="divider"><span class="dot"></span></div>
+<div class="transition">
+      <div class="l">
+        <div class="nx">Далее · Глава 2</div>
+        <h3>Карта точек сбора: где и как система собирает отзыв</h3>
+        <p>Философия отвечает на вопрос «зачем». Глава 2 переводит его в «где и как»:
+          разложим одиннадцать этапов пути на конкретные точки контакта, определим формат
+          свидетельства для каждой и разведём механику сбора по двум потокам и двум клиентам.</p>
+      </div>
+      <div class="r">
+        <svg viewBox="0 0 48 48" width="48" height="48" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="22" fill="none" stroke="#1D4ED8" stroke-width="2"/>
+          <path d="M20 15 L30 24 L20 33" fill="none" stroke="#1D4ED8" stroke-width="3"
+            stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+</section></body></html>
