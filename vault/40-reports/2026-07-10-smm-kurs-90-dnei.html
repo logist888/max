@@ -1,0 +1,795 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI-native SMM за 90 дней — программа подготовки · MainExperts</title>
+<style>
+:root{
+  --paper:#F7F8F6;
+  --card:#FFFFFF;
+  --ink:#1C2431;
+  --muted:#5A6472;
+  --line:#DDE1DC;
+  --accent:#2B50C7;
+  --accent-soft:#E9EDFB;
+  --red:#B4432F;
+  --red-soft:#F9ECE8;
+  --ok:#2E7D5B;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --paper:#151A22;
+    --card:#1D242F;
+    --ink:#E8EAE6;
+    --muted:#9AA3B0;
+    --line:#313A47;
+    --accent:#8FA5EE;
+    --accent-soft:#232C42;
+    --red:#E08A72;
+    --red-soft:#3A2620;
+    --ok:#6CBF9A;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#151A22; --card:#1D242F; --ink:#E8EAE6; --muted:#9AA3B0;
+  --line:#313A47; --accent:#8FA5EE; --accent-soft:#232C42;
+  --red:#E08A72; --red-soft:#3A2620; --ok:#6CBF9A;
+}
+:root[data-theme="light"]{
+  --paper:#F7F8F6; --card:#FFFFFF; --ink:#1C2431; --muted:#5A6472;
+  --line:#DDE1DC; --accent:#2B50C7; --accent-soft:#E9EDFB;
+  --red:#B4432F; --red-soft:#F9ECE8; --ok:#2E7D5B;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font:16px/1.62 -apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+main, header.hero, footer.foot{max-width:52rem; margin:0 auto; padding:0 1.25rem}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif; line-height:1.22; text-wrap:balance; font-weight:600}
+h1{font-size:2.3rem; margin:.4rem 0 .6rem}
+h2{font-size:1.5rem; margin:0 0 1rem}
+h3{font-size:1.1rem; margin:1.4rem 0 .5rem}
+p{margin:.6rem 0}
+a{color:var(--accent)}
+.eyebrow{
+  font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--muted); font-weight:600;
+}
+.hero{padding-top:3rem}
+.hero .sub{color:var(--muted); max-width:40rem; font-size:1.06rem}
+.meta-row{display:flex; flex-wrap:wrap; gap:.5rem; margin:1.1rem 0 0}
+.chip{
+  font-size:.8rem; padding:.28rem .7rem; border:1px solid var(--line);
+  border-radius:999px; color:var(--muted); background:var(--card);
+}
+/* маршрут программы */
+.route{margin:1.8rem 0 0; overflow-x:auto; padding-bottom:.4rem}
+.route svg{display:block; min-width:640px; width:100%; height:74px}
+.route text{font:600 11px -apple-system,"Segoe UI",Roboto,sans-serif; fill:var(--muted)}
+.route .lbl-strong{fill:var(--ink)}
+.route line{stroke:var(--line); stroke-width:2}
+.route circle{fill:var(--card); stroke:var(--accent); stroke-width:2}
+.route .final{fill:var(--accent)}
+nav.toc{
+  border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  margin:2rem auto 0; max-width:52rem; padding:.8rem 1.25rem;
+  display:flex; flex-wrap:wrap; gap:.35rem 1.2rem; font-size:.88rem;
+}
+nav.toc a{color:var(--muted); text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+section{margin:3rem 0}
+.section-mark{color:var(--accent); font-family:Georgia,serif; font-style:italic; margin-right:.4rem}
+/* таблицы */
+.tbl-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:10px; background:var(--card)}
+table{border-collapse:collapse; width:100%; font-size:.92rem}
+th,td{padding:.6rem .85rem; text-align:left; vertical-align:top; border-top:1px solid var(--line)}
+thead th{border-top:none; font-size:.75rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+td.num, th.num{font-variant-numeric:tabular-nums; white-space:nowrap}
+/* список результатов */
+ol.deliv{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(21rem,1fr));
+  gap:.5rem .9rem; padding:0; margin:0; list-style:none;
+  counter-reset:d;
+}
+ol.deliv li{
+  counter-increment:d; background:var(--card); border:1px solid var(--line);
+  border-radius:8px; padding:.55rem .75rem .55rem 2.4rem; position:relative; font-size:.94rem;
+}
+ol.deliv li::before{
+  content:counter(d); position:absolute; left:.75rem; top:.62rem;
+  font-family:Georgia,serif; font-style:italic; color:var(--accent); font-size:.95rem;
+}
+/* выноски */
+.callout{
+  border:1px solid var(--line); border-radius:10px; background:var(--card);
+  padding:.9rem 1.1rem; margin:1rem 0; font-size:.95rem;
+}
+.callout.accent{background:var(--accent-soft); border-color:transparent}
+.callout .callout-t{font-weight:700; font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:.3rem}
+/* красные линии */
+.redlines{border:1px solid var(--red); border-radius:12px; overflow:hidden}
+.redlines-head{background:var(--red); color:var(--paper); padding:.7rem 1.1rem; font-weight:700; letter-spacing:.06em}
+.redlines ol{margin:0; padding:1rem 1.2rem 1.1rem 2.4rem; background:var(--red-soft)}
+.redlines li{margin:.45rem 0; font-size:.95rem}
+.redlines li b{color:var(--red)}
+.redlines-note{padding:.7rem 1.1rem; background:var(--card); border-top:1px solid var(--line); font-size:.88rem; color:var(--muted)}
+/* этапы, недели и дни */
+.stage-lbl{
+  font-size:.76rem; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--accent); font-weight:700; margin:2.6rem 0 .2rem;
+}
+.week{margin:1.4rem 0 2rem}
+.week-h{display:flex; align-items:baseline; gap:.7rem; border-bottom:2px solid var(--ink); padding-bottom:.35rem; margin-bottom:.8rem}
+.week-h .wk{font-family:Georgia,serif; font-style:italic; color:var(--accent); font-size:1rem; white-space:nowrap}
+.week-h h3{margin:0; font-size:1.15rem}
+details.day{border:1px solid var(--line); border-radius:10px; background:var(--card); margin:.45rem 0}
+details.day[open]{border-color:var(--accent)}
+details.day summary{
+  display:flex; align-items:center; gap:.8rem; padding:.65rem .9rem;
+  cursor:pointer; list-style:none; font-size:.95rem;
+}
+details.day summary::-webkit-details-marker{display:none}
+details.day summary:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:10px}
+.d-num{
+  flex:none; min-width:2.2rem; height:2.2rem; border-radius:1.1rem; padding:0 .4rem;
+  border:1.5px solid var(--accent); color:var(--accent);
+  display:flex; align-items:center; justify-content:center;
+  font-variant-numeric:tabular-nums; font-weight:700; font-size:.85rem;
+}
+.d-title{font-weight:600}
+.d-flag{
+  margin-left:auto; flex:none; font-size:.7rem; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--accent); border:1px solid var(--accent); border-radius:999px; padding:.15rem .55rem;
+}
+.d-body{padding:.2rem 1rem 1rem 3.9rem; font-size:.93rem}
+.d-body p{margin:.5rem 0}
+.d-body .lab{font-weight:700; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-right:.35rem}
+.d-accept{
+  border-left:3px solid var(--ok); padding:.4rem .7rem; background:var(--paper);
+  border-radius:0 8px 8px 0; margin-top:.7rem;
+}
+.d-accept .lab{color:var(--ok)}
+@media (max-width:640px){ .d-body{padding-left:1rem} }
+/* ворота */
+.gates{display:grid; grid-template-columns:repeat(auto-fill,minmax(21rem,1fr)); gap:.9rem}
+.gate{border:1px solid var(--line); border-radius:12px; background:var(--card); padding:1rem 1.1rem}
+.gate h3{margin:0 0 .2rem; font-size:1.02rem}
+.gate .when{font-size:.78rem; color:var(--muted); text-transform:uppercase; letter-spacing:.09em}
+.gate ul{list-style:none; margin:.7rem 0 0; padding:0}
+.gate li{margin:.35rem 0}
+label.ck{display:flex; gap:.55rem; align-items:flex-start; font-size:.92rem; cursor:pointer}
+label.ck input{margin-top:.25rem; accent-color:var(--accent); width:1rem; height:1rem; flex:none}
+label.ck input:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+label.ck:has(input:checked) span{color:var(--muted); text-decoration:line-through; text-decoration-color:var(--line)}
+/* реестр артефактов */
+.registry{border:1px solid var(--line); border-radius:12px; background:var(--card); padding:1rem 1.2rem}
+.registry ul{list-style:none; margin:.4rem 0 0; padding:0; columns:2; column-gap:2rem}
+.registry li{break-inside:avoid; margin:.4rem 0}
+@media (max-width:640px){ .registry ul{columns:1} }
+.progress-line{display:flex; align-items:center; gap:.8rem; margin-top:.9rem}
+.progress-track{flex:1; height:6px; border-radius:3px; background:var(--line); overflow:hidden}
+.progress-fill{height:100%; width:0%; background:var(--accent); border-radius:3px; transition:width .25s}
+@media (prefers-reduced-motion: reduce){ .progress-fill{transition:none} }
+.progress-num{font-variant-numeric:tabular-nums; font-size:.88rem; color:var(--muted); white-space:nowrap}
+.hint{font-size:.8rem; color:var(--muted)}
+footer.foot{
+  border-top:1px solid var(--line); margin-top:3.5rem; padding-top:1.2rem; padding-bottom:2.5rem;
+  font-size:.85rem; color:var(--muted);
+}
+@media print{
+  nav.toc,.hint,.progress-line{display:none}
+  body{background:#fff; color:#000}
+  details.day{border-color:#bbb}
+  .redlines-head{color:#fff}
+  section{break-inside:avoid-page}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="eyebrow">MainExperts · внутренняя программа · поток 2</span>
+  <h1>AI-native SMM за 90 дней</h1>
+  <p class="sub">Персональная программа подготовки для Юли: от дизайнера — к самостоятельному
+  специалисту контентного контура. Тихий старт с книгами и наблюдением, портреты аудитории и
+  контент-план в первую неделю, производство с третьей недели, автономия к дню 90.</p>
+  <div class="meta-row">
+    <span class="chip">ядро — 9 недель с наставником</span>
+    <span class="chip">недели 1–2 — тихий режим</span>
+    <span class="chip">защита — неделя 9</span>
+    <span class="chip">день 90 — автономия</span>
+    <span class="chip">версия 10.07.2026 · ред. 3</span>
+  </div>
+  <div class="route" aria-label="Маршрут: неделя 1 — портреты ЦА и контент-план; день 15 — первые публикации; день 30 — ритм и трафик; неделя 9 — защита; день 90 — автономия">
+    <svg viewBox="0 0 660 74" role="img">
+      <line x1="30" y1="34" x2="630" y2="34"/>
+      <circle cx="30" cy="34" r="7"/>
+      <circle cx="180" cy="34" r="7"/>
+      <circle cx="330" cy="34" r="7"/>
+      <circle cx="480" cy="34" r="7"/>
+      <circle cx="630" cy="34" r="8" class="final"/>
+      <text x="30" y="14" text-anchor="middle">Ворота 1 · д.5</text>
+      <text x="30" y="58" text-anchor="middle">портреты + контент-план</text>
+      <text x="180" y="14" text-anchor="middle">Ворота 2 · д.15</text>
+      <text x="180" y="58" text-anchor="middle">первые публикации</text>
+      <text x="330" y="14" text-anchor="middle">Ворота 3 · д.30</text>
+      <text x="330" y="58" text-anchor="middle">ритм и трафик</text>
+      <text x="480" y="14" text-anchor="middle" class="lbl-strong">Защита · нед.9</text>
+      <text x="480" y="58" text-anchor="middle">скоркарта</text>
+      <text x="630" y="14" text-anchor="middle" class="lbl-strong">День 90</text>
+      <text x="630" y="58" text-anchor="middle">автономия</text>
+    </svg>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Содержание">
+  <a href="#rezultat">Результат</a>
+  <a href="#rol">Рамка роли</a>
+  <a href="#kontur">Режимы дня</a>
+  <a href="#knigi">Книжная полка</a>
+  <a href="#ai">Уровни AI</a>
+  <a href="#linii">Красные линии</a>
+  <a href="#plan">План</a>
+  <a href="#vorota">Ворота и скоркарта</a>
+  <a href="#kpi">KPI</a>
+  <a href="#artefakty">Реестр артефактов</a>
+  <a href="#riski">Риски</a>
+</nav>
+
+<main>
+
+<section id="rezultat">
+  <h2><span class="section-mark">I.</span>Результат ядра — к защите, неделя 9</h2>
+  <p>Не «пройденное обучение», а работающая система плюс человек, который ею управляет:</p>
+  <ol class="deliv">
+    <li>Контент-стратегия потока 2, выросшая из контент-плана недели 1</li>
+    <li>Редакционная политика с комплаенс-правилами проекта</li>
+    <li>Контентная система: календарь, рубрикатор, статусная модель, шаблоны</li>
+    <li>Библиотека промптов (≥40 карточек) и 3+ работающих AI-конвейера</li>
+    <li>Исследования: портреты ЦА, словарь языка аудитории, разбор конкурентов, банк фактов</li>
+    <li>Пакет платного трафика: 6–9 креативов, 2 лид-магнита</li>
+    <li>Вебинарный пакет: прогрев, анонсы, ретаргет</li>
+    <li>Дашборд метрик и недельный отчётный цикл</li>
+    <li>Регламент модерации и кризисная памятка</li>
+    <li>25+ вышедших публикаций с разметкой и выводами по данным</li>
+    <li>SOP автоматизаций с измеренной экономией времени</li>
+    <li>План закрепления на дни 61–90 и квартальный горизонт</li>
+  </ol>
+</section>
+
+<section id="rol">
+  <h2><span class="section-mark">II.</span>Рамка роли</h2>
+  <p><b>Поток.</b> Ты работаешь на поток 2 — воронку самообслуживания (скрининг → Профиль 10 →
+  Профиль 360) — и контентный слой трафика: соцсети, Telegram, YouTube. Платный трафик
+  поддерживаешь креативами и лид-магнитами.</p>
+  <div class="callout accent">
+    <span class="callout-t">Граница роли</span>
+    Поток 1 (премиальные личные продажи) — вне зоны роли. В массовом контенте нет цен,
+    имён клиентов и механик потока 1. Метрики двух потоков никогда не смешиваются —
+    это первое правило проекта.
+  </div>
+  <p><b>Площадки ядра.</b> Русскоязычный контур: Telegram-канал, ВК, аккаунт
+  mainexperts_russia, короткие видео на YouTube. Английский аккаунт — переупаковка лучшего
+  контента с недели 7; мини-стратегия EN/MENA — в закреплении (дни 61–90).</p>
+  <p><b>Люди вокруг.</b> Заказчик — основатель. Наставник — направление маркетинга и
+  контента (Игорь). Стыковки: методология и границы психодиагностики (Вадим); платформа,
+  посадочные, UTM (Александр); сведение оплат с источником трафика (Даниил).</p>
+  <p><b>Формат наставничества.</b> Асинхронный по умолчанию: у каждого артефакта есть
+  критерий приёмки, проверка занимает до 15 минут. Живые точки — утренние 15 минут в
+  неделях 1–3 (с недели 7 — через день), ворота, пятничные ретроспективы, предзащита и
+  защита. В закреплении — еженедельный отчёт основателю.</p>
+</section>
+
+<section id="kontur">
+  <h2><span class="section-mark">III.</span>Режимы дня</h2>
+
+  <h3>Тихий режим — недели 1–2</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th class="num">Время</th><th>Блок</th><th>Содержание</th></tr></thead>
+    <tbody>
+      <tr><td class="num">09:00–09:15</td><td>План дня</td><td>Короткая сверка с наставником</td></tr>
+      <tr><td class="num">09:15–10:45</td><td>Чтение</td><td>Книга недели + канон проекта</td></tr>
+      <tr><td class="num">11:00–14:30</td><td>Наблюдение и разбор</td><td>Аудитория, конкуренты, живая речь — смотреть и записывать</td></tr>
+      <tr><td class="num">14:30–16:30</td><td>Заметки и черновики</td><td>Портреты ЦА, копилка контент-плана: темы, рубрики, референсы</td></tr>
+      <tr><td class="num">17:00–17:15</td><td>Итог дня</td><td>Три строки: что поняла, что удивило, что уходит в контент-план</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="hint">Без публикаций и производственных дедлайнов. Результат двух недель — понимание
+  проекта, портреты ЦА, контент-план и подготовленные инструменты.</p>
+
+  <h3>Рабочий режим — недели 3–9</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th class="num">Время</th><th>Блок</th><th>Содержание</th></tr></thead>
+    <tbody>
+      <tr><td class="num">09:00–09:20</td><td>Метрики и план</td><td>Вчерашние цифры, план дня; с недели 5 — самостоятельно</td></tr>
+      <tr><td class="num">09:20–09:50</td><td>Чтение</td><td>30 минут, не больше: книга — усилитель практики, не замена</td></tr>
+      <tr><td class="num">09:50–10:40</td><td>Теория дня</td><td>Максимум час вместе с чтением; остальное — производство</td></tr>
+      <tr><td class="num">10:40–15:30</td><td>Производство</td><td>Артефакт дня; публикации — только по чек-листу</td></tr>
+      <tr><td class="num">15:30–16:30</td><td>AI-блок</td><td>Наращивание конвейеров, пополнение библиотеки промптов</td></tr>
+      <tr><td class="num">17:00–17:30</td><td>Журнал ценности</td><td>Что создано, какую метрику двигает, что ушло в библиотеку</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h3>Три правила</h3>
+  <p>1. В тихом режиме день закрывается итогом в три строки. С недели 3 день без артефакта
+  не закрывается: сорван артефакт — фиксируется причина и день коррекции из буфера.</p>
+  <p>2. Каждый промпт в библиотеку — карточкой: задача, версия, пример входа и выхода,
+  критерий качества, дата.</p>
+  <p>3. Пятница — ретроспектива 30 минут: что показали данные (в тихом режиме — наблюдение),
+  что меняем на следующей неделе.</p>
+</section>
+
+<section id="knigi">
+  <h2><span class="section-mark">IV.</span>Книжная полка</h2>
+  <p>Обязательная часть программы. Ритм: недели 1–2 — 60–90 минут чтения утром; с недели 3 —
+  30 минут в день. Проверка чтения — не пересказ: каждая книга обязана оставить след в
+  твоих артефактах.</p>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th class="num">Недели</th><th>Книга</th><th>Зачем</th><th>След в артефактах</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td>Роб Фицпатрик, «Спроси маму»</td><td>Слышать боли клиентов, а не подтверждения своих идей</td><td>Вопросы для чтения чатов ЦА; портреты ЦА (дни 3–4)</td></tr>
+      <tr><td class="num">2–3</td><td>Максим Ильяхов, Людмила Сарычева, «Пиши, сокращай»</td><td>Рабочий стандарт текста; по главам, не подряд</td><td>Правила редполитики (нед. 3), тексты публикаций</td></tr>
+      <tr><td class="num">4–5</td><td>Роберт Чалдини, «Психология влияния»</td><td>Механики доверия и убеждения; выборочно, по принципам</td><td>Чек-лист этичного применения триггеров в креативах (нед. 6)</td></tr>
+      <tr><td class="num">6</td><td>Анн Хэндли, «Пишут все!»</td><td>Практика контент-производства; выборочно</td><td>Улучшения рубрик после первого месяца данных</td></tr>
+      <tr><td class="num">7–8</td><td>Байрон Шарп, «Как растут бренды»</td><td>Доказательный маркетинг против мифов</td><td>Аргументация решений на защите (нед. 9)</td></tr>
+      <tr><td class="num">9</td><td>Эл Райс, Джек Траут, «Позиционирование: битва за умы»</td><td>Классика позиционирования, читается быстро</td><td>Формулировка позиционирования в точке входа</td></tr>
+      <tr><td class="num">61–90</td><td>Нир Эяль, «На крючке»</td><td>Продуктовые механики возвращения</td><td>Идеи удержания в контентных сериях</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="hint">Справочник по задаче, не подряд: Максим Ильяхов, «Ясно, понятно». Книг по ИИ в полке
+  сознательно нет — печатные руководства по промптингу устаревают быстрее, чем издаются;
+  источник — действующие руководства разработчиков моделей и библиотека промптов проекта.</p>
+</section>
+
+<section id="ai">
+  <h2><span class="section-mark">V.</span>Уровни AI-мастерства</h2>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th class="num">Недели</th><th>Уровень</th><th>Проверка</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1–2</td><td><b>Собеседник и оператор:</b> ИИ для конспектов и разборов; рабочее окружение, база знаний, первые карточки, AI-контролёр красных линий</td><td>Конспекты с ИИ; ≥10 карточек; контролёр ловит 5 из 5 подсаженных нарушений</td></tr>
+      <tr><td class="num">3–4</td><td><b>Строитель конвейеров:</b> цепочки «исследование → тезисы → черновик → редактура → адаптация под площадки»</td><td>Пост от идеи до готового ≤90 минут, к концу недели 4 — ≤60</td></tr>
+      <tr><td class="num">5–6</td><td><b>Контролёр качества:</b> LLM-проверка по чек-листу и редполитике, сверка фактов с банком</td><td>0 нарушений стоп-листа за две недели</td></tr>
+      <tr><td class="num">7–9</td><td><b>Автоматизатор:</b> регулярные конвейеры, отчёт по метрикам, адаптация материала под 4 площадки</td><td>3 автоматизации; экономия времени измерена в часах</td></tr>
+      <tr><td class="num">61–90</td><td><b>Развитие:</b> новые конвейеры по данным, оптимизация библиотеки</td><td>Библиотека растёт от реальных задач, мёртвые промпты списываются</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="hint">Принцип: ИИ — средство производства, не предмет изучения. Автоматизируется только процесс,
+  отработанный вручную и снабжённый метриками.</p>
+</section>
+
+<section id="linii">
+  <h2><span class="section-mark">VI.</span>Красные линии</h2>
+  <p>Выучиваются в день 2, действуют всегда. Нарушение любой из них — не стилистическая
+  ошибка, а регуляторный или репутационный риск для проекта.</p>
+  <div class="redlines">
+    <div class="redlines-head">Девять правил, которые не обсуждаются</div>
+    <ol>
+      <li><b>Названия тестов.</b> Коммерческой лицензии на методики нет — в любом внешнем материале только рабочие названия.</li>
+      <li><b>Граница психодиагностики.</b> Никаких «диагнозов», клинических терминов и обещаний психологической помощи. Формулировки — про интересы, склонности, навигацию. Спорное — на проверку методологии (Вадим).</li>
+      <li><b>Несовершеннолетние.</b> Никаких персональных данных, фото и историй реальных детей без оформленного согласия; по умолчанию — не использовать вовсе.</li>
+      <li><b>Синтетические профили.</b> Истории реальных людей без согласия запрещены; безопасны обезличенные архетипы, помеченные как собирательные.</li>
+      <li><b>Маркировка рекламы в РФ.</b> До заключения юриста по маркировке (ОРД, токены) платные размещения в РФ не запускаются.</li>
+      <li><b>Статус Meta в РФ.</b> Обязательные дисклеймеры; таргетинг Meta-рекламы — только вне РФ; для РФ — ВК и Telegram.</li>
+      <li><b>Потоки.</b> В массовом контенте нет цен и механик потока 1.</li>
+      <li><b>Факты.</b> Каждый факт во внешнем материале — источник, дата, ссылка. Нет источника — нет факта: ставим пробел, не выдумываем.</li>
+      <li><b>Гипотеза скрининга.</b> Внутри команды — всегда «ставка»; во внешнем контенте не утверждать как доказанное то, что не доказано.</li>
+    </ol>
+    <div class="redlines-note">Инструменты: стоп-лист формулировок и чек-лист публикации, с дня 8 продублированные
+    AI-контролёром. Ответственность — всегда на человеке, не на модели.</div>
+  </div>
+</section>
+
+<section id="plan">
+  <h2><span class="section-mark">VII.</span>План</h2>
+
+  <div class="week">
+    <div class="week-h"><span class="wk">До старта</span><h3>Подготовка</h3></div>
+    <details class="day">
+      <summary><span class="d-num">0</span><span class="d-title">День 0 — готовит направление, не ты</span></summary>
+      <div class="d-body">
+        <p>Доступы к аккаунтам и аналитике, рабочее AI-окружение с проектной базой знаний,
+        инструменты дизайна и планирования, книги недель 1–3, календарь точек с наставником.</p>
+        <p class="d-accept"><span class="lab">Принято, если</span> утром дня 1 всё открывается и работает.</p>
+      </div>
+    </details>
+  </div>
+
+  <p class="stage-lbl">Этап 1 · Фундамент · недели 1–3</p>
+
+  <div class="week">
+    <div class="week-h"><span class="wk">Неделя 1 · тихая</span><h3>Погружение, портреты ЦА, контент-план</h3></div>
+
+    <details class="day">
+      <summary><span class="d-num">1</span><span class="d-title">Погружение в проект</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Чтение</span>Канон проекта: стратегия, продукт, аудитория. Старт «Спроси маму».</p>
+        <p><span class="lab">Практика</span>Одностраничная карта бизнеса своими словами; лист сверки — расхождения рабочего снимка с текущим днём, вопросы основателю (статус вебинара, номенклатура, приоритеты месяца).</p>
+        <p class="d-accept"><span class="lab">Принято, если</span> карта обсуждена с наставником; вопросы сверки получили ответы основателя.</p>
+      </div>
+    </details>
+
+    <details class="day">
+      <summary><span class="d-num">2</span><span class="d-title">Красные линии</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Чтение</span>Раздел VI целиком, с примерами нарушений и последствий.</p>
+        <p><span class="lab">Практика</span>Конспект красных линий своими словами; черновик стоп-листа формулировок. Никаких инструментов — только понимание.</p>
+        <p class="d-accept"><span class="lab">Принято, если</span> пересказ красных линий наставнику — без единой ошибки.</p>
+      </div>
+    </details>
+
+    <details class="day">
+      <summary><span class="d-num">3</span><span class="d-title">Портреты ЦА, часть 1: живая речь</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Чтение</span>Четыре персонажа исследований аудитории и их боли: «потерянные годы» ребёнка, непонимание талантов, страх навязать путь; что подтверждено, что опровергнуто.</p>
+        <p><span class="lab">Практика</span>Чаты родительских сообществ, комментарии, отзывы на конкурентов — с вопросами из «Спроси маму».</p>
+        <p><span class="lab">Итог</span>Словарь языка аудитории: 30+ живых формулировок с источниками.</p>
+      </div>
+    </details>
+
+    <details class="day">
+      <summary><span class="d-num">4</span><span class="d-title">Портреты ЦА, часть 2: карточки</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Практика</span>Четыре карточки-портрета для контента: боль → как звучит у живых людей → триггер → тема → тон. Обзорная насмотренность по конкурентам — копилка идей тем.</p>
+        <p><span class="lab">Итог</span>Портреты ЦА.</p>
+        <p class="d-accept"><span class="lab">Принято, если</span> каждая боль в портретах подтверждена цитатой с источником и датой.</p>
+      </div>
+    </details>
+
+    <details class="day">
+      <summary><span class="d-num">5</span><span class="d-title">Контент-план</span><span class="d-flag">Ворота 1</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Практика</span>Черновик контент-плана: площадки, 4–6 рубрик (каждая — гипотеза с метрикой), частота, 20 тем на первый месяц, референсы. Обсуждение с наставником — разговор, не тест.</p>
+        <p class="d-accept"><span class="lab">Ворота 1 · мягкие</span>Портреты ЦА готовы; контент-план представлен и обсуждён; красные линии пересказаны без ошибок; карта бизнеса подтверждена.</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="week">
+    <div class="week-h"><span class="wk">Неделя 2 · тихая</span><h3>Глубина и инструменты — всё ещё без публикаций</h3></div>
+
+    <details class="day">
+      <summary><span class="d-num">6</span><span class="d-title">Конкурентный разбор</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Практика</span>5–7 игроков профориентации РФ/СНГ плюс 2 англоязычных: форматы, частота, воронки, реакция аудитории, цены; отдельно — разбор визуала (твоя сила).</p>
+        <p><span class="lab">Итог</span>Таблица разбора + 20 работающих механик.</p>
+        <p class="d-accept"><span class="lab">Принято, если</span> по каждому конкуренту есть вывод «что берём / что не повторяем / почему».</p>
+      </div>
+    </details>
+
+    <details class="day">
+      <summary><span class="d-num">7</span><span class="d-title">Банк фактов</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Теория</span>Базы профессий O*NET/ESCO; рынок труда РФ через api.hh.ru; правило «источник + дата + ссылка»; по MENA данные фрагментированы — без источника не публикуем.</p>
+        <p><span class="lab">Итог</span>10–15 проверенных фактов под рубрики контент-плана, с полными реквизитами.</p>
+        <p class="d-accept"><span class="lab">Принято, если</span> выборочная проверка наставником 3 фактов подтверждает реквизиты.</p>
+      </div>
+    </details>
+
+    <details class="day">
+      <summary><span class="d-num">8</span><span class="d-title">AI-рабочее место</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Практика</span>Проектная база знаний, карточка промпта, первые конвейеры; AI-контролёр — промпт, проверяющий текст по стоп-листу и чек-листу.</p>
+        <p><span class="lab">Итог</span>Рабочее окружение + AI-контролёр + 5 промпт-карточек.</p>
+        <p class="d-accept"><span class="lab">Принято, если</span> на 5 тестовых текстах с подсаженными нарушениями контролёр и ты вместе ловите 5 из 5.</p>
+      </div>
+    </details>
+
+    <details class="day">
+      <summary><span class="d-num">9</span><span class="d-title">Визуальная система</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Практика</span>Брендкит соцсетей: сетки, обложки, шаблоны каруселей, историй, превью; адаптация под площадки.</p>
+        <p><span class="lab">Итог</span>Брендкит + 10 рабочих шаблонов.</p>
+        <p class="d-accept"><span class="lab">Принято, если</span> шаблоны закрывают 80% форматов контент-плана.</p>
+      </div>
+    </details>
+
+    <details class="day">
+      <summary><span class="d-num">10</span><span class="d-title">Редполитика, черновик</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Практика</span>Тон и язык (русский профессиональный, без штампов; сжатие важнее объёма; правила из «Пиши, сокращай» — в дело), красные линии, правила CTA (мосты на квиз и Профиль 10 без давления), работа с гипотезой скрининга во внешнем контенте.</p>
+        <p><span class="lab">Итог</span>Черновик редполитики + финальный стоп-лист. Ретроспектива двух тихих недель.</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="week">
+    <div class="week-h"><span class="wk">Неделя 3</span><h3>Переход к производству: стратегия, система, первые публикации</h3></div>
+
+    <details class="day">
+      <summary><span class="d-num">11</span><span class="d-title">Контент-стратегия</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Практика</span>Контент-план дорабатывается в стратегию: цели по метрикам на квартал, связь рубрик с воронкой (квиз, Профиль 10), частота по площадкам. Утверждение основателем.</p>
+      </div>
+    </details>
+
+    <details class="day">
+      <summary><span class="d-num">12</span><span class="d-title">Редполитика, финал</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Итог</span>Редполитика 2–3 страницы + чек-лист публикации v2 + обновлённый AI-контролёр.</p>
+        <p class="d-accept"><span class="lab">Принято, если</span> тестовый текст проходит проверку без разночтений между тобой и наставником.</p>
+      </div>
+    </details>
+
+    <details class="day">
+      <summary><span class="d-num">13</span><span class="d-title">Контентная система</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Практика</span>Календарь на 2 недели; статусная модель (идея → черновик → проверка чек-листом → визуал → готов → опубликован → измерен); лимит незавершённой работы; сильные сигналы — доля правок и время цикла.</p>
+      </div>
+    </details>
+
+    <details class="day">
+      <summary><span class="d-num">14</span><span class="d-title">Первые публикации</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Практика</span>1–2 публикации по чек-листу, с UTM-разметкой, приёмка наставником.</p>
+      </div>
+    </details>
+
+    <details class="day">
+      <summary><span class="d-num">15</span><span class="d-title">Публикации и разбор первых цифр</span><span class="d-flag">Ворота 2</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Практика</span>Публикации 2–3; разбор первых цифр с наставником.</p>
+        <p class="d-accept"><span class="lab">Ворота 2</span>Стратегия и редполитика утверждены; календарь на 2 недели; 3+ публикации вышли без замечаний по чек-листу; библиотека ≥10 карточек.</p>
+      </div>
+    </details>
+  </div>
+
+  <p class="stage-lbl">Этап 2 · Ритм и деньги · недели 4–6</p>
+
+  <div class="week">
+    <details class="day">
+      <summary><span class="d-num">Н4</span><span class="d-title">Неделя 4 — производственный ритм и метрики</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Содержание</span>Ритм 3–5 публикаций в неделю через конвейер; хронометраж цикла (цель ≤60 минут к концу недели); схема «метрики контента → метрики воронки»; ДРР (доля рекламных расходов) — главный KPI, CPL — только прокси; UTM-карта; честные границы атрибуции.</p>
+        <p><span class="lab">Артефакты</span>Схема метрик, журнал цикла, публикации недели.</p>
+      </div>
+    </details>
+
+    <details class="day">
+      <summary><span class="d-num">Н5</span><span class="d-title">Неделя 5 — дашборд и отчётность</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Содержание</span>Дашборд: Метрика/GA + статистика площадок в одном отчёте, обновление ≤15 минут в день. Первый полностью самостоятельный недельный отчёт: цифры → выводы → решения + блок «сигналы продукту» (вопросы аудитории, реакции на CTA, сигналы по гипотезе скрининга). LLM-контроль качества в конвейере.</p>
+        <p class="d-accept"><span class="lab">Принято, если</span> наставник читает дашборд и отчёт без твоих пояснений.</p>
+      </div>
+    </details>
+
+    <details class="day">
+      <summary><span class="d-num">Н6</span><span class="d-title">Неделя 6 — платный трафик</span><span class="d-flag">Ворота 3</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Содержание</span>6–9 креативов под 3 лид-магнита («7 ошибок, из-за которых дети теряют годы», «5 вопросов, которые откроют таланты», «Какие профессии исчезнут через 10 лет») с гипотезами A/B; чек-лист этичного применения триггеров (по Чалдини); 2 лид-магнита на фактах из банка; связка «объявление → лид-магнит → квиз» с проверкой UTM. Meta — только вне РФ, для РФ — ВК; платные размещения в РФ — после заключения юриста по маркировке.</p>
+        <p class="d-accept"><span class="lab">Ворота 3 · день 30</span>12+ публикаций суммарно; цикл ≤60 минут; дашборд живой; креативы и 2 лид-магнита готовы; отчёт без помощи; 0 нарушений стоп-листа за две недели.</p>
+      </div>
+    </details>
+  </div>
+
+  <p class="stage-lbl">Этап 3 · Самостоятельность · недели 7–9</p>
+
+  <div class="week">
+    <details class="day">
+      <summary><span class="d-num">Н7</span><span class="d-title">Неделя 7 — вебинарный трек</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Содержание</span>Вебинар — главное событие потока 2. Метрики прогонов: «успешный успех» — продажи, «средний» — заявки, «просто успех» — регистрации; до 3 прогонов для валидной аналитики. Прогревная цепочка, анонсы, ретаргет-креативы, связка с квизом и Профилем 10; если ближайший прогон прошёл — пакет на следующий. Плюс переупаковка 2–3 лучших единиц для английского аккаунта.</p>
+        <p class="d-accept"><span class="lab">Принято, если</span> цепочка покрывает регистрацию, доходимость и пост-вебинарный мост на скрининг.</p>
+      </div>
+    </details>
+
+    <details class="day">
+      <summary><span class="d-num">Н8</span><span class="d-title">Неделя 8 — комьюнити и автоматизация</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Содержание</span>Регламент модерации: сроки, тональность, шаблоны. Темы, где SMM не отвечает сам: психология и медицина (методология), жалобы и оплаты (направление платежей), юридические претензии (основатель). Протокол эскалации, разбор 2–3 смоделированных кризисов. Три автоматизации отработанных рутин (черновики по рубрикам из банка фактов; адаптация материала под 4 площадки; сборка метрик в отчёт) + SOP; экономия времени измерена.</p>
+        <p class="d-accept"><span class="lab">Принято, если</span> на смоделированном кризисе действуешь по протоколу; автоматизацию по SOP запускает наставник без твоего участия.</p>
+      </div>
+    </details>
+
+    <details class="day">
+      <summary><span class="d-num">Н9</span><span class="d-title">Неделя 9 — систематизация и защита</span><span class="d-flag">Защита</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Содержание</span>Точка входа в систему (стратегия, редполитика, календарь, библиотека, SOP, дашборд); план закрепления на дни 61–90; закрытие долгов из буфера; предзащита в среду.</p>
+        <p><span class="lab">Защита · пятница · 90 минут</span>Артефакты ядра (30 мин) → разбор метрик и решений (20 мин) → стресс-вопросы: экономика воронки, ДРР против CPL, различие потоков, статус гипотезы скрининга, границы атрибуции, красные линии, аргументы из прочитанного (20 мин) → живое задание: пост с нуля через конвейер за 30 минут.</p>
+        <p class="d-accept"><span class="lab">Жюри</span>Основатель + наставник. Решение — по скоркарте, не по впечатлению.</p>
+      </div>
+    </details>
+  </div>
+
+  <p class="stage-lbl">Закрепление · дни 61–90 · автономный режим</p>
+
+  <div class="week">
+    <details class="day">
+      <summary><span class="d-num">61+</span><span class="d-title">Работа без ежедневного наставника</span><span class="d-flag">День 90</span></summary>
+      <div class="d-body">
+        <p><span class="lab">Содержание</span>Еженедельный отчёт основателю. Масштабирование рубрик по данным первого месяца; SEO-стык с контентом; мини-стратегия английского аккаунта и MENA; развитие автоматизаций; поддержка вебинарных прогонов; пополнение банка фактов и библиотеки промптов от реальных задач.</p>
+        <p class="d-accept"><span class="lab">День 90 · ретроспектива с основателем</span>Решение о полной автономии и целях квартала. Порог: четыре недельных отчёта подряд приняты без правок; метрики контура растут — или падение объяснено данными и планом.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section id="vorota">
+  <h2><span class="section-mark">VIII.</span>Ворота и скоркарта</h2>
+  <p>Провал ворот — день коррекции из буфера и повторная проверка. Два провала подряд —
+  разговор с основателем о сроках. Мягкость тихих недель — в отсутствии производственного
+  давления, не в отмене ворот.</p>
+  <div class="gates">
+    <div class="gate">
+      <h3>Ворота 1 · мягкие</h3><span class="when">День 5</span>
+      <ul>
+        <li><label class="ck"><input type="checkbox" data-k="g1a"><span>Портреты ЦА готовы, боли подтверждены цитатами</span></label></li>
+        <li><label class="ck"><input type="checkbox" data-k="g1b"><span>Контент-план представлен и обсуждён</span></label></li>
+        <li><label class="ck"><input type="checkbox" data-k="g1c"><span>Красные линии пересказаны без ошибок</span></label></li>
+        <li><label class="ck"><input type="checkbox" data-k="g1d"><span>Карта бизнеса подтверждена</span></label></li>
+      </ul>
+    </div>
+    <div class="gate">
+      <h3>Ворота 2</h3><span class="when">День 15</span>
+      <ul>
+        <li><label class="ck"><input type="checkbox" data-k="g2a"><span>Стратегия и редполитика утверждены</span></label></li>
+        <li><label class="ck"><input type="checkbox" data-k="g2b"><span>Календарь заполнен на 2 недели</span></label></li>
+        <li><label class="ck"><input type="checkbox" data-k="g2c"><span>3+ публикации вышли без замечаний</span></label></li>
+        <li><label class="ck"><input type="checkbox" data-k="g2d"><span>Библиотека промптов ≥10 карточек</span></label></li>
+      </ul>
+    </div>
+    <div class="gate">
+      <h3>Ворота 3</h3><span class="when">День 30</span>
+      <ul>
+        <li><label class="ck"><input type="checkbox" data-k="g3a"><span>12+ публикаций суммарно</span></label></li>
+        <li><label class="ck"><input type="checkbox" data-k="g3b"><span>Цикл поста ≤60 минут</span></label></li>
+        <li><label class="ck"><input type="checkbox" data-k="g3c"><span>Дашборд живой, читается без пояснений</span></label></li>
+        <li><label class="ck"><input type="checkbox" data-k="g3d"><span>Креативы и 2 лид-магнита готовы</span></label></li>
+        <li><label class="ck"><input type="checkbox" data-k="g3e"><span>Отчёт собран без помощи</span></label></li>
+        <li><label class="ck"><input type="checkbox" data-k="g3f"><span>0 нарушений стоп-листа за две недели</span></label></li>
+      </ul>
+    </div>
+    <div class="gate">
+      <h3>Защита</h3><span class="when">Неделя 9</span>
+      <ul>
+        <li><label class="ck"><input type="checkbox" data-k="g4a"><span>Все артефакты ядра предъявлены</span></label></li>
+        <li><label class="ck"><input type="checkbox" data-k="g4b"><span>Стресс-вопросы — без фактических ошибок</span></label></li>
+        <li><label class="ck"><input type="checkbox" data-k="g4c"><span>Живое задание — пост за 30 минут</span></label></li>
+        <li><label class="ck"><input type="checkbox" data-k="g4d"><span>Скоркарта: все пороги достигнуты</span></label></li>
+      </ul>
+    </div>
+    <div class="gate">
+      <h3>День 90</h3><span class="when">Конец закрепления</span>
+      <ul>
+        <li><label class="ck"><input type="checkbox" data-k="g5a"><span>4 недельных отчёта подряд приняты без правок</span></label></li>
+        <li><label class="ck"><input type="checkbox" data-k="g5b"><span>Метрики контура растут — или падение объяснено данными</span></label></li>
+        <li><label class="ck"><input type="checkbox" data-k="g5c"><span>Решение об автономии и целях квартала принято</span></label></li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Скоркарта самостоятельности — пороги к защите</h3>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Критерий</th><th>Порог</th></tr></thead>
+    <tbody>
+      <tr><td>Публикации без содержательных правок наставника</td><td>5 последних подряд</td></tr>
+      <tr><td>Нарушения стоп-листа за недели 7–9</td><td>0</td></tr>
+      <tr><td>Цикл поста «идея → готов»</td><td>≤60 минут</td></tr>
+      <tr><td>Недельное планирование</td><td>≤2 часа, без помощи</td></tr>
+      <tr><td>Недельный отчёт</td><td>Цифры верны, выводы обоснованы, есть решения</td></tr>
+      <tr><td>Библиотека промптов</td><td>≥40 карточек с критериями качества</td></tr>
+      <tr><td>Автоматизации</td><td>3 работающие, экономия измерена</td></tr>
+      <tr><td>Защита</td><td>Стресс-вопросы без ошибок; живое задание в срок</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="kpi">
+  <h2><span class="section-mark">IX.</span>KPI для бизнеса</h2>
+  <p><b>Опережающие (внутри ядра, с недели 3):</b> публикации в неделю по календарю; время
+  цикла; доля правок наставника; рост подписчиков и охватов; переходы по UTM на квиз; CTR
+  тестовых креативов; часы, сэкономленные автоматизацией.</p>
+  <p><b>Запаздывающие (закрепление и дальше):</b> регистрации на скрининг из контента и их
+  стоимость; вклад контура в ДРР; доходимость вебинара из контентных касаний.</p>
+  <div class="callout">
+    <span class="callout-t">Честная граница</span>
+    В первый месяц контент не докажет вклад в выручку — обещать это в отчётах запрещено той
+    же редполитикой, которая запрещает выдумывать факты для клиентов. Первые деньги-сигналы —
+    после запуска платного трафика и прогона вебинара, при сведении оплат с источником.
+  </div>
+</section>
+
+<section id="artefakty">
+  <h2><span class="section-mark">X.</span>Реестр артефактов ядра</h2>
+  <p>Все двадцать обязательны к защите. Отмечай принятые — прогресс сохраняется в этом браузере.</p>
+  <div class="registry">
+    <ul>
+      <li><label class="ck"><input type="checkbox" data-k="a01"><span>Карта бизнеса + лист сверки (д. 1)</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="a02"><span>Стоп-лист + чек-лист публикации + AI-контролёр (д. 2, 8, 12)</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="a03"><span>Портреты ЦА + словарь языка аудитории (д. 3–4)</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="a04"><span>Контент-план → контент-стратегия (д. 5, 11)</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="a05"><span>Конкурентный разбор + 20 механик (д. 6)</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="a06"><span>Банк фактов с реквизитами (д. 7 →)</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="a07"><span>Брендкит + 10 шаблонов (д. 9)</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="a08"><span>Редакционная политика (д. 10, 12)</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="a09"><span>Календарь + статусная доска (д. 13)</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="a10"><span>Схема метрик, UTM-разметка (нед. 4)</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="a11"><span>Дашборд (нед. 5)</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="a12"><span>Недельные отчёты с сигналами продукту (с нед. 5)</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="a13"><span>Пакет креативов + гипотезы A/B (нед. 6)</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="a14"><span>Два лид-магнита со связкой до квиза (нед. 6)</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="a15"><span>Вебинарный пакет (нед. 7)</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="a16"><span>Регламент модерации + кризисная памятка (нед. 8)</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="a17"><span>Три автоматизации + SOP (нед. 8)</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="a18"><span>Точка входа + план закрепления 61–90 (нед. 9)</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="a19"><span>Библиотека промптов ≥40 карточек (с д. 8)</span></label></li>
+      <li><label class="ck"><input type="checkbox" data-k="a20"><span>25+ публикаций с разметкой (с д. 14)</span></label></li>
+    </ul>
+    <div class="progress-line">
+      <div class="progress-track"><div class="progress-fill" id="pfill"></div></div>
+      <span class="progress-num" id="pnum">0 из 20</span>
+    </div>
+  </div>
+  <p class="hint">Расширение (не в ущерб ядру): переупаковка для английского аккаунта сверх плана
+  недели 7; черновик SEO-стыка; подборка пользовательских вопросов для методологии.</p>
+</section>
+
+<section id="riski">
+  <h2><span class="section-mark">XI.</span>Риски и предохранители</h2>
+  <div class="tbl-wrap">
+  <table>
+    <thead><tr><th>Риск</th><th>Предохранитель</th></tr></thead>
+    <tbody>
+      <tr><td>Рабочий снимок контекста устарел</td><td>Сверка дня 1, вопросы основателю, дата у каждого факта</td></tr>
+      <tr><td>Тихие недели растворяются в наблюдении без выводов</td><td>Каждый день закрывается записями в копилку; день 5 — контент-план, день 10 — черновик редполитики обязательны</td></tr>
+      <tr><td>Растянутый темп расхолаживает</td><td>Ворота с числовыми порогами; еженедельные ретроспективы; чтение обязано оставлять след в артефактах</td></tr>
+      <tr><td>Наставник перегружен</td><td>Асинхронная приёмка ≤15 минут, критерии приёмки в каждом артефакте</td></tr>
+      <tr><td>Гипотеза скрининга опровергается на прогонах</td><td>Рубрики — гипотезы; недельный отчёт отслеживает сигналы; стратегия пересобирается по данным</td></tr>
+      <tr><td>Комплаенс-инцидент</td><td>Красные линии с дня 2, AI-контролёр с дня 8, кризисный протокол, темы вне зоны SMM</td></tr>
+      <tr><td>Перегруз и незакрытые долги</td><td>Ядро/расширение, буфер недели 9, правило ворот</td></tr>
+      <tr><td>Обучение ради обучения</td><td>Чтение ограничено по времени и оставляет след; с недели 3 день без артефакта не закрывается</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  MainExperts · программа подготовки AI-native SMM-специалиста · 90 дней · версия от 10.07.2026, ред. 3.<br>
+  Источник: vault/40-reports/2026-07-10-smm-ai-native-programma.md (после трёхэтапной итерации
+  качества и правок основателя). Вопросы по программе — к наставнику направления маркетинга.
+</footer>
+
+<script>
+(function(){
+  var KEY='me-smm-90';
+  var boxes=document.querySelectorAll('input[type=checkbox][data-k]');
+  var state={};
+  try{ state=JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){ state={}; }
+  function refresh(){
+    var reg=document.querySelectorAll('#artefakty input[data-k]');
+    var done=0;
+    reg.forEach(function(b){ if(b.checked) done++; });
+    var fill=document.getElementById('pfill'), num=document.getElementById('pnum');
+    if(fill) fill.style.width=(done/reg.length*100)+'%';
+    if(num) num.textContent=done+' из '+reg.length;
+  }
+  boxes.forEach(function(b){
+    if(state[b.dataset.k]) b.checked=true;
+    b.addEventListener('change',function(){
+      state[b.dataset.k]=b.checked;
+      try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){}
+      refresh();
+    });
+  });
+  refresh();
+  window.addEventListener('beforeprint',function(){
+    document.querySelectorAll('details').forEach(function(d){ d.setAttribute('open',''); });
+  });
+})();
+</script>
+</body>
+</html>
