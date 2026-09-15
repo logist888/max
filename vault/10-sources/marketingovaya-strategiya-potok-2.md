@@ -11,7 +11,7 @@ stream: поток-2
 audience: команда
 recipient: команда
 status: черновик
-sources: ["docs/01-strategy.md", "docs/02-product.md", "docs/03-audience-custdev.md", "docs/04-operations.md", "docs/05-risk-compliance.md", "docs/06-data-tools-payments.md", "docs/07-principles-open-questions.md", "docs/08-marketing-strategy-blueprint.md"]
+sources: ["docs/01-strategy.md", "docs/02-product.md", "docs/03-audience-custdev.md", "docs/04-operations.md", "docs/05-risk-compliance.md", "docs/06-data-tools-payments.md", "docs/07-principles-open-questions.md", "docs/18-marketing-strategy-blueprint.md"]
 tags: [маркетинг, стратегия, поток-2, воронка, freemium, вебинар]
 ---
 
@@ -199,7 +199,7 @@ tags: [маркетинг, стратегия, поток-2, воронка, fre
 
 ## Источники
 
-Внутренний канон (снимок 23.06.2026): `docs/01-strategy.md`, `docs/02-product.md`, `docs/03-audience-custdev.md`, `docs/04-operations.md`, `docs/05-risk-compliance.md`, `docs/06-data-tools-payments.md`, `docs/07-principles-open-questions.md`. Каркас структуры: `docs/08-marketing-strategy-blueprint.md` (синтез мирового канона: Kotler/Keller, Kotler/Armstrong, McKinsey/Minto, HubSpot; отраслевой EdTech). Свежие заметки: `vault/20-notes/block5-product-staging.md`, `block6-metrics-staging.md`.
+Внутренний канон (снимок 23.06.2026): `docs/01-strategy.md`, `docs/02-product.md`, `docs/03-audience-custdev.md`, `docs/04-operations.md`, `docs/05-risk-compliance.md`, `docs/06-data-tools-payments.md`, `docs/07-principles-open-questions.md`. Каркас структуры: `docs/18-marketing-strategy-blueprint.md` (синтез мирового канона: Kotler/Keller, Kotler/Armstrong, McKinsey/Minto, HubSpot; отраслевой EdTech). Свежие заметки: `vault/20-notes/block5-product-staging.md`, `block6-metrics-staging.md`.
 
 Числовые ориентиры (CPL ≈$3, бюджет $1500–2000, конверсии >40%/>5%, экономика $1 млн) — из файлов на Google Drive от 09–10.06.2026, **до сдвига номенклатуры 17–18.06**; перед использованием в клиентских материалах перепроверять с источником и датой. Данные по MENA — пробел (источники фрагментированы, за пейволом).
 

@@ -172,7 +172,7 @@ tags: [метрики, дашборд, kpi, воронка, аналитика, 
 - Эталон структуры маркетингового отчёта и отчёт 24.06.2026 (ветка git claude/marketing-strategy-report-bdnger).
 - Числовая модель цикла $1000+$1000 (ветка git claude/project-board-prompt-o479iy, boards/sistema-bortov-v2-chisla.md, 02.07.2026) — оценка, не факт.
 - Слои трафика и инструменты: docs/06-data-tools-payments.md (файл Диска от 10.06.2026 — плановые цифры до сдвига номенклатуры 17–18.06).
-- Стратегия горизонта 3 мес и 5–10–50 лет от 28.06.2026 (ветка git claude/mainexperts-strategy-7oz3am, docs/08-strategy-roadmap.md) — пороги, лид-математика, четыре воронки.
+- Стратегия горизонта 3 мес и 5–10–50 лет от 28.06.2026 (ветка git claude/mainexperts-strategy-7oz3am, docs/19-strategy-roadmap.md) — пороги, лид-математика, четыре воронки.
 - Ингест созвонов 22–30.06.2026 (ветка git claude/pensive-einstein-j2eoh6, vault/) — решения по флоу, UI скрининга, приоритету №1 (30.06), слоистой архитектуре данных.
 
 ---
