@@ -11,6 +11,12 @@ venv/
 build/
 *.tmp
 scratch/
+scratchpad/
+
+# Node / инструменты рендеринга (Playwright и пр.)
+node_modules/
+package.json
+package-lock.json
 
 # Сырьё ингеста (большие бинарники); каталог держим через .gitkeep
 raw/*

@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mainexperts — Скрининг риска ошибки при выборе образования</title>
+<meta name="description" content="Ответьте на 15 вопросов и узнайте, насколько высок риск ошибиться при выборе образовательной траектории для вашего ребёнка. Бесплатно, около 2 минут.">
+<style>
+  :root{
+    /* warm brand palette, снято с mainexperts.online */
+    --bg:#F1EBDF;            /* тёплый кремовый фон */
+    --bg-2:#EDE6D8;
+    --surface:#FFFFFF;
+    --ink:#1E2A38;           /* тёмно-синие заголовки */
+    --ink-2:#57544C;         /* тёплый серый — основной текст */
+    --ink-3:#948C7E;         /* приглушённый — метки, подписи */
+    --line:#E7DFCF;          /* тёплая линия */
+    --line-2:#D9CFBB;
+
+    --camel:#C7A878;         /* фирменная кнопка / камель */
+    --camel-deep:#B4935E;    /* ховер кнопки */
+    --gold:#C69A4C;          /* акцент: дуга, точки, ссылки */
+    --gold-soft:#EFE4C9;     /* фон бейджа «стоит внимания» */
+    --gold-line:#E3D0A2;
+
+    --taupe:#8C7D6B;         /* нейтральные чипы */
+    --taupe-bg:#9A9084;
+
+    --risk:#C0504A;          --risk-bg:#F7E5E1;   --risk-chip:#C85A4E;
+    --warn:#CE9A3A;          --warn-bg:#F7ECD3;   --warn-chip:#DCA43E;
+    --ok:#4F9E6E;            --ok-bg:#E4F0E7;     --ok-chip:#5FB27C;
+
+    --radius:18px;
+    --radius-lg:26px;
+    --sans:"Onest","Golos Text","Inter",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --serif:Georgia,"Times New Roman",serif;
+    --shadow:0 1px 2px rgba(70,56,34,.04),0 10px 30px rgba(70,56,34,.07);
+    --shadow-lg:0 2px 8px rgba(70,56,34,.07),0 26px 60px rgba(70,56,34,.12);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  a{color:inherit}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+  .eyebrow{font-size:12px;font-weight:640;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--gold);margin:0 0 14px}
+  h1,h2,h3{font-weight:760;letter-spacing:-.02em;margin:0;color:var(--ink)}
+  h2{font-size:clamp(26px,3.6vw,38px);line-height:1.12}
+  h3{font-size:18px;font-weight:700}
+  p{margin:0}
+  .lead{color:var(--ink-2);font-size:clamp(16px,1.9vw,19px);line-height:1.6}
+
+  /* ---------- header ---------- */
+  header.site{position:sticky;top:0;z-index:40;background:rgba(241,235,223,.86);
+    backdrop-filter:saturate(150%) blur(10px);border-bottom:1px solid var(--line)}
+  .site-inner{display:flex;align-items:center;gap:14px;height:66px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand .logo-mark{width:34px;height:30px;flex-shrink:0}
+  .brand .word{font-weight:780;font-size:20px;letter-spacing:-.02em;color:var(--ink)}
+  .site-spacer{flex:1}
+  .site-note{font-size:12.5px;color:var(--ink-3);font-weight:560}
+  @media(max-width:680px){.site-note{display:none}}
+
+  /* ---------- logo mark (gold chevrons) ---------- */
+  .logo-mark .g1{fill:url(#lg1)} .logo-mark .g2{fill:url(#lg2)}
+
+  /* ---------- buttons ---------- */
+  .btn{display:inline-flex;align-items:center;gap:14px;font-family:var(--sans);font-size:16px;
+    font-weight:640;line-height:1;cursor:pointer;padding:8px 30px 8px 8px;border-radius:999px;
+    border:1px solid transparent;text-decoration:none;white-space:nowrap;
+    transition:transform .12s ease,box-shadow .18s ease,background .18s ease}
+  .btn:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+  .btn .ico{width:44px;height:44px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;
+    justify-content:center}
+  .btn .ico svg{width:19px;height:19px}
+  .btn-primary{background:var(--camel);color:#fff;box-shadow:0 8px 22px rgba(183,149,94,.28)}
+  .btn-primary .ico{background:#fff}
+  .btn-primary .ico svg path{stroke:var(--ink)}
+  .btn-primary:hover{background:var(--camel-deep);transform:translateY(-1px);
+    box-shadow:0 12px 28px rgba(183,149,94,.34)}
+  .btn-primary .ico svg{transition:transform .16s ease}
+  .btn-primary:hover .ico svg{transform:translate(2px,-2px)}
+  .btn-sm{font-size:14.5px;padding:6px 22px 6px 6px;gap:10px}
+  .btn-sm .ico{width:34px;height:34px}
+  .btn-sm .ico svg{width:15px;height:15px}
+  .btn-ghost{background:var(--surface);color:var(--ink);border-color:var(--line-2);padding:15px 26px}
+  .btn-ghost:hover{border-color:var(--camel);transform:translateY(-1px)}
+  .free-tag{font-size:13px;color:var(--ink-3);display:inline-flex;align-items:center;gap:8px;font-weight:560}
+  .free-tag .dot{width:7px;height:7px;border-radius:50%;background:var(--gold)}
+
+  /* ---------- sections ---------- */
+  section{padding:clamp(56px,8vw,98px) 0}
+  section.tint{background:var(--bg-2)}
+  section.paper{background:linear-gradient(180deg,#FBF8F1,#F7F2E8);
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .sec-head{max-width:66ch}
+  .sec-head h2{margin-bottom:14px}
+
+  /* ---------- hero ---------- */
+  .hero{padding:clamp(40px,6vw,72px) 0 clamp(52px,8vw,90px)}
+  .chip-intro{display:inline-flex;align-items:center;gap:9px;background:var(--taupe-bg);color:#fff;
+    font-size:14px;font-weight:560;padding:9px 18px;border-radius:999px;margin-bottom:26px}
+  .chip-intro .dot{width:7px;height:7px;border-radius:50%;background:#fff;opacity:.85}
+  .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:52px;align-items:center}
+  .hero h1{font-size:clamp(32px,5.4vw,54px);line-height:1.05;letter-spacing:-.03em;margin-bottom:22px}
+  .hero h1 .accent{color:var(--gold)}
+  .hero .lead{max-width:50ch;margin-bottom:14px}
+  .hero .lead.b{color:var(--ink);font-weight:600}
+  .hero-cta{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-top:30px}
+  .trust-row{display:flex;gap:26px;flex-wrap:wrap;margin-top:32px;padding-top:26px;border-top:1px solid var(--line)}
+  .trust-row .ti{display:flex;flex-direction:column;gap:3px}
+  .trust-row .tn{font-size:24px;font-weight:760;color:var(--ink);letter-spacing:-.02em}
+  .trust-row .tl{font-size:13px;color:var(--ink-2)}
+
+  /* result card / gauge */
+  .result-card{background:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);
+    padding:30px 30px 24px;position:relative}
+  .rc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px}
+  .rc-title{font-size:22px;font-weight:760;line-height:1.1;letter-spacing:-.02em}
+  .rc-badge{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;
+    padding:7px 13px;border-radius:999px;background:var(--gold-soft);color:#9A7A2E;white-space:nowrap}
+  .rc-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--gold)}
+  .gauge-wrap{display:flex;align-items:center;gap:22px;margin-bottom:8px}
+  .gauge{width:170px;height:110px;flex-shrink:0}
+  .gauge-score{position:relative;margin-top:-70px;text-align:center;width:170px}
+  .gauge-score .val{font-size:52px;font-weight:780;color:var(--gold);line-height:1;letter-spacing:-.03em}
+  .gauge-score .of{font-size:14px;color:var(--ink-3);font-weight:560}
+  .gauge-note{color:var(--ink-2);font-size:14.5px;line-height:1.5}
+  .rc-meta{display:flex;gap:10px;margin-top:22px;padding-top:20px;border-top:1px solid var(--line)}
+  .rc-meta .rm{flex:1;text-align:center}
+  .rc-meta .rmv{font-weight:760;font-size:18px;color:var(--ink)}
+  .rc-meta .rml{font-size:12px;color:var(--ink-3);margin-top:3px}
+  .rc-meta .rmv.free{color:var(--ok)}
+
+  /* ---------- generic cards ---------- */
+  .cards{display:grid;gap:18px;margin-top:42px}
+  .c4{grid-template-columns:repeat(4,1fr)}
+  .c3{grid-template-columns:repeat(3,1fr)}
+  .card{background:var(--surface);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+  .card .icobox{width:42px;height:42px;border-radius:12px;background:var(--bg-2);display:flex;
+    align-items:center;justify-content:center;margin-bottom:16px}
+  .card .icobox svg{width:22px;height:22px}
+  .card h3{margin-bottom:8px}
+  .card p{color:var(--ink-2);font-size:14.5px}
+  .card.warn{border-top:3px solid var(--risk)}
+
+  .closer{margin-top:32px;font-family:var(--serif);font-size:clamp(18px,2.3vw,22px);line-height:1.4;
+    color:var(--ink);border-left:3px solid var(--gold);padding:8px 0 8px 22px;max-width:60ch}
+
+  /* ---------- factor list (block 3) ---------- */
+  .factors{margin-top:42px;background:var(--surface);border-radius:var(--radius-lg);
+    box-shadow:var(--shadow);overflow:hidden}
+  .factor{display:grid;grid-template-columns:46px 1fr;gap:18px;padding:22px 26px;border-bottom:1px solid var(--line)}
+  .factor:last-child{border-bottom:none}
+  .factor.total{background:#FBF8F1}
+  .factor .fn{font-size:14px;font-weight:700;color:var(--gold);padding-top:2px}
+  .factor .ft{font-weight:700;font-size:16px;margin-bottom:4px}
+  .factor .fd{color:var(--ink-2);font-size:14.5px}
+  .factor.total .ft{color:var(--gold)}
+
+  /* ---------- benefits ---------- */
+  .benefits{margin-top:40px;display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .benefit{display:flex;gap:15px;align-items:center;background:var(--surface);border-radius:var(--radius);
+    padding:20px 22px;box-shadow:var(--shadow)}
+  .benefit .chk{flex-shrink:0;width:30px;height:30px;border-radius:9px;background:var(--ok-bg);
+    display:flex;align-items:center;justify-content:center}
+  .benefit .chk svg{width:16px;height:16px}
+  .benefit span{font-size:15.5px;color:var(--ink);line-height:1.45}
+
+  /* ---------- comparison table ---------- */
+  .compare{margin-top:40px;background:var(--surface);border-radius:var(--radius-lg);
+    box-shadow:var(--shadow);overflow:hidden}
+  .cmp-head{display:grid;grid-template-columns:1fr 1fr}
+  .cmp-head .ch{padding:18px 24px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+  .cmp-head .ch.old{color:var(--ink-3);background:var(--bg-2)}
+  .cmp-head .ch.new{color:#fff;background:var(--camel)}
+  .cmp-row{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
+  .cmp-row .cell{padding:18px 24px;font-size:15px;display:flex;gap:11px;align-items:flex-start}
+  .cmp-row .cell.old{color:var(--ink-2);border-right:1px solid var(--line)}
+  .cmp-row .cell.new{color:var(--ink);font-weight:560;background:#FCFAF5}
+  .cmp-row .cell .ic{flex-shrink:0;margin-top:3px;width:16px;height:16px}
+  .ic.minus{color:var(--ink-3)} .ic.plus{color:var(--ok)}
+
+  /* ---------- report preview (block 4) ---------- */
+  .report-grid{display:grid;grid-template-columns:1fr .95fr;gap:48px;align-items:center;margin-top:46px}
+  .report-notes{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:17px}
+  .report-notes li{display:flex;gap:13px;align-items:flex-start;font-size:16px;color:var(--ink)}
+  .report-notes li .ar{color:var(--gold);font-weight:760;flex-shrink:0}
+
+  .rp{background:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);overflow:hidden}
+  .rp-top{padding:22px 24px 20px;border-bottom:1px solid var(--line)}
+  .rp-top-row{display:flex;align-items:center;gap:16px}
+  .rp-mini-gauge{width:96px;height:62px;flex-shrink:0}
+  .rp-mini-score{position:relative;margin-top:-40px;text-align:center;width:96px}
+  .rp-mini-score b{font-size:26px;font-weight:780;color:var(--gold);letter-spacing:-.02em}
+  .rp-mini-score s{display:block;font-size:9px;color:var(--ink-3);text-decoration:none;margin-top:-2px}
+  .rp-top .k{font-size:13px;font-weight:700;letter-spacing:.02em;color:var(--ink-3);text-transform:uppercase}
+  .rp-top .badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;
+    padding:5px 11px;border-radius:999px;background:var(--gold-soft);color:#9A7A2E;margin-top:8px}
+  .rp-top .badge .dot{width:6px;height:6px;border-radius:50%;background:var(--gold)}
+  .rp-top .note{font-size:13px;color:var(--ink-2);margin-top:10px;line-height:1.5}
+  .rp-list{padding:8px 24px 22px}
+  .rp-row{display:flex;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid var(--line)}
+  .rp-row:last-child{border-bottom:none}
+  .rp-row .name{flex:1;font-size:14.5px;font-weight:560;color:var(--ink);line-height:1.35}
+  .rp-chip{width:52px;flex-shrink:0;text-align:center}
+  .rp-chip .num{display:block;border-radius:12px;font-weight:760;font-size:17px;color:#fff;padding:8px 0;letter-spacing:-.02em}
+  .rp-chip .lab{display:block;font-size:11px;font-weight:600;margin-top:4px}
+  .num.ok{background:var(--ok-chip)} .lab.ok{color:var(--ok)}
+  .num.mid{background:var(--warn-chip)} .lab.mid{color:#B5842B}
+  .num.hi{background:var(--risk-chip)} .lab.hi{color:var(--risk)}
+
+  /* ---------- checklist (block 5) ---------- */
+  .checklist{margin-top:40px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .cl-item{display:flex;gap:15px;align-items:flex-start;background:var(--surface);border-radius:var(--radius);
+    padding:18px 20px;cursor:pointer;box-shadow:var(--shadow);
+    transition:transform .12s ease,box-shadow .16s ease}
+  .cl-item:hover{transform:translateY(-1px)}
+  .cl-item input{width:21px;height:21px;flex-shrink:0;accent-color:var(--camel);cursor:pointer;margin-top:1px}
+  .cl-item span{font-size:15.5px;line-height:1.45}
+  .cl-item:has(input:checked){background:var(--gold-soft)}
+
+  /* ---------- steps (block 7) ---------- */
+  .steps{margin-top:42px;display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+    background:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow);overflow:hidden}
+  .step{padding:28px 26px;border-right:1px solid var(--line)}
+  .step:last-child{border-right:none}
+  .step .sn{font-size:12.5px;font-weight:640;color:var(--gold);margin-bottom:16px;letter-spacing:.04em;text-transform:uppercase}
+  .step .sc{width:44px;height:44px;border-radius:13px;background:var(--camel);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:780;font-size:19px;margin-bottom:16px}
+  .step p{font-size:15px;color:var(--ink-2)}
+
+  /* ---------- why-me (block 8) ---------- */
+  .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:42px;align-items:start}
+  .why-stmts{display:flex;flex-direction:column;gap:14px}
+  .why-stmt{background:var(--surface);border-left:3px solid var(--gold);border-radius:0 var(--radius) var(--radius) 0;
+    padding:18px 22px;font-size:16px;font-weight:560;color:var(--ink);box-shadow:var(--shadow)}
+  .why-list{background:var(--surface);border-radius:var(--radius);padding:24px 26px;box-shadow:var(--shadow)}
+  .why-list .k{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink-3);margin-bottom:16px}
+  .why-list ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:13px}
+  .why-list li{display:flex;gap:13px;align-items:flex-start;font-size:15.5px}
+  .why-list li .d{flex-shrink:0;width:8px;height:8px;border-radius:50%;background:var(--gold);margin-top:8px}
+
+  /* ---------- free block (block 6) ---------- */
+  .free-block{background:var(--ink);color:#fff;border-radius:var(--radius-lg);
+    padding:clamp(34px,5vw,56px);position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+  .free-block::after{content:"";position:absolute;right:-70px;top:-70px;width:300px;height:300px;
+    border-radius:50%;background:radial-gradient(circle,rgba(198,154,76,.20),transparent 70%)}
+  .free-block .eyebrow{color:var(--camel)}
+  .free-block h2{color:#fff;max-width:23ch;position:relative}
+  .free-block .fb-text{color:rgba(255,255,255,.82);max-width:60ch;margin-top:20px;display:flex;
+    flex-direction:column;gap:13px;font-size:16.5px;line-height:1.6;position:relative}
+  .free-block .fb-noobl{margin-top:22px;font-size:13px;color:rgba(255,255,255,.72);
+    display:inline-flex;align-items:center;gap:9px;position:relative}
+  .free-block .fb-noobl .dot{width:7px;height:7px;border-radius:50%;background:var(--ok-chip)}
+
+  /* ---------- faq (block 9) ---------- */
+  .faq{margin-top:40px;max-width:840px}
+  .faq details{background:var(--surface);border-radius:var(--radius);margin-bottom:12px;
+    overflow:hidden;box-shadow:var(--shadow)}
+  .faq summary{list-style:none;cursor:pointer;padding:20px 24px;font-weight:680;font-size:16.5px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary .pm{color:var(--gold);font-size:24px;font-weight:400;line-height:1;transition:transform .2s ease;flex-shrink:0}
+  .faq details[open] summary .pm{transform:rotate(45deg)}
+  .faq .fa-body{padding:0 24px 22px;color:var(--ink-2);font-size:15.5px;line-height:1.6}
+  .faq .fa-body p{margin:0 0 8px}
+  .faq .fa-body p:last-child{margin:0}
+
+  /* ---------- final CTA ---------- */
+  .final{text-align:center;padding:clamp(66px,9vw,112px) 0}
+  .final .eyebrow{display:flex;justify-content:center}
+  .final h2{font-size:clamp(28px,4vw,42px);max-width:20ch;margin:0 auto 10px}
+  .final .fl{color:var(--ink-2);font-size:17.5px;margin-top:18px;line-height:1.7}
+  .final .fl b{color:var(--ink);font-weight:640}
+  .final .cta-center{display:flex;justify-content:center;margin-top:34px}
+  .final .free-tag{justify-content:center;margin-top:18px}
+
+  footer.foot{border-top:1px solid var(--line);padding:36px 0;background:var(--bg-2)}
+  .foot-inner{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;
+    font-size:13px;color:var(--ink-3)}
+  .foot-inner .brand .word{font-size:17px}
+  .foot-inner .logo-mark{width:26px;height:23px}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:900px){
+    .hero-grid{grid-template-columns:1fr;gap:40px}
+    .report-grid{grid-template-columns:1fr;gap:32px}
+    .why-grid{grid-template-columns:1fr}
+    .c4{grid-template-columns:repeat(2,1fr)}
+    .steps{grid-template-columns:repeat(2,1fr)}
+    .step:nth-child(2){border-right:none}
+    .step:nth-child(1),.step:nth-child(2){border-bottom:1px solid var(--line)}
+  }
+  @media(max-width:640px){
+    .c4,.c3,.benefits,.checklist{grid-template-columns:1fr}
+    .steps{grid-template-columns:1fr}
+    .step{border-right:none;border-bottom:1px solid var(--line)}
+    .step:last-child{border-bottom:none}
+    .cmp-head,.cmp-row{grid-template-columns:1fr}
+    .cmp-row .cell.old{border-right:none;border-bottom:1px solid var(--line)}
+    .hero-cta{flex-direction:column;align-items:stretch}
+    .hero-cta .btn{justify-content:center}
+    .trust-row{gap:20px}
+  }
+  @media(max-width:480px){
+    .brand .word{display:none}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<!-- shared SVG defs: gold gradients + reusable arrow -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="lg1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E4C87E"/><stop offset="1" stop-color="#B5893F"/>
+    </linearGradient>
+    <linearGradient id="lg2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#C9A24E"/><stop offset="1" stop-color="#8C6A2C"/>
+    </linearGradient>
+    <linearGradient id="arc" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#E7CF8A"/><stop offset="1" stop-color="#C69A4C"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<!-- ===================== HEADER ===================== -->
+<header class="site">
+  <div class="wrap site-inner">
+    <div class="brand">
+      <svg class="logo-mark" viewBox="0 0 40 34" fill="none" aria-hidden="true">
+        <path class="g1" d="M2 3 L14 3 L21 20 L15 20 Z"/>
+        <path class="g2" d="M13 3 L24 3 L31 31 L21.5 16 Z"/>
+        <path class="g1" d="M24 3 L34 3 L27 20 L21 20 Z" opacity="0.9"/>
+      </svg>
+      <span class="word">Mainexperts</span>
+    </div>
+    <div class="site-spacer"></div>
+    <span class="site-note">Скрининг выбора образования</span>
+    <a href="#start" class="btn btn-primary btn-sm">
+      <span class="ico"><svg viewBox="0 0 20 20" fill="none"><path d="M6 14L14 6M14 6H7M14 6V13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      Пройти скрининг
+    </a>
+  </div>
+</header>
+
+<!-- ===================== BLOCK 1 — HERO ===================== -->
+<section class="hero" id="start">
+  <div class="wrap">
+    <div class="chip-intro"><span class="dot"></span> Выбираете, куда поступать?</div>
+    <div class="hero-grid">
+      <div>
+        <h1>Убедитесь, что выбранное образование <span class="accent">подходит вашему ребёнку</span></h1>
+        <p class="lead">Большинство семей принимают решение о поступлении, опираясь на оценки, советы знакомых и собственные ощущения. Но этого часто недостаточно.</p>
+        <p class="lead b" style="margin-top:16px">Ответьте на 15 вопросов и узнайте, насколько выбранное направление совпадает с сильными сторонами и интересами ребёнка и с рынком труда.</p>
+        <div class="hero-cta">
+          <a href="#start" class="btn btn-primary">
+            <span class="ico"><svg viewBox="0 0 20 20" fill="none"><path d="M6 14L14 6M14 6H7M14 6V13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            Пройти скрининг бесплатно
+          </a>
+          <span class="free-tag"><span class="dot"></span> Без обязательств</span>
+        </div>
+        <div class="trust-row">
+          <div class="ti"><span class="tn">15</span><span class="tl">коротких вопросов</span></div>
+          <div class="ti"><span class="tn">~2 мин</span><span class="tl">на прохождение</span></div>
+          <div class="ti"><span class="tn">6</span><span class="tl">параметров выбора в отчёте</span></div>
+        </div>
+      </div>
+
+      <!-- result card with risk gauge -->
+      <aside class="result-card" aria-label="Пример результата">
+        <div class="rc-top">
+          <div class="rc-title">Совпадение<br>выбора</div>
+          <span class="rc-badge"><span class="dot"></span> Близко к цели</span>
+        </div>
+        <div class="gauge-wrap">
+          <div>
+            <svg class="gauge" viewBox="0 0 170 110" role="img" aria-label="Совпадение 63 из 100">
+              <path d="M14 100 A71 71 0 0 1 156 100" fill="none" stroke="#EDE4D0" stroke-width="13" stroke-linecap="round"/>
+              <path d="M14 100 A71 71 0 0 1 156 100" fill="none" stroke="url(#arc)" stroke-width="13"
+                    stroke-linecap="round" stroke-dasharray="223" stroke-dashoffset="82"/>
+            </svg>
+            <div class="gauge-score"><span class="val">63</span><br><span class="of">из 100</span></div>
+          </div>
+          <p class="gauge-note">Чем выше балл, тем точнее выбор совпадает с сильными сторонами ребёнка и рынком труда.</p>
+        </div>
+        <div class="rc-meta">
+          <div class="rm"><div class="rmv">15</div><div class="rml">вопросов</div></div>
+          <div class="rm"><div class="rmv">~2 мин</div><div class="rml">времени</div></div>
+          <div class="rm"><div class="rmv free">0 ₽</div><div class="rml">бесплатно</div></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== BLOCK 2 — WHY IT MATTERS ===================== -->
+<section class="paper">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Почему это важно</p>
+      <h2>Ошибка становится заметна слишком поздно</h2>
+      <p class="lead" style="margin-top:16px">Большинство семей замечают проблему уже после поступления, когда изменить решение становится дорого — и в деньгах, и во времени.</p>
+    </div>
+    <div class="cards c4">
+      <div class="card warn">
+        <div class="icobox"><svg viewBox="0 0 24 24" fill="none"><path d="M12 8v5m0 3h.01M4 20h16L12 4 4 20z" stroke="#C0504A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Поступили не туда</h3>
+        <p>Потерян один или несколько лет обучения.</p>
+      </div>
+      <div class="card warn">
+        <div class="icobox"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-7-10a4 4 0 017-2.5A4 4 0 0119 11c0 5.5-7 10-7 10z" stroke="#C0504A" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#C0504A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0"/></svg></div>
+        <h3>Разочаровались в профессии</h3>
+        <p>Интерес исчез уже после начала учёбы.</p>
+      </div>
+      <div class="card warn">
+        <div class="icobox"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#C0504A" stroke-width="1.8"/><path d="M12 8v8M9.5 10.5c0-1 1-1.6 2.5-1.6s2.5.7 2.5 1.7c0 2-4.8 1.2-4.8 3.3 0 1 1 1.7 2.3 1.7s2.4-.6 2.4-1.6" stroke="#C0504A" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <h3>Потратили деньги</h3>
+        <p>Обучение, репетиторы, переезд, время всей семьи.</p>
+      </div>
+      <div class="card warn">
+        <div class="icobox"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12a8 8 0 108-8M4 12v-4M4 12h4" stroke="#C0504A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Приходится начинать заново</h3>
+        <p>Повторный выбор всегда сложнее первого.</p>
+      </div>
+    </div>
+    <p class="closer">И почти всегда родители были уверены, что делают правильный выбор.</p>
+  </div>
+</section>
+
+<!-- ===================== BLOCK 3 — WHAT SCREENING SHOWS ===================== -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Что показывает скрининг</p>
+      <h2>Мы не определяем профессию</h2>
+      <p class="lead" style="margin-top:16px">Скрининг показывает, насколько ваш текущий выбор основан на фактах, а не на предположениях. Он оценивает вероятность ошибки ещё до поступления.</p>
+    </div>
+    <div class="factors">
+      <div class="factor"><span class="fn">01</span><div><div class="ft">Понимание сильных сторон ребёнка</div><div class="fd">Достаточно ли вы знаете способности и особенности ребёнка для принятия решения.</div></div></div>
+      <div class="factor"><span class="fn">02</span><div><div class="ft">Ясность направления</div><div class="fd">Есть ли понятная образовательная цель.</div></div></div>
+      <div class="factor"><span class="fn">03</span><div><div class="ft">План действий</div><div class="fd">Понимаете ли следующие шаги до поступления.</div></div></div>
+      <div class="factor"><span class="fn">04</span><div><div class="ft">Понимание рынка труда</div><div class="fd">Соответствует ли выбранный путь современным требованиям рынка.</div></div></div>
+      <div class="factor"><span class="fn">05</span><div><div class="ft">Уверенность в выборе</div><div class="fd">Есть ли объективные основания быть спокойными.</div></div></div>
+      <div class="factor total"><span class="fn">Σ</span><div><div class="ft">Общий риск ошибки</div><div class="fd">Итоговая оценка ситуации.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== EXTRA BLOCK A — WHAT YOU GET IN 2 MIN ===================== -->
+<section class="tint">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Что вы получите за 2 минуты</p>
+      <h2>Пять выводов за две минуты</h2>
+    </div>
+    <div class="benefits">
+      <div class="benefit"><span class="chk"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="#4F9E6E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Общий уровень риска ошибки.</span></div>
+      <div class="benefit"><span class="chk"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="#4F9E6E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Какие факторы требуют внимания.</span></div>
+      <div class="benefit"><span class="chk"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="#4F9E6E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>На что вы уже можете опираться.</span></div>
+      <div class="benefit"><span class="chk"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="#4F9E6E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Что желательно проверить до поступления.</span></div>
+      <div class="benefit"><span class="chk"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4 8-9" stroke="#4F9E6E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Понимание, нужен ли более глубокий анализ.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== EXTRA BLOCK B — WHY PARENTS ERR ===================== -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Почему родители ошибаются</p>
+      <h2>Подход на догадках против выверенного метода</h2>
+    </div>
+    <div class="compare">
+      <div class="cmp-head">
+        <div class="ch old">Подход на догадках</div>
+        <div class="ch new">Выверенный метод Mainexperts</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cell old"><svg class="ic minus" viewBox="0 0 16 16"><path d="M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Выбираем по любимым предметам</div>
+        <div class="cell new"><svg class="ic plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Анализируем способности, мотивацию и рынок труда</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cell old"><svg class="ic minus" viewBox="0 0 16 16"><path d="M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Ориентируемся на советы знакомых</div>
+        <div class="cell new"><svg class="ic plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Используем структурированные данные</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cell old"><svg class="ic minus" viewBox="0 0 16 16"><path d="M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Главное — поступить</div>
+        <div class="cell new"><svg class="ic plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Главное — выбрать направление, которое подходит ребёнку</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cell old"><svg class="ic minus" viewBox="0 0 16 16"><path d="M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Решение принимается один раз</div>
+        <div class="cell new"><svg class="ic plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Решение проходит несколько этапов проверки</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== BLOCK 4 — REPORT PREVIEW ===================== -->
+<section class="paper">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Как выглядит результат</p>
+      <h2>После прохождения вы получите персональный отчёт</h2>
+      <p class="lead" style="margin-top:16px">Разбор факторов, которые влияют на качество вашего решения, с баллом по каждому.</p>
+    </div>
+    <div class="report-grid">
+      <!-- report mockup -->
+      <div class="rp" aria-label="Пример персонального отчёта">
+        <div class="rp-top">
+          <div class="rp-top-row">
+            <div>
+              <svg class="rp-mini-gauge" viewBox="0 0 96 62" aria-hidden="true">
+                <path d="M8 56 A40 40 0 0 1 88 56" fill="none" stroke="#EDE4D0" stroke-width="9" stroke-linecap="round"/>
+                <path d="M8 56 A40 40 0 0 1 88 56" fill="none" stroke="url(#arc)" stroke-width="9" stroke-linecap="round" stroke-dasharray="126" stroke-dashoffset="52"/>
+              </svg>
+              <div class="rp-mini-score"><b>59</b><s>из 100</s></div>
+            </div>
+            <div>
+              <div class="k">Общий риск выбора</div>
+              <span class="badge"><span class="dot"></span> Стоит внимания</span>
+            </div>
+          </div>
+          <p class="note">Чем выше балл, тем больше зон, где легко совершить дорогую ошибку в выборе.</p>
+        </div>
+        <div class="rp-list">
+          <div class="rp-row"><span class="name">Ясность направления обучения</span><span class="rp-chip"><span class="num hi">35</span><span class="lab hi">риск</span></span></div>
+          <div class="rp-row"><span class="name">Знание трендов рынка труда</span><span class="rp-chip"><span class="num hi">31</span><span class="lab hi">риск</span></span></div>
+          <div class="rp-row"><span class="name">Запас времени на принятие решения</span><span class="rp-chip"><span class="num mid">58</span><span class="lab mid">средне</span></span></div>
+          <div class="rp-row"><span class="name">Понимание сильных и слабых сторон ребёнка</span><span class="rp-chip"><span class="num ok">72</span><span class="lab ok">сильно</span></span></div>
+          <div class="rp-row"><span class="name">Наличие плана действий</span><span class="rp-chip"><span class="num mid">54</span><span class="lab mid">средне</span></span></div>
+          <div class="rp-row"><span class="name">Уверенность в будущем ребёнка</span><span class="rp-chip"><span class="num hi">42</span><span class="lab hi">риск</span></span></div>
+        </div>
+      </div>
+      <!-- captions -->
+      <ul class="report-notes">
+        <li><span class="ar">→</span> Общий риск выбора</li>
+        <li><span class="ar">→</span> Из чего он складывается</li>
+        <li><span class="ar">→</span> Какие зоны требуют внимания</li>
+        <li><span class="ar">→</span> Что уже является вашей сильной стороной</li>
+        <li><span class="ar">→</span> Что желательно проверить до поступления</li>
+        <li style="margin-top:10px">
+          <a href="#start" class="btn btn-primary">
+            <span class="ico"><svg viewBox="0 0 20 20" fill="none"><path d="M6 14L14 6M14 6H7M14 6V13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            Хочу получить свой отчёт
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== BLOCK 5 — WHO IT'S FOR ===================== -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Кому особенно полезен скрининг</p>
+      <h2>Проверьте ситуацию, если узнали себя</h2>
+    </div>
+    <div class="checklist">
+      <label class="cl-item"><input type="checkbox"><span>Ребёнок ещё не определился с будущей профессией.</span></label>
+      <label class="cl-item"><input type="checkbox"><span>Рассматривает несколько направлений обучения.</span></label>
+      <label class="cl-item"><input type="checkbox"><span>Уже выбрал вуз или специальность, но остаются сомнения.</span></label>
+      <label class="cl-item"><input type="checkbox"><span>Выбор строится в основном вокруг баллов ЕГЭ.</span></label>
+      <label class="cl-item"><input type="checkbox"><span>Ребёнок часто меняет своё мнение.</span></label>
+      <label class="cl-item"><input type="checkbox"><span>Родители переживают, что могут чего-то не учитывать.</span></label>
+    </div>
+    <p class="closer">Если вы отметили хотя бы один пункт — лучше проверить ситуацию сейчас, чем после поступления.</p>
+  </div>
+</section>
+
+<!-- ===================== BLOCK 6 — WHY FREE ===================== -->
+<section class="tint">
+  <div class="wrap">
+    <div class="free-block">
+      <p class="eyebrow">Почему скрининг бесплатный</p>
+      <h2>Мы считаем, что каждая семья должна иметь возможность проверить риск ошибки</h2>
+      <div class="fb-text">
+        <p>Поэтому сделали базовую диагностику бесплатной. После прохождения вы получите персональный отчёт.</p>
+        <p>Если результаты покажут зоны риска, вы сами решите, хотите ли получить более глубокий анализ и индивидуальные рекомендации.</p>
+      </div>
+      <span class="fb-noobl"><span class="dot"></span> Никаких обязательств после прохождения нет</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== BLOCK 7 — WHAT HAPPENS AFTER ===================== -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Что произойдёт после прохождения</p>
+      <h2>Всего четыре шага</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="sn">Шаг 1</div><div class="sc">1</div><p>Ответьте на 15 вопросов.</p></div>
+      <div class="step"><div class="sn">Шаг 2</div><div class="sc">2</div><p>Получите персональный отчёт.</p></div>
+      <div class="step"><div class="sn">Шаг 3</div><div class="sc">3</div><p>Узнайте, какие факторы повышают вероятность ошибки именно в вашей ситуации.</p></div>
+      <div class="step"><div class="sn">Шаг 4</div><div class="sc">4</div><p>Если захотите, сможете пройти полную профориентацию и получить индивидуальную образовательную стратегию.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== BLOCK 8 — WHY MAINEXPERTS ===================== -->
+<section class="paper">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Почему Mainexperts</p>
+      <h2>Мы помогаем принимать решения на основе данных, а не догадок</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-stmts">
+        <div class="why-stmt">Мы не подбираем профессию по одному тесту.</div>
+        <div class="why-stmt">Мы не обещаем найти «идеальную специальность».</div>
+        <div class="why-stmt">Мы помогаем собрать объективную картину, чтобы решение было осознанным.</div>
+      </div>
+      <div class="why-list">
+        <div class="k">При анализе учитываются</div>
+        <ul>
+          <li><span class="d"></span>способности ребёнка;</li>
+          <li><span class="d"></span>интересы и мотивация;</li>
+          <li><span class="d"></span>требования современного рынка труда;</li>
+          <li><span class="d"></span>образовательные возможности;</li>
+          <li><span class="d"></span>индивидуальная траектория развития.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== BLOCK 9 — FAQ ===================== -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Частые вопросы</p>
+      <h2>Отвечаем коротко</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>Это тест на профессию? <span class="pm">+</span></summary>
+        <div class="fa-body"><p>Нет. Скрининг оценивает вероятность ошибки при выборе образовательной траектории.</p></div>
+      </details>
+      <details>
+        <summary>Он покажет, кем станет ребёнок? <span class="pm">+</span></summary>
+        <div class="fa-body"><p>Нет. Он покажет, насколько ваш текущий выбор обоснован и где существуют риски.</p></div>
+      </details>
+      <details>
+        <summary>Сколько времени занимает прохождение? <span class="pm">+</span></summary>
+        <div class="fa-body"><p>Около двух минут.</p></div>
+      </details>
+      <details>
+        <summary>Нужно ли платить? <span class="pm">+</span></summary>
+        <div class="fa-body"><p>Нет. Скрининг полностью бесплатный.</p></div>
+      </details>
+      <details>
+        <summary>Что делать после получения результата? <span class="pm">+</span></summary>
+        <div class="fa-body">
+          <p>Если риск невысокий — вы получите дополнительную уверенность в выбранном направлении.</p>
+          <p>Если обнаружатся зоны риска — сможете пройти полную профориентацию и получить персональные рекомендации по их снижению.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FINAL CTA ===================== -->
+<section class="tint">
+  <div class="wrap final">
+    <p class="eyebrow">Финальный шаг</p>
+    <h2>Лучше узнать о риске сейчас, чем после поступления</h2>
+    <p class="fl">Ответьте на 15 вопросов. Получите персональный отчёт.<br><b>Принимайте решение, опираясь на факты, а не на случайность.</b></p>
+    <div class="cta-center">
+      <a href="#start" class="btn btn-primary">
+        <span class="ico"><svg viewBox="0 0 20 20" fill="none"><path d="M6 14L14 6M14 6H7M14 6V13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        Пройти скрининг бесплатно
+      </a>
+    </div>
+    <div class="free-tag"><span class="dot"></span> ~2 минуты · 15 вопросов · бесплатно</div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <div class="brand">
+      <svg class="logo-mark" viewBox="0 0 40 34" fill="none" aria-hidden="true">
+        <path class="g1" d="M2 3 L14 3 L21 20 L15 20 Z"/>
+        <path class="g2" d="M13 3 L24 3 L31 31 L21.5 16 Z"/>
+        <path class="g1" d="M24 3 L34 3 L27 20 L21 20 Z" opacity="0.9"/>
+      </svg>
+      <span class="word">Mainexperts</span>
+    </div>
+    <span>© Mainexperts · mainexperts.online</span>
+  </div>
+</footer>
+
+</body>
+</html>
