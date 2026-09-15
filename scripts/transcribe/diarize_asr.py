@@ -29,7 +29,11 @@ from pathlib import Path
 
 MODELS_DIR = Path(os.environ.get("ASR_MODELS_DIR", Path.home() / ".cache/mainexperts-asr/models"))
 SEGMENTATION_MODEL = MODELS_DIR / "sherpa-onnx-pyannote-segmentation-3-0" / "model.onnx"
-EMBEDDING_MODEL = MODELS_DIR / "wespeaker_en_voxceleb_CAM++.onnx"
+EMBEDDINGS = {                      # модели голосовых эмбеддингов: имя → файл
+    "campp": "wespeaker_en_voxceleb_CAM++.onnx",
+    "titanet": "nemo_en_titanet_large.onnx",
+}
+EMBEDDING_MODEL = MODELS_DIR / EMBEDDINGS["campp"]
 DEFAULT_ASR_MODEL = "deepdml/faster-whisper-large-v3-turbo-ct2"
 
 
@@ -102,7 +106,8 @@ def read_wav(path: Path):
 
 # ── шаг 2: диаризация ──────────────────────────────────────────────────────────
 
-def diarize(wav: Path, num_speakers: int, threshold: float, threads: int, cache: Path | None):
+def diarize(wav: Path, num_speakers: int, threshold: float, threads: int, cache: Path | None,
+            embedding: Path = EMBEDDING_MODEL):
     """Возвращает список (start, end, speaker_id). Результат кешируется в JSON."""
     if cache and cache.exists():
         log(f"диаризация из кеша: {cache.name}")
@@ -110,7 +115,7 @@ def diarize(wav: Path, num_speakers: int, threshold: float, threads: int, cache:
 
     import sherpa_onnx
 
-    for p in (SEGMENTATION_MODEL, EMBEDDING_MODEL):
+    for p in (SEGMENTATION_MODEL, embedding):
         if not p.exists():
             sys.exit(f"нет модели: {p}\nЗапустите scripts/transcribe/setup.sh")
 
@@ -121,7 +126,7 @@ def diarize(wav: Path, num_speakers: int, threshold: float, threads: int, cache:
             num_threads=threads,
         ),
         embedding=sherpa_onnx.SpeakerEmbeddingExtractorConfig(
-            model=str(EMBEDDING_MODEL), num_threads=threads),
+            model=str(embedding), num_threads=threads),
         clustering=sherpa_onnx.FastClusteringConfig(
             num_clusters=num_speakers if num_speakers > 0 else -1,
             threshold=threshold),
@@ -306,6 +311,39 @@ def apply_video_names(words, tags_path: Path, min_share: float = 0.5):
     return names, stats
 
 
+def split_reliability(words) -> str:
+    """Насколько можно верить разметке по ролям.
+
+    Смена говорящего посреди потока речи, без паузы, почти всегда ошибка
+    разделения: люди перехватывают слово в паузе, а не поверх слога. Доля таких
+    смен — простая и честная оценка того, режет ли диаризация по репликам или по
+    случайным местам.
+    """
+    # короткие поддакивания («да», «угу», «понял») звучат поверх чужой речи —
+    # это свойство живого диалога, а не ошибка; считаем только смены, после
+    # которых человек действительно взял слово
+    runs = []
+    for w in words:
+        if runs and runs[-1][0] == w.speaker:
+            runs[-1][1].append(w)
+        else:
+            runs.append((w.speaker, [w]))
+    tight = total = 0
+    for prev_run, run in zip(runs, runs[1:]):
+        if len(run[1]) < 5:
+            continue
+        total += 1
+        if run[1][0].start - prev_run[1][-1].end < 0.3:
+            tight += 1
+    if total < 10:
+        return "оценить нельзя: смен говорящего слишком мало"
+    share = tight * 100 // total
+    verdict = ("разделение надёжное" if share < 25 else
+               "разделение спорное, роли проверять" if share < 50 else
+               "разделение ненадёжно, ролям не верить")
+    return f"{verdict} ({share}% смен без паузы)"
+
+
 def build_turns(words, max_gap: float = 1.5) -> list[Turn]:
     """Слова → реплики: новый блок при смене говорящего или паузе длиннее max_gap."""
     turns: list[Turn] = []
@@ -338,6 +376,8 @@ def write_md(turns, path: Path, names: dict, meta: dict) -> None:
         f"- Модель распознавания: {meta['asr_model']}",
         f"- Разделение по голосам: {meta['diarization']}",
         f"- Имена участников: {meta['names_source']}",
+        *([f"- Достоверность разделения: {meta['split_reliability']}"]
+          if meta.get("split_reliability") else []),
         f"- Собрано: {meta['created']}",
         "",
     ]
@@ -374,6 +414,8 @@ def write_txt(turns, path: Path, names: dict, meta: dict) -> None:
         f"Модель распознавания: {meta['asr_model']}",
         f"Разделение по голосам: {meta['diarization']}",
         f"Имена участников: {meta['names_source']}",
+        *([f"Достоверность разделения: {meta['split_reliability']}"]
+          if meta.get("split_reliability") else []),
         f"Собрано: {meta['created']}",
         "",
     ]
@@ -448,6 +490,9 @@ def main() -> None:
     ap.add_argument("-l", "--language", default="ru", help="язык речи ('' — автоопределение)")
     ap.add_argument("-m", "--model", default=DEFAULT_ASR_MODEL, help="модель faster-whisper")
     ap.add_argument("-t", "--threads", type=int, default=os.cpu_count() or 4)
+    ap.add_argument("-e", "--embedding", default="campp", choices=sorted(EMBEDDINGS),
+                    help="модель голосовых эмбеддингов: campp быстрее, "
+                         "titanet точнее на похожих голосах")
     ap.add_argument("--beam", type=int, default=1, help="beam size: 1 быстро, 5 точнее и дольше")
     ap.add_argument("--names", type=Path, help='JSON вида {"0": "Максим", "1": "Игорь"}')
     ap.add_argument("--video-tags", type=Path,
@@ -472,7 +517,8 @@ def main() -> None:
     _, duration = read_wav(wav)
 
     segs = [] if args.no_diarize else diarize(
-        wav, args.speakers, args.threshold, args.threads, workdir / f"{stem}.diar.json")
+        wav, args.speakers, args.threshold, args.threads, workdir / f"{stem}.diar.json",
+        MODELS_DIR / EMBEDDINGS[args.embedding])
     words = transcribe(wav, args.model, args.language, args.threads, args.beam,
                        workdir / f"{stem}.words.json")
     if not words:
@@ -492,7 +538,9 @@ def main() -> None:
         "duration": round(duration, 1),
         "speakers": len({t.speaker for t in turns}),
         "asr_model": args.model,
-        "diarization": "pyannote-segmentation-3.0 + CAM++ (sherpa-onnx)" if segs else "нет",
+        "diarization": (f"pyannote-segmentation-3.0 + {args.embedding} (sherpa-onnx)"
+                        if segs else "нет"),
+        "split_reliability": split_reliability(words) if segs else None,
         "names_source": "подсветка говорящего в записи" if args.video_tags else "вручную",
         "word_attribution": word_stats,
         "created": time.strftime("%Y-%m-%d %H:%M"),
@@ -513,6 +561,8 @@ def main() -> None:
 
     log(f"готово за {(time.time() - t_all) / 60:.1f} мин: {args.outdir}/{stem}.{{{','.join(written)}}}")
     log(f"реплик: {meta['turns']}, голосов: {meta['speakers']}, слов: {meta['words']}")
+    if meta.get("split_reliability"):
+        log(f"достоверность разделения: {meta['split_reliability']}")
 
 
 if __name__ == "__main__":
