@@ -33,6 +33,7 @@
   `setup.sh`, `requirements.txt`; `transcribe/` — расшифровка записей по голосам.
 - `transcripts/` — готовые транскрипты встреч (звук и кеш — вне git).
 - `.claude/skills/` — `boot`, `ingest`, `report`, `publish`, `transcribe`.
+- `.claude/skills/` — `boot`, `ingest`, `report`, `publish`; плюс набор UI/UX Pro Max (`ui-ux-pro-max`, `design`, `design-system`, `ui-styling`, `brand`, `slides`, `banner-design`) — дизайн-интеллект для интерфейсов, установлен через `npx ui-ux-pro-max-cli init --ai claude`, обновление той же командой с `--force`.
 
 ## Три рабочих действия
 - **transcribe** — расшифровать запись созвона по голосам с таймкодами.

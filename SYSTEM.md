@@ -48,6 +48,7 @@ transcripts/         транскрипты записей (звук и кеш .
 scripts/             extract.py, pdf_ru.py, setup.sh, requirements.txt
   transcribe/        расшифровка записей по голосам: diarize_asr.py, setup.sh
 .claude/skills/      boot, ingest, report, publish, transcribe
+.claude/skills/      boot, ingest, report, publish; ui-ux-pro-max и спутники (design, design-system, ui-styling, brand, slides, banner-design)
 ```
 
 ## Модель заметки (frontmatter)
