@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Система бортов MainExperts — v1 с числами ($1000 VK + $1000 Meta)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --dark:#101827;
+    --grey:#6B7280;
+    --pink:#FA2F6B;
+    --blue:#2463EB;
+    --sky:#6AC2EA;
+    --bg:#F9FAFB;
+    --card:#FFFFFF;
+    --radius:16px;
+    --shadow:0 4px 12px rgba(0,0,0,.06);
+    --green:#16A34A;
+    --yellow:#EAB308;
+    --red:#DC2626;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Roboto',system-ui,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--grey);
+    line-height:1.55;
+    font-size:15px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:24px 20px 80px;}
+
+  /* ---------- HEADER ---------- */
+  header.hero{
+    background:linear-gradient(135deg,#101827 0%,#1b2740 60%,#22335a 100%);
+    border-radius:var(--radius);
+    padding:32px 30px;
+    color:#fff;
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::after{
+    content:"";
+    position:absolute;right:-60px;top:-60px;width:240px;height:240px;
+    background:radial-gradient(circle,rgba(106,194,234,.28),transparent 70%);
+    pointer-events:none;
+  }
+  .hero h1{
+    font-weight:900;font-size:clamp(22px,3.4vw,32px);
+    letter-spacing:-.5px;line-height:1.15;color:#fff;
+    position:relative;z-index:1;
+  }
+  .hero .sub{
+    margin-top:8px;font-weight:400;font-size:15px;color:#cbd5e1;
+    position:relative;z-index:1;max-width:780px;
+  }
+  .hero .meta-row{
+    margin-top:18px;display:flex;flex-wrap:wrap;gap:10px;
+    position:relative;z-index:1;
+  }
+  .pill{
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:999px;padding:6px 14px;font-size:13px;font-weight:500;color:#e2e8f0;
+  }
+  .pill b{color:#fff;font-weight:700;}
+  .disclaimer{
+    margin-top:20px;
+    background:rgba(250,47,107,.14);
+    border:1px solid rgba(250,47,107,.4);
+    border-left:4px solid var(--pink);
+    border-radius:12px;
+    padding:13px 16px;font-size:13.5px;color:#fde2ea;
+    position:relative;z-index:1;
+  }
+  .disclaimer b{color:#fff;}
+
+  /* ---------- SECTION ---------- */
+  section{margin-top:40px;}
+  .sec-head{display:flex;align-items:center;gap:11px;margin-bottom:16px;}
+  .sec-head .emoji{font-size:24px;line-height:1;}
+  .sec-head h2{
+    font-family:'Roboto';font-weight:700;color:var(--dark);
+    font-size:clamp(18px,2.4vw,23px);letter-spacing:-.3px;
+  }
+  .sec-head .tag{
+    margin-left:auto;font-size:12px;font-weight:500;color:var(--grey);
+    background:#fff;border:1px solid #e5e7eb;border-radius:999px;padding:4px 11px;
+  }
+  .lead{font-size:14px;color:var(--grey);margin:-4px 0 16px;max-width:920px;}
+
+  /* ---------- KPI CARDS ---------- */
+  .kpi-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+    gap:14px;
+  }
+  .kpi{
+    background:var(--card);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:18px 18px 16px;
+    border:1px solid #f0f1f3;position:relative;
+    display:flex;flex-direction:column;gap:3px;min-height:118px;
+  }
+  .kpi .label{
+    font-size:12.5px;font-weight:500;color:var(--grey);
+    text-transform:none;letter-spacing:.1px;order:2;
+  }
+  .kpi .num{
+    font-size:clamp(24px,3vw,30px);font-weight:900;color:var(--blue);
+    letter-spacing:-1px;line-height:1.05;order:1;
+  }
+  .kpi .num.neg{color:var(--pink);}
+  .kpi .num small{font-size:14px;font-weight:700;letter-spacing:0;}
+  .kpi .range{
+    font-size:11.5px;color:var(--grey);margin-top:2px;order:3;
+    border-top:1px dashed #eceef1;padding-top:6px;
+  }
+  .kpi .range b{color:var(--dark);font-weight:700;}
+  .kpi.accent{border-top:3px solid var(--blue);}
+  .kpi.risk{border-top:3px solid var(--pink);}
+
+  /* light badge corner on kpi */
+  .corner{
+    position:absolute;top:12px;right:12px;font-size:11px;font-weight:700;
+    padding:2px 8px;border-radius:999px;
+  }
+  .corner.red{background:rgba(220,38,38,.12);color:var(--red);}
+  .corner.green{background:rgba(22,163,74,.12);color:var(--green);}
+  .corner.yellow{background:rgba(234,179,8,.16);color:#a16207;}
+
+  /* ---------- TRAFFIC LIGHT ---------- */
+  .light{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:13px;}
+  .dot{width:11px;height:11px;border-radius:50%;display:inline-block;box-shadow:0 0 0 3px rgba(0,0,0,.04);}
+  .dot.red{background:var(--red);}
+  .dot.green{background:var(--green);}
+  .dot.yellow{background:var(--yellow);}
+  .light.red{color:var(--red);}
+  .light.green{color:var(--green);}
+  .light.yellow{color:#a16207;}
+
+  /* ---------- BADGES ---------- */
+  .badge{
+    display:inline-flex;align-items:center;gap:5px;
+    font-size:11.5px;font-weight:700;border-radius:999px;padding:2px 9px;
+    vertical-align:middle;white-space:nowrap;
+  }
+  .badge.warn{background:rgba(250,47,107,.12);color:var(--pink);border:1px solid rgba(250,47,107,.35);}
+  .badge.loss{background:rgba(220,38,38,.1);color:var(--red);border:1px solid rgba(220,38,38,.3);}
+  .badge.ok{background:rgba(22,163,74,.1);color:var(--green);border:1px solid rgba(22,163,74,.3);}
+
+  /* ---------- CARD CONTAINER ---------- */
+  .card{
+    background:var(--card);border-radius:var(--radius);
+    box-shadow:var(--shadow);border:1px solid #f0f1f3;
+    padding:20px 22px;margin-bottom:16px;
+  }
+  .card h3{
+    font-size:16px;font-weight:700;color:var(--dark);margin-bottom:4px;
+    display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  }
+  .card h3 .cid{
+    font-size:11px;font-weight:500;color:var(--grey);
+    background:var(--bg);border:1px solid #eceef1;border-radius:6px;padding:1px 7px;
+    font-family:ui-monospace,monospace;
+  }
+  .card .note{font-size:12.5px;color:var(--grey);margin-top:10px;}
+  .card .note b{color:var(--dark);}
+
+  /* ---------- TABLES ---------- */
+  .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:12px;border-radius:12px;border:1px solid #eef0f2;}
+  table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:520px;}
+  th,td{padding:9px 12px;text-align:left;border-bottom:1px solid #eef0f2;}
+  th{
+    background:var(--dark);color:#fff;font-weight:500;font-size:12.5px;
+    position:sticky;top:0;white-space:nowrap;
+  }
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;}
+  tbody tr:nth-child(even){background:#fafbfc;}
+  tbody tr:hover{background:#f1f6ff;}
+  td.acc{color:var(--blue);font-weight:700;}
+  tr.total td{background:#eef3ff !important;font-weight:700;color:var(--dark);border-top:2px solid #d7e2ff;}
+  tr.total td.acc{color:var(--blue);}
+  td .badge{margin-left:4px;}
+  .tbl-cap{font-size:12px;color:var(--grey);margin-top:8px;font-style:italic;}
+
+  /* ---------- TWO COL ---------- */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+
+  /* mini P&L */
+  .pnl td.amt{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;}
+  .pnl td.amt.neg{color:var(--pink);}
+  .pnl td.amt.pos{color:var(--green);}
+  .pnl tr.sub td{border-top:2px solid #e3e7ee;background:#f7f9fc;}
+  .pnl tr.fin td{border-top:2px solid var(--dark);background:#fdeef2;font-size:14.5px;}
+
+  /* chain / bottleneck */
+  .chain{
+    display:flex;align-items:stretch;gap:0;flex-wrap:wrap;margin-top:14px;
+  }
+  .chain .step{
+    flex:1 1 140px;background:var(--bg);border:1px solid #eef0f2;
+    border-radius:12px;padding:13px 14px;position:relative;min-width:140px;
+  }
+  .chain .step + .step{margin-left:14px;}
+  .chain .step .st-lbl{font-size:11.5px;color:var(--grey);font-weight:500;}
+  .chain .step .st-val{font-size:19px;font-weight:900;color:var(--dark);margin-top:3px;letter-spacing:-.5px;}
+  .chain .step .st-sub{font-size:11px;color:var(--grey);margin-top:2px;}
+  .chain .arrow{display:flex;align-items:center;color:var(--sky);font-size:22px;font-weight:700;padding:0 4px;}
+  .chain .step.bad .st-val{color:var(--pink);}
+
+  /* sensitivity */
+  .sens-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:6px;}
+  .lever{
+    background:var(--bg);border:1px solid #eef0f2;border-radius:12px;padding:15px 16px;
+    border-left:4px solid var(--sky);
+  }
+  .lever h4{font-size:13.5px;color:var(--dark);font-weight:700;margin-bottom:6px;}
+  .lever .big{font-size:20px;font-weight:900;color:var(--blue);letter-spacing:-.5px;}
+  .lever p{font-size:12.5px;color:var(--grey);margin-top:4px;}
+
+  /* assumptions */
+  ul.assume{list-style:none;display:flex;flex-direction:column;gap:9px;margin-top:6px;}
+  ul.assume li{
+    font-size:13px;color:var(--grey);padding-left:18px;position:relative;line-height:1.5;
+  }
+  ul.assume li::before{
+    content:"";position:absolute;left:0;top:7px;width:7px;height:7px;border-radius:2px;
+    background:var(--sky);
+  }
+  ul.assume li.bet::before{background:var(--pink);}
+  ul.assume li b{color:var(--dark);}
+  ul.assume li .badge{margin-left:2px;}
+
+  /* verdict */
+  .verdict{
+    background:linear-gradient(135deg,#fff5f8 0%,#fff 55%);
+    border:1px solid rgba(250,47,107,.3);
+    border-left:5px solid var(--pink);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:26px 28px;
+  }
+  .verdict .vh{
+    display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;
+  }
+  .verdict .vh h2{
+    font-size:clamp(18px,2.6vw,24px);font-weight:900;color:var(--dark);letter-spacing:-.4px;
+  }
+  .verdict p{font-size:14px;color:#374151;margin-bottom:13px;}
+  .verdict p b{color:var(--dark);}
+  .verdict p .hl{color:var(--blue);font-weight:700;}
+  .verdict .neg{color:var(--pink);font-weight:700;}
+  .verdict ol{margin:0 0 13px 20px;}
+  .verdict ol li{font-size:14px;color:#374151;margin-bottom:8px;}
+
+  .footer{
+    margin-top:40px;text-align:center;font-size:12px;color:var(--grey);
+    border-top:1px solid #e8eaed;padding-top:18px;
+  }
+
+  /* mobile */
+  @media(max-width:760px){
+    .grid2,.grid3{grid-template-columns:1fr;}
+    .chain .step + .step{margin-left:0;margin-top:14px;}
+    .chain .arrow{transform:rotate(90deg);width:100%;justify-content:center;padding:2px 0;}
+    .wrap{padding:16px 14px 60px;}
+    header.hero{padding:24px 20px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ HEADER ============ -->
+  <header class="hero">
+    <h1>Система бортов MainExperts — первая версия с числами</h1>
+    <div class="sub">Цикл закупки $1000 VK + $1000 Meta · горизонт ~1 месяц · Поток 2 (воронка, cold-трафик к CTA «Профориентация 50 000 ₽»). Поток 1 (личные продажи HNW) не смешан и сюда не приплюсован.</div>
+    <div class="meta-row">
+      <span class="pill">Курс: <b>95 ₽/$</b></span>
+      <span class="pill">Спенд: <b>$2 000 ≈ 190 000 ₽</b></span>
+      <span class="pill">Метод: <b>усечённое среднее 6 оценок</b></span>
+      <span class="pill">Светофор цикла: <b style="color:#fda4b8;">🔴 красный</b></span>
+    </div>
+    <div class="disclaimer">
+      <b>⚠ Оценка по триангуляции 6 моделей, не факт MainExperts.</b> Все числа — статистическое ожидание на одном прогоне; фактический исход по продажам 50К — лотерея 0–3 с огромной дисперсией. Гипотеза скрининга («мини-отчёт оцифровывает страх родителя → покупка диагностики») <b>НЕ валидирована</b> — вся правая часть воронки висит на этой ставке. <b>Цели — за Максом.</b>
+    </div>
+  </header>
+
+  <!-- ============ KPI CARDS ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="emoji">📊</span>
+      <h2>KPI — матожидание одного цикла</h2>
+      <span class="tag">сводно VK + Meta</span>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi accent">
+        <div class="num">190 000<small> ₽</small></div>
+        <div class="label">Рекламный бюджет ($2 000 × 95)</div>
+        <div class="range"><b>$2 000</b> · VK $1 000 + Meta $1 000</div>
+      </div>
+
+      <div class="kpi accent">
+        <div class="num">861</div>
+        <div class="label">Завершённые скрининги = лиды (e-mail)</div>
+        <div class="range">из <b>4 423</b> кликов · 1 806 стартов</div>
+      </div>
+
+      <div class="kpi accent">
+        <div class="num">861</div>
+        <div class="label">Лиды (e-mail для прогрева)</div>
+        <div class="range">сквозная клик → лид ≈ <b>19%</b></div>
+      </div>
+
+      <div class="kpi accent">
+        <div class="num">$2.32</div>
+        <div class="label">CPL — стоимость лида</div>
+        <div class="range">VK <b>$1.79</b> · Meta <b>$3.31</b></div>
+      </div>
+
+      <div class="kpi risk">
+        <span class="corner red">⚠ ставка</span>
+        <div class="num">2.58</div>
+        <div class="label">Продажи «Профориентация 50 000 ₽» (base)</div>
+        <div class="range">low <b>0.86</b> – high <b>3.44</b> · матожидание, не поток</div>
+      </div>
+
+      <div class="kpi accent">
+        <div class="num">154 097<small> ₽</small></div>
+        <div class="label">Выручка цикла (base)</div>
+        <div class="range">low <b>67 992</b> – high <b>197 149</b> ₽</div>
+      </div>
+
+      <div class="kpi risk">
+        <span class="corner red">🔴</span>
+        <div class="num neg">123.3<small>%</small></div>
+        <div class="label">ДРР — реклама ₽ / выручка ₽</div>
+        <div class="range">low <b>96.4%</b> – high <b>279.4%</b></div>
+      </div>
+
+      <div class="kpi risk">
+        <span class="corner red">🔴</span>
+        <div class="num neg">−151 841<small> ₽</small></div>
+        <div class="label">Операционный результат · ROMI ≈ −80%</div>
+        <div class="range"><span class="light red"><span class="dot red"></span>убыток by design</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FUNNEL ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="emoji">🔻</span>
+      <h2>Воронка $1000 VK + $1000 Meta</h2>
+      <span class="tag">сведённая воронка</span>
+    </div>
+    <p class="lead">Единая воронка по усечённому среднему. CPC, конверсии и доли заведены в USD/процентах (валютно-инвариантны), затем сведены при курсе 95 ₽/$.</p>
+
+    <div class="card">
+      <div class="tbl-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Этап</th>
+              <th class="num">VK</th>
+              <th class="num">Meta</th>
+              <th class="num">Сводно</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Бюджет, $</td><td class="num">1 000</td><td class="num">1 000</td><td class="num acc">2 000</td></tr>
+            <tr><td>Бюджет, ₽ (×95)</td><td class="num">95 000</td><td class="num">95 000</td><td class="num acc">190 000</td></tr>
+            <tr><td>CPC, $</td><td class="num">0.34</td><td class="num">0.675</td><td class="num">0.45 (сред.)</td></tr>
+            <tr><td>Клики</td><td class="num">2 941</td><td class="num">1 481</td><td class="num acc">4 423</td></tr>
+            <tr><td>Клик → старт скрининга</td><td class="num">40%</td><td class="num">42.5%</td><td class="num">41% (сред.)</td></tr>
+            <tr><td>Старты скрининга</td><td class="num">1 176</td><td class="num">630</td><td class="num">1 806</td></tr>
+            <tr><td>Старт → завершение (e-mail)</td><td class="num">47.5%</td><td class="num">48%</td><td class="num">48% (сред.)</td></tr>
+            <tr class="total"><td>Завершённые скрининги = лиды</td><td class="num">559</td><td class="num">302</td><td class="num acc">861</td></tr>
+            <tr><td>CPL, $</td><td class="num">1.79</td><td class="num">3.31</td><td class="num acc">2.32</td></tr>
+            <tr><td>Завершивший → покупка 50К <span class="badge warn">⚠ ставка</span></td><td class="num">0.30%</td><td class="num">0.30%</td><td class="num">0.30%</td></tr>
+            <tr class="total"><td>Продажи «Профориентация 50 000 ₽»</td><td class="num">1.68</td><td class="num">0.91</td><td class="num acc">2.58</td></tr>
+            <tr><td>Подписки Pro (первый платёж)</td><td class="num">3</td><td class="num">2</td><td class="num">4–5</td></tr>
+            <tr><td>Подписки Ultima (первый платёж)</td><td class="num">0</td><td class="num">1</td><td class="num">1</td></tr>
+            <tr><td>Выручка цикла, ₽</td><td class="num">92 794</td><td class="num">61 303</td><td class="num acc">154 097</td></tr>
+            <tr class="total"><td>ДРР канала (реклама ₽ / выручка ₽)</td><td class="num">102% <span class="badge loss">🔴</span></td><td class="num">155% <span class="badge loss">🔴</span></td><td class="num">123% <span class="badge loss">🔴</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tbl-cap">Сквозная конверсия клик → лид ≈ 19%. Диапазон продаж 50К сводно: low 0.86 (pr 0.10%) / base 2.58 (0.30%) / high 3.44 (0.40%). Выручка: low 67 992 ₽ / base 154 097 ₽ / high 197 149 ₽. Продажи 50К дробные — это матожидание; фактический исход цикла 0, 1, 2 или 3, статистический шум, а не воспроизводимый поток.</p>
+    </div>
+  </section>
+
+  <!-- ============ MARKETING BOARD ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="emoji">📣</span>
+      <h2>Маркетинговый борт</h2>
+      <span class="tag">L1-M · Поток 2</span>
+    </div>
+    <p class="lead">Три под-таблицы борта L1-M: атрибуция контента по каналам, план/факт ассортимент × канал, воронка вебинара.</p>
+
+    <!-- 1. Атрибуция контента -->
+    <div class="card">
+      <h3>Атрибуция контента <span class="cid">L2-M-ATTR</span></h3>
+      <div class="tbl-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Канал</th>
+              <th class="num">Бюджет ₽</th>
+              <th class="num">CPC $</th>
+              <th class="num">Клики</th>
+              <th class="num">Лиды</th>
+              <th class="num">CPL $</th>
+              <th class="num">Продажи 50К</th>
+              <th class="num">Выручка ₽</th>
+              <th class="num">ДРР</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>VK</td><td class="num">95 000</td><td class="num">0.34</td><td class="num">2 941</td>
+              <td class="num">559</td><td class="num">1.79</td><td class="num">1.68</td>
+              <td class="num">92 794</td><td class="num">102% <span class="badge loss">🔴</span></td>
+            </tr>
+            <tr>
+              <td>Meta</td><td class="num">95 000</td><td class="num">0.675</td><td class="num">1 481</td>
+              <td class="num">302</td><td class="num">3.31</td><td class="num">0.91</td>
+              <td class="num">61 303</td><td class="num">155% <span class="badge loss">🔴</span></td>
+            </tr>
+            <tr class="total">
+              <td>ИТОГО</td><td class="num">190 000</td><td class="num">0.45</td><td class="num">4 423</td>
+              <td class="num">861</td><td class="num">2.32</td><td class="num acc">2.58</td>
+              <td class="num acc">154 097</td><td class="num">123% <span class="badge loss">🔴</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Показы — слот: MODEL даёт CPC/клики, не показы; воронка идёт от кликов. <b>Meta</b> льётся на русскоязычную диаспору/MENA (Казахстан, ОАЭ, Израиль, Германия): аудитория тоньше и платёжеспособнее, клик дороже, объём кликов на $1000 кратно меньше.</p>
+    </div>
+
+    <!-- 2. План/факт ассортимент × канал -->
+    <div class="card">
+      <h3>План/факт ассортимент × канал <span class="cid">L2-M-MIX</span></h3>
+      <div class="tbl-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Продукт</th>
+              <th class="num">VK</th>
+              <th class="num">Meta</th>
+              <th class="num">Сводно</th>
+              <th class="num">ДРР</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Профиль 10 (лид-магнит, 0 ₽)</td><td class="num">559 лид</td><td class="num">302 лид</td><td class="num">861 лид</td><td class="num">н/д · CPL $2.32</td></tr>
+            <tr><td>«Профориентация 50 000 ₽» (живой CTA)</td><td class="num">≈84 000 ₽</td><td class="num">≈45 500 ₽</td><td class="num">≈129 000 ₽</td><td class="num">—</td></tr>
+            <tr><td>Подписка Pro (первый платёж)</td><td class="num">3</td><td class="num">2</td><td class="num">4–5</td><td class="num">—</td></tr>
+            <tr><td>Подписка Ultima (первый платёж)</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">—</td></tr>
+            <tr class="total"><td>ИТОГО выручка ₽</td><td class="num">92 794</td><td class="num">61 303</td><td class="num acc">154 097</td><td class="num">123% <span class="badge loss">🔴</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Продуктовые цифры «50К» помечены <b>≈</b>: channel-итог (92 794 / 61 303 / 154 097) ведущий, разбивка на продукты дробных продаж и подписок нелинейна. Профиль 10 — лид-магнит, управляющий показатель здесь CPL, не ДРР.</p>
+    </div>
+
+    <!-- 3. Воронка вебинара -->
+    <div class="card">
+      <h3>Воронка вебинара <span class="badge warn">⚠ СТАВКА</span> <span class="cid">L2-M-WEBI</span></h3>
+      <div class="tbl-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Этап вебинара</th>
+              <th class="num">Значение</th>
+              <th class="num">Стоимость</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>CPL (из реальной стоимости трафика)</td><td class="num">$2.32 ≈ 220 ₽</td><td class="num">база MODEL</td></tr>
+            <tr><td>Регистрации на вебинар (цель)</td><td class="num">300</td><td class="num">≈ $700 ≈ 66 000 ₽</td></tr>
+            <tr><td>Регистрация → покупка (цель)</td><td class="num">[слот Макса]</td><td class="num">прогретая ауд.</td></tr>
+            <tr><td>Продажи с вебинара (цель)</td><td class="num">[слот Макса] 3–5</td><td class="num">тёплый трафик</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Числа-цели в слотах <b>за Максом</b>, но привязаны к реальной стоимости трафика MODEL. Зачем вебинар: холодный трафик к 50К = ДРР 123% <span class="badge loss">🔴</span>; вебинар покупает не выручку, а тёплую аудиторию по известному CPL. Командный KPI «регистрация→покупка &gt;5%» относится к прогретой/вебинарной аудитории, не к cold→чек.</p>
+    </div>
+  </section>
+
+  <!-- ============ UNIT ECON & P&L ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="emoji">🧮</span>
+      <h2>Юнит-экономика и P&amp;L периода</h2>
+      <span class="tag">L2-FIN-CM · L1-FIN</span>
+    </div>
+    <p class="lead">Юнит-экономика одной сделки 50К здорова (CM% 89%, CM/час 29 800 ₽). Проблема не в марже единицы, а в том, сколько единиц cold-трафик реально приносит.</p>
+
+    <div class="grid2">
+      <!-- Unit econ + breakeven -->
+      <div class="card">
+        <h3>Юнит-экономика «Профориентация 50 000 ₽» <span class="cid">L2-FIN-CM</span></h3>
+        <div class="tbl-scroll">
+          <table>
+            <thead>
+              <tr><th>Параметр</th><th class="num">Значение</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Цена</td><td class="num">50 000 ₽</td></tr>
+              <tr><td>Переменные на сделку</td><td class="num">5 300 ₽</td></tr>
+              <tr class="total"><td>CM (вклад на сделку)</td><td class="num acc">44 700 ₽</td></tr>
+              <tr><td>CM%</td><td class="num">89.4%</td></tr>
+              <tr><td>CM на человеко-час эксперта</td><td class="num acc">29 800 ₽/ч</td></tr>
+              <tr><td>Часов эксперта на отчёт</td><td class="num">1.5 ч</td></tr>
+              <tr class="total"><td>Точка безубыточности</td><td class="num">6.5 сделки/цикл</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note"><b>Переменные 5 300 ₽:</b> проверка эксперта 1.5 ч × 2 000 ₽/ч = 3 000 (этап 5, узкое место) + ИИ-отчёт ~40 стр. ≈ 300 (API) + эквайринг Робокасса ~4% × 50 000 = 2 000. Чтобы реклама вернулась продажами, нужно ~6.5 сделок — это конверсия лид→50К ~0.75%, вдвое-втрое выше реалистичного потолка холода.</p>
+      </div>
+
+      <!-- Mini P&L -->
+      <div class="card">
+        <h3>Мини-P&amp;L цикла (Поток 2) <span class="cid">L1-FIN</span></h3>
+        <div class="tbl-scroll">
+          <table class="pnl">
+            <thead>
+              <tr><th>Строка</th><th class="num">₽</th><th>Примечание</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Выручка цикла (base)</td><td class="amt pos">+154 097</td><td>~2.6 продажи 50К + 4 Pro + 1 Ultima</td></tr>
+              <tr><td>− Реклама</td><td class="amt neg">−190 000</td><td>$2 000 × 95</td></tr>
+              <tr><td>− Переменные</td><td class="amt neg">−14 688</td><td>по факту проданных отчётов</td></tr>
+              <tr class="sub"><td>= Контрибуция</td><td class="amt neg">−50 591</td><td>🔴 минус ещё ДО постоянных</td></tr>
+              <tr><td>− Постоянные</td><td class="amt neg">−101 250</td><td>Meta-спец $600 + инструменты + накладные</td></tr>
+              <tr class="fin"><td><b>= Операционный результат</b></td><td class="amt neg">−151 841</td><td><span class="light red"><span class="dot red"></span>ROMI ≈ −80%</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note"><b>Постоянные ~101 250 ₽:</b> Meta-специалист фикс $600 ≈ 57 000 + инструменты/сервисы ~$150 ≈ 14 250 + операционное/управленческое время и накладные ~30 000 (грубая оценка). Время эксперта учтено в переменных, не дублируется. Сценарии выручки: low 67 992 / base 154 097 / high 197 149 ₽.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BOTTLENECK ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="emoji">⛓️</span>
+      <h2>Узкое место</h2>
+      <span class="tag">L1-BTL · этап 5, ручная проверка</span>
+    </div>
+    <p class="lead">Цепочка: отчёты → часы эксперта → WIP → кассовый разрыв. На объёмах этого теста узкое место НЕ лимитирует — продаж единицы, очередь не возникает.</p>
+
+    <div class="card">
+      <div class="chain">
+        <div class="step">
+          <div class="st-lbl">Платных отчётов / цикл</div>
+          <div class="st-val">2.58</div>
+          <div class="st-sub">= продажи 50К (low 0.86 / high 3.44)</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="step">
+          <div class="st-lbl">Человеко-часы проверки</div>
+          <div class="st-val">3.87 ч</div>
+          <div class="st-sub">2.58 × 1.5 ч (этап 5)</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="step">
+          <div class="st-lbl">WIP / очередь</div>
+          <div class="st-val">≈ 0</div>
+          <div class="st-sub">требуемый WIP &lt; 1 → очереди нет</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="step bad">
+          <div class="st-lbl">Кассовый разрыв</div>
+          <div class="st-val">🔴</div>
+          <div class="st-sub">не от очереди, а от −152 000 ₽</div>
+        </div>
+      </div>
+      <p class="note" style="margin-top:16px;">Платных отчётов = продаж 50К = ~2.6 за цикл → ~3.9 человеко-часов проверки. На объёмах теста узкое место (ручная проверка, этап 5) <b>не лимитирует</b> — продаж единицы, очередь не возникает. Загрузка узкого места ~1–2% против потолка <b>9–10 проверок/день</b>.</p>
+      <p class="note"><b>Стена $1 млн.</b> Узкое место обнажается только при масштабировании: потолок ~9–10 проверок/день. Цель $1 млн ≈ 1700 оплат 50К ≈ 9–10/день каждый день полгода — упирается ровно в этот ручной этап. Даже если конверсия cold→50К выстрелит, прямой массовый канал к 50К нежизнеспособен по производству без потери качества (custdev: отчёт+эксперт обязательны, 8 из 9). <b>Миллион идёт через Поток 1, не через воронку.</b></p>
+      <p class="note"><b>Кассовый разрыв (честно).</b> Точную длительность цикла не моделирую — данных нет. Кэш по 50К приходит не мгновенно с клика, а после прохождения этапа проверки (этап 5); Робокасса и cross-domain до источника трафика не связаны автоматически — оплаты сводятся вручную (Даниил), что удлиняет и зашумляет фактический денежный цикл. <span class="badge warn">🟡 наблюдаемость не настроена</span></p>
+    </div>
+  </section>
+
+  <!-- ============ LIVE MODEL / SENSITIVITY ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="emoji">🎚️</span>
+      <h2>Живая модель / чувствительность</h2>
+      <span class="tag">§7.4 · рычаги</span>
+    </div>
+    <p class="lead">Прибыльный рычаг лежит на невалидированной ставке-конверсии и в смене канала, а не в юнит-экономике — маржа единицы здоровая.</p>
+
+    <div class="card">
+      <div class="tbl-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Сценарий конверсии лид → 50К</th>
+              <th class="num">Конверсия</th>
+              <th class="num">Продажи 50К</th>
+              <th class="num">Выручка ₽</th>
+              <th class="num">ДРР</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Low (первые прогоны, реализм холода)</td><td class="num">0.10%</td><td class="num">0.86</td><td class="num">67 992</td><td class="num">279.4% <span class="badge loss">🔴</span></td></tr>
+            <tr class="total"><td>Base ⚠ ставка (потолок реализма холода)</td><td class="num">0.30%</td><td class="num acc">2.58</td><td class="num acc">154 097</td><td class="num">123.3% <span class="badge loss">🔴</span></td></tr>
+            <tr><td>High (оптимистичный)</td><td class="num">0.40%</td><td class="num">3.44</td><td class="num">197 149</td><td class="num">96.4% <span class="badge loss">🔴</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tbl-cap">Даже в оптимистичном сценарии (high, 0.4%) ДРР ~96% — реклама едва возвращается выручкой и не покрывает ни переменные, ни постоянные.</p>
+
+      <div class="sens-grid">
+        <div class="lever">
+          <h4>Рычаг 1 — конверсия</h4>
+          <div class="big">+0.2 п.п. → +1.72 продажи</div>
+          <p>= +86 100 ₽ выручки. Самый сильный рычаг, но висит на невалидированной ставке «страх → покупка».</p>
+        </div>
+        <div class="lever">
+          <h4>Рычаг 2 — CPC канала</h4>
+          <div class="big">Meta $0.675 → $0.45</div>
+          <p>+50% кликов (1 481 → 2 222) → +0.45 продажи → +22 500 ₽. Оптимизация креатива/аудитории.</p>
+        </div>
+        <div class="lever">
+          <h4>Рычаг 3 — курс рубля</h4>
+          <div class="big">95 ₽/$ → выше</div>
+          <p>При ослаблении рубля рублёвая выручка от того же трафика растёт, долларовый CPL падает.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ASSUMPTIONS ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="emoji">📌</span>
+      <h2>Допущения</h2>
+      <span class="tag">оценка, не факт</span>
+    </div>
+
+    <div class="card">
+      <ul class="assume">
+        <li><b>Курс 95 ₽/$</b> — медиана пяти из шести оценок (одна закладывала 78 ₽/$ — отброшена как крайность); рабочая середина 2026, реальный коридор 90–100. При ослаблении рубля рублёвая выручка от того же трафика растёт, долларовый CPL падает.</li>
+        <li><b>Метод сведения:</b> усечённое среднее по каждому параметру (отброшены min и max из шести оценок), затем единая воронка. CPC, конверсии и доли — в USD/процентах (валютно-инвариантны), чтобы оценка с курсом 78 не искажала сведение.</li>
+        <li><b>CPC:</b> VK $0.34 (родительский сегмент РФ/СНГ через косвенные интересы — репетиторы, ЕГЭ, частные школы; нет прямого интереса «профориентация»). Meta $0.675 — РФ-гео изнутри недоступно, льётся на русскоязычную диаспору/MENA (Казахстан, ОАЭ, Израиль, Германия): аудитория тоньше и платёжеспособнее, клик дороже, объём кликов на $1000 кратно меньше.</li>
+        <li><b>Клик → старт скрининга:</b> VK 40% / Meta 42.5%. Часть кликов — любопытство/мисклик, отваливается на лендинге до первого вопроса.</li>
+        <li><b>Старт → завершение:</b> ~48%. Жёсткий двойной фрикшн: ~18 вопросов (6 шкал) + e-mail ДО результата (антипаттерн — почта перед ценностью режет завершаемость сильнее, чем регистрация после мини-отчёта). Завершивший скрининг = лид/e-mail.</li>
+        <li class="bet"><b>ГЛАВНАЯ СТАВКА — завершивший → покупка 50 000 ₽ (~$525): base 0.30%, диапазон 0.10–0.40%.</b> <span class="badge warn">⚠ ставка</span> Прямая конверсия холодного трафика в чек 50К за один контакт — это доли процента. 0.30% — уже потолок реализма для холода без прогрева. На первых прогонах реалистичен 0–0.1%. Командный KPI «регистрация→покупка &gt;5%» относится к ПРОГРЕТОЙ/вебинарной аудитории, не к cold→чек — для холода завышен в 15–25 раз, как факт не принят.</li>
+        <li><b>Подписки</b> (Pro 2 990 / Ultima 9 990 ₽): первый платёж ~0.5% лидов Pro, ~0.1% Ultima (в осн. Meta-диаспора). Учтён только первый платёж, не LTV. С холода почти не конвертят — это инструмент удержания, не первого касания; подписочная модель в проекте дольше всего в разработке.</li>
+        <li><b>Переменные на сделку 50К:</b> проверка эксперта 1.5 ч × 2 000 ₽/ч + ИИ-генерация ~300 ₽ + эквайринг ~4%. Часы и ставка эксперта — оценка (точных данных нет).</li>
+        <li><b>Постоянные периода:</b> Meta-спец $600 + инструменты ~$150 + операционное время/накладные ~30 000 ₽. Оценка, не факт.</li>
+        <li class="bet"><b>Гипотеза скрининга НЕ валидирована</b> <span class="badge warn">⚠ ставка</span> — вся правая часть модели висит на ставке «мини-отчёт оцифровывает страх → покупка диагностики». Если ставка не играет, purchase_rate_50k → ~0 и выручка падает до редких подписок.</li>
+        <li><b>Поток 1 (личные продажи HNW) НЕ смешан</b> с этой экономикой. CTA «Заявка на консультацию 150К+» уводит лид в Поток 1 и в выручку Потока 2 здесь не засчитан.</li>
+        <li>Числа из книги/прежних файлов сознательно не подставлены как факт.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ VERDICT ============ -->
+  <section>
+    <div class="verdict">
+      <div class="vh">
+        <span class="emoji" style="font-size:28px;">⚖️</span>
+        <h2>Честный вердикт: cold-трафик к чеку 50 000 ₽ окупается отрицательно</h2>
+        <span class="light red" style="font-size:15px;"><span class="dot red"></span>Светофор 🔴</span>
+      </div>
+
+      <p>Это не «осторожная» оценка, а арифметика, и я не рисую её красивее, чем она есть.</p>
+
+      <p><b>Что показывает светофор (🔴).</b> $2000 (≈190 000 ₽) обоими каналами дают ~4 400 кликов → ~1 800 стартов скрининга → <span class="hl">~861 лид/e-mail</span> (CPL ~$2.3) → <span class="hl">~2.6 продажи 50К</span> в матожидании. Выручка цикла ~<b>154 000 ₽</b>. Уже на уровне рекламы это минус: 190 000 ₽ спенда против 154 000 ₽ выручки. Контрибуция (выручка − реклама − переменные) ≈ <span class="neg">−51 000 ₽</span> ещё ДО постоянных. С постоянными (Meta-спец $600 + инструменты + операционное время ≈ 101 000 ₽) операционный результат ≈ <span class="neg">−152 000 ₽</span>, ROMI ≈ −80%.</p>
+
+      <p><b>ДРР 123% (база), коридор 96–279%.</b> Даже в оптимистичном сценарии (high, продажи 0.4%) ДРР ~96% — реклама едва возвращается выручкой и не покрывает ни переменные, ни постоянные. Чтобы реклама хотя бы вернулась продажами 50К, нужно ~6.5 сделок (точка безубыточности с учётом постоянных) — это конверсия лид→50К около 0.75%, вдвое-втрое выше реалистичного потолка холода.</p>
+
+      <p><b>Где деньги РЕАЛЬНО — не здесь.</b></p>
+      <ol>
+        <li>Эти ~2.6 продажи — статистический шум на объёме 861; на следующем цикле может быть 0. Отличить «воронка работает» от «повезло» на одном-двух прогонах нельзя (нужно 3+, как и сказано в метриках вебинара).</li>
+        <li>Реальный актив бюджета — не 2 продажи, а <b>~860 e-mail по CPL ~$2.3</b> как материал для прогрева к вебинару (4 июля), серии писем, ретаргета. Чек 50К — это решение про будущее ребёнка, его не покупают с первого касания за $525; он закрывается на тёплой аудитории, где цель «3–5 продаж с вебинара» становится реальной.</li>
+        <li>Подписка Pro 2 990 — более правдоподобный первый чек, чем 50К с холода, и единственная масштабируемая (MRR) экономика воронки против ручного потолка проверок — но и она хочет онбординга/триала.</li>
+        <li>Настоящие большие деньги проекта — в <b>Потоке 1</b> (личные продажи Макса по HNW-рекомендациям): одна сделка 150К–500К перекрывает весь рекламный цикл. Но это другой канал, в этот бюджет не входит и сюда не приплюсовывается.</li>
+      </ol>
+
+      <p><b>Риск невалидированной гипотезы.</b> Вся правая часть модели висит на ставке «мини-отчёт → страх → покупка». Она НЕ проверена. Если не срабатывает — purchase_rate_50k → ~0, и линия 50К как источник выручки не «недозарабатывает», а рушится; остаётся только прогрев-актив и редкие подписки.</p>
+
+      <p><b>Узкое место.</b> На этих объёмах ручная проверка отчёта (этап 5) не лимитирует — ~2.6 отчёта ≈ 3.9 ч. Но даже если конверсия вдруг выстрелит, прямой массовый канал к 50К нежизнеспособен по производству: потолок ~9–10 проверок/день — это и есть стена $1 млн (≈1700 оплат). Миллион идёт через Поток 1, не через воронку.</p>
+
+      <p><b>Правильное применение $2000:</b> не KPI «продажи 50К» (проиграешь и сделаешь ложный вывод «трафик не работает»), а две задачи — собрать дешёвые лиды под вебинар (целевой CPL $2–5) и <b>проверить гипотезу на дешёвом верхе воронки</b>: измерять не выручку, а событие на развилке (дошёл до 3 CTA → кликнул «Профориентация 50 000 ₽», даже без оплаты). Если на ~860 лидах по CTA-50К жмут &lt;0.5% — гипотеза «страх → покупка» не подтверждается, и это ответ дешевле любого вебинара. Прямой ROI первого цикла отрицателен by design; он оправдан только как покупка ДАННЫХ, не выручки.</p>
+    </div>
+  </section>
+
+  <div class="footer">
+    Система бортов MainExperts — первая версия с числами · Поток 2 · цикл $1000 VK + $1000 Meta · курс 95 ₽/$ · оценка по триангуляции 6 моделей, не факт MainExperts · цели — за Максом.
+  </div>
+
+</div>
+</body>
+</html>

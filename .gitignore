@@ -17,6 +17,7 @@ scratchpad/
 node_modules/
 package.json
 package-lock.json
+scratch_pdf/
 
 # Сырьё ингеста (большие бинарники); каталог держим через .gitkeep
 raw/*
