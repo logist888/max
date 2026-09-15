@@ -43,12 +43,19 @@ updated: 2026-07-13
 
 ## 📚 Канон знаний (docs/)
 
+- **Начать отсюда:** [[00-mainexperts-i-proforientaciya]] — единый ввод: что такое компания и что
+  такое продукт «профориентация» (свод всего канона, 15.09.2026).
 - [[01-strategy]] · [[02-product]] · [[03-audience-custdev]] · [[04-operations]] ·
   [[05-risk-compliance]] · [[06-data-tools-payments]] · [[07-principles-open-questions]]
 - Борды MMS: [[08-board-system]] → модуль `docs/boards/`.
 - [[09-system-map]] · [[10-data-model]] · [[11-gtm-strategy]] · [[12-traffic-platform-decisions]]
 - Система документации: [[13-document-system]] → модуль `docs/dms/` (реестр, карточки, матрицы,
   деревья, роадмап, governance); материализованные документы — `docs/dms/documents/`.
+- Партнёрская сеть: [[14-partner-network]] · [[15-partner-network-tz]] · [[16-partner-flows-tz]] ·
+  [[17-partner-network-brief]]
+- Ранние документы и прочее: [[18-marketing-strategy-blueprint]] · [[19-strategy-roadmap]] ·
+  [[20-system-map-board]] · [[21-lk-pisma-voronki]]
+- Ответвление: SEO-платформа выбора образования — `seo-platform/` (vuz-navigator.ru).
 
 ## ⚙️ Как это работает
 
