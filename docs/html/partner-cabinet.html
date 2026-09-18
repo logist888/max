@@ -384,7 +384,7 @@ footer{max-width:1180px;margin:0 auto;padding:0 20px 24px;font-size:.78rem;color
 
     var calc='<div class="grid g3">'+
       '<div class="kpi"><span class="l">Семья платит</span><span class="v">'+money(k)+'</span></div>'+
-      '<div class="kpi accent"><span class="l">Вам начисляется, доля до налогов</span><span class="v">'+money(g)+'</span></div>'+
+      '<div class="kpi accent"><span class="l">Вам начисляется, '+Math.round(S*100)+'\u00A0% до налогов</span><span class="v">'+money(g)+'</span></div>'+
       '<div class="kpi"><span class="l">К выплате по вашему статусу</span><span class="v">'+
         (st.tax==="none"?'<span class="missing" style="font-size:.9rem">укажите статус</span>':money(t.net(g)))+'</span></div>'+
     '</div>';
