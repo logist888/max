@@ -29,7 +29,7 @@ import numpy as np
 
 BAND_HEIGHT = 220        # верхняя полоса с плитками участников, px
 MIN_BOX_WIDTH = 60       # уже — не плитка, а блик
-MAX_BOX_WIDTH = 420      # шире — слиплись соседние плитки
+MAX_BOX_SHARE = 0.6      # шире доли кадра — это рамка демонстрации, а не плитка
 MIN_GREEN_PIXELS = 300
 
 
@@ -53,7 +53,7 @@ def green_mask(band: np.ndarray) -> np.ndarray:
     return (g > 120) & (g - r > 50) & (g - b > 50)
 
 
-def find_highlighted(band: np.ndarray) -> list[tuple[int, int]]:
+def find_highlighted(band: np.ndarray, max_width: int | None = None) -> list[tuple[int, int]]:
     """Границы подсвеченных плиток по x.
 
     Опора — горизонтальные грани рамки: сплошной отрезок ровно по ширине плитки.
@@ -77,7 +77,8 @@ def find_highlighted(band: np.ndarray) -> list[tuple[int, int]]:
             prev = x
         runs.append((start, prev))
 
-    runs = [(a, b) for a, b in runs if MIN_BOX_WIDTH <= b - a <= MAX_BOX_WIDTH]
+    limit = max_width or int(band.shape[1] * MAX_BOX_SHARE)
+    runs = [(a, b) for a, b in runs if MIN_BOX_WIDTH <= b - a <= limit]
     if not runs:
         return []
     runs.sort()
@@ -111,6 +112,12 @@ def read_name(band: np.ndarray, box: tuple[int, int], cache: dict, lang: str) ->
         p = subprocess.run(["tesseract", "stdin", "stdout", "-l", lang, "--psm", "7"],
                            input=_png_bytes(img), capture_output=True)
         name = re.sub(r"[^\w .А-Яа-яЁё-]", "", p.stdout.decode("utf-8", "ignore")).strip()
+        # подпись лежит поверх кадра, и по краям кропа налипают куски картинки:
+        # оставляем то, что похоже на имя — слова от заглавной буквы
+        m = re.search(r"[A-ZА-ЯЁ][\w.-]*(?:\s+[A-ZА-ЯЁa-zа-яё][\w.-]*)*", name)
+        name = m.group(0).strip() if m else ""
+        name = re.sub(r"(?:\s+\S{1,2})+$", "", name).strip()   # хвост из огрызков
+        name = re.sub(r"^(?:\S{1,2}\s+)+", "", name).strip()   # и такие же огрызки в начале
     cache[key] = name
     return name
 
