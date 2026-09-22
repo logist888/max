@@ -191,30 +191,53 @@ def main() -> None:
         boxes = find_highlighted(band)
         if boxes:
             names = [read_name(band, b, cache, args.lang) or f"плитка@{b[0]}" for b in boxes]
-            marks.append((t, names))
+            marks.append((t, names, [b[0] for b in boxes]))
         if i % 600 == 0:
             log(f"  разобрано {t / 60:.0f} мин, отметок {len(marks)}, "
                 f"прошло {(time.time() - t0) / 60:.1f} мин")
     proc.wait()
 
-    canon = normalize([n for _, ns in marks for n in ns])
-    marks = [(t, sorted({canon.get(n, n) for n in ns})) for t, ns in marks]
+    canon = normalize([n for _, ns, _ in marks for n in ns])
+    marks = [(t, [canon.get(n, n) for n in ns], xs) for t, ns, xs in marks]
+    marks = [(t, ns, xs) for t, ns, xs in marks if ns]
+
+    # плитка участника стоит на месте всю встречу: кадры, где подпись не прочлась,
+    # получают имя по позиции — так не теряются минуты разметки из-за бликов на кадре
+    by_slot: dict[int, dict[str, int]] = {}
+    for _, ns, xs in marks:
+        for n, x in zip(ns, xs):
+            if not n.startswith("плитка@"):
+                by_slot.setdefault(x // 40, {})
+                by_slot[x // 40][n] = by_slot[x // 40].get(n, 0) + 1
+    slot_name = {s: max(c, key=c.get) for s, c in by_slot.items()}
+    restored = 0
+    for i, (tm, ns, xs) in enumerate(marks):
+        fixed = []
+        for n, x in zip(ns, xs):
+            if n.startswith("плитка@") and x // 40 in slot_name:
+                n = slot_name[x // 40]
+                restored += 1
+            fixed.append(n)
+        marks[i] = (tm, fixed, xs)
+    if restored:
+        log(f"восстановлено по позиции плитки: {restored} кадров")
+    marks = [(t, sorted(set(ns)), xs) for t, ns, xs in marks]
 
     # мусор OCR: обрывки в один-два символа и подписи, мелькнувшие пару раз
     seen: dict[str, int] = {}
-    for _, ns in marks:
+    for _, ns, _ in marks:
         for n in ns:
             seen[n] = seen.get(n, 0) + 1
     junk = {n for n, c in seen.items() if len(n) < 3 or c < 5}
     if junk:
         log(f"отброшено как мусор OCR: {len(junk)} вариантов подписи")
-    marks = [(t, [n for n in ns if n not in junk]) for t, ns in marks]
-    marks = [(t, ns) for t, ns in marks if ns]
+    marks = [(t, [n for n in ns if n not in junk], xs) for t, ns, xs in marks]
+    marks = [(t, ns, xs) for t, ns, xs in marks if ns]
 
     # секунды с одним активным именем сшиваются в интервалы
     step = 1.0 / args.fps
     spans: list[dict] = []
-    for t, names in marks:
+    for t, names, _ in marks:
         disputed = len(names) > 1
         name = names[0] if not disputed else "|".join(names)
         if spans and spans[-1]["name"] == name and t - spans[-1]["end"] <= step * 1.5:
