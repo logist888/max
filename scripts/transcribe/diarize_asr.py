@@ -228,6 +228,52 @@ def assign_speakers(words, segs) -> None:
         w.speaker = best if best > -1 else nearest
 
 
+def name_clusters_by_video(words, tags_path: Path):
+    """Имена кластерам по видео, разметка слов — по голосу.
+
+    Когда диаризация уже разделила голоса чисто, вести разметку по подсветке
+    вредно: она переключается с задержкой и дробит реплики. Тогда от видео нужно
+    только одно — как зовут каждый голос.
+    """
+    import bisect
+    from collections import defaultdict
+
+    data = json.loads(tags_path.read_text(encoding="utf-8"))
+    single = [s for s in data["spans"] if not s.get("disputed")]
+    if not single:
+        log("видеоразметка без однозначных интервалов — имена не подставлены")
+        return None
+    starts = [s["start"] for s in single]
+
+    hit: dict[int, dict[str, float]] = defaultdict(lambda: defaultdict(float))
+    spoken: dict[int, float] = defaultdict(float)
+    for w in words:
+        spoken[w.speaker] += max(w.end - w.start, 0.01)
+        i = max(0, bisect.bisect_left(starts, w.start) - 1)
+        for s in single[i:i + 4]:
+            if s["start"] > w.end:
+                break
+            ov = min(w.end, s["end"]) - max(w.start, s["start"])
+            if ov > 0:
+                hit[w.speaker][s["name"]] += ov
+
+    names, report = {}, []
+    for spk in sorted(spoken):
+        h = hit.get(spk)
+        if not h:
+            continue
+        best = max(h, key=h.get)
+        rival = max((v for k, v in h.items() if k != best), default=0.0)
+        if h[best] > 2 * max(rival, 0.01):          # имя должно выигрывать уверенно
+            names[str(spk)] = best
+            report.append(f"{best} ← голос {spk} ({h[best]/60:.1f} против {rival/60:.1f} мин)")
+    if not names:
+        log("видео не дало уверенного соответствия голосам")
+        return None
+    log("имена голосам по видео: " + "; ".join(report))
+    return names
+
+
 def apply_video_names(words, tags_path: Path, min_share: float = 0.5):
     """Расставляет имена участников по видеоразметке, диаризацией закрывая пробелы.
 
@@ -497,6 +543,9 @@ def main() -> None:
     ap.add_argument("--names", type=Path, help='JSON вида {"0": "Максим", "1": "Игорь"}')
     ap.add_argument("--video-tags", type=Path,
                     help="JSON от video_speaker_tags.py: имена участников по подсветке в записи")
+    ap.add_argument("--video-names-only", action="store_true",
+                    help="брать из видео только имена голосов, разметку вести по голосу: "
+                         "так реплики не дробятся, когда диаризация и так разделила чисто")
     ap.add_argument("--formats", default="md,txt,srt,json")
     ap.add_argument("--no-diarize", action="store_true", help="без разделения по голосам")
     ap.add_argument("--workdir", type=Path, help="каталог для WAV и кеша (по умолчанию рядом с выходом)")
@@ -526,11 +575,15 @@ def main() -> None:
 
     assign_speakers(words, segs)
     word_stats = None
-    if args.video_tags:
+    if args.video_tags and args.video_names_only:
+        video_names = name_clusters_by_video(words, args.video_tags)
+        if video_names:
+            names = {**video_names, **names}   # ручная карта имеет приоритет
+    elif args.video_tags:
         result = apply_video_names(words, args.video_tags)
         if result:
             video_names, word_stats = result
-            names = {**video_names, **names}   # ручная карта имеет приоритет
+            names = {**video_names, **names}
     turns = build_turns(words)
 
     meta = {
@@ -541,7 +594,9 @@ def main() -> None:
         "diarization": (f"pyannote-segmentation-3.0 + {args.embedding} (sherpa-onnx)"
                         if segs else "нет"),
         "split_reliability": split_reliability(words) if segs else None,
-        "names_source": "подсветка говорящего в записи" if args.video_tags else "вручную",
+        "names_source": ("подсветка говорящего в записи"
+                         + (" (только имена голосов)" if args.video_names_only else "")
+                         if args.video_tags else "вручную"),
         "word_attribution": word_stats,
         "created": time.strftime("%Y-%m-%d %H:%M"),
         "turns": len(turns),
