@@ -201,38 +201,40 @@ def main() -> None:
     marks = [(t, [canon.get(n, n) for n in ns], xs) for t, ns, xs in marks]
     marks = [(t, ns, xs) for t, ns, xs in marks if ns]
 
-    # плитка участника стоит на месте всю встречу: кадры, где подпись не прочлась,
-    # получают имя по позиции — так не теряются минуты разметки из-за бликов на кадре
+    # плитка участника стоит на месте всю встречу, поэтому позиция — надёжнее подписи.
+    # Считаем имя слота по частым чтениям, а всё редкое и нечитаемое заменяем им же:
+    # иначе кадр, где подпись не далась, терял участника — и интервал, в котором
+    # подсвечены оба, ошибочно приписывался одному
+    counts: dict[str, int] = {}
+    for _, ns, _ in marks:
+        for n in ns:
+            counts[n] = counts.get(n, 0) + 1
+    solid = {n for n, c in counts.items() if len(n) >= 3 and c >= 5 and not n.startswith("плитка@")}
+
     by_slot: dict[int, dict[str, int]] = {}
     for _, ns, xs in marks:
         for n, x in zip(ns, xs):
-            if not n.startswith("плитка@"):
+            if n in solid:
                 by_slot.setdefault(x // 40, {})
                 by_slot[x // 40][n] = by_slot[x // 40].get(n, 0) + 1
     slot_name = {s: max(c, key=c.get) for s, c in by_slot.items()}
-    restored = 0
+
+    restored = dropped = 0
     for i, (tm, ns, xs) in enumerate(marks):
         fixed = []
         for n, x in zip(ns, xs):
-            if n.startswith("плитка@") and x // 40 in slot_name:
-                n = slot_name[x // 40]
+            if n in solid:
+                fixed.append(n)
+                continue
+            if x // 40 in slot_name:                 # чтение не удалось — берём имя слота
+                fixed.append(slot_name[x // 40])
                 restored += 1
-            fixed.append(n)
+            else:
+                dropped += 1
         marks[i] = (tm, fixed, xs)
-    if restored:
-        log(f"восстановлено по позиции плитки: {restored} кадров")
-    marks = [(t, sorted(set(ns)), xs) for t, ns, xs in marks]
-
-    # мусор OCR: обрывки в один-два символа и подписи, мелькнувшие пару раз
-    seen: dict[str, int] = {}
-    for _, ns, _ in marks:
-        for n in ns:
-            seen[n] = seen.get(n, 0) + 1
-    junk = {n for n, c in seen.items() if len(n) < 3 or c < 5}
-    if junk:
-        log(f"отброшено как мусор OCR: {len(junk)} вариантов подписи")
-    marks = [(t, [n for n in ns if n not in junk], xs) for t, ns, xs in marks]
-    marks = [(t, ns, xs) for t, ns, xs in marks if ns]
+    if restored or dropped:
+        log(f"по позиции плитки восстановлено {restored} чтений, отброшено {dropped}")
+    marks = [(t, sorted(set(ns)), xs) for t, ns, xs in marks if ns]
 
     # секунды с одним активным именем сшиваются в интервалы
     step = 1.0 / args.fps

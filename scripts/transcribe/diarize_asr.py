@@ -274,7 +274,8 @@ def name_clusters_by_video(words, tags_path: Path):
     return names
 
 
-def apply_video_names(words, tags_path: Path, min_share: float = 0.5):
+def apply_video_names(words, tags_path: Path, min_share: float = 0.5,
+                      ignore_voice: bool = False):
     """Расставляет имена участников по видеоразметке, диаризацией закрывая пробелы.
 
     Подсветка говорящего — сигнал более надёжный, чем кластеризация голосов: она
@@ -324,7 +325,7 @@ def apply_video_names(words, tags_path: Path, min_share: float = 0.5):
     # Кластер, где чужой речи почти столько же, сколько своей, ничего не решает:
     # такой голос разделён плохо, и опираться на него нельзя
     cluster_name: dict[int, str] = {}
-    for spk, hits in by_cluster.items():
+    for spk, hits in (by_cluster.items() if not ignore_voice else []):
         if sum(hits.values()) < min_share * spoken[spk]:
             continue
         ranked = sorted(hits.values(), reverse=True)
@@ -347,7 +348,8 @@ def apply_video_names(words, tags_path: Path, min_share: float = 0.5):
         else:
             # в спорном интервале выбираем среди активных того, кто ближе кластеру
             active = set(overlaps(multi, m_starts, w))
-            hits = by_cluster.get(w.speaker, {}) if w.speaker in cluster_name else {}
+            hits = ({} if ignore_voice or w.speaker not in cluster_name
+                    else by_cluster.get(w.speaker, {}))
             candidates = {n: v for n, v in hits.items() if n in active} or hits
             if candidates:
                 key, from_cluster = max(candidates, key=candidates.get), from_cluster + 1
@@ -563,6 +565,9 @@ def main() -> None:
     ap.add_argument("--names", type=Path, help='JSON вида {"0": "Максим", "1": "Игорь"}')
     ap.add_argument("--video-tags", type=Path,
                     help="JSON от video_speaker_tags.py: имена участников по подсветке в записи")
+    ap.add_argument("--video-only", action="store_true",
+                    help="размечать только по подсветке, голосовые кластеры игнорировать: "
+                         "для записей, где диаризация не разделила участников")
     ap.add_argument("--video-names-only", action="store_true",
                     help="брать из видео только имена голосов, разметку вести по голосу: "
                          "так реплики не дробятся, когда диаризация и так разделила чисто")
@@ -600,7 +605,7 @@ def main() -> None:
         if video_names:
             names = {**video_names, **names}   # ручная карта имеет приоритет
     elif args.video_tags:
-        result = apply_video_names(words, args.video_tags)
+        result = apply_video_names(words, args.video_tags, ignore_voice=args.video_only)
         if result:
             video_names, word_stats = result
             names = {**video_names, **names}
@@ -616,6 +621,7 @@ def main() -> None:
         "split_reliability": split_reliability(words) if segs else None,
         "names_source": ("подсветка говорящего в записи"
                          + (" (только имена голосов)" if args.video_names_only else "")
+                         + (" (голос не учитывался)" if args.video_only else "")
                          if args.video_tags else "вручную"),
         "word_attribution": word_stats,
         "created": time.strftime("%Y-%m-%d %H:%M"),
