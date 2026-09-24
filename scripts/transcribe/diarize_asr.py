@@ -618,7 +618,13 @@ def main() -> None:
         "asr_model": args.model,
         "diarization": (f"pyannote-segmentation-3.0 + {args.embedding} (sherpa-onnx)"
                         if segs else "нет"),
-        "split_reliability": split_reliability(words) if segs else None,
+        # когда роли расставлены по картинке, мерить смены по голосу бессмысленно:
+        # честнее показать, какая доля слов опирается на прямую подсветку
+        "split_reliability": (
+            None if not segs else
+            split_reliability(words) if not args.video_only else
+            (f"роли по подсветке: {word_stats['по видео'] * 100 // max(sum(word_stats.values()), 1)}%"
+             f" слов размечено напрямую" if word_stats else "роли по подсветке")),
         "names_source": ("подсветка говорящего в записи"
                          + (" (только имена голосов)" if args.video_names_only else "")
                          + (" (голос не учитывался)" if args.video_only else "")
