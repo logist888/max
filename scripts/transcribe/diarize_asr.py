@@ -320,12 +320,19 @@ def apply_video_names(words, tags_path: Path, min_share: float = 0.5):
             direct[idx] = name
             by_cluster[w.speaker][name] += ov[name]
 
-    # имя кластера — то, что чаще всего доставалось его словам напрямую
+    # имя кластера — то, что чаще всего доставалось его словам напрямую.
+    # Кластер, где чужой речи почти столько же, сколько своей, ничего не решает:
+    # такой голос разделён плохо, и опираться на него нельзя
     cluster_name: dict[int, str] = {}
     for spk, hits in by_cluster.items():
-        name = max(hits, key=hits.get)
-        if sum(hits.values()) >= min_share * spoken[spk]:
-            cluster_name[spk] = name
+        if sum(hits.values()) < min_share * spoken[spk]:
+            continue
+        ranked = sorted(hits.values(), reverse=True)
+        rival = ranked[1] if len(ranked) > 1 else 0.0
+        if ranked[0] > 1.5 * max(rival, 0.01):
+            cluster_name[spk] = max(hits, key=hits.get)
+    if not cluster_name:
+        log("голоса разделены слишком грязно — промежутки размечаются по соседней подсветке")
 
     named = list(dict.fromkeys(
         [n for _, n in sorted(direct.items())] + list(cluster_name.values())))
@@ -333,27 +340,40 @@ def apply_video_names(words, tags_path: Path, min_share: float = 0.5):
     for spk in sorted(spoken):
         order.setdefault(f"__cluster_{spk}", len(order))
 
-    from_video = from_cluster = 0
+    from_video = from_cluster = from_near = 0
     for idx, w in enumerate(words):
         if idx in direct:
             key, from_video = direct[idx], from_video + 1
         else:
             # в спорном интервале выбираем среди активных того, кто ближе кластеру
             active = set(overlaps(multi, m_starts, w))
-            hits = by_cluster.get(w.speaker, {})
+            hits = by_cluster.get(w.speaker, {}) if w.speaker in cluster_name else {}
             candidates = {n: v for n, v in hits.items() if n in active} or hits
             if candidates:
                 key, from_cluster = max(candidates, key=candidates.get), from_cluster + 1
+            elif w.speaker in cluster_name:
+                key = cluster_name[w.speaker]
+                from_cluster += 1
             else:
-                key = cluster_name.get(w.speaker, f"__cluster_{w.speaker}")
+                # голосу верить нельзя — берём подсветку, ближайшую по времени:
+                # в диалоге слово в паузе почти всегда принадлежит соседней реплике
+                j = min(max(bisect.bisect_left(s_starts, w.start) - 1, 0), len(single) - 1)
+                near = min(single[max(j - 1, 0):j + 2],
+                           key=lambda s: max(s["start"] - w.end, w.start - s["end"], 0.0))
+                gap = max(near["start"] - w.end, w.start - near["end"], 0.0)
+                if gap <= 3.0:
+                    key, from_near = near["name"], from_near + 1
+                else:
+                    key = f"__cluster_{w.speaker}"
         order.setdefault(key, len(order))
         w.speaker = order[key]
 
     names = {str(i): n for n, i in order.items() if not n.startswith("__cluster_")}
     stats = {"по видео": from_video, "по голосу": from_cluster,
-             "без имени": len(words) - from_video - from_cluster}
-    log(f"имена: {len(names)} участников; {from_video} слов размечено по видео, "
-        f"{from_cluster} — по голосу, {stats['без имени']} — без имени")
+             "по соседней подсветке": from_near,
+             "без имени": len(words) - from_video - from_cluster - from_near}
+    log(f"имена: {len(names)} участников; {from_video} слов по видео, {from_cluster} — по "
+        f"голосу, {from_near} — по соседней подсветке, {stats['без имени']} — без имени")
     return names, stats
 
 
