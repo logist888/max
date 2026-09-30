@@ -235,8 +235,13 @@ def assign_clusters(prints: list[list], threshold: float = 0.88) -> list[list]:
     return out
 
 
-def normalize(names: list[str]) -> dict:
-    """Сводит варианты OCR одного имени к самому частому написанию."""
+def normalize(names: list[str], known: list[str] | None = None) -> dict:
+    """Сводит варианты OCR одного имени к самому частому написанию.
+
+    Если состав участников известен, чтения притягиваются к нему: это отсекает
+    заголовки со слайдов, которые при демонстрации экрана попадают в разбор
+    наравне с подписями плиток — зелёные линии вёрстки неотличимы от подсветки.
+    """
     from difflib import SequenceMatcher
     counts: dict[str, int] = {}
     for n in names:
@@ -244,6 +249,14 @@ def normalize(names: list[str]) -> dict:
     canon: dict[str, str] = {}
     for name in sorted(counts, key=lambda n: -counts[n]):
         key = fold(name)
+        if known:
+            hit = max(known, key=lambda k: SequenceMatcher(None, key, fold(k)).ratio())
+            ratio = SequenceMatcher(None, key, fold(hit)).ratio()
+            # огрызок подписи короче имени — сверяем его как часть, а не целиком
+            part = max((SequenceMatcher(None, key, fold(k)[:len(key)]).ratio()
+                        for k in known), default=0.0) if len(key) >= 4 else 0.0
+            canon[name] = hit if (ratio > 0.62 or part > 0.85) else ""
+            continue
         match = next((c for c in dict.fromkeys(canon.values())
                       if SequenceMatcher(None, key, fold(c)).ratio() > 0.8), name)
         canon[name] = match
@@ -258,6 +271,9 @@ def main() -> None:
     ap.add_argument("--fps", type=float, default=1.0, help="кадров в секунду на разбор")
     ap.add_argument("--band", type=int, default=BAND_HEIGHT, help="высота полосы плиток, px")
     ap.add_argument("--lang", default="rus+eng", help="языки tesseract")
+    ap.add_argument("--participants", default="",
+                    help="известный состав через запятую: чтения сводятся к нему, "
+                         "остальное отбрасывается (спасает от заголовков со слайдов)")
     args = ap.parse_args()
 
     if shutil.which("ffmpeg") is None:
@@ -297,18 +313,23 @@ def main() -> None:
                 f"прошло {(time.time() - t0) / 60:.1f} мин")
     proc.wait()
 
-    canon = normalize([n for _, ns, _ in marks for n in ns])
+    known = [p.strip() for p in args.participants.split(",") if p.strip()] \
+        if args.participants else None
+    canon = normalize([n for _, ns, _ in marks for n in ns], known)
     marks = [(t, [canon.get(n, n) for n in ns], xs) for t, ns, xs in marks]
 
     counts: dict[str, int] = {}
     for _, ns, _ in marks:
         for n in ns:
             counts[n] = counts.get(n, 0) + 1
-    # огрызок OCR вроде «eee» или «Mruk» тоже попадается часто, поэтому от имени
-    # требуется ещё и правдоподобная длина: короче пяти букв — только с фамилией
-    solid = {n for n, c in counts.items()
-             if c >= 10 and not n.startswith("плитка@")
-             and (len(n) >= 5 or (len(n) >= 4 and " " in n))}
+    if known:
+        solid = {n for n in counts if n in known}
+    else:
+        # огрызок OCR вроде «eee» или «Mruk» тоже попадается часто, поэтому от имени
+        # требуется ещё и правдоподобная длина: короче пяти букв — только с фамилией
+        solid = {n for n, c in counts.items()
+                 if c >= 10 and not n.startswith("плитка@")
+                 and (len(n) >= 5 or (len(n) >= 4 and " " in n))}
 
     # аватарка — самый устойчивый признак: сшиваем по ней плитки одного человека,
     # как бы ни менялись раскладка и качество подписи
