@@ -120,14 +120,52 @@ def stable_key(crop: np.ndarray, box: tuple[int, int]) -> str:
     return f"{box[0] // 8}:{box[1] // 8}:" + "".join(map(str, bits))
 
 
-def read_name(band: np.ndarray, box: tuple[int, int], cache: dict, lang: str) -> str:
-    """Подпись в нижней части плитки. Одинаковые подписи читаются один раз."""
+def box_bounds(band: np.ndarray, box: tuple[int, int]) -> tuple[int, int] | None:
+    """Верх и низ подсвеченной плитки по зелёным строкам рамки."""
     x0, x1 = box
     rows = np.nonzero(((band[:, x0:x1 + 1, 1].astype(np.int16)
                         - band[:, x0:x1 + 1, 0].astype(np.int16)) > 50).any(axis=1))[0]
     if len(rows) == 0:
+        return None
+    return int(rows.min()), int(rows.max())
+
+
+def avatar_print(band: np.ndarray, box: tuple[int, int]) -> np.ndarray | None:
+    """Отпечаток картинки участника внутри плитки.
+
+    Подпись — ненадёжный признак: при демонстрации экрана плитки сжимаются в
+    узкую полосу, буквы мельчают и OCR выдаёт огрызки. Аватарка же не меняется
+    всю встречу и не зависит ни от раскладки, ни от размера плитки, поэтому по
+    ней плитки одного человека сшиваются между раскладками.
+    """
+    bounds = box_bounds(band, box)
+    if bounds is None:
+        return None
+    top, bottom = bounds
+    x0, x1 = box
+    inner = band[top + 6:bottom - 6, x0 + 6:x1 - 5]
+    if inner.shape[0] < 16 or inner.shape[1] < 16:
+        return None
+    side = min(inner.shape[:2])                       # аватарка вписана в центр
+    y = (inner.shape[0] - side) // 2
+    x = (inner.shape[1] - side) // 2
+    sq = inner[y:y + side, x:x + side].mean(axis=2)
+    k = side // 16
+    if k < 1:
+        return None
+    grid = sq[:k * 16, :k * 16].reshape(16, k, 16, k).mean(axis=(1, 3))
+    v = grid.flatten() - grid.mean()
+    n = np.linalg.norm(v)
+    return (v / n).astype(np.float32) if n > 1e-6 else None
+
+
+def read_name(band: np.ndarray, box: tuple[int, int], cache: dict, lang: str) -> str:
+    """Подпись в нижней части плитки. Одинаковые подписи читаются один раз."""
+    x0, x1 = box
+    bounds = box_bounds(band, box)
+    if bounds is None:
         return ""
-    top, bottom = int(rows.min()), int(rows.max())
+    top, bottom = bounds
     crop = band[max(top, bottom - 30):bottom, x0 + 4:x1 - 3]
     if crop.size == 0:
         return ""
@@ -166,6 +204,35 @@ LOOKALIKE = str.maketrans("aAeEoOpPcCxXyYkKmMhHtTbBnN", "аАеЕоОрРсСх�
 
 def fold(name: str) -> str:
     return re.sub(r"\W", "", name.translate(LOOKALIKE).lower())
+
+
+def assign_clusters(prints: list[list], threshold: float = 0.88) -> list[list]:
+    """Разложить отпечатки плиток по участникам.
+
+    Жадно: отпечаток идёт к первому центру, с которым сходится выше порога,
+    иначе заводит свой. Аватарка статична, поэтому кластеров выходит немного —
+    по числу участников плюс редкий мусор от чужих рамок, который остаётся
+    безымянным и отсеивается.
+    """
+    centers: list[np.ndarray] = []
+    out: list[list] = []
+    for row in prints:
+        ids = []
+        for p in row:
+            if p is None:
+                ids.append(None)
+                continue
+            best, score = None, threshold
+            for k, c in enumerate(centers):
+                s = float(np.dot(p, c))
+                if s > score:
+                    best, score = k, s
+            if best is None:
+                centers.append(p)
+                best = len(centers) - 1
+            ids.append(best)
+        out.append(ids)
+    return out
 
 
 def normalize(names: list[str]) -> dict:
@@ -211,6 +278,7 @@ def main() -> None:
     frame_bytes = w * band_h * 3
     cache: dict[str, str] = {}
     marks: list[tuple[float, list[str]]] = []
+    prints: list[list[np.ndarray | None]] = []
     i, t0 = 0, time.time()
     while True:
         buf = proc.stdout.read(frame_bytes)
@@ -222,6 +290,7 @@ def main() -> None:
         boxes = find_highlighted(band)
         if boxes:
             names = [read_name(band, b, cache, args.lang) or f"плитка@{b[0]}" for b in boxes]
+            prints.append([avatar_print(band, b) for b in boxes])
             marks.append((t, names, [b[0] for b in boxes]))
         if i % 600 == 0:
             log(f"  разобрано {t / 60:.0f} мин, отметок {len(marks)}, "
@@ -230,18 +299,32 @@ def main() -> None:
 
     canon = normalize([n for _, ns, _ in marks for n in ns])
     marks = [(t, [canon.get(n, n) for n in ns], xs) for t, ns, xs in marks]
-    marks = [(t, ns, xs) for t, ns, xs in marks if ns]
 
-    # плитка участника стоит на месте всю встречу, поэтому позиция — надёжнее подписи.
-    # Считаем имя слота по частым чтениям, а всё редкое и нечитаемое заменяем им же:
-    # иначе кадр, где подпись не далась, терял участника — и интервал, в котором
-    # подсвечены оба, ошибочно приписывался одному
     counts: dict[str, int] = {}
     for _, ns, _ in marks:
         for n in ns:
             counts[n] = counts.get(n, 0) + 1
-    solid = {n for n, c in counts.items() if len(n) >= 3 and c >= 5 and not n.startswith("плитка@")}
+    # огрызок OCR вроде «eee» или «Mruk» тоже попадается часто, поэтому от имени
+    # требуется ещё и правдоподобная длина: короче пяти букв — только с фамилией
+    solid = {n for n, c in counts.items()
+             if c >= 10 and not n.startswith("плитка@")
+             and (len(n) >= 5 or (len(n) >= 4 and " " in n))}
 
+    # аватарка — самый устойчивый признак: сшиваем по ней плитки одного человека,
+    # как бы ни менялись раскладка и качество подписи
+    cluster_of = assign_clusters(prints)
+    by_cluster: dict[int, dict[str, int]] = {}
+    for (_, ns, _), cl in zip(marks, cluster_of):
+        for n, c in zip(ns, cl):
+            if c is not None and n in solid:
+                by_cluster.setdefault(c, {})
+                by_cluster[c][n] = by_cluster[c].get(n, 0) + 1
+    cluster_name = {c: max(v, key=v.get) for c, v in by_cluster.items()}
+    if cluster_name:
+        log(f"плиток по аватарке: {len(cluster_name)} "
+            f"({', '.join(sorted(set(cluster_name.values())))})")
+
+    # позиция плитки — запасной признак: в неизменной раскладке она тоже надёжна
     by_slot: dict[int, dict[str, int]] = {}
     for _, ns, xs in marks:
         for n, x in zip(ns, xs):
@@ -250,21 +333,24 @@ def main() -> None:
                 by_slot[x // 40][n] = by_slot[x // 40].get(n, 0) + 1
     slot_name = {s: max(c, key=c.get) for s, c in by_slot.items()}
 
-    restored = dropped = 0
+    by_read = by_avatar = by_pos = dropped = 0
     for i, (tm, ns, xs) in enumerate(marks):
         fixed = []
-        for n, x in zip(ns, xs):
+        for n, x, c in zip(ns, xs, cluster_of[i]):
             if n in solid:
                 fixed.append(n)
-                continue
-            if x // 40 in slot_name:                 # чтение не удалось — берём имя слота
+                by_read += 1
+            elif c is not None and c in cluster_name:
+                fixed.append(cluster_name[c])         # подпись не далась — узнаём по аватарке
+                by_avatar += 1
+            elif x // 40 in slot_name:
                 fixed.append(slot_name[x // 40])
-                restored += 1
+                by_pos += 1
             else:
-                dropped += 1
+                dropped += 1                          # чужая рамка, не плитка участника
         marks[i] = (tm, fixed, xs)
-    if restored or dropped:
-        log(f"по позиции плитки восстановлено {restored} чтений, отброшено {dropped}")
+    log(f"имя по подписи {by_read}, по аватарке {by_avatar}, "
+        f"по позиции {by_pos}, отброшено {dropped}")
     marks = [(t, sorted(set(ns)), xs) for t, ns, xs in marks if ns]
 
     # секунды с одним активным именем сшиваются в интервалы
