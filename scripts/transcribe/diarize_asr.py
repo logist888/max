@@ -27,6 +27,7 @@ import wave
 from dataclasses import dataclass, field, asdict
 from pathlib import Path
 
+CHUNK = 900.0                       # распознавание идёт кусками, чтобы память не росла с длиной записи
 MODELS_DIR = Path(os.environ.get("ASR_MODELS_DIR", Path.home() / ".cache/mainexperts-asr/models"))
 SEGMENTATION_MODEL = MODELS_DIR / "sherpa-onnx-pyannote-segmentation-3-0" / "model.onnx"
 EMBEDDINGS = {                      # модели голосовых эмбеддингов: имя → файл
@@ -104,6 +105,42 @@ def read_wav(path: Path):
     return samples, len(samples) / 16000.0
 
 
+def wav_duration(path: Path) -> float:
+    """Длительность по заголовку — без чтения самих отсчётов."""
+    with wave.open(str(path), "rb") as w:
+        return w.getnframes() / w.getframerate()
+
+
+def iter_chunks(path: Path, chunk: float, search: float = 30.0):
+    """Читать запись кусками примерно по chunk секунд, разрезая в тишине.
+
+    Распознавание всего файла разом не годится на длинных записях: VAD внутри
+    faster-whisper держит запись целиком, и на 3,5 часах процесс съедает больше
+    десятка гигабайт и погибает. Куском пик ограничен, а стык прячется в паузе,
+    чтобы не разрубить слово.
+    """
+    import numpy as np
+    rate, win = 16000, 400                            # окно поиска тишины — 25 мс
+    with wave.open(str(path), "rb") as w:
+        total = w.getnframes()
+        pos = 0
+        while pos < total:
+            want = min(int(chunk * rate), total - pos)
+            tail = 0 if pos + want >= total else int(search * rate)
+            w.setpos(pos)
+            raw = w.readframes(want + tail)
+            buf = np.frombuffer(raw, dtype="<i2").astype("float32") / 32768.0
+            cut = len(buf)
+            if tail:
+                zone = np.abs(buf[want - tail:want + tail])
+                k = len(zone) // win * win
+                energy = zone[:k].reshape(-1, win).mean(axis=1)
+                cut = want - tail + int(energy.argmin()) * win
+            yield pos / rate, buf[:cut]
+            del buf
+            pos += cut
+
+
 # ── шаг 2: диаризация ──────────────────────────────────────────────────────────
 
 def diarize(wav: Path, num_speakers: int, threshold: float, threads: int, cache: Path | None,
@@ -173,31 +210,35 @@ def transcribe(wav: Path, model_name: str, language: str, threads: int,
 
     log(f"загружаю модель ASR: {model_name}")
     model = WhisperModel(model_name, device="cpu", compute_type="int8", cpu_threads=threads)
-    _, dur = read_wav(wav)
-    log(f"распознавание: {dur / 60:.1f} мин аудио, язык={language or 'auto'}, beam={beam}")
+    dur = wav_duration(wav)
+    log(f"распознавание: {dur / 60:.1f} мин аудио, язык={language or 'auto'}, beam={beam}, "
+        f"кусками по {CHUNK / 60:.0f} мин")
 
-    segments, info = model.transcribe(
-        str(wav),
-        language=language or None,
-        beam_size=beam,
-        vad_filter=True,
-        vad_parameters=dict(min_silence_duration_ms=500),
-        word_timestamps=True,
-        condition_on_previous_text=False,   # не тянуть галлюцинации по цепочке
-    )
     words: list[Word] = []
     t0 = time.time()
     next_report = 300.0
-    for seg in segments:
-        for w in (seg.words or []):
-            txt = w.word.strip()
-            if txt:
-                words.append(Word(round(w.start, 3), round(w.end, 3), txt))
-        if seg.end >= next_report:
-            el = time.time() - t0
-            log(f"  распознано {hms(seg.end)} из {hms(dur)} "
-                f"(прошло {el / 60:.1f} мин, осталось ~{(dur - seg.end) * el / max(seg.end, 1) / 60:.0f} мин)")
-            next_report = seg.end + 300.0
+    for offset, samples in iter_chunks(wav, CHUNK):
+        segments, info = model.transcribe(
+            samples,
+            language=language or None,
+            beam_size=beam,
+            vad_filter=True,
+            vad_parameters=dict(min_silence_duration_ms=500),
+            word_timestamps=True,
+            condition_on_previous_text=False,   # не тянуть галлюцинации по цепочке
+        )
+        for seg in segments:
+            for w in (seg.words or []):
+                txt = w.word.strip()
+                if txt:
+                    words.append(Word(round(offset + w.start, 3), round(offset + w.end, 3), txt))
+            done = offset + seg.end
+            if done >= next_report:
+                el = time.time() - t0
+                log(f"  распознано {hms(done)} из {hms(dur)} "
+                    f"(прошло {el / 60:.1f} мин, осталось ~{(dur - done) * el / max(done, 1) / 60:.0f} мин)")
+                next_report = done + 300.0
+        del samples
     log(f"распознавание готово: {len(words)} слов, {time.time() - t0:.0f} с")
     if cache:
         cache.write_text(json.dumps([asdict(w) for w in words], ensure_ascii=False))
