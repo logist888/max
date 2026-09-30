@@ -16,7 +16,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import re
 import shutil
@@ -91,6 +90,36 @@ def find_highlighted(band: np.ndarray, max_width: int | None = None) -> list[tup
     return [(a, b) for a, b in boxes]
 
 
+def trim_to_text(crop: np.ndarray) -> np.ndarray:
+    """Обрезать кроп по столбцам, где есть светлый текст.
+
+    Подпись — короткая плашка по центру плитки, а кроп идёт во всю её ширину.
+    В сетке на весь экран это почти тысяча пикселей пустоты, и tesseract тратит
+    на неё секунды. Режем по крайним столбцам с белым.
+    """
+    cols = np.nonzero((crop.min(axis=2) > 150).any(axis=0))[0]
+    if len(cols) == 0:
+        return crop
+    a, b = int(cols.min()), int(cols.max())
+    return crop[:, max(0, a - 6):b + 7]
+
+
+def stable_key(crop: np.ndarray, box: tuple[int, int]) -> str:
+    """Ключ кеша, не чувствительный к шуму кодека.
+
+    Точный хеш пикселей здесь бесполезен: подпись дрожит от кадра к кадру, и
+    кеш промахивается почти всегда — OCR идёт на каждом кадре. Вместо этого
+    огрубляем кроп до сетки 32×4 и сравниваем по яркости блоков; перестановка
+    плиток меняет рисунок подписи, поэтому такой ключ её тоже ловит.
+    """
+    g = crop.mean(axis=2)
+    h, w = g.shape
+    gh, gw = max(1, h // 4), max(1, w // 32)
+    grid = g[:gh * 4, :gw * 32].reshape(4, gh, 32, gw).mean(axis=(1, 3))
+    bits = (grid > np.median(grid)).astype(np.uint8).flatten()
+    return f"{box[0] // 8}:{box[1] // 8}:" + "".join(map(str, bits))
+
+
 def read_name(band: np.ndarray, box: tuple[int, int], cache: dict, lang: str) -> str:
     """Подпись в нижней части плитки. Одинаковые подписи читаются один раз."""
     x0, x1 = box
@@ -102,13 +131,15 @@ def read_name(band: np.ndarray, box: tuple[int, int], cache: dict, lang: str) ->
     crop = band[max(top, bottom - 30):bottom, x0 + 4:x1 - 3]
     if crop.size == 0:
         return ""
-    key = hashlib.md5(crop.tobytes()).hexdigest()
+    crop = trim_to_text(crop)
+    key = stable_key(crop, box)
     if key in cache:
         return cache[key]
     name = ""
     if shutil.which("tesseract"):
         from PIL import Image
-        img = Image.fromarray(crop).resize((crop.shape[1] * 3, crop.shape[0] * 3))
+        scale = max(1, min(3, 96 // max(1, crop.shape[0])))
+        img = Image.fromarray(crop).resize((crop.shape[1] * scale, crop.shape[0] * scale))
         p = subprocess.run(["tesseract", "stdin", "stdout", "-l", lang, "--psm", "7"],
                            input=_png_bytes(img), capture_output=True)
         name = re.sub(r"[^\w .А-Яа-яЁё-]", "", p.stdout.decode("utf-8", "ignore")).strip()
