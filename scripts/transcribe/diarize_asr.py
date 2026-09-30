@@ -651,6 +651,9 @@ def main() -> None:
             video_names, word_stats = result
             names = {**video_names, **names}
     turns = build_turns(words)
+    # доля слов с именем прямо из подсветки: по ней решаем, чем мерить надёжность
+    video_share = (word_stats["по видео"] * 100 // max(sum(word_stats.values()), 1)
+                   if word_stats else 0)
 
     meta = {
         "source": args.input.name,
@@ -663,9 +666,11 @@ def main() -> None:
         # честнее показать, какая доля слов опирается на прямую подсветку
         "split_reliability": (
             None if not segs else
-            split_reliability(words) if not args.video_only else
-            (f"роли по подсветке: {word_stats['по видео'] * 100 // max(sum(word_stats.values()), 1)}%"
-             f" слов размечено напрямую" if word_stats else "роли по подсветке")),
+            (f"роли по подсветке: {video_share}% слов размечено напрямую"
+             + ("" if video_share >= 90 else
+                f"; на остальных — {split_reliability(words).lower()}"))
+            if args.video_only or video_share >= 70 else
+            split_reliability(words)),
         "names_source": ("подсветка говорящего в записи"
                          + (" (только имена голосов)" if args.video_names_only else "")
                          + (" (голос не учитывался)" if args.video_only else "")
