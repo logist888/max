@@ -25,11 +25,13 @@ i=0
 
 for id in "$@"; do
     i=$((i + 1))
-    if [ "$total" -eq 1 ]; then out="$base.webm"; else out="$base-p$i.webm"; fi
-    if [ -s "$out" ]; then
-        echo "уже скачано: $out ($(stat -c%s "$out") Б)"
+    if [ "$total" -eq 1 ]; then stem="$base"; else stem="$base-p$i"; fi
+    done_already=$(ls "$stem".* 2>/dev/null | head -1)
+    if [ -n "$done_already" ]; then
+        echo "уже скачано: $done_already ($(stat -c%s "$done_already") Б)"
         continue
     fi
+    out="$stem.part"
 
     jar=$(mktemp)
     page=$(mktemp)
@@ -52,7 +54,20 @@ for id in "$@"; do
         head -c 200 "$out" >&2; echo >&2
         exit 1
     fi
-    echo "скачано: $out $size"
+
+    # расширение — по тому, что реально пришло: Drive отдаёт и webm, и m4a, и mp4
+    fmt=$(ffprobe -v error -show_entries format=format_name -of csv=p=0 "$out" 2>/dev/null)
+    case "$fmt" in
+        *matroska*|*webm*) ext=webm ;;
+        *mp4*|*m4a*|*mov*) ext=$(ffprobe -v error -select_streams v -show_entries stream=codec_type \
+                                 -of csv=p=0 "$out" 2>/dev/null | head -1 | grep -q video && echo mp4 || echo m4a) ;;
+        *mp3*)             ext=mp3 ;;
+        *wav*)             ext=wav ;;
+        "")  echo "ОШИБКА: $out не читается как медиафайл" >&2; exit 1 ;;
+        *)   ext=${fmt%%,*} ;;
+    esac
+    mv "$out" "$stem.$ext"
+    echo "скачано: $stem.$ext $size"
 done
 
 echo "ГОТОВО: $i из $total"
