@@ -4,7 +4,7 @@
 Поддержка: заголовки # ## ###, абзацы, списки «- » и «1. », таблицы GFM (| a | b |),
 **жирный**, *курсив*, `код`, горизонтальная линия ---. Тёмная титульная страница,
 светлые страницы содержания, золотые акценты, колонтитулы с номером страницы.
-Запуск: python3 scripts/build_doc_pdf.py <вход.md> <выход.pdf> ["Надзаголовок"]
+Запуск: python3 scripts/build_doc_pdf.py <вход.md> <выход.pdf> ["Надзаголовок"]; текст колонтитула — переменная окружения DOC_FOOTER
 """
 import os, re, sys, io
 from reportlab.lib import colors
@@ -156,7 +156,7 @@ def _chrome(c, doc, bg, fg, mut):
     c.setFont("DV", 6.8); c.setFillColor(mut); c.drawRightString(PW - MR, PH - 24, LABEL[0])
     c.setStrokeColor(GOLD if bg == INK else LINE); c.setLineWidth(0.5); c.line(ML, PH - 30, PW - MR, PH - 30)
     c.setFont("DV", 6.6); c.setFillColor(mut)
-    c.drawString(ML, 14, "Внутренний документ · значения для России — рабочие значения пилота · правовые пункты — вопросы к юристу, не заключения")
+    c.drawString(ML, 14, os.environ.get("DOC_FOOTER", "Внутренний документ · значения для России — рабочие значения пилота · правовые пункты — вопросы к юристу, не заключения"))
     c.drawRightString(PW - MR, 14, f"{doc.page:02d} / {TOTAL[0]:02d}")
     c.restoreState()
 def on_light(c, doc): _chrome(c, doc, LIGHT, INK, GREY_T)
