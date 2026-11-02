@@ -53,6 +53,7 @@ S = {
 
 def inline(t):
     t = t.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    t = t.replace("&lt;br&gt;", "<br/>")
     t = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", t)
     t = re.sub(r"(?<![\w*])\*(?!\s)(.+?)(?<!\s)\*(?![\w*])", r"<i>\1</i>", t)
     t = re.sub(r"`([^`]+)`", r"<font face='DV' color='#8f7640'>\1</font>", t)
@@ -156,7 +157,7 @@ def _chrome(c, doc, bg, fg, mut):
     c.setFont("DV", 6.8); c.setFillColor(mut); c.drawRightString(PW - MR, PH - 24, LABEL[0])
     c.setStrokeColor(GOLD if bg == INK else LINE); c.setLineWidth(0.5); c.line(ML, PH - 30, PW - MR, PH - 30)
     c.setFont("DV", 6.6); c.setFillColor(mut)
-    c.drawString(ML, 14, "Внутренний документ · значения для России — рабочие значения пилота · правовые пункты — вопросы к юристу, не заключения")
+    c.drawString(ML, 14, os.environ.get("DOC_FOOTER", "Внутренний документ · значения для России — рабочие значения пилота · правовые пункты — вопросы к юристу, не заключения"))
     c.drawRightString(PW - MR, 14, f"{doc.page:02d} / {TOTAL[0]:02d}")
     c.restoreState()
 def on_light(c, doc): _chrome(c, doc, LIGHT, INK, GREY_T)
