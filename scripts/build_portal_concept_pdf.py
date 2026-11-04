@@ -14,7 +14,8 @@ import glob
 _c = glob.glob('/opt/pw-browsers/chromium-*/chrome-linux*/chrome')
 if not os.path.exists(B.CHROME) and _c:
     B.CHROME = sorted(_c)[-1]
-URL = "file://" + os.path.join(ROOT, "docs/html/portal-concept.html")
+URL = "file://" + os.path.join(ROOT, "docs/html/portal-concept.html") + "?demo=1"
+URL_FIRST = "file://" + os.path.join(ROOT, "docs/html/portal-concept.html")
 
 def shot(page, tmp, name, full=True):
     page.wait_for_timeout(250)
@@ -29,6 +30,16 @@ def capture(tmp):
     with sync_playwright() as pw:
         b = pw.chromium.launch(executable_path=B.CHROME)
         pg = b.new_page(viewport={"width": 1100, "height": 1300}, device_scale_factor=2)
+        # первый вход: заставка и cookies (без параметров, чистый браузер)
+        ctx2 = b.new_context(viewport={"width": 1100, "height": 760}, device_scale_factor=2)
+        p2 = ctx2.new_page(); p2.goto(URL_FIRST); p2.wait_for_timeout(700)
+        def add0(img, eb, head, cap): pages.append((img, eb, head, cap))
+        add0(shot(p2, tmp, "00a", full=False), "Первый вход", "Заставка: кольцо вокруг логотипа",
+            "При первой загрузке 1–2 секунды вращается кольцо вокруг логотипа на тёмном фоне, затем заставка гаснет. Логотип — «Золотые горы».")
+        p2.wait_for_timeout(2800)
+        add0(shot(p2, tmp, "00b", full=False), "Первый вход", "Баннер cookies внизу страницы",
+            "Стандартный баннер: «Принять все», «Только необходимые», «Настроить» (окно с переключателями необходимых, аналитических и маркетинговых cookies). Решение запоминается в браузере.")
+        ctx2.close()
         pg.goto(URL); pg.wait_for_timeout(300)
         pg.add_style_tag(content="header.top{position:static!important}.cmpbar{position:static!important}.toast{display:none!important}")
         pg.check("#annoSw")
@@ -40,8 +51,8 @@ def capture(tmp):
         VUZ = "S.f={level:'Бакалавриат',where:'Моя страна',year:'2027',topic:'Инженерия'}"
 
         state("Россия")
-        add(shot(pg, tmp, "01"), "Этапы 1–3 карты", "Главная: поиск как у авиабилетов",
-            "Слоган «Поиск и подбор» с печатающимся типом поиска (вузов, колледжей, профессий, коротких программ). Вкладки направлений и строка условий «Откуда · Куда · Когда · Что изучать · Уровень»; под ними примеры запросов своими словами. Блоки «Популярные направления» и свободный запрос сняты до отдельного решения. Жёлтые отметки показывают узел карты.")
+        add(shot(pg, tmp, "01"), "Этапы 1–3 карты", "Главная: слоган, поиск, баннер, статьи, вопросы, подвал",
+            "Слоган «Поиск и подбор» с печатающимся типом поиска. Вкладки направлений и строка условий. Ниже сменяющийся баннер («Не знаете, с чего начать? Мы рекомендуем бесплатный тест», профориентация, слежение, короткие программы на лето), «Советы и тренды» (статьи-заглушки), вопросы и ответы и подвал с настройками региона, документами и странами. Жёлтые отметки показывают узел карты.")
         state("Казахстан")
         add(shot(pg, tmp, "02"), "Этап 2 карты", "Страна Казахстан: язык и валюта подставлены сразу",
             "При выборе страны интерфейс сразу переходит на её язык (казахский), цены пересчитываются в тенге. Язык можно сменить отдельно.")
