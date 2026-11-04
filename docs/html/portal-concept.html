@@ -350,7 +350,8 @@ function money(usd){
   return n+"\u00a0"+sym;
 }
 
-function dateTxt(m,d){return new Intl.DateTimeFormat(LOC[LI],{day:"numeric",month:"long"}).format(new Date(2027,m,d))}
+function deadlineYear(){return parseInt(S.f&&S.f.year)||2027}
+function dateTxt(m,d){return new Intl.DateTimeFormat(LOC[LI],{day:"numeric",month:"long",year:"numeric"}).format(new Date(deadlineYear(),m,d))}
 
 /* ---------- данные (демонстрационные) ---------- */
 const DIRS={
@@ -474,18 +475,19 @@ function typedTick(){
 
 /* ---------- баннер-карусель, статьи, вопросы ---------- */
 const SLIDES=[
- {bd:"Вузы",t:"В какой вуз поступить?",x:"Найдите место, где ребёнку захочется учиться.",b:"Подобрать вуз",img:"campus",pic:"banner-1",go:()=>{S.d="vuz";S.tabPinned=true;S.cal=null;S.showMiss=false;go("home")}},
- {bd:"Профессии",t:"Любит рисовать. Кем станет?",x:"Откройте профессии, в которых пригодится талант вашего ребёнка.",b:"Найти профессию",img:"art-studio",pic:"banner-2",go:()=>{S.d="pro";S.tabPinned=true;S.f={interests:"Рисунок и творчество",where:"Где угодно"};S.cal=null;S.sort="best";go("results")}},
- {bd:"Колледжи",t:"Следующий шаг — университет",x:"Выберите колледж для подготовки к поступлению в вуз.",b:"Найти колледж",img:"modern-campus",pic:"banner-3",go:()=>{S.d="col";S.tabPinned=true;S.cal=null;S.showMiss=false;go("home")}},
- {bd:"Лето 2027",t:"Лето с пользой и интересом",x:"Выберите короткую программу, которая увлечёт ребёнка.",b:"Найти программу",img:"summer-campus",pic:"banner-4",go:()=>{S.d="kp";S.tabPinned=true;S.f={format:"Онлайн",period:"Лето 2027",topic:"Программирование"};S.cal=null;S.sort="best";go("results")}},
+ {bd:"Вузы",t:"В какой вуз поступить?",x:"Найдите место, где ребёнку захочется учиться.",b:"Подобрать вуз",img:"campus",pic:"banner-1",picEn:"banner-en-1",go:()=>{S.d="vuz";S.tabPinned=true;S.cal=null;S.showMiss=false;go("home")}},
+ {bd:"Профессии",t:"Любит рисовать. Кем станет?",x:"Откройте профессии, в которых пригодится талант вашего ребёнка.",b:"Найти профессию",img:"art-studio",pic:"banner-2",picEn:"banner-en-2",go:()=>{S.d="pro";S.tabPinned=true;S.f={interests:"Рисунок и творчество",where:"Где угодно"};S.cal=null;S.sort="best";go("results")}},
+ {bd:"Колледжи",t:"Следующий шаг — университет",x:"Выберите колледж для подготовки к поступлению в вуз.",b:"Найти колледж",img:"modern-campus",pic:"banner-3",picEn:"banner-en-3",go:()=>{S.d="col";S.tabPinned=true;S.cal=null;S.showMiss=false;go("home")}},
+ {bd:"Лето 2027",t:"Лето с пользой и интересом",x:"Выберите короткую программу, которая увлечёт ребёнка.",b:"Найти программу",img:"summer-campus",pic:"banner-4",picEn:"banner-en-4",go:()=>{S.d="kp";S.tabPinned=true;S.f={format:"Онлайн",period:"Лето 2027",topic:"Программирование"};S.cal=null;S.sort="best";go("results")}},
  {bd:"Бесплатно",t:"Не знаете, с чего начать?",x:"Мы рекомендуем начать с бесплатного теста: он покажет сильные стороны ребёнка и подскажет направление.",b:"Пройти бесплатный тест",img:"library",go:()=>go("orient")}
 ];
 const BN={i:0,t:null};
+function slidePic(s){return s.pic?(LI==="ru"?s.pic:s.picEn):null}
 function bannerInner(){
   const s=SLIDES[BN.i];
   const dots='<div class="dots">'+SLIDES.map((_,i)=>'<button class="'+(i===BN.i?'on':'')+'" onclick="event.stopPropagation();bannerTo('+i+')" aria-label="'+(i+1)+'"></button>').join("")+'</div>';
-  const bc=document.getElementById("banner");if(bc)bc.classList.toggle("pic",!!(s.pic&&LI==="ru"));
-  if(s.pic&&LI==="ru")return '<img class="bpic" src="img/'+s.pic+'.jpg" alt=""><button class="hot" onclick="SLIDES['+BN.i+'].go()" aria-label="'+esc(T(s.b))+'"></button>'+dots;
+  const bc=document.getElementById("banner");if(bc)bc.classList.toggle("pic",!!slidePic(s));
+  if(slidePic(s))return '<img class="bpic" src="img/'+slidePic(s)+'.jpg" alt=""><button class="hot" onclick="SLIDES['+BN.i+'].go()" aria-label="'+esc(T(s.b))+'"></button>'+dots;
   return '<div class="bg" style="background-image:url('+art(s.img)+')"></div><div class="shade"></div><div class="in"><span class="bd">'+T(s.bd)+'</span><h2>'+T(s.t)+'</h2><p>'+T(s.x)+'</p><button class="wb" onclick="SLIDES['+BN.i+'].go()">'+T(s.b)+'</button></div>'+dots;
 }
 function bannerPaint(){const el=document.getElementById("banner");if(el)el.innerHTML=bannerInner()}
@@ -551,7 +553,7 @@ function vHome(){
   </div></section>
   <div class="wrap sub">
    ${A("Этап 2: рекомендация бесплатного теста (вход в профориентацию) в виде сменяющегося баннера, как у Skyscanner; каждый баннер ведёт на свою посадочную: тест, профориентация, сохранение подборки, короткие программы.")}
-   <div class="banner${(SLIDES[BN.i].pic&&LI==='ru')?' pic':''}" id="banner">${bannerInner()}</div>
+   <div class="banner${slidePic(SLIDES[BN.i])?' pic':''}" id="banner">${bannerInner()}</div>
    <h2>${T("Советы и тренды")}</h2>
    <div class="arts">${ARTS.map((a,i)=>'<button class="art" onclick="artGo('+i+')"><img src="'+art(a.img)+'" alt="" loading="lazy"><div class="b"><div class="tg">'+T(a.tag)+'</div><h3>'+T(a.t)+'</h3><div class="small mute">'+T(a.x)+'</div></div></button>').join("")}</div>
    <div class="small mute" style="margin-top:8px">${T("Тексты статей и ответов — черновик.")}</div>
