@@ -36,7 +36,7 @@ def capture(tmp):
         ev = pg.evaluate
         def add(img, eb, head, cap): pages.append((img, eb, head, cap))
         def state(country, d="vuz", screen="home", extra=""):
-            ev("setCountry(%r);S.d=%r;S.f={};S.cmp=[];S.favs=[];S.plashOff={};S.fit=null;S.profFilter=null;S.quizProf=null;S.quiz=false;S.sort='best';S.cal=null;S.showMiss=false;S.lang=null;S.langManual=false;S.cur=null;S.curManual=false;%s;S.screen=%r;__render();window.scrollTo(0,0)" % (country, d, extra, screen))
+            ev("setCountry(%r);S.d=%r;S.f={};S.cmp=[];S.favs=[];S.plashOff={};S.fit=null;S.profFilter=null;S.quizProf=null;S.quiz=false;S.sort='best';S.cal=null;S.showMiss=false;S.lang=null;S.langManual=false;S.cur=null;S.curManual=false;S.user=null;%s;S.screen=%r;__render();window.scrollTo(0,0)" % (country, d, extra, screen))
         VUZ = "S.f={level:'Бакалавриат',where:'Моя страна',year:'2027',topic:'Инженерия'}"
 
         state("Россия")
@@ -45,24 +45,34 @@ def capture(tmp):
         state("Казахстан")
         add(shot(pg, tmp, "02"), "Этап 2 карты", "Страна Казахстан: язык и валюта подставлены сразу",
             "При выборе страны интерфейс сразу переходит на её язык (казахский), цены пересчитываются в тенге. Язык можно сменить отдельно.")
-        ev("openLang()"); pg.wait_for_timeout(200)
-        add(shot(pg, tmp, "02b", full=False), "Этап 2 карты", "Выбор языка",
-            "Кнопка с флагом и кодом языка в шапке открывает список, как на странице поиска образования: русский, английский, казахский, узбекский, арабский; остальные языки помечены «Скоро».")
+        ev("openRegion()"); pg.wait_for_timeout(200)
+        add(shot(pg, tmp, "02b", full=False), "Этап 2 карты", "Региональные настройки: язык, страна и валюта в одном окне",
+            "Одна кнопка в шапке («Русский · Россия · ₽ RUB») открывает окно с тремя списками: язык, страна или регион, валюта. Ссылка «Switch to English» переключает на английский. Выбор страны подставляет её язык и валюту, которые можно изменить отдельно. Решение по образцу Skyscanner.")
         ev("closeModal()")
         state("Казахстан", screen="results", extra="S.f={level:'Бакалавриат',where:'Моя страна',year:'2027',topic:'Инженерия'};S.lang='en';S.langManual=true")
         add(shot(pg, tmp, "02c"), "Этап 4 карты", "Английский язык при выборе страны Казахстан",
             "Язык интерфейса выбран вручную и сохраняется при смене страны; цены остаются в тенге.")
-        state("Россия", screen="results", extra=VUZ)
-        ev("openCur()"); pg.wait_for_timeout(200)
-        add(shot(pg, tmp, "02d", full=False), "Этап 2 карты", "Выбор валюты",
-            "Кнопка валюты слева от флага языка. По умолчанию валюта берётся из страны, выбранная вручную сохраняется при смене страны. Список: рубль, тенге, дирхам, сум, фунт, доллар, евро.")
-        ev("closeModal()")
         state("Россия", extra="S.showMiss=true")
         add(shot(pg, tmp, "03", full=False), "Этап 3 карты", "Недостающее подсвечено в строке поиска",
             "Если не хватает обязательного поля, оно подсвечено в той же строке. Незаполненное не блокирует поиск целиком: портал спрашивает только то, чего нет.")
         state("Россия", screen="results", extra=VUZ + ";S.favs=['v1'];S.cmp=['v1','v2','v3']")
         add(shot(pg, tmp, "04"), "Этап 4 карты", "Выдача «Вузы»: цены в рублях, изображения, сравнение",
             "Календарь цен по годам поступления, сортировка, фильтр по цене. В карточке: изображение, шансы по баллам, срок подачи, цена за год и за весь срок. При сравнении трёх вариантов появляется одна плашка. Под выдачей вопрос «Подборка подошла?» с пояснением, что ответ делает результаты точнее.")
+        state("Россия", screen="results", extra=VUZ)
+        ev("fit('yes')"); pg.wait_for_timeout(200)
+        add(shot(pg, tmp, "04b", full=False), "Момент 1: аккаунт", "После ответа «Подборка подошла?»",
+            "Если клиент ответил на вопрос внизу выдачи, предлагаем создать аккаунт, чтобы сохранять результаты. Окно по образцу Skyscanner: одно поле email, вход через Google, Apple, Facebook, крестик.")
+        ev("closeModal();S.user=null;S.favs=[];__render();toggleFav('v1')"); pg.wait_for_timeout(200)
+        add(shot(pg, tmp, "04c", full=False), "Момент 2: аккаунт", "Сердечко у карточки, «Сохранить», «Поделиться»",
+            "Любое действие сохранения без аккаунта открывает то же окно. После создания аккаунта действие выполняется.")
+        ev("closeModal();S.user=null;S.favs=[];__render();big('v1')"); pg.wait_for_timeout(100)
+        ev("closeModal();goSite()"); pg.wait_for_timeout(200)
+        add(shot(pg, tmp, "04d", full=False), "Момент 3: аккаунт", "Перед переходом на сайт учреждения",
+            "«Большая кнопка» → «Перейти на сайт»: просим email, чтобы вернуть клиента письмом. Можно пропустить и перейти без аккаунта.")
+        ev("closeModal();S.user=null;S.screen='orient';S.quizA={0:'Придумывать и рисовать',1:'Играет в компьютерные игры',2:'Рисунок и творчество'};__render();needAuth('quiz',()=>{S.quizDone=true;__render()},['Показать без сохранения',()=>{}])"); pg.wait_for_timeout(200)
+        add(shot(pg, tmp, "04e", full=False), "Момент 4: аккаунт", "Результат разбора ребёнка",
+            "Результат бесплатного разбора сохраняется в аккаунте; можно показать без сохранения.")
+        ev("closeModal();S.user=null;S.quizDone=false")
         state("Казахстан", screen="results", extra=VUZ + ";S.favs=['v1']")
         add(shot(pg, tmp, "05"), "Этап 4 карты", "Выдача на казахском, цены в тенге",
             "Тот же экран для Казахстана: язык интерфейса, названия, даты и валюта.")
@@ -105,7 +115,7 @@ def capture(tmp):
         ev("__go('consult')")
         add(shot(pg, tmp, "15"), "Блок 6 карты", "Консультация (статус под вопросом)", "Анкета вместо живого звонка; решения нет.")
         ev("S.saved=[{d:'vuz',n:4,date:'04.11.2026'}];S.favs=['v1','p2'];S.apps=[{t:'v1',st:'Подал заявку',kind:'сайт учреждения'}];S.consult={q:'x'};__go('cabinet')")
-        add(shot(pg, tmp, "16"), "Кабинет", "Мой кабинет", "Подборки, избранное, заявки и статусы, лист ожидания. Кабинет общий для всех направлений.")
+        add(shot(pg, tmp, "16"), "Сердечко", "Сохранённое", "Подборки, избранное, заявки и статусы, лист ожидания. Кабинет общий для всех направлений.")
         ev("__go('map')")
         add(shot(pg, tmp, "17"), "Связь с картой", "Соответствие карте", "Таблица: этап карты, узлы схемы, экран концепта, статус решения.")
         b.close()
