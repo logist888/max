@@ -413,7 +413,9 @@ const FMT=["Онлайн","Очно"];
 /* ---------- изображения-заглушки: фотографии из соседнего проекта mainexperts-search ---------- */
 const PHOTO={v1:"campus",v2:"modern-campus",v3:"art-studio",v4:"science-lab",c1:"courses",c2:"art-studio",c3:"science-lab",p1:"science-lab",p2:"art-studio",p3:"courses",p4:"library",k1:"summer-campus",k2:"language-class",k3:"lecture",auth:"campus",quiz:"library"};
 const FILES=["campus","school","courses","library","modern-campus","lecture","science-lab","art-studio","language-class","summer-campus"];
-function art(id){return "img/"+(PHOTO[id]||(FILES.includes(id)?id:"campus"))+".jpg"}
+const IMGDATA={};
+function IMG(n){return IMGDATA[n]||("img/"+n+".jpg")}
+function art(id){return IMG(PHOTO[id]||(FILES.includes(id)?id:"campus"))}
 
 /* ---------- вспомогательное ---------- */
 const $=s=>document.querySelector(s);
@@ -490,7 +492,7 @@ function bannerInner(){
   const s=SLIDES[BN.i];
   const dots='<div class="dots">'+SLIDES.map((_,i)=>'<button class="'+(i===BN.i?'on':'')+'" onclick="event.stopPropagation();bannerTo('+i+')" aria-label="'+(i+1)+'"></button>').join("")+'</div>';
   const bc=document.getElementById("banner");if(bc){bc.classList.toggle("pic",!!slidePic(s));bc.classList.toggle("sq",!!(slidePic(s)&&sqPic(s)))}
-  if(slidePic(s))return '<picture>'+(sqPic(s)?'<source media="(max-width:640px)" srcset="img/'+sqPic(s)+'.jpg">':'')+'<img class="bpic" src="img/'+slidePic(s)+'.jpg" alt=""></picture><button class="hot" onclick="SLIDES['+BN.i+'].go()" aria-label="'+esc(T(s.b))+'"></button>'+dots;
+  if(slidePic(s))return '<picture>'+(sqPic(s)?'<source media="(max-width:640px)" srcset="'+IMG(sqPic(s))+'">':'')+'<img class="bpic" src="'+IMG(slidePic(s))+'" alt=""></picture><button class="hot" onclick="SLIDES['+BN.i+'].go()" aria-label="'+esc(T(s.b))+'"></button>'+dots;
   return '<div class="bg" style="background-image:url('+art(s.img)+')"></div><div class="shade"></div><div class="in"><span class="bd">'+T(s.bd)+'</span><h2>'+T(s.t)+'</h2><p>'+T(s.x)+'</p><button class="wb" onclick="SLIDES['+BN.i+'].go()">'+T(s.b)+'</button></div>'+dots;
 }
 function bannerPaint(){const el=document.getElementById("banner");if(el)el.innerHTML=bannerInner()}
