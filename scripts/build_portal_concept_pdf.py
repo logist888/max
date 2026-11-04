@@ -37,7 +37,7 @@ def capture(tmp):
         def add(img, eb, head, cap): pages.append((img, eb, head, cap))
         def state(country, d="vuz", screen="home", extra=""):
             ev("setCountry(%r);S.d=%r;S.f={};S.cmp=[];S.favs=[];S.plashOff={};S.fit=null;S.profFilter=null;S.quizProf=null;S.quiz=false;S.sort='best';S.cal=null;S.showMiss=false;S.lang=null;S.langManual=false;%s;S.screen=%r;__render();window.scrollTo(0,0)" % (country, d, extra, screen))
-        VUZ = "S.f={level:'Бакалавриат',where:'Моя страна',year:'2027',topic:'инженерия'}"
+        VUZ = "S.f={level:'Бакалавриат',where:'Моя страна',year:'2027',topic:'Инженерия'}"
 
         state("Россия")
         add(shot(pg, tmp, "01"), "Этапы 1–3 карты", "Главная: поиск как у авиабилетов",
@@ -49,7 +49,7 @@ def capture(tmp):
         add(shot(pg, tmp, "02b", full=False), "Этап 2 карты", "Выбор языка",
             "Кнопка с флагом и кодом языка в шапке открывает список, как на странице поиска образования: русский, английский, казахский, узбекский, арабский; остальные языки помечены «Скоро».")
         ev("closeModal()")
-        state("Казахстан", screen="results", extra="S.f={level:'Бакалавриат',where:'Моя страна',year:'2027',topic:'engineering'};S.lang='en';S.langManual=true")
+        state("Казахстан", screen="results", extra="S.f={level:'Бакалавриат',where:'Моя страна',year:'2027',topic:'Инженерия'};S.lang='en';S.langManual=true")
         add(shot(pg, tmp, "02c"), "Этап 4 карты", "Английский язык при выборе страны Казахстан",
             "Язык интерфейса выбран вручную и сохраняется при смене страны; цены остаются в тенге.")
         state("Россия", extra="S.showMiss=true")
@@ -64,7 +64,16 @@ def capture(tmp):
         state("ОАЭ", screen="results", extra=VUZ)
         add(shot(pg, tmp, "06"), "Этап 4 карты", "Выдача на арабском (справа налево), цены в дирхамах",
             "Для арабского языка направление письма и компоновка зеркальные.")
-        state("Россия", d="pro", screen="results", extra="S.f={interests:'рисунок',where:'Где угодно'}")
+        state("Россия", d="kp", screen="results", extra="S.f={format:'Онлайн',period:'Укажу даты',dateFrom:'2027-07-01',dateTo:'2027-07-31',topic:'Программирование'}")
+        add(shot(pg, tmp, "06b"), "Этап 3–4 карты", "Короткие программы: даты начала и окончания",
+            "При выборе «Укажу даты» в строке поиска появляются поля «Дата начала» и «Дата окончания». В выдаче у программ видны даты, подходящие по датам идут первыми.")
+        state("Великобритания", screen="results", extra=VUZ)
+        add(shot(pg, tmp, "06c"), "Этап 4 карты", "Великобритания: английский язык, фунты стерлингов",
+            "Для Великобритании подставляются английский язык и фунты; выбор страны есть в строке поиска.")
+        state("ОАЭ", screen="results", extra="S.f={level:'Бакалавриат',where:'Моя страна',year:'2027',topic:'Инженерия'};S.lang='ru';S.langManual=true")
+        add(shot(pg, tmp, "06d"), "Этап 4 карты", "ОАЭ: цены в дирхамах при русском языке",
+            "Валюта определяется страной, язык выбирается отдельно: русский интерфейс с ценами в дирхамах.")
+        state("Россия", d="pro", screen="results", extra="S.f={interests:'Рисунок и творчество',where:'Где угодно'}")
         add(shot(pg, tmp, "07"), "Этап 4 карты", "Выдача «Профессии»: зарплатная вилка в рублях",
             "Спрос, риск автоматизации, навыки, где учиться и зарплатная вилка в месяц. Кнопка «Где учиться» передаёт профессию в подбор вуза.")
         ev("big('p3')"); pg.wait_for_timeout(300)
