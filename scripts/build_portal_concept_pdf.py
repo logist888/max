@@ -36,7 +36,7 @@ def capture(tmp):
         ev = pg.evaluate
         def add(img, eb, head, cap): pages.append((img, eb, head, cap))
         def state(country, d="vuz", screen="home", extra=""):
-            ev("setCountry(%r);S.d=%r;S.f={};S.cmp=[];S.favs=[];S.plashOff={};S.fit=null;S.profFilter=null;S.quizProf=null;S.quiz=false;S.sort='best';S.cal=null;S.showMiss=false;S.lang=null;S.langManual=false;%s;S.screen=%r;__render();window.scrollTo(0,0)" % (country, d, extra, screen))
+            ev("setCountry(%r);S.d=%r;S.f={};S.cmp=[];S.favs=[];S.plashOff={};S.fit=null;S.profFilter=null;S.quizProf=null;S.quiz=false;S.sort='best';S.cal=null;S.showMiss=false;S.lang=null;S.langManual=false;S.cur=null;S.curManual=false;%s;S.screen=%r;__render();window.scrollTo(0,0)" % (country, d, extra, screen))
         VUZ = "S.f={level:'Бакалавриат',where:'Моя страна',year:'2027',topic:'Инженерия'}"
 
         state("Россия")
@@ -52,6 +52,11 @@ def capture(tmp):
         state("Казахстан", screen="results", extra="S.f={level:'Бакалавриат',where:'Моя страна',year:'2027',topic:'Инженерия'};S.lang='en';S.langManual=true")
         add(shot(pg, tmp, "02c"), "Этап 4 карты", "Английский язык при выборе страны Казахстан",
             "Язык интерфейса выбран вручную и сохраняется при смене страны; цены остаются в тенге.")
+        state("Россия", screen="results", extra=VUZ)
+        ev("openCur()"); pg.wait_for_timeout(200)
+        add(shot(pg, tmp, "02d", full=False), "Этап 2 карты", "Выбор валюты",
+            "Кнопка валюты слева от флага языка. По умолчанию валюта берётся из страны, выбранная вручную сохраняется при смене страны. Список: рубль, тенге, дирхам, сум, фунт, доллар, евро.")
+        ev("closeModal()")
         state("Россия", extra="S.showMiss=true")
         add(shot(pg, tmp, "03", full=False), "Этап 3 карты", "Недостающее подсвечено в строке поиска",
             "Если не хватает обязательного поля, оно подсвечено в той же строке. Незаполненное не блокирует поиск целиком: портал спрашивает только то, чего нет.")
