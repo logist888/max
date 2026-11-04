@@ -32,18 +32,26 @@ def capture(tmp):
         pg.goto(URL); pg.wait_for_timeout(300)
         pg.add_style_tag(content="header.top{position:static!important}.cmpbar{position:static!important}.toast{display:none!important}")
         pg.check("#annoSw")
+        pg.evaluate("S.noAnim=true;S.tabPinned=false")
         ev = pg.evaluate
         def add(img, eb, head, cap): pages.append((img, eb, head, cap))
         def state(country, d="vuz", screen="home", extra=""):
-            ev("setCountry(%r);S.d=%r;S.f={};S.cmp=[];S.favs=[];S.plashOff={};S.fit=null;S.profFilter=null;S.quizProf=null;S.quiz=false;S.sort='best';S.cal=null;S.showMiss=false;%s;S.screen=%r;__render();window.scrollTo(0,0)" % (country, d, extra, screen))
+            ev("setCountry(%r);S.d=%r;S.f={};S.cmp=[];S.favs=[];S.plashOff={};S.fit=null;S.profFilter=null;S.quizProf=null;S.quiz=false;S.sort='best';S.cal=null;S.showMiss=false;S.lang=null;S.langManual=false;%s;S.screen=%r;__render();window.scrollTo(0,0)" % (country, d, extra, screen))
         VUZ = "S.f={level:'Бакалавриат',where:'Моя страна',year:'2027',topic:'инженерия'}"
 
         state("Россия")
         add(shot(pg, tmp, "01"), "Этапы 1–3 карты", "Главная: поиск как у авиабилетов",
-            "Вкладки направлений и строка условий «Откуда · Куда · Когда · Что изучать · Уровень»; популярные направления с изображениями и ценами «от» в рублях; свободный запрос своими словами. Жёлтые отметки показывают узел карты.")
+            "Слоган «Поиск и подбор» с печатающимся типом поиска (вузов, колледжей, профессий, коротких программ). Вкладки направлений и строка условий «Откуда · Куда · Когда · Что изучать · Уровень»; популярные направления с изображениями и ценами «от» в рублях; свободный запрос своими словами. Жёлтые отметки показывают узел карты.")
         state("Казахстан")
         add(shot(pg, tmp, "02"), "Этап 2 карты", "Страна Казахстан: язык и валюта подставлены сразу",
             "При выборе страны интерфейс сразу переходит на её язык (казахский), цены пересчитываются в тенге. Язык можно сменить отдельно.")
+        ev("openLang()"); pg.wait_for_timeout(200)
+        add(shot(pg, tmp, "02b", full=False), "Этап 2 карты", "Выбор языка",
+            "Кнопка с флагом и кодом языка в шапке открывает список, как на странице поиска образования: русский, английский, казахский, узбекский, арабский; остальные языки помечены «Скоро».")
+        ev("closeModal()")
+        state("Казахстан", screen="results", extra="S.f={level:'Бакалавриат',where:'Моя страна',year:'2027',topic:'engineering'};S.lang='en';S.langManual=true")
+        add(shot(pg, tmp, "02c"), "Этап 4 карты", "Английский язык при выборе страны Казахстан",
+            "Язык интерфейса выбран вручную и сохраняется при смене страны; цены остаются в тенге.")
         state("Россия", extra="S.showMiss=true")
         add(shot(pg, tmp, "03", full=False), "Этап 3 карты", "Недостающее подсвечено в строке поиска",
             "Если не хватает обязательного поля, оно подсвечено в той же строке. Незаполненное не блокирует поиск целиком: портал спрашивает только то, чего нет.")
