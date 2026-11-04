@@ -19,8 +19,8 @@ URL_FIRST = "file://" + os.path.join(ROOT, "docs/html/portal-concept.html")
 
 def shot(page, tmp, name, full=True):
     page.wait_for_timeout(250)
-    p = os.path.join(tmp, name + ".png")
-    page.screenshot(path=p, full_page=full)
+    p = os.path.join(tmp, name + ".jpg")
+    page.screenshot(path=p, full_page=full, type="jpeg", quality=72)
     if full:
         B.trim(p)
     return p
@@ -29,9 +29,9 @@ def capture(tmp):
     pages = []
     with sync_playwright() as pw:
         b = pw.chromium.launch(executable_path=B.CHROME)
-        pg = b.new_page(viewport={"width": 1100, "height": 1300}, device_scale_factor=2)
+        pg = b.new_page(viewport={"width": 1100, "height": 1300}, device_scale_factor=1.5)
         # первый вход: заставка и cookies (без параметров, чистый браузер)
-        ctx2 = b.new_context(viewport={"width": 1100, "height": 760}, device_scale_factor=2)
+        ctx2 = b.new_context(viewport={"width": 1100, "height": 760}, device_scale_factor=1.5)
         p2 = ctx2.new_page(); p2.goto(URL_FIRST); p2.wait_for_timeout(700)
         def add0(img, eb, head, cap): pages.append((img, eb, head, cap))
         add0(shot(p2, tmp, "00a", full=False), "Первый вход", "Заставка: кольцо вокруг логотипа",
