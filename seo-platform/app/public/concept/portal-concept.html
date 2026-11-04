@@ -481,7 +481,7 @@ function panel(){
   let fs="";
   if(S.d==="vuz")fs=from+pfield("Где учиться","where",selF("where",WHERE,"Выберите"),has("where"))+pfield("Когда","year",selF("year",YEARS,"Год поступления"),has("year"))+pfield("Что изучать","topic",selF("topic",TOPICS.vuz,"Выберите"),has("topic"))+pfield("Куда поступаете","level",selF("level",LEVELS,"Выберите"),has("level"));
   else if(S.d==="col")fs=from+pfield("Где учиться","where",selF("where",WHERE,"Выберите"),has("where"))+pfield("Когда","year",selF("year",YEARS,"Год поступления"),has("year"))+pfield("Специальность","topic",selF("topic",TOPICS.col,"Выберите"),has("topic"));
-  else if(S.d==="pro")fs=from+pfield("Где хотел бы работать","where",selF("where",WHERE,"Выберите"),has("where"))+pfield("Интересы и навыки","interests",selF("interests",TOPICS.pro,"Выберите"),has("interests"));
+  else if(S.d==="pro")fs=from+pfield("Где учиться","study",selF("study",WHERE,"Выберите"),false)+pfield("Где хотел бы работать","where",selF("where",WHERE,"Выберите"),has("where"))+pfield("Интересы и навыки","interests",selF("interests",TOPICS.pro,"Выберите"),has("interests"));
   else fs=from+pfield("Формат","format",selF("format",FMT,"Выберите"),has("format"))+pfield("Когда","period",selF("period",PERIODS,"Период"),has("period"))+(S.f.period==="Укажу даты"?pfield("Дата начала","dateFrom",dateF("dateFrom"),has("dateFrom"))+pfield("Дата окончания","dateTo",dateF("dateTo"),has("dateTo")):"")+pfield("Тема","topic",selF("topic",TOPICS.kp,"Выберите"),has("topic"));
   return '<div class="panel">'+fs+'<button class="btn gold go" onclick="search()">'+T("Найти")+'</button></div>';
 }
