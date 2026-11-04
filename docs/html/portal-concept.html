@@ -76,6 +76,22 @@ h3{font-size:16px;margin:0 0 6px}
 .reg-btn{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:0;border-radius:8px;color:#dfe8f6;padding:8px 14px;font-size:13px}
 .reg-btn:hover{background:rgba(255,255,255,.18)}
 .reg-btn .flag{width:20px;height:14px;border-radius:2px;border:0}
+.reg-btn .mob{display:none}
+@media(max-width:640px){
+ header.top .wrap{gap:8px 10px;min-height:0;padding-top:6px;padding-bottom:6px}
+ .ltxt{display:none}
+ .logo{margin-inline-end:auto}
+ .mlogo{width:38px;height:22px}
+ .nav{order:3;width:100%;gap:2px;margin:0 -4px}
+ .nav button{padding:6px 10px;font-size:14px}
+ .reg-btn{padding:6px 10px;gap:6px;font-weight:600}
+ .reg-btn .dsk{display:none}
+ .reg-btn .mob{display:inline}
+ .ctx{gap:6px;flex-wrap:nowrap}
+ .heart-btn svg{width:26px;height:26px}
+ .login-btn{padding:8px 12px;font-size:13px}
+ .avatar{width:32px;height:32px}
+}
 .heart-btn{position:relative;background:none;border:0;color:#fff;padding:6px;border-radius:8px;line-height:0}
 .heart-btn:hover{background:rgba(255,255,255,.12)}
 .heart-btn svg{width:28px;height:28px}
@@ -137,6 +153,8 @@ h3{font-size:16px;margin:0 0 6px}
 .sitefoot .ctry{display:flex;align-items:center;gap:8px}
 .sitefoot .ctry .flag{width:22px;height:14px;border-radius:2px;border:0}
 .sitefoot .copy{border-top:1px solid #163a63;margin-top:26px;padding-top:18px;text-align:center;font-size:13px;color:#b7c7de}
+.sitefoot .cols.cc{grid-template-columns:repeat(3,1fr);gap:4px 28px}
+@media(max-width:520px){.sitefoot .cols.cc{grid-template-columns:1fr 1fr}}
 .lightbar{padding:14px 0 26px;color:var(--mute);font-size:13px}
 /* заставка и cookies */
 #splash{position:fixed;inset:0;background:#0a1f3c;display:flex;align-items:center;justify-content:center;z-index:300;transition:opacity .5s}
@@ -291,7 +309,7 @@ details.more summary{cursor:pointer;font-weight:600}
 <div id="splash" aria-hidden="true"><div class="ring"><svg class="arc" viewBox="0 0 200 200"><defs><linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff"/></linearGradient></defs><circle cx="100" cy="100" r="97" fill="none" stroke="url(#sg)" stroke-width="3" stroke-linecap="round" stroke-dasharray="480 130"/></svg><svg class="lg" viewBox="134 360 1040 598" fill="none"><path fill="#AD844C" d="M134 957 540 521 609 590 778 361 1174 957Z"/><path fill="#DDC094" d="M134 957 540 521C563 551 583 573 609 590C638 608 661 620 671 647C697 718 608 782 555 839C532 864 517 888 533 918C544 939 566 953 588 957Z"/></svg></div></div>
 <header class="top">
  <div class="wrap">
-  <div class="logo" onclick="go('home')"><svg class="mlogo" viewBox="134 360 1040 598" fill="none" aria-hidden="true"><path fill="#AD844C" d="M134 957 540 521 609 590 778 361 1174 957Z"/><path fill="#DDC094" d="M134 957 540 521C563 551 583 573 609 590C638 608 661 620 671 647C697 718 608 782 555 839C532 864 517 888 533 918C544 939 566 953 588 957Z"/></svg>MainExperts</div>
+  <div class="logo" onclick="go('home')"><svg class="mlogo" viewBox="134 360 1040 598" fill="none" aria-hidden="true"><path fill="#AD844C" d="M134 957 540 521 609 590 778 361 1174 957Z"/><path fill="#DDC094" d="M134 957 540 521C563 551 583 573 609 590C638 608 661 620 671 647C697 718 608 782 555 839C532 864 517 888 533 918C544 939 566 953 588 957Z"/></svg><span class="ltxt">MainExperts</span></div>
   <nav class="nav" id="nav"></nav>
   <div class="sp"></div>
   <div class="ctx" id="ctx"></div>
@@ -498,7 +516,7 @@ function footHtml(){
    +'<div><h4>'+T("Помощь")+'</h4><a onclick="stub()">'+T("Помощь")+'</a><a onclick="openCookieSettings()">'+T("Настройки cookies")+'</a><a onclick="heart()">'+T("Войти")+'</a></div>'
    +'<div><h4>'+T("Документы")+'</h4><a onclick="stub()">'+T("Политика cookies")+'</a><a onclick="stub()">'+T("Политика конфиденциальности")+'</a><a onclick="stub()">'+T("Условия использования")+'</a><a onclick="stub()">'+T("Реквизиты компании")+'</a></div>'
    +'<div><h4>'+T("Направления")+'</h4>'+Object.keys(DIRS).map(k=>'<a onclick="S.d=\''+k+'\';S.tabPinned=true;go(\'home\')">'+T(DIRS[k].name)+'</a>').join("")+'</div></div>'
-   +'<div style="margin-top:24px"><h4>'+T("Страны")+'</h4><div class="cols" style="grid-template-columns:repeat(3,1fr)">'+Object.keys(CTRY).map(c=>'<a class="ctry" onclick="setCountry(\''+c+'\')"><span class="flag flag-c-'+cf[c]+'"></span>'+esc(T(c))+'</a>').join("")+'</div></div>'
+   +'<div style="margin-top:24px"><h4>'+T("Страны")+'</h4><div class="cols cc">'+Object.keys(CTRY).map(c=>'<a class="ctry" onclick="setCountry(\''+c+'\')"><span class="flag flag-c-'+cf[c]+'"></span>'+esc(T(c))+'</a>').join("")+'</div></div>'
    +'<div class="copy">'+LOGOSVG+'<br>© MainExperts 2026 · '+T("Поиск и подбор образования и профессий")+'</div></div>';
 }
 const LOGOSVG='<svg class="mlogo" style="display:inline-block;margin-bottom:6px" viewBox="134 360 1040 598" fill="none"><path fill="#AD844C" d="M134 957 540 521 609 590 778 361 1174 957Z"/><path fill="#DDC094" d="M134 957 540 521C563 551 583 573 609 590C638 608 661 620 671 647C697 718 608 782 555 839C532 864 517 888 533 918C544 939 566 953 588 957Z"/></svg>';
@@ -853,7 +871,7 @@ function render(){
   $("#nav").innerHTML='<button data-s="home" onclick="go(\'home\')">'+T("Поиск")+'</button><button data-s="orient" onclick="go(\'orient\')">'+T("Не знаете, кем стать?")+'</button>';
   const cf={"Россия":"ru","Казахстан":"kz","ОАЭ":"ae","Узбекистан":"uz","Великобритания":"gb","Другая страна":"xx"}[S.country];
   const cy=curCode();const sy=(SYM[cy][LI]||SYM[cy].def||"");
-  $("#ctx").innerHTML='<button class="reg-btn" onclick="openRegion()" aria-label="'+esc(T("Региональные настройки"))+'"><span>'+LANGS[LI]+'</span><span class="flag flag-c-'+cf+'"></span><span>'+esc(T(S.country))+'</span><span>'+sy+' '+cy+'</span></button><button class="heart-btn" onclick="heart()" aria-label="'+esc(T("Сохранённое"))+'"><svg viewBox="0 0 24 24" fill="'+(cabCount()?'#ff5a6e':'none')+'" stroke="#fff" stroke-width="1.8"><path d="M12 21s-7.5-4.6-9.4-9.1C1.3 8.6 3.2 5 6.7 5c2 0 3.5 1.1 4.3 2.5C11.8 6.1 13.3 5 15.3 5c3.5 0 5.4 3.6 4.1 6.9C19.5 16.4 12 21 12 21z"/></svg>'+(cabCount()?'<span class="badge">'+cabCount()+'</span>':'')+'</button>'+(S.user?'<button class="avatar" onclick="heart()" title="'+esc(S.user.email)+'">'+esc(S.user.email[0].toUpperCase())+'</button>':'<button class="login-btn" onclick="openAuth(\'login\')">'+T("Войти")+'</button>');
+  $("#ctx").innerHTML='<button class="reg-btn" onclick="openRegion()" aria-label="'+esc(T("Региональные настройки"))+'"><span class="dsk">'+LANGS[LI]+'</span><span class="mob">'+LI.toUpperCase()+'</span><span class="flag flag-c-'+cf+'"></span><span class="dsk">'+esc(T(S.country))+'</span><span class="dsk">'+sy+' '+cy+'</span><span class="mob">'+((SYM[cy].def)||cy)+'</span></button><button class="heart-btn" onclick="heart()" aria-label="'+esc(T("Сохранённое"))+'"><svg viewBox="0 0 24 24" fill="'+(cabCount()?'#ff5a6e':'none')+'" stroke="#fff" stroke-width="1.8"><path d="M12 21s-7.5-4.6-9.4-9.1C1.3 8.6 3.2 5 6.7 5c2 0 3.5 1.1 4.3 2.5C11.8 6.1 13.3 5 15.3 5c3.5 0 5.4 3.6 4.1 6.9C19.5 16.4 12 21 12 21z"/></svg>'+(cabCount()?'<span class="badge">'+cabCount()+'</span>':'')+'</button>'+(S.user?'<button class="avatar" onclick="heart()" title="'+esc(S.user.email)+'">'+esc(S.user.email[0].toUpperCase())+'</button>':'<button class="login-btn" onclick="openAuth(\'login\')">'+T("Войти")+'</button>');
   $("#view").innerHTML=SCR[S.screen]();
   $("#sfoot").innerHTML='<div class="sitefoot">'+footHtml()+'</div>';
   $("#foot").textContent=T("Концепт портала. Все названия, цены, курсы, сроки и изображения демонстрационные. Цены пересчитаны по демонстрационному курсу. Концепт не утверждён основателем.");
