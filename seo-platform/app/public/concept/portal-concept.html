@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Концепт портала Mainexperts: поиск обучения и профессий</title>
+<style>
+:root{
+  --ink:#101010;--bg:#f3f5f9;--card:#fff;--line:#e3e6ee;--mute:#5f6575;--gold:#c0a870;--gold-d:#9a8350;
+  --vuz:#4a6fd0;--vuz-bg:#e6edfb;--col:#3f9a55;--col-bg:#e1f3e6;--pro:#8a5cc0;--pro-bg:#f0e7fa;--kp:#d08a3a;--kp-bg:#fdecd9;
+  --bad:#c0392b;--r:14px;--price:#0b6b3a;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,"Segoe UI",Arial,"DejaVu Sans",sans-serif}
+html[dir=rtl] body{font-family:"Segoe UI","Noto Sans Arabic","DejaVu Sans",Arial,sans-serif}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+header.top{background:var(--ink);color:#fff;position:sticky;top:0;z-index:20}
+header.top .wrap{display:flex;align-items:center;gap:16px;min-height:56px;flex-wrap:wrap;padding-top:6px;padding-bottom:6px}
+.logo{font-weight:700;letter-spacing:.3px;cursor:pointer;display:flex;align-items:center;gap:8px}
+.logo i{display:inline-block;width:10px;height:10px;background:var(--gold);border-radius:2px}
+.nav{display:flex;gap:4px;flex-wrap:wrap}
+.nav button{background:none;border:0;color:#d8d8d8;padding:8px 12px;border-radius:8px}
+.nav button:hover,.nav button.on{background:#2a2a2a;color:#fff}
+.sp{flex:1}
+.ctx{display:flex;gap:8px;align-items:center;font-size:13px;color:#cfcfcf;flex-wrap:wrap}
+.ctx select{background:#2a2a2a;color:#fff;border:1px solid #444;border-radius:8px;padding:5px 8px;font:inherit}
+.badge{display:inline-block;background:var(--gold);color:var(--ink);border-radius:999px;font-size:12px;font-weight:600;padding:1px 8px;min-width:20px;text-align:center}
+.tgl{display:flex;align-items:center;gap:6px;font-size:13px;color:#e8e8e8;cursor:pointer;user-select:none}
+.tgl input{accent-color:var(--gold)}
+main{padding:0 0 60px}
+h1{font-size:36px;line-height:1.15;margin:0 0 10px}
+h2{font-size:22px;margin:0 0 10px}
+h3{font-size:16px;margin:0 0 6px}
+.lead{font-size:17px;max-width:760px}
+.mute{color:var(--mute)}.small{font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.btn{border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:10px;padding:10px 16px;font-weight:600}
+.btn:hover{background:#2b2b2b}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.btn.gold:hover{background:#cdb985}
+.btn.ghost{background:#fff;color:var(--ink);border-color:#bdbdbd}
+.btn.ghost:hover{background:#f0f0f0}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.sm{padding:6px 11px;font-size:13px;border-radius:8px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:860px){.g3,.g4{grid-template-columns:repeat(2,1fr)}h1{font-size:27px}}
+@media(max-width:560px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.chip{display:inline-flex;align-items:center;gap:6px;background:#eef0f5;border:1px solid var(--line);border-radius:999px;padding:3px 11px;font-size:13px}
+.chip.btnlike{cursor:pointer;background:#fff}.chip.btnlike:hover{border-color:var(--gold-d);background:#faf6ec}
+.chip.known{background:#eef7f0;border-color:#bfdcc7}
+.chip .x{cursor:pointer;color:#888}
+.tag{display:inline-block;border-radius:6px;font-size:12px;padding:1px 8px;font-weight:600}
+.tag.hyp{background:#fff1cf;color:#7a5b00;border:1px dashed #c9a43a}
+.tag.demo{background:#eceef3;color:#555}
+.tag.open{background:#fde4e1;color:#8a2b20}
+/* герой и панель поиска, как у авиабилетов */
+.hero{background:linear-gradient(135deg,#17233f 0%,#26407a 60%,#3b5cb0 100%);color:#fff;padding:34px 0 70px}
+.hero .lead{color:#dfe6f7}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:22px 0 0}
+.tab{border:0;background:rgba(255,255,255,.14);color:#fff;border-radius:12px 12px 0 0;padding:10px 20px;font-weight:600;display:flex;gap:8px;align-items:center}
+.tab i{width:10px;height:10px;border-radius:3px;display:inline-block;background:#fff;opacity:.7}
+.tab:hover:not(.on){background:rgba(255,255,255,.26)}
+.tab.on{background:#fff;color:var(--ink)}
+.tab.on[data-d=vuz] i{background:var(--vuz);opacity:1}.tab.on[data-d=col] i{background:var(--col);opacity:1}.tab.on[data-d=pro] i{background:var(--pro);opacity:1}.tab.on[data-d=kp] i{background:var(--kp);opacity:1}
+.panel{background:#fff;color:var(--ink);border-radius:0 14px 14px 14px;padding:10px;display:flex;gap:0;flex-wrap:wrap;box-shadow:0 8px 30px rgba(10,20,60,.25)}
+.pf{flex:1;min-width:150px;padding:8px 14px;border-inline-end:1px solid var(--line);position:relative}
+.pf:last-of-type{border-inline-end:0}
+.pf label{font-size:12px;color:var(--mute);font-weight:500;margin:0}
+.pf input,.pf select{border:0;padding:3px 0;font-size:16px;font-weight:600;background:transparent;outline:none;width:100%;border-radius:0}
+.pf.miss{background:#fff3f1;border-radius:10px}
+.pf.miss label{color:var(--bad)}
+.panel .go{align-self:stretch;margin:4px;min-width:130px;border-radius:12px;font-size:17px}
+.compact .hero{padding:16px 0 24px}
+.compact .panel{border-radius:14px}
+.sub{padding-top:24px}
+/* выдача */
+.res{display:grid;grid-template-columns:250px 1fr;gap:18px}
+@media(max-width:900px){.res{grid-template-columns:1fr}}
+.cal{display:flex;gap:8px;overflow:auto;margin:14px 0}
+.cal button{flex:1;min-width:120px;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;text-align:start}
+.cal button.on{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink) inset}
+.cal button b{display:block;font-size:13px;color:var(--mute);font-weight:500}
+.cal button span{font-size:17px;font-weight:700;color:var(--price)}
+.sort{display:flex;gap:6px;margin:6px 0 12px;flex-wrap:wrap}
+.sort button{background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:7px 14px;font-weight:600}
+.sort button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.ac{display:grid;grid-template-columns:230px 1fr 210px;background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-bottom:12px;box-shadow:0 2px 10px rgba(20,30,60,.05)}
+.ac:hover{box-shadow:0 6px 22px rgba(20,30,60,.13)}
+@media(max-width:820px){.ac{grid-template-columns:1fr}}
+.ac-img{position:relative;min-height:170px;background:#dde3f2}
+.ac-img img{width:100%;height:100%;object-fit:cover;display:block}
+.ac-img .lab{position:absolute;inset-inline-start:8px;top:8px;font-size:11px;font-weight:600;color:#fff;border-radius:6px;padding:1px 8px}
+.ac-mid{padding:14px 16px;display:flex;flex-direction:column;gap:7px}
+.ac-mid h3{font-size:18px;margin:0}
+.ac-price{padding:14px 16px;border-inline-start:1px dashed var(--line);display:flex;flex-direction:column;gap:5px;justify-content:center;background:#fcfcfe}
+@media(max-width:820px){.ac-price{border-inline-start:0;border-top:1px dashed var(--line)}}
+.price{font-size:26px;font-weight:800;color:var(--price);line-height:1.1}
+.price small{font-size:13px;font-weight:500;color:var(--mute)}
+.kv{display:flex;gap:6px 16px;flex-wrap:wrap;font-size:13px;color:#333}
+.bar{height:7px;background:#e8e8e8;border-radius:5px;overflow:hidden;width:120px;display:inline-block;vertical-align:middle}
+.bar i{display:block;height:100%;background:var(--c,#777)}
+.fav{border:0;background:none;font-size:22px;line-height:1;color:#999;padding:2px 6px}
+.fav.on{color:#d6a100}
+.cmp{font-size:13px}
+.slot{margin:14px 0}
+.plash{border:1.5px solid var(--gold);background:#fbf6e8;border-radius:var(--r);padding:14px 16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.plash .t{flex:1;min-width:240px}
+.plash .x{background:none;border:0;font-size:20px;color:#888}
+.cmpbar{position:sticky;bottom:0;background:var(--ink);color:#fff;border-radius:12px;padding:10px 16px;margin-top:14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.ov{position:fixed;inset:0;background:rgba(10,10,10,.55);display:none;align-items:center;justify-content:center;z-index:40;padding:16px}
+.ov.on{display:flex}
+.modal{background:#fff;border-radius:16px;max-width:640px;width:100%;padding:22px;max-height:92vh;overflow:auto}
+.opt-card{border:1.5px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;cursor:pointer;background:#fff}
+.opt-card:hover{border-color:var(--gold-d);background:#fdfaf2}
+.opt-card .t{flex:1;min-width:220px}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:10px;z-index:60;display:none;max-width:90vw}
+.toast.on{display:block}
+.anno{display:none;background:#fff8d9;border:1px dashed #b79a2a;border-radius:8px;font-size:12.5px;color:#5a4a00;padding:6px 10px;margin:8px 0;direction:ltr;text-align:left}
+body.anno-on .anno{display:block}
+table.map{border-collapse:collapse;width:100%;font-size:13.5px;background:#fff}
+table.map th,table.map td{border:1px solid var(--line);padding:7px 10px;text-align:start;vertical-align:top}
+table.map th{background:#f0ece0}
+footer{border-top:1px solid var(--line);padding:16px 0 30px;color:var(--mute);font-size:13px}
+.tile{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer;text-align:start}
+.tile:hover{border-color:var(--gold-d);background:#fdfaf2}
+.tile q{font-weight:600;display:block;margin-bottom:3px}
+.pop{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;cursor:pointer;text-align:start;padding:0}
+.pop:hover{box-shadow:0 6px 22px rgba(20,30,60,.15)}
+.pop img{width:100%;height:120px;object-fit:cover;display:block}
+.pop div{padding:10px 14px}
+.pop b{display:block}
+.pop .price{font-size:18px}
+label{display:block;font-weight:600;font-size:14px;margin:0 0 5px}
+input[type=text],input[type=email],input[type=number],select,textarea{width:100%;border:1px solid #c9c9c9;border-radius:9px;padding:9px 11px;font:inherit;background:#fff}
+textarea{min-height:90px;resize:vertical}
+.field{margin-bottom:14px}
+.field.req label::after{content:" *";color:var(--bad)}
+.field.miss input,.field.miss select{border-color:var(--bad);background:#fff7f6}
+.opts{display:flex;gap:8px;flex-wrap:wrap}
+.opt{border:1.5px solid #c9c9c9;background:#fff;border-radius:999px;padding:6px 14px;font-size:14px}
+.opt.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.opt:hover:not(.on){border-color:#777}
+.hint{font-size:13px;color:var(--mute);margin-top:4px}
+details.more{border:1px dashed #bdbdbd;border-radius:10px;padding:10px 14px;background:#fff}
+details.more summary{cursor:pointer;font-weight:600}
+.steps{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.step{flex:1;min-width:190px;border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px}
+.step .n{width:24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;display:inline-flex;justify-content:center;align-items:center;font-size:13px;margin-bottom:6px}
+.pill{font-size:12px;border-radius:999px;padding:1px 9px;background:#eceef3}
+.sttl{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<header class="top">
+ <div class="wrap">
+  <div class="logo" onclick="go('home')"><i></i>MainExperts</div>
+  <nav class="nav" id="nav"></nav>
+  <div class="sp"></div>
+  <div class="ctx" id="ctx"></div>
+  <label class="tgl"><input type="checkbox" id="annoSw" onchange="document.body.classList.toggle('anno-on',this.checked)"> Показать привязку к карте</label>
+ </div>
+</header>
+<main id="view"></main>
+<footer><div class="wrap" id="foot"></div></footer>
+<div class="ov" id="ov"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+const DICT=[["Поиск", "Search", "Іздеу", "Qidiruv", "بحث"], ["Не знаете, кем стать?", "Not sure what to become?", "Кім болуды білмейсіз бе?", "Kim bo‘lishni bilmayapsizmi?", "لا تعرف ماذا تصبح؟"], ["Мой путь", "My path", "Менің жолым", "Mening yo‘lim", "مساري"], ["Вы из:", "You are from:", "Сіз қайдансыз:", "Siz qayerdansiz:", "أنت من:"], ["Казахстан", "Kazakhstan", "Қазақстан", "Qozog‘iston", "كازاخستان"], ["Россия", "Russia", "Ресей", "Rossiya", "روسيا"], ["ОАЭ", "UAE", "БАӘ", "BAA", "الإمارات"], ["Узбекистан", "Uzbekistan", "Өзбекстан", "O‘zbekiston", "أوزبكستان"], ["Другая страна", "Other country", "Басқа ел", "Boshqa davlat", "دولة أخرى"], ["Страна изменена. Язык и валюта подставлены.", "Country changed. Language and currency updated.", "Ел өзгертілді. Тіл мен валюта қойылды.", "Davlat o‘zgartirildi. Til va valyuta qo‘yildi.", "تم تغيير الدولة. تم تحديث اللغة والعملة."], ["Концепт портала. Все названия, цены, курсы, сроки и иллюстрации демонстрационные. Цены пересчитаны по демонстрационному курсу. Концепт не утверждён основателем.", "Portal concept. All names, prices, rates, dates and illustrations are demonstration data. Prices are converted at a demo exchange rate. The concept has not been approved by the founder.", "Портал тұжырымдамасы. Барлық атаулар, бағалар, бағамдар, мерзімдер мен суреттер – демонстрациялық. Бағалар демо бағам бойынша есептелген. Тұжырымдаманы негізін қалаушы бекіткен жоқ.", "Portal konsepsiyasi. Barcha nomlar, narxlar, kurslar, muddatlar va rasmlar – demonstratsion. Narxlar demo kurs bo‘yicha hisoblangan. Konsepsiyani asoschi tasdiqlamagan.", "مفهوم البوابة. جميع الأسماء والأسعار والأسعار الصرف والمواعيد والصور توضيحية. الأسعار محوّلة بسعر صرف تجريبي. لم يعتمد المؤسس هذا المفهوم."], ["Где ребёнку будет хорошо учиться", "Where your child will study well", "Бала қайда жақсы оқиды", "Bola qayerda yaxshi o‘qiydi", "أين سيدرس طفلك بنجاح"], ["и кем он может стать", "and what they can become", "және кім бола алады", "va kim bo‘la oladi", "وماذا يمكن أن يصبح"], ["Вузы, колледжи, профессии и короткие программы в одном месте. Цены в вашей валюте, всё на вашем языке.", "Universities, colleges, professions and short programs in one place. Prices in your currency, everything in your language.", "Университеттер, колледждер, мамандықтар және қысқа бағдарламалар бір жерде. Бағалар сіздің валютаңызда, бәрі сіздің тіліңізде.", "Universitetlar, kollejlar, kasblar va qisqa dasturlar bir joyda. Narxlar sizning valyutangizda, hammasi sizning tilingizda.", "الجامعات والكليات والمهن والبرامج القصيرة في مكان واحد. الأسعار بعملتك وكل شيء بلغتك."], ["Вузы", "Universities", "Университеттер", "Universitetlar", "الجامعات"], ["Колледжи", "Colleges", "Колледждер", "Kollejlar", "الكليات"], ["Профессии", "Professions", "Мамандықтар", "Kasblar", "المهن"], ["Короткие программы", "Short programs", "Қысқа бағдарламалар", "Qisqa dasturlar", "برامج قصيرة"], ["Откуда", "From", "Қайдан", "Qayerdan", "من أين"], ["Куда", "To", "Қайда", "Qayerga", "إلى أين"], ["Когда", "When", "Қашан", "Qachon", "متى"], ["Что изучать", "What to study", "Не оқу", "Nimani o‘rganish", "ماذا تدرس"], ["Уровень", "Level", "Деңгей", "Daraja", "المستوى"], ["Специальность", "Specialty", "Мамандық", "Mutaxassislik", "التخصص"], ["Где хотел бы работать", "Where to work", "Қайда жұмыс істегісі келеді", "Qayerda ishlashni istaydi", "أين يريد أن يعمل"], ["Интересы и навыки", "Interests and skills", "Қызығушылықтар мен дағдылар", "Qiziqishlar va ko‘nikmalar", "الاهتمامات والمهارات"], ["Формат", "Format", "Формат", "Format", "الصيغة"], ["Тема", "Topic", "Тақырып", "Mavzu", "الموضوع"], ["Период", "Period", "Кезең", "Davr", "الفترة"], ["Выберите", "Select", "Таңдаңыз", "Tanlang", "اختر"], ["Год поступления", "Admission year", "Түсу жылы", "Qabul yili", "سنة القبول"], ["например, инженерия", "e.g. engineering", "мысалы, инженерия", "masalan, muhandislik", "مثلًا الهندسة"], ["например, программирование", "e.g. programming", "мысалы, бағдарламалау", "masalan, dasturlash", "مثلًا البرمجة"], ["например, математика, рисунок", "e.g. math, drawing", "мысалы, математика, сурет салу", "masalan, matematika, rasm", "مثلًا الرياضيات والرسم"], ["например, английский", "e.g. English", "мысалы, ағылшын тілі", "masalan, ingliz tili", "مثلًا الإنجليزية"], ["Найти", "Search", "Іздеу", "Qidirish", "بحث"], ["Моя страна", "My country", "Менің елім", "Mening davlatim", "بلدي"], ["Несколько стран", "Several countries", "Бірнеше ел", "Bir nechta davlat", "عدة دول"], ["Онлайн", "Online", "Онлайн", "Onlayn", "عبر الإنترنت"], ["Очно", "In person", "Күндізгі", "Kunduzgi", "حضوريًا"], ["Где угодно", "Anywhere", "Кез келген жерде", "Istalgan joyda", "في أي مكان"], ["Бакалавриат", "Bachelor's", "Бакалавриат", "Bakalavriat", "البكالوريوس"], ["Магистратура", "Master's", "Магистратура", "Magistratura", "الماجستير"], ["Специалитет", "Specialist degree", "Мамандық (специалитет)", "Mutaxassislik", "درجة التخصص"], ["2029 и позже", "2029 or later", "2029 және одан кейін", "2029 va undan keyin", "2029 وما بعدها"], ["Лето 2027", "Summer 2027", "2027 жазы", "2027 yoz", "صيف 2027"], ["Осень 2027", "Autumn 2027", "2027 күзі", "2027 kuz", "خريف 2027"], ["Ближайший месяц", "Next month", "Келесі ай", "Keyingi oy", "الشهر القادم"], ["Укажу даты", "I will enter dates", "Күндерін көрсетемін", "Sanalarni kiritaman", "سأحدد التواريخ"], ["Популярные направления", "Popular directions", "Танымал бағыттар", "Mashhur yo‘nalishlar", "الوجهات الشائعة"], ["от", "from", "бастап", "dan", "من"], ["в год", "per year", "жылына", "yiliga", "في السنة"], ["за программу", "per program", "бағдарламаға", "dastur uchun", "للبرنامج"], ["зарплатная вилка в месяц", "salary range per month", "айлық жалақы аралығы", "oylik maosh oralig‘i", "نطاق الراتب شهريًا"], ["Или расскажите своими словами", "Or describe it in your own words", "Немесе өз сөзіңізбен айтыңыз", "Yoki o‘z so‘zlaringiz bilan ayting", "أو صِفه بكلماتك"], ["Например: сын любит физику, хотим хороший вуз, но не знаем, хватит ли баллов", "For example: my son loves physics, we want a good university but don't know if his grades will be enough", "Мысалы: ұлым физиканы жақсы көреді, жақсы университет қалаймыз, бірақ балл жете ме, білмейміз", "Masalan: o‘g‘lim fizikani yaxshi ko‘radi, yaxshi universitet istaymiz, ammo ball yetadimi, bilmaymiz", "مثلًا: ابني يحب الفيزياء ونريد جامعة جيدة لكن لا نعرف إن كانت علاماته كافية"], ["Подобрать по описанию", "Find by description", "Сипаттама бойынша таңдау", "Tavsif bo‘yicha tanlash", "اختيار حسب الوصف"], ["Портал определит направление и подставит то, что поймёт. Недостающее спросит.", "The portal will pick the direction and fill in what it understands. It will ask for the rest.", "Портал бағытты анықтап, түсінгенін қояды. Жетпегенін сұрайды.", "Portal yo‘nalishni aniqlaydi va tushunganini qo‘yadi. Yetishmaganini so‘raydi.", "ستحدد البوابة الاتجاه وتملأ ما فهمته وتسأل عن الباقي."], ["Какие есть крутые вузы, где моему сыну будет хорошо учиться?", "Which great universities are there where my son will study well?", "Ұлым жақсы оқитын қандай мықты университеттер бар?", "O‘g‘lim yaxshi o‘qiydigan qaysi zo‘r universitetlar bor?", "ما هي الجامعات الممتازة التي سيدرس فيها ابني بنجاح؟"], ["Кем будет работать мой ребёнок, если он любит рисовать?", "What can my child become if they love drawing?", "Баламның суретті жақсы көретіні болса, кім болып жұмыс істейді?", "Farzandim rasm chizishni yaxshi ko‘rsa, kim bo‘lib ishlaydi?", "ماذا سيعمل طفلي إذا كان يحب الرسم؟"], ["Не поступил никуда: какие у нас есть варианты сейчас?", "Didn't get in anywhere: what options do we have now?", "Ешқайда түспеді: қазір қандай нұсқалар бар?", "Hech qayerga kirmadi: hozir qanday variantlar bor?", "لم يُقبل في أي مكان: ما الخيارات المتاحة الآن؟"], ["Хочу подтянуть ребёнка летом: какие есть программы?", "I want to help my child catch up over the summer: which programs exist?", "Баланы жазда үлгерімін жақсартқым келеді: қандай бағдарламалар бар?", "Bolani yozda tortib olmoqchiman: qanday dasturlar bor?", "أريد دعم طفلي في الصيف: ما البرامج المتاحة؟"], ["Всё в одном месте", "Everything in one place", "Бәрі бір жерде", "Hammasi bir joyda", "كل شيء في مكان واحد"], ["Из профессии — к вузам, из вуза — к профессиям. Подборка не теряется при смене направления.", "From a profession to universities, from a university to professions. Your selection is kept when you switch.", "Мамандықтан – университеттерге, университеттен – мамандықтарға. Бағытты ауыстырғанда таңдау сақталады.", "Kasbdan – universitetlarga, universitetdan – kasblarga. Yo‘nalish almashganda tanlov saqlanadi.", "من المهنة إلى الجامعات ومن الجامعة إلى المهن. تبقى قائمتك محفوظة عند تغيير الاتجاه."], ["Источник и дата", "Source and date", "Дереккөз және күні", "Manba va sana", "المصدر والتاريخ"], ["Каждое число с указанием, откуда оно и на какую дату. Данных нет — так и написано.", "Every figure shows where it comes from and the date. If there is no data, we say so.", "Әр сан қайдан алынғаны мен күнімен көрсетіледі. Дерек болмаса – солай жазылады.", "Har bir raqam qayerdan olingani va sanasi bilan ko‘rsatiladi. Ma’lumot bo‘lmasa – shunday yoziladi.", "كل رقم مع مصدره وتاريخه. وإذا لم تتوفر بيانات نذكر ذلك."], ["Спросим только недостающее", "We ask only what's missing", "Тек жетпегенін сұраймыз", "Faqat yetishmaganini so‘raymiz", "نسأل فقط عمّا ينقص"], ["Что известно из запроса и квиза, повторно не спрашиваем. Любой ответ можно изменить.", "What we already know from your request and quiz we don't ask again. Any answer can be changed.", "Сұраныс пен квизден белгілі нәрсені қайта сұрамаймыз. Кез келген жауапты өзгертуге болады.", "So‘rov va kvizdan ma’lum narsani qayta so‘ramaymiz. Har qanday javobni o‘zgartirish mumkin.", "ما نعرفه من طلبك والاختبار لا نسأل عنه مجددًا. ويمكن تغيير أي إجابة."], ["Определили направление:", "Direction detected:", "Бағыт анықталды:", "Yo‘nalish aniqlandi:", "تم تحديد الاتجاه:"], ["Осталось ответить на обязательные вопросы:", "Required questions left:", "Міндетті сұрақтар қалды:", "Majburiy savollar qoldi:", "أسئلة إلزامية متبقية:"], ["расскажите о задаче", "tell us about the task", "міндетіңізді айтыңыз", "vazifangizni ayting", "أخبرنا عن مهمتك"], ["Состав обязательных вопросов по категории зафиксирован командой как рабочая логика, не утверждён.", "The set of required questions is a working logic fixed by the team, not approved.", "Міндетті сұрақтар құрамы – команда бекіткен жұмыс логикасы, ресми расталмаған.", "Majburiy savollar tarkibi jamoa tomonidan ishchi mantiq sifatida belgilangan, tasdiqlanmagan.", "مجموعة الأسئلة الإلزامية منطق عمل حدده الفريق وليست معتمدة."], ["Для колледжа набор обязательных полей не согласован: предыдущий класс и возраст — открытые вопросы.", "For colleges the set of required fields is not agreed: previous grade and age are open questions.", "Колледж үшін міндетті өрістер келісілмеген: алдыңғы сынып пен жас – ашық мәселе.", "Kollej uchun majburiy maydonlar kelishilmagan: oldingi sinf va yosh – ochiq savollar.", "لم تُحدَّد الحقول الإلزامية للكليات: الصف السابق والعمر مسألتان مفتوحتان."], ["Если профессия уже известна, достаточно её названия: это альтернативный вход, а не вопрос всем.", "If the profession is already known, its name is enough: it is an alternative entry, not a question for everyone.", "Мамандық белгілі болса, оның атауы жеткілікті: бұл баламалы кіру, барлығына қойылатын сұрақ емес.", "Kasb ma’lum bo‘lsa, uning nomi yetarli: bu muqobil kirish, hamma uchun savol emas.", "إذا كانت المهنة معروفة يكفي اسمها: فهذا مدخل بديل وليس سؤالًا للجميع."], ["Для долгих курсов (6–12 месяцев) нужен период начала; для коротких — сезон, месяц или даты.", "Long courses (6–12 months) need a start period; short ones need a season, month or dates.", "Ұзақ курстар (6–12 ай) үшін басталу кезеңі керек; қысқа үшін – маусым, ай немесе күндер.", "Uzoq kurslar (6–12 oy) uchun boshlanish davri kerak; qisqalari uchun – fasl, oy yoki sanalar.", "تحتاج الدورات الطويلة (6–12 شهرًا) إلى فترة بدء، والقصيرة إلى موسم أو شهر أو تواريخ."], ["Уточнить по желанию", "Refine (optional)", "Қалауыңызша нақтылау", "Xohishga ko‘ra aniqlashtirish", "تحسين اختياري"], ["Для кого ищете?", "Who is it for?", "Кім үшін іздейсіз?", "Kim uchun qidiryapsiz?", "لمن تبحث؟"], ["Ребёнок", "Child", "Бала", "Bola", "طفل"], ["Для себя", "For myself", "Өзім үшін", "O‘zim uchun", "لنفسي"], ["Сколько лет учащемуся?", "How old is the student?", "Оқушы неше жаста?", "O‘quvchi necha yoshda?", "كم عمر الطالب؟"], ["Бюджет", "Budget", "Бюджет", "Byudjet", "الميزانية"], ["Пока не определился", "Not decided yet", "Әзірге шешпедім", "Hali aniqlamadim", "لم أقرر بعد"], ["Без ограничения", "No limit", "Шектеусіз", "Cheklovsiz", "بلا حد"], ["Укажу сумму", "I will enter an amount", "Соманы көрсетемін", "Summani kiritaman", "سأحدد المبلغ"], ["Город обучения", "City of study", "Оқу қаласы", "O‘qish shahri", "مدينة الدراسة"], ["Показать подборку", "Show selection", "Іріктемені көрсету", "Tanlovni ko‘rsatish", "عرض القائمة"], ["Осталось ответить:", "Left to answer:", "Жауап беру керек:", "Javob berish kerak:", "متبقٍ للإجابة:"], ["Всё необходимое известно", "Everything needed is known", "Қажеттінің бәрі белгілі", "Kerakli hammasi ma’lum", "كل المطلوب معروف"], ["Нужна помощь с выбором направления?", "Need help choosing a direction?", "Бағытты таңдауға көмек керек пе?", "Yo‘nalishni tanlashda yordam kerakmi?", "هل تحتاج مساعدة في اختيار الاتجاه؟"], ["Ответьте на несколько вопросов о ребёнке. Подборка от этого не скроется.", "Answer a few questions about your child. Your selection will not disappear.", "Бала туралы бірнеше сұраққа жауап беріңіз. Іріктеме жоғалмайды.", "Bola haqida bir nechta savolga javob bering. Tanlov yo‘qolmaydi.", "أجب عن بضعة أسئلة عن طفلك. لن تختفي قائمتك."], ["Помогите определиться", "Help me decide", "Таңдауға көмектесіңіз", "Tanlashga yordam bering", "ساعدني في القرار"], ["подборка", "selection", "іріктеме", "tanlov", "القائمة"], ["Сохранить подборку", "Save selection", "Іріктемені сақтау", "Tanlovni saqlash", "حفظ القائمة"], ["Поделиться", "Share", "Бөлісу", "Ulashish", "مشاركة"], ["Подобрали программы под профессию", "We picked programs for the profession", "Мамандыққа бағдарламалар таңдалды", "Kasb uchun dasturlar tanlandi", "اخترنا برامج للمهنة"], ["Фильтры подставлены автоматически.", "Filters were filled in automatically.", "Сүзгілер автоматты түрде қойылды.", "Filtrlar avtomatik qo‘yildi.", "تمت تعبئة المرشحات تلقائيًا."], ["Сбросить", "Reset", "Тастау", "Tozalash", "إعادة تعيين"], ["Лучшее для ребёнка", "Best for your child", "Балаға ең қолайлысы", "Bolaga eng mosi", "الأنسب لطفلك"], ["Дешевле", "Cheapest", "Арзанырақ", "Arzonroq", "الأرخص"], ["Раньше срок подачи", "Earliest deadline", "Ертерек мерзім", "Tezroq muddat", "أقرب موعد تقديم"], ["Выше зарплата", "Higher salary", "Жалақысы жоғары", "Maoshi yuqori", "راتب أعلى"], ["Выше спрос", "Higher demand", "Сұраныс жоғары", "Talab yuqori", "طلب أعلى"], ["Ближайшие даты", "Nearest dates", "Жақын күндер", "Yaqin sanalar", "أقرب المواعيد"], ["Фильтры", "Filters", "Сүзгілер", "Filtrlar", "المرشحات"], ["Максимальная цена", "Maximum price", "Ең жоғары баға", "Maksimal narx", "السعر الأقصى"], ["Язык обучения", "Language of study", "Оқу тілі", "O‘qish tili", "لغة الدراسة"], ["Любой", "Any", "Кез келген", "Istalgan", "أي"], ["Русский", "Russian", "Орысша", "Ruscha", "الروسية"], ["Английский", "English", "Ағылшынша", "Inglizcha", "الإنجليزية"], ["Слежение", "Tracking", "Бақылау", "Kuzatuv", "التتبع"], ["письмо за 30 дней до срока подачи", "email 30 days before the deadline", "мерзімге 30 күн қалғанда хат", "muddatga 30 kun qolganda xat", "رسالة قبل 30 يومًا من الموعد"], ["Шансы по баллам", "Admission chances", "Балл бойынша мүмкіндік", "Ball bo‘yicha imkoniyat", "فرص القبول"], ["Срок подачи", "Application deadline", "Құжат тапсыру мерзімі", "Topshirish muddati", "موعد التقديم"], ["Срок обучения", "Duration", "Оқу мерзімі", "O‘qish muddati", "مدة الدراسة"], ["лет", "years", "жыл", "yil", "سنوات"], ["Ведёт к профессиям", "Leads to professions", "Мамандықтарға апарады", "Kasblarga olib boradi", "يقود إلى المهن"], ["за весь срок", "for the whole course", "бүкіл оқу мерзіміне", "butun muddat uchun", "للمدة كاملة"], ["Спрос", "Demand", "Сұраныс", "Talab", "الطلب"], ["Риск автоматизации", "Automation risk", "Автоматтандыру қаупі", "Avtomatlashtirish xavfi", "خطر الأتمتة"], ["Нужные навыки", "Required skills", "Қажетті дағдылар", "Kerakli ko‘nikmalar", "المهارات المطلوبة"], ["Где учиться", "Where to study", "Қайда оқу керек", "Qayerda o‘qish", "أين تدرس"], ["Языки", "Languages", "Тілдері", "Tillar", "اللغات"], ["Начало", "Start", "Басталуы", "Boshlanishi", "البدء"], ["Перейти или подать заявку", "Visit or apply", "Өту немесе өтінім беру", "O‘tish yoki ariza berish", "انتقل أو قدّم طلبًا"], ["Перейти или записаться", "Visit or enroll", "Өту немесе жазылу", "O‘tish yoki yozilish", "انتقل أو سجّل"], ["В избранное", "Add to favorites", "Таңдаулыларға", "Tanlanganlarga", "إلى المفضلة"], ["сравнить", "compare", "салыстыру", "solishtirish", "قارن"], ["Растёт", "Growing", "Өсуде", "O‘smoqda", "في نمو"], ["Стабильный", "Stable", "Тұрақты", "Barqaror", "مستقر"], ["Низкий", "Low", "Төмен", "Past", "منخفض"], ["Средний", "Medium", "Орташа", "O‘rtacha", "متوسط"], ["Профессии, к которым ведёт программа: показали профессию первой.", "Professions this program leads to: the profession is shown first.", "Бағдарлама апаратын мамандықтар: мамандық бірінші көрсетілді.", "Dastur olib boradigan kasblar: kasb birinchi ko‘rsatildi.", "المهن التي يقود إليها البرنامج: عرضنا المهنة أولًا."], ["Добавлено в избранное. Оно сохранится при смене направления.", "Added to favorites. It stays when you switch direction.", "Таңдаулыларға қосылды. Бағыт ауысқанда сақталады.", "Tanlanganlarga qo‘shildi. Yo‘nalish almashganda saqlanadi.", "أُضيف إلى المفضلة. يبقى عند تغيير الاتجاه."], ["Сравнить можно до четырёх вариантов", "You can compare up to four options", "Төрт нұсқаға дейін салыстыруға болады", "To‘rttagacha variantni solishtirish mumkin", "يمكن مقارنة حتى أربعة خيارات"], ["Не уверены? Поможем сузить выбор.", "Not sure? We'll help narrow it down.", "Сенімсізсіз бе? Таңдауды тарылтуға көмектесеміз.", "Ishonchingiz komilmi? Tanlovni toraytirishga yordam beramiz.", "غير متأكد؟ سنساعدك في تضييق الخيارات."], ["Вы сравниваете несколько вариантов. Можно оставить анкету, мы ответим письмом.", "You are comparing several options. Leave a request and we'll reply by email.", "Бірнеше нұсқаны салыстырудасыз. Анкета қалдырыңыз, хатпен жауап береміз.", "Bir nechta variantni solishtiryapsiz. Anketa qoldiring, xat bilan javob beramiz.", "أنت تقارن عدة خيارات. اترك استمارة وسنرد عليك بالبريد."], ["Оставить анкету", "Leave a request", "Анкета қалдыру", "Anketa qoldirish", "ترك استمارة"], ["Поможем построить путь.", "We'll help you build the path.", "Жолды құруға көмектесеміз.", "Yo‘lni qurishga yordam beramiz.", "سنساعدك في رسم الطريق."], ["Услуги по поступлению и сопровождению: можно встать в лист ожидания.", "Admission and support services: you can join the waiting list.", "Түсу және алып жүру қызметтері: күту тізіміне тұруға болады.", "Qabul va hamrohlik xizmatlari: kutish ro‘yxatiga turish mumkin.", "خدمات القبول والمرافقة: يمكنك الانضمام إلى قائمة الانتظار."], ["Посмотреть услуги", "View services", "Қызметтерді көру", "Xizmatlarni ko‘rish", "عرض الخدمات"], ["Не знаете, что изучать или кем стать?", "Not sure what to study or what to become?", "Не оқуды немесе кім болуды білмейсіз бе?", "Nimani o‘qishni yoki kim bo‘lishni bilmayapsizmi?", "لا تعرف ماذا تدرس أو ماذا تصبح؟"], ["Бесплатный разбор сильных сторон ребёнка займёт несколько минут. Результат подставится в поиск.", "A free review of your child's strengths takes a few minutes. The result goes straight into your search.", "Баланың күшті жақтарын тегін талдау бірнеше минут алады. Нәтиже іздеуге қойылады.", "Bolaning kuchli tomonlarini bepul tahlil qilish bir necha daqiqa oladi. Natija qidiruvga qo‘yiladi.", "التحليل المجاني لنقاط قوة طفلك يستغرق دقائق، وتنتقل النتيجة إلى بحثك."], ["Пройти разбор", "Take the review", "Талдаудан өту", "Tahlildan o‘tish", "ابدأ التحليل"], ["Закрыть: в этой сессии не покажем", "Close: we won't show it again this session", "Жабу: бұл сессияда көрсетпейміз", "Yopish: bu sessiyada ko‘rsatmaymiz", "إغلاق: لن نعرضه في هذه الجلسة"], ["Иллюстрации, цены и курс — демонстрационные.", "Illustrations, prices and exchange rate are for demonstration.", "Суреттер, бағалар және бағам – демонстрациялық.", "Rasmlar, narxlar va kurs – demonstratsion.", "الصور والأسعار وسعر الصرف توضيحية."], ["По этим условиям ничего нет. Измените условия или направление.", "Nothing found for these conditions. Change the conditions or direction.", "Бұл шарттар бойынша ештеңе жоқ. Шарттарды немесе бағытты өзгертіңіз.", "Bu shartlar bo‘yicha hech narsa yo‘q. Shartlarni yoki yo‘nalishni o‘zgartiring.", "لا توجد نتائج. غيّر الشروط أو الاتجاه."], ["Подборка подошла?", "Was this selection helpful?", "Іріктеме ұнады ма?", "Tanlov mos keldimi?", "هل كانت القائمة مناسبة؟"], ["Да", "Yes", "Иә", "Ha", "نعم"], ["Нет", "No", "Жоқ", "Yo‘q", "لا"], ["Когда вы отвечаете на этот вопрос, мы точнее подбираем результаты поиска.", "When you answer this, we choose your search results more accurately.", "Осы сұраққа жауап берсеңіз, іздеу нәтижелерін дәлірек таңдаймыз.", "Bu savolga javob bersangiz, qidiruv natijalarini aniqroq tanlaymiz.", "عندما تجيب عن هذا السؤال نختار لك نتائج البحث بدقة أكبر."], ["Спасибо: так мы точнее подберём результаты.", "Thank you: your answer makes the results more accurate.", "Рахмет: жауабыңыз нәтижелерді дәлірек етеді.", "Rahmat: javobingiz natijalarni aniqroq qiladi.", "شكرًا: إجابتك تجعل النتائج أدق."], ["Что поменять?", "What to change?", "Не өзгерту керек?", "Nimani o‘zgartirish kerak?", "ماذا نغيّر؟"], ["Изменить условия", "Change conditions", "Шарттарды өзгерту", "Shartlarni o‘zgartirish", "تغيير الشروط"], ["Посмотреть другое направление", "View another direction", "Басқа бағытты қарау", "Boshqa yo‘nalishni ko‘rish", "عرض اتجاه آخر"], ["К сравнению", "To compare", "Салыстыруға", "Solishtirish uchun", "للمقارنة"], ["Сравнить", "Compare", "Салыстыру", "Solishtirish", "مقارنة"], ["Очистить", "Clear", "Тазалау", "Tozalash", "مسح"], ["Подборка сохранена в «Мой путь».", "Selection saved in “My path”.", "Іріктеме «Менің жолымда» сақталды.", "Tanlov «Mening yo‘lim»da saqlandi.", "تم حفظ القائمة في «مساري»."], ["Ссылка на подборку скопирована: можно показать ребёнку и семье.", "Selection link copied: you can show it to your child and family.", "Іріктеме сілтемесі көшірілді: балаға және отбасына көрсетуге болады.", "Tanlov havolasi nusxalandi: bolaga va oilaga ko‘rsatish mumkin.", "تم نسخ رابط القائمة: يمكنك عرضه على طفلك وأسرتك."], ["Сравнение", "Comparison", "Салыстыру", "Solishtirish", "المقارنة"], ["Направление", "Direction", "Бағыт", "Yo‘nalish", "الاتجاه"], ["Цена", "Price", "Бағасы", "Narxi", "السعر"], ["Закрыть", "Close", "Жабу", "Yopish", "إغلاق"], ["Профессия передана в подбор: фильтры подставлены.", "Profession passed to selection: filters filled in.", "Мамандық іріктеуге берілді: сүзгілер қойылды.", "Kasb tanlovga uzatildi: filtrlar qo‘yildi.", "نُقلت المهنة إلى الاختيار: تمت تعبئة المرشحات."], ["Выберите, как двигаться дальше.", "Choose how to continue.", "Әрі қарай қалай жалғастыруды таңдаңыз.", "Davom etish usulini tanlang.", "اختر كيف تتابع."], ["Перейти на сайт учреждения", "Go to the institution's website", "Мекеменің сайтына өту", "Muassasa saytiga o‘tish", "الانتقال إلى موقع المؤسسة"], ["Откроется новая вкладка, эта останется. Попросим email, чтобы сохранить подборку и напомнить о сроках.", "A new tab will open; this one stays. We'll ask for your email to save your selection and remind you of deadlines.", "Жаңа бет ашылады, бұл бет қалады. Іріктемені сақтау және мерзімдерді еске салу үшін email сұраймыз.", "Yangi varaq ochiladi, bu varaq qoladi. Tanlovni saqlash va muddatlarni eslatish uchun email so‘raymiz.", "ستفتح علامة تبويب جديدة وتبقى هذه مفتوحة. سنطلب بريدك الإلكتروني لحفظ قائمتك وتذكيرك بالمواعيد."], ["Подготовить заявку через портал", "Prepare an application via the portal", "Өтінімді портал арқылы дайындау", "Arizani portal orqali tayyorlash", "تحضير الطلب عبر البوابة"], ["гипотеза", "hypothesis", "болжам", "gipoteza", "فرضية"], ["Цифровая копия анкеты, вы заполняете её сами или просите помощника. Небольшая оплата.", "A digital copy of the form; fill it in yourself or ask an assistant. A small fee.", "Анкетаның цифрлық көшірмесі; өзіңіз толтырасыз немесе көмекшіден сұрайсыз. Шағын төлем.", "Anketaning raqamli nusxasi; o‘zingiz to‘ldirasiz yoki yordamchidan so‘raysiz. Kichik to‘lov.", "نسخة رقمية من الاستمارة تملؤها بنفسك أو بمساعدة مساعد. رسم بسيط."], ["Услуги и пакеты", "Services and packages", "Қызметтер мен пакеттер", "Xizmatlar va paketlar", "الخدمات والباقات"], ["Поступление, подбор «под ключ», поступление плюс виза. Чего ещё нет — лист ожидания.", "Admission, turnkey selection, admission plus visa. What isn't available yet goes to a waiting list.", "Түсу, «түйіндей» іріктеу, түсу және виза. Әлі жоқ қызметтер – күту тізімі.", "Qabul, «kalit topshirish» tanlov, qabul va viza. Hali yo‘q xizmatlar – kutish ro‘yxati.", "القبول والاختيار الشامل والقبول مع التأشيرة. وما لم يتوفر بعد ففي قائمة الانتظار."], ["Оставьте email", "Leave your email", "Email қалдырыңыз", "Email qoldiring", "اترك بريدك الإلكتروني"], ["Сохраним подборку и напомним о сроках. Это необязательно, но так вы не потеряете выбор.", "We'll save your selection and remind you of deadlines. Optional, but you won't lose your choice.", "Іріктемені сақтап, мерзімдерді еске саламыз. Міндетті емес, бірақ таңдауыңыз жоғалмайды.", "Tanlovni saqlab, muddatlarni eslatamiz. Majburiy emas, lekin tanlovingiz yo‘qolmaydi.", "سنحفظ قائمتك ونذكّرك بالمواعيد. اختياري، لكنك لن تفقد اختيارك."], ["Сохранить и перейти", "Save and continue", "Сақтап өту", "Saqlab o‘tish", "حفظ ومتابعة"], ["Перейти без email", "Continue without email", "Email-сіз өту", "Emailsiz o‘tish", "المتابعة بدون بريد"], ["Заявка через портал", "Application via the portal", "Портал арқылы өтінім", "Portal orqali ariza", "طلب عبر البوابة"], ["Имя ребёнка", "Child's name", "Баланың аты", "Bolaning ismi", "اسم الطفل"], ["Небольшая оплата; сумма не задана.", "A small fee; the amount is not set.", "Шағын төлем; сома белгіленбеген.", "Kichik to‘lov; summa belgilanmagan.", "رسم بسيط؛ لم يُحدَّد المبلغ."], ["Подготовить заявку", "Prepare application", "Өтінімді дайындау", "Arizani tayyorlash", "تحضير الطلب"], ["Отмена", "Cancel", "Болдырмау", "Bekor qilish", "إلغاء"], ["Заявка добавлена в «Мой путь».", "Application added to “My path”.", "Өтінім «Менің жолыма» қосылды.", "Ariza «Mening yo‘lim»ga qo‘shildi.", "أُضيف الطلب إلى «مساري»."], ["Вы на сайте учреждения (имитация новой вкладки)", "You are on the institution's website (new tab mock-up)", "Сіз мекеме сайтындасыз (жаңа бет имитациясы)", "Siz muassasa saytidasiz (yangi varaq imitatsiyasi)", "أنت على موقع المؤسسة (محاكاة علامة تبويب جديدة)"], ["Страница нужной программы, а не главная", "The page of the right program, not the home page", "Басты бет емес, қажетті бағдарлама беті", "Bosh sahifa emas, kerakli dastur sahifasi", "صفحة البرنامج المطلوب وليست الصفحة الرئيسية"], ["Я вернулся на портал", "I'm back on the portal", "Порталға оралдым", "Portalga qaytdim", "عدت إلى البوابة"], ["Закрыть и не возвращаться", "Close and don't come back", "Жабу және оралмау", "Yopish va qaytmaslik", "إغلاق وعدم العودة"], ["Через время портал напишет на email: что дальше.", "Later the portal will email you what to do next.", "Біраз уақыттан кейін портал email-ға не істейтіні туралы жазады.", "Bir oz vaqtdan so‘ng portal emailga keyingi qadam haqida yozadi.", "سترسل لك البوابة لاحقًا بريدًا بما يجب فعله بعد ذلك."], ["Без email вернуть клиента письмом нельзя.", "Without an email we can't bring the client back by letter.", "Email болмаса, клиентті хатпен қайтару мүмкін емес.", "Emailsiz mijozni xat bilan qaytarib bo‘lmaydi.", "بدون بريد إلكتروني لا يمكن إعادة العميل برسالة."], ["Как продвигаются дела?", "How is it going?", "Істер қалай?", "Ishlar qanday?", "كيف تسير الأمور؟"], ["Подал заявку", "Applied", "Өтінім бердім", "Ariza berdim", "قدّمت الطلب"], ["Записался", "Enrolled", "Жазылдым", "Yozildim", "سجّلت"], ["Пока думаю", "Still thinking", "Әлі ойланып жатырмын", "Hali o‘ylayapman", "ما زلت أفكر"], ["Не буду подавать", "Won't apply", "Өтінім бермеймін", "Ariza bermayman", "لن أقدّم"], ["Статус сохранён в «Мой путь».", "Status saved in “My path”.", "Мәртебе «Менің жолымда» сақталды.", "Holat «Mening yo‘lim»da saqlandi.", "تم حفظ الحالة في «مساري»."], ["Подборки", "Selections", "Іріктемелер", "Tanlovlar", "القوائم"], ["Избранное", "Favorites", "Таңдаулылар", "Tanlanganlar", "المفضلة"], ["Заявки и статусы", "Applications and statuses", "Өтінімдер мен мәртебелер", "Arizalar va holatlar", "الطلبات والحالات"], ["Лист ожидания", "Waiting list", "Күту тізімі", "Kutish ro‘yxati", "قائمة الانتظار"], ["Пока пусто.", "Nothing yet.", "Әзірге бос.", "Hozircha bo‘sh.", "لا شيء بعد."], ["Консультация", "Consultation", "Кеңес", "Maslahat", "استشارة"], ["через портал", "via the portal", "портал арқылы", "portal orqali", "عبر البوابة"], ["сайт учреждения", "institution's website", "мекеме сайты", "muassasa sayti", "موقع المؤسسة"], ["заявка готовится", "application in preparation", "өтінім дайындалуда", "ariza tayyorlanmoqda", "الطلب قيد التحضير"], ["Всё, что вы собрали: подборки, избранное, заявки и напоминания.", "Everything you've collected: selections, favorites, applications and reminders.", "Жинағандарыңыз: іріктемелер, таңдаулылар, өтінімдер мен еске салулар.", "Yig‘gan hamma narsangiz: tanlovlar, tanlanganlar, arizalar va eslatmalar.", "كل ما جمعته: القوائم والمفضلة والطلبات والتذكيرات."], ["Экран пока только на русском (концепт).", "This screen is Russian-only for now (concept).", "Бұл экран әзірге тек орысша (тұжырымдама).", "Bu ekran hozircha faqat ruscha (konsepsiya).", "هذه الشاشة بالروسية فقط حاليًا (مفهوم)."], ["Встать в лист ожидания", "Join the waiting list", "Күту тізіміне тұру", "Kutish ro‘yxatiga turish", "الانضمام إلى قائمة الانتظار"], ["В листе ожидания", "On the waiting list", "Күту тізімінде", "Kutish ro‘yxatida", "في قائمة الانتظار"], ["Вы в листе ожидания. Напишем, когда услуга откроется.", "You are on the waiting list. We'll write when the service opens.", "Сіз күту тізіміндесіз. Қызмет ашылғанда жазамыз.", "Siz kutish ro‘yxatidasiz. Xizmat ochilganda yozamiz.", "أنت في قائمة الانتظار. سنكتب لك عند توفر الخدمة."], ["Состав и условия пока определяются. Встаньте в лист ожидания на то, что вам нужно: так мы поймём спрос.", "Content and terms are being defined. Join the waiting list for what you need: it helps us understand demand.", "Құрамы мен шарттары анықталуда. Керекті қызметке күту тізіміне тұрыңыз: сұранысты түсінеміз.", "Tarkib va shartlar aniqlanmoqda. Kerakli xizmatga kutish ro‘yxatiga turing: talabni tushunamiz.", "ما زالت الشروط قيد التحديد. انضم إلى قائمة الانتظار لما تحتاجه لنفهم الطلب."], ["Поступление: подготовка и подача заявок", "Admission: preparing and submitting applications", "Түсу: өтінімдерді дайындау және тапсыру", "Qabul: arizalarni tayyorlash va topshirish", "القبول: إعداد الطلبات وتقديمها"], ["Помощь с документами и сроками", "Help with documents and deadlines", "Құжаттар мен мерзімдер бойынша көмек", "Hujjatlar va muddatlar bo‘yicha yordam", "مساعدة في الوثائق والمواعيد"], ["Индивидуальный подбор", "Individual selection", "Жеке іріктеу", "Individual tanlov", "اختيار فردي"], ["Подбор вариантов под ребёнка вместе со специалистом", "Choosing options for your child together with a specialist", "Баланың жағдайына сай нұсқаларды маманмен бірге іріктеу", "Bolaga mos variantlarni mutaxassis bilan tanlash", "اختيار الخيارات لطفلك مع مختص"], ["Поступление «под ключ»", "Turnkey admission", "«Түйіндей» түсу", "«Kalit topshirish» qabul", "القبول الشامل"], ["Подбор, подача, сопровождение", "Selection, application, support", "Іріктеу, тапсыру, алып жүру", "Tanlov, topshirish, hamrohlik", "الاختيار والتقديم والمرافقة"], ["Поступление плюс виза", "Admission plus visa", "Түсу және виза", "Qabul va viza", "القبول مع التأشيرة"], ["Пакет: как отель плюс билет", "A package, like hotel plus ticket", "Пакет: қонақүй мен билет сияқты", "Paket: mehmonxona va chipta kabi", "باقة: مثل فندق مع تذكرة"], ["Сопровождение при переезде и адаптации", "Support during relocation and adaptation", "Көшу мен бейімделу кезінде алып жүру", "Ko‘chish va moslashuvda hamrohlik", "المرافقة أثناء الانتقال والتأقلم"], ["Жильё, школа, первые месяцы [гипотеза]", "Housing, school, first months [hypothesis]", "Тұрғын үй, мектеп, алғашқы айлар [болжам]", "Uy-joy, maktab, dastlabki oylar [gipoteza]", "السكن والمدرسة والأشهر الأولى [فرضية]"], ["Несколько вопросов о ребёнке: в чём он силён, что ему интересно. Результат подставится в поиск. Это ориентир, а не диагноз.", "A few questions about your child: strengths and interests. The result feeds your search. It is a guide, not a diagnosis.", "Бала туралы бірнеше сұрақ: күшті жақтары, қызығушылығы. Нәтиже іздеуге қойылады. Бұл – бағдар, диагноз емес.", "Bola haqida bir nechta savol: kuchli tomonlari, qiziqishlari. Natija qidiruvga qo‘yiladi. Bu – mo‘ljal, tashxis emas.", "بضعة أسئلة عن طفلك: نقاط قوته واهتماماته. تنتقل النتيجة إلى بحثك. هذا مؤشر وليس تشخيصًا."], ["Скрининг", "Screening", "Скрининг", "Skrining", "الفحص الأولي"], ["Показать результат", "Show result", "Нәтижені көрсету", "Natijani ko‘rsatish", "عرض النتيجة"], ["Первые направления", "First directions", "Алғашқы бағыттар", "Dastlabki yo‘nalishlar", "الاتجاهات الأولى"], ["Бесплатная карта: направления без деталей.", "Free map: directions without details.", "Тегін карта: бағыттар, егжей-тегжейсіз.", "Bepul xarita: yo‘nalishlar tafsilotsiz.", "خريطة مجانية: اتجاهات بدون تفاصيل."], ["спорный пункт: открыто или платно", "open question: free or paid", "даулы тармақ: тегін бе, ақылы ма", "bahsli band: bepulmi yoki pullik", "نقطة خلافية: مجاني أم مدفوع"], ["Техника и IT", "Engineering and IT", "Техника және IT", "Texnika va IT", "التقنية وتكنولوجيا المعلومات"], ["Творчество и дизайн", "Creativity and design", "Шығармашылық және дизайн", "Ijod va dizayn", "الإبداع والتصميم"], ["Подставить в поиск профессий", "Apply to profession search", "Мамандықтар іздеуіне қою", "Kasblar qidiruviga qo‘yish", "تطبيق على بحث المهن"], ["Результат подставлен в поиск. Ответы можно изменить.", "The result is applied to your search. Answers can be changed.", "Нәтиже іздеуге қойылды. Жауаптарды өзгертуге болады.", "Natija qidiruvga qo‘yildi. Javoblarni o‘zgartirish mumkin.", "طُبّقت النتيجة على بحثك. يمكن تعديل الإجابات."], ["Поможем сузить выбор", "We'll help narrow your choice", "Таңдауды тарылтуға көмектесеміз", "Tanlovni toraytirishga yordam beramiz", "سنساعدك في تضييق الخيارات"], ["Коротко опишите ситуацию. Мы ответим письмом.", "Briefly describe your situation. We'll reply by email.", "Жағдайды қысқаша сипаттаңыз. Хатпен жауап береміз.", "Vaziyatni qisqacha tasvirlang. Xat bilan javob beramiz.", "صف وضعك باختصار وسنرد بالبريد."], ["статус блока под вопросом", "block status in question", "блок мәртебесі даулы", "blok holati noaniq", "حالة الوحدة قيد النقاش"], ["Как вас зовут?", "What's your name?", "Атыңыз кім?", "Ismingiz nima?", "ما اسمك؟"], ["Что хотите обсудить?", "What would you like to discuss?", "Не талқылағыңыз келеді?", "Nimani muhokama qilmoqchisiz?", "ماذا تريد أن تناقش؟"], ["Отправить", "Send", "Жіберу", "Yuborish", "إرسال"], ["Заявка принята. Ответим письмом.", "Request received. We'll reply by email.", "Өтінім қабылданды. Хатпен жауап береміз.", "So‘rov qabul qilindi. Xat bilan javob beramiz.", "تم استلام الطلب. سنرد بالبريد."], ["Технический университет, город А", "Technical University, City A", "Техникалық университет, А қаласы", "Texnika universiteti, A shahri", "الجامعة التقنية، المدينة أ"], ["Университет прикладных наук, город Б", "University of Applied Sciences, City B", "Қолданбалы ғылымдар университеті, Б қаласы", "Amaliy fanlar universiteti, B shahri", "جامعة العلوم التطبيقية، المدينة ب"], ["Институт искусств и дизайна, город В", "Institute of Arts and Design, City C", "Өнер және дизайн институты, В қаласы", "San’at va dizayn instituti, V shahri", "معهد الفنون والتصميم، المدينة ج"], ["Медицинский университет, город Г", "Medical University, City D", "Медицина университеті, Г қаласы", "Tibbiyot universiteti, G shahri", "الجامعة الطبية، المدينة د"], ["Колледж информационных технологий, город А", "IT College, City A", "Ақпараттық технологиялар колледжі, А қаласы", "Axborot texnologiyalari kolleji, A shahri", "كلية تكنولوجيا المعلومات، المدينة أ"], ["Колледж дизайна и медиа, город Б", "Design and Media College, City B", "Дизайн және медиа колледжі, Б қаласы", "Dizayn va media kolleji, B shahri", "كلية التصميم والإعلام، المدينة ب"], ["Медицинский колледж, город В", "Medical College, City C", "Медицина колледжі, В қаласы", "Tibbiyot kolleji, V shahri", "الكلية الطبية، المدينة ج"], ["Инженер-робототехник", "Robotics engineer", "Робототехник-инженер", "Robototexnika muhandisi", "مهندس روبوتات"], ["Дизайнер продукта", "Product designer", "Өнім дизайнері", "Mahsulot dizayneri", "مصمم منتجات"], ["Инженер-программист", "Software engineer", "Бағдарламашы-инженер", "Dasturchi-muhandis", "مهندس برمجيات"], ["Врач-кардиолог", "Cardiologist", "Кардиолог дәрігер", "Kardiolog shifokor", "طبيب قلب"], ["Летняя школа программирования", "Summer coding school", "Жазғы бағдарламалау мектебі", "Yozgi dasturlash maktabi", "مدرسة البرمجة الصيفية"], ["Языковой лагерь в Европе", "Language camp in Europe", "Еуропадағы тілдік лагерь", "Yevropadagi til lageri", "معسكر لغوي في أوروبا"], ["Курс по рисунку и дизайну, 8 месяцев", "Drawing and design course, 8 months", "Сурет және дизайн курсы, 8 ай", "Rasm va dizayn kursi, 8 oy", "دورة الرسم والتصميم، 8 أشهر"], ["Инженерия", "Engineering", "Инженерия", "Muhandislik", "الهندسة"], ["IT", "IT", "IT", "IT", "تقنية المعلومات"], ["Дизайн", "Design", "Дизайн", "Dizayn", "التصميم"], ["Медицина", "Medicine", "Медицина", "Tibbiyot", "الطب"], ["Очно и онлайн", "In person and online", "Күндізгі және онлайн", "Kunduzgi va onlayn", "حضوري وعن بُعد"], ["СПО", "Vocational (SPO)", "Орта кәсіптік (СПО)", "O‘rta kasbiy (SPO)", "تعليم مهني"], ["Программирование", "Programming", "Бағдарламалау", "Dasturlash", "البرمجة"], ["Сестринское дело", "Nursing", "Мейірбике ісі", "Hamshiralik ishi", "التمريض"], ["Техника", "Engineering", "Техника", "Texnika", "التقنية"], ["Работа с людьми и машинами", "Working with people and machines", "Адамдармен және машиналармен жұмыс", "Odamlar va mashinalar bilan ishlash", "العمل مع الناس والآلات"], ["Творчество", "Creativity", "Шығармашылық", "Ijod", "الإبداع"], ["Июль, 2 недели", "July, 2 weeks", "Шілде, 2 апта", "Iyul, 2 hafta", "يوليو، أسبوعان"], ["Август, 3 недели", "August, 3 weeks", "Тамыз, 3 апта", "Avgust, 3 hafta", "أغسطس، 3 أسابيع"], ["С сентября, 8 месяцев", "From September, 8 months", "Қыркүйектен, 8 ай", "Sentyabrdan, 8 oy", "من سبتمبر، 8 أشهر"], ["12–16 лет", "ages 12–16", "12–16 жас", "12–16 yosh", "12–16 سنة"], ["12–17 лет", "ages 12–17", "12–17 жас", "12–17 yosh", "12–17 سنة"], ["14–18 лет", "ages 14–18", "14–18 жас", "14–18 yosh", "14–18 سنة"], ["Математика, программирование, схемотехника", "Math, programming, circuit design", "Математика, бағдарламалау, схемотехника", "Matematika, dasturlash, sxemotexnika", "الرياضيات والبرمجة وتصميم الدوائر"], ["Рисунок, исследование пользователей, прототипы", "Drawing, user research, prototypes", "Сурет, пайдаланушыларды зерттеу, прототиптер", "Rasm, foydalanuvchilarni o‘rganish, prototiplar", "الرسم ودراسة المستخدمين والنماذج الأولية"], ["Логика, языки программирования, английский", "Logic, programming languages, English", "Логика, бағдарламалау тілдері, ағылшын тілі", "Mantiq, dasturlash tillari, ingliz tili", "المنطق ولغات البرمجة والإنجليزية"], ["Биология, химия, стрессоустойчивость", "Biology, chemistry, stress resistance", "Биология, химия, стреске төзімділік", "Biologiya, kimyo, stressga chidamlilik", "الأحياء والكيمياء ومقاومة الضغط"], ["русский", "Russian", "орысша", "ruscha", "الروسية"], ["английский", "English", "ағылшынша", "inglizcha", "الإنجليزية"], ["русский, английский", "Russian, English", "орысша, ағылшынша", "ruscha, inglizcha", "الروسية والإنجليزية"], ["Что ему интереснее?", "What interests them more?", "Оған не қызықтырақ?", "Unga nima qiziqroq?", "ما الذي يهمه أكثر؟"], ["Разбираться, как всё устроено", "Figuring out how things work", "Бәрінің қалай жұмыс істейтінін түсіну", "Hamma narsa qanday ishlashini tushunish", "فهم كيف تعمل الأشياء"], ["Придумывать и рисовать", "Inventing and drawing", "Ойлап табу және сурет салу", "O‘ylab topish va rasm chizish", "الابتكار والرسم"], ["Помогать и общаться", "Helping and communicating", "Көмектесу және қарым-қатынас", "Yordam berish va muloqot", "المساعدة والتواصل"], ["Организовывать и вести", "Organizing and leading", "Ұйымдастыру және басқару", "Tashkil etish va boshqarish", "التنظيم والقيادة"], ["Как он чаще всего проводит свободное время?", "How do they usually spend free time?", "Бос уақытын көбіне қалай өткізеді?", "Bo‘sh vaqtini ko‘pincha qanday o‘tkazadi?", "كيف يقضي وقت فراغه عادةً؟"], ["Читает или смотрит видео", "Reads or watches videos", "Кітап оқиды немесе видео көреді", "Kitob o‘qiydi yoki video ko‘radi", "يقرأ أو يشاهد فيديو"], ["Играет в компьютерные игры", "Plays computer games", "Компьютерлік ойын ойнайды", "Kompyuter o‘yinlarini o‘ynaydi", "يلعب ألعاب الحاسوب"], ["Занимается спортом или музыкой", "Does sports or music", "Спортпен немесе музыкамен айналысады", "Sport yoki musiqa bilan shug‘ullanadi", "يمارس الرياضة أو الموسيقى"], ["С друзьями", "With friends", "Достарымен", "Do‘stlari bilan", "مع الأصدقاء"], ["Что у него получается лучше всего?", "What are they best at?", "Оған не жақсы шығады?", "Unga nima yaxshi chiqadi?", "ما الذي يجيده أكثر؟"], ["Математика и логика", "Math and logic", "Математика және логика", "Matematika va mantiq", "الرياضيات والمنطق"], ["Язык и речь", "Language and speech", "Тіл және сөйлеу", "Til va nutq", "اللغة والكلام"], ["Рисунок и творчество", "Drawing and creativity", "Сурет және шығармашылық", "Rasm va ijod", "الرسم والإبداع"], ["Работа руками", "Working with hands", "Қолмен жұмыс", "Qo‘l mehnati", "العمل اليدوي"], ["рисунок", "drawing", "сурет", "rasm", "الرسم"], ["рисунок, математика", "drawing, math", "сурет, математика", "rasm, matematika", "الرسم والرياضيات"], ["физика", "physics", "физика", "fizika", "الفيزياء"]];
+/* ---------- язык, валюта ---------- */
+const LANGS={ru:"Русский",en:"English",kk:"Қазақша",uz:"Oʻzbekcha",ar:"العربية"};
+const LOC={ru:"ru-RU",en:"en-US",kk:"kk-KZ",uz:"uz-UZ",ar:"ar-AE"};
+const LIDX={ru:0,en:1,kk:2,uz:3,ar:4};
+const CTRY={"Казахстан":{lang:"kk",cur:"KZT",rate:500,step:1000},"Россия":{lang:"ru",cur:"RUB",rate:92,step:1000},"ОАЭ":{lang:"ar",cur:"AED",rate:3.67,step:10},"Узбекистан":{lang:"uz",cur:"UZS",rate:12600,step:100000},"Другая страна":{lang:"en",cur:"USD",rate:1,step:10}};
+const S={screen:"home",d:"vuz",country:"Россия",lang:null,f:{},quiz:false,quizProf:null,favs:[],cmp:[],saved:[],apps:[],wait:[],consult:null,
+  plashOff:{},fit:null,profFilter:null,bigFor:null,emailGiven:false,email:"",sort:"best",cal:null,maxPct:100,showMiss:false,quizA:{},quizDone:false};
+let LI="ru";
+const DICTM={};
+if(typeof DICT!=="undefined")DICT.forEach(r=>{DICTM[r[0]]=r});
+function T(s){const r=DICTM[s];return (r&&r[LIDX[LI]])||s}
+function curLang(){return S.lang||CTRY[S.country].lang}
+function money(usd){const c=CTRY[S.country];const v=Math.round(usd*c.rate/c.step)*c.step;return new Intl.NumberFormat(LOC[LI],{style:"currency",currency:c.cur,maximumFractionDigits:0}).format(v)}
+function dateTxt(m,d){return new Intl.DateTimeFormat(LOC[LI],{day:"numeric",month:"long"}).format(new Date(2027,m,d))}
+
+/* ---------- данные (демонстрационные) ---------- */
+const DIRS={
+ vuz:{name:"Вузы",color:"var(--vuz)",bg:"var(--vuz-bg)"},
+ col:{name:"Колледжи",color:"var(--col)",bg:"var(--col-bg)"},
+ pro:{name:"Профессии",color:"var(--pro)",bg:"var(--pro-bg)"},
+ kp:{name:"Короткие программы",color:"var(--kp)",bg:"var(--kp-bg)"}
+};
+const DATA={
+ vuz:[
+  {id:"v1",t:"Технический университет, город А",tags:["Бакалавриат","Инженерия","Очно"],chance:70,dl:[0,15],p:6800,y:4,pros:["p1","p3"]},
+  {id:"v2",t:"Университет прикладных наук, город Б",tags:["Бакалавриат","IT","Очно и онлайн"],chance:55,dl:[2,1],p:4900,y:4,pros:["p3","p2"]},
+  {id:"v3",t:"Институт искусств и дизайна, город В",tags:["Бакалавриат","Дизайн","Очно"],chance:40,dl:[1,20],p:7900,y:4,pros:["p2"]},
+  {id:"v4",t:"Медицинский университет, город Г",tags:["Специалитет","Медицина","Очно"],chance:30,dl:[1,10],p:9500,y:6,pros:["p4"]}
+ ],
+ col:[
+  {id:"c1",t:"Колледж информационных технологий, город А",tags:["СПО","Программирование","Очно"],chance:80,dl:[5,20],p:2400,y:3,pros:["p3"]},
+  {id:"c2",t:"Колледж дизайна и медиа, город Б",tags:["СПО","Дизайн","Очно"],chance:75,dl:[6,1],p:2100,y:3,pros:["p2"]},
+  {id:"c3",t:"Медицинский колледж, город В",tags:["СПО","Сестринское дело","Очно"],chance:65,dl:[5,25],p:1900,y:3,pros:["p4"]}
+ ],
+ pro:[
+  {id:"p1",t:"Инженер-робототехник",tags:["Техника","Работа с людьми и машинами"],demand:["Растёт",85],risk:"Низкий",skills:"Математика, программирование, схемотехника",sal:[2200,5200],vuz:["v1"]},
+  {id:"p2",t:"Дизайнер продукта",tags:["Творчество","IT"],demand:["Стабильный",60],risk:"Средний",skills:"Рисунок, исследование пользователей, прототипы",sal:[1800,4500],vuz:["v2","v3","c2"]},
+  {id:"p3",t:"Инженер-программист",tags:["IT","Техника"],demand:["Растёт",92],risk:"Средний",skills:"Логика, языки программирования, английский",sal:[2500,6500],vuz:["v1","v2","c1"]},
+  {id:"p4",t:"Врач-кардиолог",tags:["Медицина"],demand:["Стабильный",70],risk:"Низкий",skills:"Биология, химия, стрессоустойчивость",sal:[2000,5000],vuz:["v4","c3"]}
+ ],
+ kp:[
+  {id:"k1",t:"Летняя школа программирования",tags:["Онлайн","Июль, 2 недели","12–16 лет"],p:420,lang:"русский, английский",start:6},
+  {id:"k2",t:"Языковой лагерь в Европе",tags:["Очно","Август, 3 недели","12–17 лет"],p:2950,lang:"английский",start:7},
+  {id:"k3",t:"Курс по рисунку и дизайну, 8 месяцев",tags:["Онлайн","С сентября, 8 месяцев","14–18 лет"],p:1600,lang:"русский",start:8}
+ ]
+};
+const WHERE=["Моя страна","Другая страна","Несколько стран","Онлайн","Где угодно"];
+const FORMS={
+ vuz:{req:["level","where","year","topic"],note:"Состав обязательных вопросов по категории зафиксирован командой как рабочая логика, не утверждён."},
+ col:{req:["where","year","topic"],note:"Для колледжа набор обязательных полей не согласован: предыдущий класс и возраст — открытые вопросы."},
+ pro:{req:["interests","where"],note:"Если профессия уже известна, достаточно её названия: это альтернативный вход, а не вопрос всем."},
+ kp:{req:["format","period","topic"],note:"Для долгих курсов (6–12 месяцев) нужен период начала; для коротких — сезон, месяц или даты."}
+};
+const CHIPS=[
+ {q:"Какие есть крутые вузы, где моему сыну будет хорошо учиться?",d:"vuz",f:{level:"Бакалавриат"}},
+ {q:"Кем будет работать мой ребёнок, если он любит рисовать?",d:"pro",f:{interests:"рисунок"}},
+ {q:"Не поступил никуда: какие у нас есть варианты сейчас?",d:"col",f:{}},
+ {q:"Хочу подтянуть ребёнка летом: какие есть программы?",d:"kp",f:{period:"Лето 2027",format:"Онлайн"}}
+];
+const YEARS=["2027","2028","2029 и позже"];
+const PERIODS=["Лето 2027","Осень 2027","Ближайший месяц","Укажу даты"];
+const LEVELS=["Бакалавриат","Магистратура","Специалитет"];
+const FMT=["Онлайн","Очно"];
+
+/* ---------- иллюстрации (демо вместо фото) ---------- */
+function hue(id){let h=0;for(const c of id)h=(h*31+c.charCodeAt(0))%360;return h}
+function art(id,d){
+  const h=hue(id),sk1=`hsl(${h},70%,82%)`,sk2=`hsl(${(h+40)%360},75%,94%)`,dk=`hsl(${h},45%,30%)`,md=`hsl(${h},42%,50%)`,lt=`hsl(${h},45%,70%)`,gr=`hsl(${(h+120)%360},35%,45%)`;
+  let g="";
+  const win=(x,y,w,h2,cols,rows)=>{let s="";for(let i=0;i<cols;i++)for(let j=0;j<rows;j++)s+=`<rect x="${x+i*(w+5)}" y="${y+j*(h2+6)}" width="${w}" height="${h2}" fill="#fff" opacity=".75"/>`;return s};
+  if(d==="vuz"){
+    g=`<circle cx="245" cy="36" r="18" fill="#fff" opacity=".75"/>
+    <rect x="18" y="112" width="52" height="68" fill="${md}"/>${win(26,120,9,10,3,4)}
+    <rect x="78" y="78" width="78" height="102" fill="${dk}"/>${win(88,88,10,12,5,5)}
+    <path d="M70 78 L117 48 L164 78Z" fill="${lt}"/><circle cx="117" cy="62" r="6" fill="#fff"/>
+    <rect x="164" y="104" width="58" height="76" fill="${md}"/>${win(172,112,10,10,3,4)}
+    <rect x="226" y="126" width="56" height="54" fill="${lt}"/>
+    <circle cx="40" cy="170" r="14" fill="${gr}"/><circle cx="268" cy="168" r="16" fill="${gr}"/>`;
+  }else if(d==="col"){
+    g=`<rect x="40" y="96" width="220" height="84" fill="${dk}"/><path d="M28 96 L150 52 L272 96Z" fill="${md}"/>
+    <rect x="130" y="118" width="40" height="62" fill="#fff" opacity=".85"/>${win(56,110,12,14,2,3)}${win(186,110,12,14,3,3).replace(/x="/g,'x="')}
+    <rect x="148" y="30" width="3" height="24" fill="${dk}"/><path d="M151 30 L172 36 L151 42Z" fill="${lt}"/>
+    <circle cx="26" cy="172" r="14" fill="${gr}"/><circle cx="276" cy="170" r="16" fill="${gr}"/>`;
+  }else if(d==="pro"){
+    if(id==="p1")g=`<rect x="92" y="56" width="116" height="90" rx="16" fill="${dk}"/><circle cx="126" cy="96" r="14" fill="#fff"/><circle cx="174" cy="96" r="14" fill="#fff"/><circle cx="126" cy="96" r="6" fill="${md}"/><circle cx="174" cy="96" r="6" fill="${md}"/><rect x="128" y="124" width="44" height="8" rx="4" fill="#fff" opacity=".8"/><rect x="146" y="34" width="8" height="22" fill="${dk}"/><circle cx="150" cy="30" r="8" fill="${lt}"/><rect x="104" y="146" width="92" height="30" rx="8" fill="${md}"/>`;
+    else if(id==="p2")g=`<rect x="70" y="40" width="160" height="110" rx="10" fill="#fff" opacity=".9"/><rect x="82" y="52" width="60" height="40" rx="4" fill="${lt}"/><rect x="150" y="52" width="68" height="14" rx="4" fill="${md}"/><rect x="150" y="72" width="50" height="10" rx="4" fill="${dk}" opacity=".6"/><circle cx="112" cy="124" r="14" fill="${dk}"/><path d="M82 140 L240 168 L226 182 L84 150Z" fill="${md}"/>`;
+    else if(id==="p3")g=`<rect x="64" y="48" width="172" height="102" rx="8" fill="${dk}"/><rect x="74" y="58" width="152" height="82" fill="#101828"/><text x="150" y="108" text-anchor="middle" font-size="34" font-family="monospace" fill="#8fe3a0">&lt;/&gt;</text><path d="M40 156 H260 L248 172 H52Z" fill="${md}"/>`;
+    else g=`<path d="M150 150 C80 108 62 70 98 54 C122 44 142 58 150 74 C158 58 178 44 202 54 C238 70 220 108 150 150Z" fill="#e24a5a"/><rect x="141" y="86" width="18" height="48" fill="#fff"/><rect x="126" y="101" width="48" height="18" fill="#fff"/><path d="M30 176 H80 L92 160 L108 186 L124 170 H270" fill="none" stroke="${dk}" stroke-width="5"/>`;
+  }else{
+    if(id==="k1")g=`<circle cx="236" cy="44" r="26" fill="#ffd166"/><rect x="62" y="70" width="140" height="92" rx="8" fill="${dk}"/><rect x="72" y="80" width="120" height="70" fill="#101828"/><text x="132" y="124" text-anchor="middle" font-size="30" font-family="monospace" fill="#8fe3a0">{ }</text><path d="M40 170 H224 L214 184 H50Z" fill="${md}"/>`;
+    else if(id==="k2")g=`<circle cx="150" cy="104" r="62" fill="${lt}"/><path d="M96 84 C116 60 140 72 150 58 C166 70 150 96 170 100 C190 104 196 124 176 142 C150 150 136 128 120 132 C104 134 92 110 96 84Z" fill="${gr}"/><path d="M196 60 L262 36 L232 78 L214 70Z" fill="#fff"/><path d="M262 36 L218 62" stroke="${dk}" stroke-width="3"/>`;
+    else g=`<rect x="70" y="40" width="130" height="130" rx="8" fill="#fff" opacity=".92"/><circle cx="110" cy="84" r="14" fill="${md}"/><path d="M82 150 L116 112 L140 136 L166 98 L190 150Z" fill="${lt}"/><path d="M196 164 L250 70 L270 82 L216 176Z" fill="#ffd166"/><path d="M196 164 L216 176 L190 182Z" fill="${dk}"/>`;
+  }
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 190" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sk1}"/><stop offset="1" stop-color="${sk2}"/></linearGradient></defs><rect width="300" height="190" fill="url(#g)"/>${g}</svg>`;
+  return "data:image/svg+xml;utf8,"+encodeURIComponent(svg);
+}
+
+/* ---------- вспомогательное ---------- */
+const $=s=>document.querySelector(s);
+function esc(t){return String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("on"),2600)}
+function go(s){S.screen=s;render();window.scrollTo(0,0)}
+function setD(d){S.d=d;S.cal=null;S.sort="best";render()}
+function item(id){for(const d in DATA){const x=DATA[d].find(y=>y.id===id);if(x)return Object.assign({d},x)}}
+function missing(){return FORMS[S.d].req.filter(k=>!S.f[k]&&!(k==="period"&&S.f.period))}
+function cabCount(){return S.saved.length+S.favs.length+S.apps.length+S.wait.length+(S.consult?1:0)}
+const A=(t)=>'<div class="anno"><b>Карта:</b> '+t+'</div>';
+function tn(x){return T(x.t)}
+function tg(a){return a.map(T)}
+
+/* ---------- панель поиска ---------- */
+function opt(v,sel){return '<option value="'+esc(v)+'"'+(sel===v?' selected':'')+'>'+esc(T(v))+'</option>'}
+function pfield(label,key,html,miss){return '<div class="pf'+(miss?' miss':'')+'"><label>'+T(label)+'</label>'+html+'</div>'}
+function selF(key,list,ph){const v=S.f[key]||"";return '<select onchange="S.f[\''+key+'\']=this.value;onPanel()"><option value="">'+T(ph)+'</option>'+list.map(x=>opt(x,v)).join("")+'</select>'}
+function txtF(key,ph){return '<input type="text" value="'+esc(S.f[key]||"")+'" placeholder="'+esc(T(ph))+'" oninput="S.f[\''+key+'\']=this.value" onkeydown="if(event.key===\'Enter\')search()">'}
+function panel(){
+  const m=S.showMiss?missing():[];const has=k=>m.includes(k);
+  const from=pfield("Откуда","from",'<select onchange="setCountry(this.value)">'+Object.keys(CTRY).map(c=>'<option value="'+c+'"'+(S.country===c?' selected':'')+'>'+T(c)+'</option>').join("")+'</select>');
+  let fs="";
+  if(S.d==="vuz")fs=from+pfield("Куда","where",selF("where",WHERE,"Выберите"),has("where"))+pfield("Когда","year",selF("year",YEARS,"Год поступления"),has("year"))+pfield("Что изучать","topic",txtF("topic","например, инженерия"),has("topic"))+pfield("Уровень","level",selF("level",LEVELS,"Выберите"),has("level"));
+  else if(S.d==="col")fs=from+pfield("Куда","where",selF("where",WHERE,"Выберите"),has("where"))+pfield("Когда","year",selF("year",YEARS,"Год поступления"),has("year"))+pfield("Специальность","topic",txtF("topic","например, программирование"),has("topic"));
+  else if(S.d==="pro")fs=from+pfield("Где хотел бы работать","where",selF("where",WHERE,"Выберите"),has("where"))+pfield("Интересы и навыки","interests",txtF("interests","например, математика, рисунок"),has("interests"));
+  else fs=from+pfield("Формат","format",selF("format",FMT,"Выберите"),has("format"))+pfield("Когда","period",selF("period",PERIODS,"Период"),has("period"))+pfield("Тема","topic",txtF("topic","например, английский"),has("topic"));
+  return '<div class="panel">'+fs+'<button class="btn gold go" onclick="search()">'+T("Найти")+'</button></div>';
+}
+function onPanel(){if(S.screen==="results")render()}
+function tabsHtml(){return '<div class="tabs" role="tablist">'+Object.keys(DIRS).map(k=>'<button class="tab '+(S.d===k?'on':'')+'" data-d="'+k+'" role="tab" onclick="setD(\''+k+'\')"><i></i>'+T(DIRS[k].name)+'</button>').join("")+'</div>'}
+function setCountry(c){S.country=c;S.lang=null;render();toast(T("Страна изменена. Язык и валюта подставлены."))}
+function search(){const m=missing();if(m.length){S.showMiss=true;if(S.screen==="home"){render();toast(T("Осталось ответить на обязательные вопросы:")+" "+m.length);return}render();return}S.showMiss=false;S.cal=null;go("results")}
+
+/* ---------- главная ---------- */
+function minPrice(d){const a=DATA[d];if(d==="pro")return null;return Math.min(...a.map(x=>x.p))}
+function vHome(){
+  return `<section class="hero"><div class="wrap">
+   ${A("Этап 2, узел «Главная страница»: страна, язык и валюта подставлены; над поиском переключатель направлений. Допущение: база полная.")}
+   <h1>${T("Где ребёнку будет хорошо учиться")}<br>${T("и кем он может стать")}</h1>
+   <p class="lead">${T("Вузы, колледжи, профессии и короткие программы в одном месте. Цены в вашей валюте, всё на вашем языке.")}</p>
+   ${A("Этап 3, узел «Выбирает, что искать»: переключатель направлений; у каждого направления своя форма (как «Авиабилеты» и «Отели» у перевозчиков).")}
+   ${tabsHtml()}${panel()}
+  </div></section>
+  <div class="wrap sub">
+   <h2>${T("Популярные направления")}</h2>
+   <div class="grid g4">${["vuz","col","pro","kp"].map(d=>{const mp=minPrice(d);const sample=d==="vuz"?"v1":d==="col"?"c1":d==="pro"?"p1":"k1";return '<button class="pop" onclick="S.d=\''+d+'\';S.cal=null;S.showMiss=false;render()"><img src="'+art(sample,d)+'" alt=""><div><b>'+T(DIRS[d].name)+'</b>'+(mp?'<span class="small mute">'+T("от")+'</span> <span class="price">'+money(mp)+'</span> <span class="small mute">'+(d==="kp"?T("за программу"):T("в год"))+'</span>':'<span class="small mute">'+T("зарплатная вилка в месяц")+'</span> <span class="price">'+money(1800)+'+</span>')+'</div></button>'}).join("")}</div>
+   ${A("Допущение карты: в базе есть всё; цены, курсы и изображения на экранах демонстрационные.")}
+   <h2 style="margin-top:28px">${T("Или расскажите своими словами")}</h2>
+   <textarea id="free" placeholder="${esc(T("Например: сын любит физику, хотим хороший вуз, но не знаем, хватит ли баллов"))}"></textarea>
+   <div class="row" style="margin:8px 0 14px"><button class="btn" onclick="freeText()">${T("Подобрать по описанию")}</button><span class="small mute">${T("Портал определит направление и подставит то, что поймёт. Недостающее спросит.")}</span></div>
+   ${A("Этапы 1–2: клиент формулирует задачу своими словами, а не словом «профориентация» (docs/27) [гипотеза].")}
+   <div class="grid g2">${CHIPS.map((c,i)=>'<button class="tile" onclick="chip('+i+')"><q>«'+esc(T(c.q))+'»</q><span class="small mute">'+T(DIRS[c.d].name)+'</span></button>').join("")}</div>
+   <div class="grid g3" style="margin-top:26px">
+    <div class="card"><h3>${T("Всё в одном месте")}</h3><div class="small mute">${T("Из профессии — к вузам, из вуза — к профессиям. Подборка не теряется при смене направления.")}</div></div>
+    <div class="card"><h3>${T("Источник и дата")}</h3><div class="small mute">${T("Каждое число с указанием, откуда оно и на какую дату. Данных нет — так и написано.")}</div></div>
+    <div class="card"><h3>${T("Спросим только недостающее")}</h3><div class="small mute">${T("Что известно из запроса и квиза, повторно не спрашиваем. Любой ответ можно изменить.")}</div></div>
+   </div>
+  </div>`;
+}
+function chip(i){const c=CHIPS[i];S.d=c.d;S.f=Object.assign({},c.f);S.showMiss=false;render();window.scrollTo(0,0)}
+function freeText(){
+  const t=($("#free").value||"").toLowerCase();let d="vuz";
+  if(/професси|кем (буд|стать)|работ|job|career/.test(t))d="pro";
+  else if(/колледж|не поступ|college/.test(t))d="col";
+  else if(/лет(о|ом)|курс|лагер|summer|course/.test(t))d="kp";
+  S.d=d;S.f={};
+  if(/физик/.test(t))S.f[d==="pro"?"interests":"topic"]="физика";
+  if(/бакалавр/.test(t))S.f.level="Бакалавриат";
+  toast(T("Определили направление:")+" "+T(DIRS[d].name));S.showMiss=false;render();
+}
+
+/* ---------- уточнение недостающего ---------- */
+function vSearch(){
+  const m=missing();
+  return `<div class="wrap sub">${tabsHtml().replace(/class="tab /g,'class="tab ')}
+  ${A("Этап 3, узлы «Проверяет, чего не хватает» → «Спрашивает недостающее»: портал спрашивает только то, чего нет в запросе и квизе. Обязательность полей по категориям не утверждена.")}
+  <div class="grid" style="grid-template-columns:2fr 1fr;align-items:start">
+   <div class="card"><h2>${T(DIRS[S.d].name)}: ${T("расскажите о задаче")}</h2>
+    <div class="mute small" style="margin-bottom:12px">${T(FORMS[S.d].note)}</div>
+    <div style="margin:-10px 0 0">${panel()}</div>
+    <details class="more" style="margin-top:14px"><summary>${T("Уточнить по желанию")}</summary>
+     <div style="margin-top:12px" class="grid g2">
+      <div class="field"><label>${T("Для кого ищете?")}</label><div class="opts"><button class="opt on">${T("Ребёнок")}</button><button class="opt">${T("Для себя")}</button></div></div>
+      <div class="field"><label>${T("Сколько лет учащемуся?")}</label><input type="number" min="5" max="60"></div>
+      <div class="field"><label>${T("Бюджет")}</label><div class="opts"><button class="opt" onclick="pickBud(this)">${T("Пока не определился")}</button><button class="opt" onclick="pickBud(this)">${T("Без ограничения")}</button><button class="opt" onclick="pickBud(this)">${T("Укажу сумму")}</button></div></div>
+      <div class="field"><label>${T("Город обучения")}</label><input type="text"></div>
+     </div></details>
+    ${A("Этап 3, узел «Отвечает на недостающие вопросы; по желанию уточняет»: возраст, языки, срок, бюджет, город, навыки — фильтры, не блокирующие выдачу.")}
+    <div class="row" style="margin-top:14px"><button class="btn gold" onclick="search()">${T("Показать подборку")}</button>
+     <span class="small" style="color:${m.length?'var(--bad)':'inherit'}">${m.length?T("Осталось ответить:")+" "+m.length:T("Всё необходимое известно")}</span></div>
+   </div>
+   <div class="card"><h3>${T("Нужна помощь с выбором направления?")}</h3><div class="small mute" style="margin:4px 0 10px">${T("Ответьте на несколько вопросов о ребёнке. Подборка от этого не скроется.")}</div>
+    <button class="btn ghost sm" onclick="go('orient')">${T("Помогите определиться")}</button>
+    ${A("Этап 3: вопрос ведёт в блок «Профориентация» и не блокирует выдачу.")}</div>
+  </div></div>`;
+}
+function pickBud(b){b.parentNode.querySelectorAll(".opt").forEach(x=>x.classList.remove("on"));b.classList.add("on")}
+
+/* ---------- выдача ---------- */
+function resList(){
+  const wd=(arr,d)=>arr.map(x=>Object.assign({d},x));
+  let list;
+  if(S.d==="vuz"||S.d==="col"){
+    if(S.profFilter){const p=item(S.profFilter);list=wd(DATA.vuz,"vuz").concat(wd(DATA.col,"col")).filter(x=>x.pros&&x.pros.includes(p.id))}
+    else list=wd(DATA[S.d],S.d);
+  }else list=wd(DATA[S.d],S.d);
+  // фильтр по цене
+  if(S.d!=="pro"){const mx=Math.max(...list.map(x=>x.p),1)*S.maxPct/100;list=list.filter(x=>x.p<=mx+0.001)}
+  const s=S.sort;
+  if(S.d==="pro"){
+    if(S.quizProf)list.sort((a,b)=>(b.id===S.quizProf)-(a.id===S.quizProf));
+    if(s==="salary")list.sort((a,b)=>b.sal[1]-a.sal[1]);else if(s==="demand")list.sort((a,b)=>b.demand[1]-a.demand[1]);
+  }else{
+    if(s==="cheap")list.sort((a,b)=>a.p-b.p);
+    else if(s==="deadline")list.sort((a,b)=>(a.dl?a.dl[0]*40+a.dl[1]:a.start*40)-(b.dl?b.dl[0]*40+b.dl[1]:b.start*40));
+    else if(s==="soon")list.sort((a,b)=>a.start-b.start);
+    else if(S.d==="vuz"||S.d==="col")list.sort((a,b)=>b.chance-a.chance);
+  }
+  return list;
+}
+function cardHtml(x){
+  const d=x.d,dd=DIRS[d],fav=S.favs.includes(x.id),cmp=S.cmp.includes(x.id);
+  let mid="",price="";
+  if(d==="vuz"||d==="col"){
+    mid='<div class="kv"><span><b>'+T("Шансы по баллам")+':</b> <span class="bar" style="--c:'+dd.color+'"><i style="width:'+x.chance+'%"></i></span> '+x.chance+'%</span><span><b>'+T("Срок подачи")+':</b> '+dateTxt(x.dl[0],x.dl[1])+'</span><span><b>'+T("Срок обучения")+':</b> '+x.y+' '+T("лет")+'</span></div>'
+      +'<div class="small"><b>'+T("Ведёт к профессиям")+':</b> '+x.pros.map(pid=>{const pi=DATA.pro.find(q=>q.id===pid);return '<button class="chip btnlike" onclick="toPro(\''+pid+'\')">'+esc(tn(pi))+'</button>'}).join(" ")+'</div>';
+    price='<div class="price">'+money(x.p)+' <small>'+T("в год")+'</small></div><div class="small mute">'+T("за весь срок")+': '+money(x.p*x.y)+'</div>';
+  }else if(d==="pro"){
+    mid='<div class="kv"><span><b>'+T("Спрос")+':</b> '+T(x.demand[0])+'</span><span><b>'+T("Риск автоматизации")+':</b> '+T(x.risk)+'</span></div><div class="small"><b>'+T("Нужные навыки")+':</b> '+T(x.skills)+'</div>'
+      +'<div class="small"><b>'+T("Где учиться")+':</b> '+x.vuz.map(id=>esc(T(item(id).t))).slice(0,2).join(" · ")+'</div>';
+    price='<div class="small mute">'+T("зарплатная вилка в месяц")+'</div><div class="price">'+money(x.sal[0])+' – '+money(x.sal[1])+'</div>';
+  }else{
+    mid='<div class="kv"><span><b>'+T("Языки")+':</b> '+T(x.lang)+'</span><span><b>'+T("Начало")+':</b> '+dateTxt(x.start,1).replace(/ ?\d+ ?/,"")+'</span></div>';
+    price='<div class="price">'+money(x.p)+' <small>'+T("за программу")+'</small></div>';
+  }
+  const bigLabel=d==="pro"?T("Где учиться"):(d==="kp"?T("Перейти или записаться"):T("Перейти или подать заявку"));
+  return '<div class="ac"><div class="ac-img"><img src="'+art(x.id,d)+'" alt=""><span class="lab" style="background:'+dd.color+'">'+T(dd.name)+'</span></div>'
+   +'<div class="ac-mid"><div class="sttl"><h3>'+esc(tn(x))+'</h3></div><div class="row" style="gap:6px">'+tg(x.tags).map(t=>'<span class="chip">'+esc(t)+'</span>').join("")+'</div>'+mid+'<div class="small mute">'+T("Источник и дата")+': 03.11.2026</div></div>'
+   +'<div class="ac-price">'+price+'<button class="btn sm" onclick="big(\''+x.id+'\')">'+bigLabel+'</button><div class="row" style="gap:6px"><button class="fav '+(fav?'on':'')+'" title="'+T("В избранное")+'" onclick="toggleFav(\''+x.id+'\')">'+(fav?'★':'☆')+'</button><label class="cmp" style="margin:0;font-weight:400"><input type="checkbox" '+(cmp?'checked':'')+' onchange="toggleCmp(\''+x.id+'\',this.checked)"> '+T("сравнить")+'</label></div></div></div>';
+}
+function toPro(id){S.d="pro";S.profFilter=null;S.quizProf=id;S.sort="best";render();window.scrollTo(0,0);toast(T("Профессии, к которым ведёт программа: показали профессию первой."))}
+function toggleFav(id){const i=S.favs.indexOf(id);if(i<0){S.favs.push(id);toast(T("Добавлено в избранное. Оно сохранится при смене направления."))}else S.favs.splice(i,1);render()}
+function toggleCmp(id,on){if(on){if(S.cmp.length>=4){toast(T("Сравнить можно до четырёх вариантов"));render();return}S.cmp.push(id)}else S.cmp=S.cmp.filter(x=>x!==id);render()}
+function plashka(){
+  if(S.cmp.length>=3&&!S.plashOff.consult)return ["consult","<b>"+T("Не уверены? Поможем сузить выбор.")+"</b><div class='small mute'>"+T("Вы сравниваете несколько вариантов. Можно оставить анкету, мы ответим письмом.")+"</div>",T("Оставить анкету"),"consult"];
+  if(S.favs.length>=1&&!S.plashOff.pack)return ["pack","<b>"+T("Поможем построить путь.")+"</b><div class='small mute'>"+T("Услуги по поступлению и сопровождению: можно встать в лист ожидания.")+"</div>",T("Посмотреть услуги"),"services"];
+  if(!S.plashOff.banner&&!S.quiz)return ["banner","<b>"+T("Не знаете, что изучать или кем стать?")+"</b><div class='small mute'>"+T("Бесплатный разбор сильных сторон ребёнка займёт несколько минут. Результат подставится в поиск.")+"</div>",T("Пройти разбор"),"orient"];
+  return null;
+}
+function calHtml(){
+  if(S.d==="pro")return "";
+  const list=resList();const mp=Math.min(...(list.length?list:DATA[S.d]).map(x=>x.p));
+  let cells;
+  if(S.d==="kp")cells=PERIODS.slice(0,3).map((p,i)=>[p,mp*(1+i*0.06)]);
+  else cells=YEARS.map((y,i)=>[y,mp*(1+i*0.04)]);
+  return '<div class="cal">'+cells.map(c=>'<button class="'+((S.cal||(S.d==="kp"?S.f.period:S.f.year)||cells[0][0])===c[0]?'on':'')+'" onclick="S.cal=\''+c[0]+'\';S.f.'+(S.d==="kp"?'period':'year')+'=\''+c[0]+'\';render()"><b>'+T(c[0])+'</b><span>'+T("от")+' '+money(c[1])+'</span></button>').join("")+'</div>';
+}
+function sortTabs(){
+  const L=S.d==="pro"?[["best","Лучшее для ребёнка"],["salary","Выше зарплата"],["demand","Выше спрос"]]:S.d==="kp"?[["best","Лучшее для ребёнка"],["cheap","Дешевле"],["soon","Ближайшие даты"]]:[["best","Лучшее для ребёнка"],["cheap","Дешевле"],["deadline","Раньше срок подачи"]];
+  return '<div class="sort">'+L.map(l=>'<button class="'+(S.sort===l[0]?'on':'')+'" onclick="S.sort=\''+l[0]+'\';render()">'+T(l[1])+'</button>').join("")+'</div>';
+}
+function vResults(){
+  const list=resList();const pl=plashka();
+  const allp=(S.d==="vuz"||S.d==="col")?(S.profFilter?[]:DATA[S.d]):DATA[S.d];
+  const mx=S.d==="pro"?0:Math.max(...DATA[S.d].map(x=>x.p));
+  return `<section class="hero compact"><div class="wrap">${tabsHtml()}${panel()}</div></section>
+  <div class="wrap sub">
+  ${A("Этап 4: переключатель направлений в шапке выдачи. «Хочет посмотреть другое направление?» — да: подборка и избранное сохраняются.")}
+  <div class="sttl"><h2>${T(DIRS[S.d].name)}: ${T("подборка")}</h2>
+   <div class="row"><button class="btn ghost sm" onclick="saveSel()">${T("Сохранить подборку")}</button><button class="btn ghost sm" onclick="shareSel()">${T("Поделиться")}</button></div></div>
+  ${A("Этап 4, узлы «Сохраняет подборку» и «Подборка подошла?»: сохранить, отправить ссылкой семье; ответ идёт в статистику и уточняет выдачу.")}
+  ${S.profFilter?'<div class="plash" style="margin:10px 0"><div class="t">'+T("Подобрали программы под профессию")+' <b>'+esc(tn(item(S.profFilter)))+'</b>. <span class="small mute">'+T("Фильтры подставлены автоматически.")+'</span></div><button class="btn ghost sm" onclick="S.profFilter=null;render()">'+T("Сбросить")+'</button></div>':''}
+  ${calHtml()}${sortTabs()}
+  <div class="res">
+   <aside class="card" style="align-self:start"><h3>${T("Фильтры")}</h3>
+    ${S.d!=="pro"?'<div class="field"><label>'+T("Максимальная цена")+': <span id="mxv">'+money(mx*S.maxPct/100)+'</span></label><input type="range" min="20" max="100" value="'+S.maxPct+'" oninput="S.maxPct=+this.value;document.getElementById(\'mxv\').textContent=money('+mx+'*S.maxPct/100)" onchange="render()"></div>':''}
+    <div class="field"><label>${T("Язык обучения")}</label><select><option>${T("Любой")}</option><option>${T("Русский")}</option><option>${T("Английский")}</option></select></div>
+    <div class="field"><label>${T("Слежение")}</label><label style="font-weight:400"><input type="checkbox" checked> ${T("письмо за 30 дней до срока подачи")}</label></div>
+    ${A("Этап 4, узлы «Фильтрует, сортирует, добавляет в избранное, сравнивает до 4 вариантов».")}
+   </aside>
+   <section>
+    ${list.map(cardHtml).join("")||'<div class="card">'+T("По этим условиям ничего нет. Измените условия или направление.")+'</div>'}
+    <div class="small mute" style="margin:4px 0 10px">${T("Иллюстрации, цены и курс — демонстрационные.")}</div>
+    ${pl?'<div class="slot"><div class="plash"><div class="t">'+pl[1]+'</div><button class="btn gold sm" onclick="go(\''+pl[3]+'\')">'+pl[2]+'</button><button class="x" title="'+T("Закрыть: в этой сессии не покажем")+'" onclick="S.plashOff[\''+pl[0]+'\']=true;render()">×</button></div>'+A("Блоки 6–8 появляются плашками и баннерами; не до первой полезной выдачи, не больше одной на экран, закрытая не возвращается в сессии.")+'</div>':''}
+    <div class="card" style="margin-top:14px"><h3>${T("Подборка подошла?")}</h3>
+     <div class="row"><button class="btn ${S.fit==='yes'?'gold':'ghost'} sm" onclick="fit('yes')">${T("Да")}</button><button class="btn ${S.fit==='no'?'gold':'ghost'} sm" onclick="fit('no')">${T("Нет")}</button>
+     <span class="small mute">${T("Когда вы отвечаете на этот вопрос, мы точнее подбираем результаты поиска.")}</span></div>
+     ${A("Ответы также копятся в статистике подборок (узел «Записывает ответ да или нет в статистику»).")}
+     ${S.fit==='no'?'<div class="small" style="margin-top:8px">'+T("Что поменять?")+' <button class="chip btnlike" onclick="S.showMiss=false;go(\'search\')">'+T("Изменить условия")+'</button> <button class="chip btnlike" onclick="nextDir()">'+T("Посмотреть другое направление")+'</button></div>':''}</div>
+   </section>
+  </div>
+  ${S.cmp.length?'<div class="cmpbar"><span>'+T("К сравнению")+': <b>'+S.cmp.length+'</b> / 4</span><span class="small" style="color:#ccc">'+S.cmp.map(id=>esc(T(item(id).t))).join(" · ")+'</span><span class="sp"></span><button class="btn gold sm" onclick="compare()">'+T("Сравнить")+'</button><button class="btn ghost sm" onclick="S.cmp=[];render()">'+T("Очистить")+'</button></div>':''}</div>`;
+}
+function fit(v){S.fit=v;toast(T("Спасибо: так мы точнее подберём результаты."));render()}
+function nextDir(){const ks=Object.keys(DIRS);S.d=ks[(ks.indexOf(S.d)+1)%ks.length];S.fit=null;S.cal=null;S.sort="best";render()}
+function saveSel(){S.saved.push({d:S.d,n:resList().length,date:"04.11.2026"});toast(T("Подборка сохранена в «Мой путь»."));render()}
+function shareSel(){toast(T("Ссылка на подборку скопирована: можно показать ребёнку и семье."))}
+function compare(){
+  const rows=S.cmp.map(id=>item(id));
+  openModal('<h2>'+T("Сравнение")+'</h2><table class="map"><tr><th></th>'+rows.map(r=>'<th>'+esc(T(r.t))+'</th>').join("")+'</tr><tr><td>'+T("Направление")+'</td>'+rows.map(r=>'<td>'+T(DIRS[r.d].name)+'</td>').join("")+'</tr><tr><td>'+T("Цена")+'</td>'+rows.map(r=>'<td>'+(r.p?money(r.p)+' '+T(r.y?"в год":"за программу"):(r.sal?money(r.sal[0])+' – '+money(r.sal[1]):'—'))+'</td>').join("")+'</tr><tr><td>'+T("Шансы по баллам")+'</td>'+rows.map(r=>'<td>'+(r.chance?r.chance+'%':'—')+'</td>').join("")+'</tr><tr><td>'+T("Срок подачи")+'</td>'+rows.map(r=>'<td>'+(r.dl?dateTxt(r.dl[0],r.dl[1]):'—')+'</td>').join("")+'</tr></table><div class="row" style="margin-top:12px"><button class="btn ghost" onclick="closeModal()">'+T("Закрыть")+'</button></div>');
+}
+
+/* большая кнопка */
+function big(id){
+  const x=item(id);S.bigFor=id;
+  if(x.d==="pro"){S.profFilter=id;S.d="vuz";S.sort="best";closeModal();render();toast(T("Профессия передана в подбор: фильтры подставлены."));window.scrollTo(0,0);return}
+  openModal('<h2>'+esc(tn(x))+'</h2><p class="mute small">'+T("Выберите, как двигаться дальше.")+'</p>'
+   +'<div class="opt-card" onclick="goSite()"><div class="t"><b>'+T("Перейти на сайт учреждения")+'</b><div class="small mute">'+T("Откроется новая вкладка, эта останется. Попросим email, чтобы сохранить подборку и напомнить о сроках.")+'</div></div></div>'
+   +'<div class="opt-card" onclick="pseudo()"><div class="t"><b>'+T("Подготовить заявку через портал")+'</b> <span class="tag hyp">'+T("гипотеза")+'</span><div class="small mute">'+T("Цифровая копия анкеты, вы заполняете её сами или просите помощника. Небольшая оплата.")+'</div></div></div>'
+   +'<div class="opt-card" onclick="closeModal();go(\'services\')"><div class="t"><b>'+T("Услуги и пакеты")+'</b><div class="small mute">'+T("Поступление, подбор «под ключ», поступление плюс виза. Чего ещё нет — лист ожидания.")+'</div></div></div>'
+   +A("Этап 5, узлы «Нажимает большую кнопку» → «Открывает окно с вариантами» → «Что выбирает?» (сайт · заявка через портал · услуги).")
+   +'<div class="row"><button class="btn ghost" onclick="closeModal()">'+T("Закрыть")+'</button></div>');
+}
+function goSite(){
+  openModal('<h2>'+T("Оставьте email")+'</h2><p class="mute small">'+T("Сохраним подборку и напомним о сроках. Это необязательно, но так вы не потеряете выбор.")+'</p><div class="field"><label>Email</label><input type="email" id="em" placeholder="name@example.com" value="'+esc(S.email)+'"></div>'
+   +A("Этап 5, узел «Оставляет email: портал просит его перед переходом».")
+   +'<div class="row"><button class="btn gold" onclick="toSite(true)">'+T("Сохранить и перейти")+'</button><button class="btn ghost" onclick="toSite(false)">'+T("Перейти без email")+'</button></div>');
+}
+function toSite(withMail){if(withMail){S.email=($("#em").value||"").trim();S.emailGiven=!!S.email}closeModal();S.screen="outbound";render();window.scrollTo(0,0)}
+function pseudo(){
+  const x=item(S.bigFor);
+  openModal('<h2>'+T("Заявка через портал")+' <span class="tag hyp">'+T("гипотеза")+'</span></h2><p class="mute small">'+esc(tn(x))+'</p><div class="field"><label>'+T("Имя ребёнка")+'</label><input type="text"></div><div class="field"><label>Email</label><input type="email" value="'+esc(S.email)+'"></div><p class="small mute">'+T("Небольшая оплата; сумма не задана.")+'</p>'
+   +'<div class="row"><button class="btn gold" onclick="S.apps.push({t:\''+esc(x.id)+'\',st:\'заявка готовится\',kind:\'через портал\'});closeModal();toast(T(\'Заявка добавлена в «Мой путь».\'));render()">'+T("Подготовить заявку")+'</button><button class="btn ghost" onclick="closeModal()">'+T("Отмена")+'</button></div>');
+}
+function vOutbound(){
+  const x=item(S.bigFor);
+  return `<div class="wrap sub">${A("Этап 5, узел «Новая вкладка: сайт учреждения; вкладка портала остаётся открытой».")}
+  <div class="card" style="max-width:760px;margin:20px auto">
+   <div class="sttl"><h2>${T("Вы на сайте учреждения (имитация новой вкладки)")}</h2></div>
+   <p class="mute">${esc(tn(x))}</p>
+   <div class="card" style="background:#f4f4f4"><div class="small mute">${T("Страница нужной программы, а не главная")}</div></div>
+   <div class="row" style="margin-top:14px"><button class="btn gold" onclick="go('returned')">${T("Я вернулся на портал")}</button><button class="btn ghost" onclick="leave()">${T("Закрыть и не возвращаться")}</button></div>
+  </div></div>`;
+}
+function leave(){toast(S.emailGiven?T("Через время портал напишет на email: что дальше."):T("Без email вернуть клиента письмом нельзя."));go("home")}
+function vReturned(){
+  const x=item(S.bigFor);
+  return `<div class="wrap sub">${A("Этап 5, узел «Возвращается на портал и отмечает статус: подал, записался, пока думает».")}
+  <div class="card" style="max-width:700px;margin:20px auto"><h2>${T("Как продвигаются дела?")}</h2><p class="mute">${esc(tn(x))}</p>
+   <div class="row">${["Подал заявку","Записался","Пока думаю","Не буду подавать"].map(s=>'<button class="btn ghost" onclick="setStatus(\''+s+'\')">'+T(s)+'</button>').join("")}</div></div></div>`;
+}
+function setStatus(s){const x=item(S.bigFor);S.apps=S.apps.filter(a=>a.t!==x.id||a.kind!=="сайт учреждения");S.apps.push({t:x.id,st:s,kind:"сайт учреждения"});toast(T("Статус сохранён в «Мой путь»."));go("cabinet")}
+
+/* ---------- вторичные экраны (на языке страны только заголовки и кнопки) ---------- */
+function sec(){return LI==="ru"?"":'<div class="small mute" style="margin:6px 0">'+T("Экран пока только на русском (концепт).")+'</div>'}
+function vServices(){
+  const L=[["Поступление: подготовка и подача заявок","Помощь с документами и сроками"],["Индивидуальный подбор","Подбор вариантов под ребёнка вместе со специалистом"],["Поступление «под ключ»","Подбор, подача, сопровождение"],["Поступление плюс виза","Пакет: как отель плюс билет"],["Сопровождение при переезде и адаптации","Жильё, школа, первые месяцы [гипотеза]"]];
+  return `<div class="wrap sub">${A("Блок 8: «Дополнительные пакеты и услуги агентства». Состав и цены не заданы; исполнители — партнёры-провайдеры [гипотеза]. Вместо цены — лист ожидания для проверки спроса.")}
+  <h1>${T("Услуги и пакеты")}</h1><p class="lead">${T("Состав и условия пока определяются. Встаньте в лист ожидания на то, что вам нужно: так мы поймём спрос.")}</p>${sec()}
+  <div class="grid g2" style="margin-top:14px">${L.map(s=>'<div class="card"><h3>'+T(s[0])+'</h3><p class="small mute">'+T(s[1])+'</p><button class="btn sm '+(S.wait.includes(s[0])?'ghost':'gold')+'" onclick="joinWait(\''+s[0]+'\')">'+(S.wait.includes(s[0])?T('В листе ожидания')+' ✓':T('Встать в лист ожидания'))+'</button></div>').join("")}</div></div>`;
+}
+function joinWait(n){if(!S.wait.includes(n)){S.wait.push(n);toast(T("Вы в листе ожидания. Напишем, когда услуга откроется."))}render()}
+function vOrient(){
+  const q=[["Что ему интереснее?",["Разбираться, как всё устроено","Придумывать и рисовать","Помогать и общаться","Организовывать и вести"]],["Как он чаще всего проводит свободное время?",["Читает или смотрит видео","Играет в компьютерные игры","Занимается спортом или музыкой","С друзьями"]],["Что у него получается лучше всего?",["Математика и логика","Язык и речь","Рисунок и творчество","Работа руками"]]];
+  return `<div class="wrap sub">${A("Блок 7: «Профориентация». Баннер → бесплатный скрининг → карта рисков выбора → подробный отчёт (цена зависит от канала и страны) → подходящие профессии в фильтры и в индекс соответствия вузов.")}
+  <h1>${T("Не знаете, кем стать?")}</h1><p class="lead">${T("Несколько вопросов о ребёнке: в чём он силён, что ему интересно. Результат подставится в поиск. Это ориентир, а не диагноз.")}</p>${sec()}
+  <div class="card"><h2>${T("Скрининг")}</h2>
+  ${q.map((x,i)=>'<div class="field"><label>'+T(x[0])+'</label><div class="opts">'+x[1].map(o=>'<button class="opt '+(S.quizA[i]===o?'on':'')+'" onclick="S.quizA['+i+']=\''+o+'\';render()">'+T(o)+'</button>').join("")+'</div></div>').join("")}
+  <button class="btn gold" onclick="S.quizDone=true;render()" ${Object.keys(S.quizA).length<3?'disabled':''}>${T("Показать результат")}</button></div>
+  ${S.quizDone?`<div class="card" style="margin-top:14px"><h2>${T("Первые направления")}</h2><p class="small mute">${T("Бесплатная карта: направления без деталей.")} <span class="tag open">${T("спорный пункт: открыто или платно")}</span></p><div class="row"><span class="chip">${T("Техника и IT")}</span><span class="chip">${T("Творчество и дизайн")}</span></div><div class="row" style="margin-top:12px"><button class="btn gold" onclick="applyQuiz()">${T("Подставить в поиск профессий")}</button></div></div>`:''}</div>`;
+}
+function applyQuiz(){S.quiz=true;S.quizProf="p2";S.d="pro";S.f={interests:"рисунок, математика",where:"Где угодно"};S.plashOff.banner=true;S.showMiss=false;toast(T("Результат подставлен в поиск. Ответы можно изменить."));go("results")}
+function vConsult(){
+  return `<div class="wrap sub">${A("Блок 6: «15-минутная консультация». Статус под вопросом: возможна замена анкетой, контактом и листом ожидания.")}
+  <h1>${T("Поможем сузить выбор")}</h1><p class="lead">${T("Коротко опишите ситуацию. Мы ответим письмом.")} <span class="tag hyp">${T("статус блока под вопросом")}</span></p>${sec()}
+  <div class="card" style="max-width:640px"><div class="field"><label>${T("Как вас зовут?")}</label><input type="text"></div><div class="field"><label>Email</label><input type="email" value="${esc(S.email)}"></div><div class="field"><label>${T("Что хотите обсудить?")}</label><textarea id="cq"></textarea></div>
+  <button class="btn gold" onclick="S.consult={q:($('#cq').value||'—').slice(0,80)};toast(T('Заявка принята. Ответим письмом.'));go('cabinet')">${T("Отправить")}</button></div></div>`;
+}
+function vCabinet(){
+  const sav=S.saved.map(s=>'<div class="row"><span class="chip" style="background:'+DIRS[s.d].bg+'">'+T(DIRS[s.d].name)+'</span> '+s.n+', '+s.date+'</div>').join("")||'<div class="small mute">'+T("Пока пусто.")+'</div>';
+  const fav=S.favs.map(id=>'<div class="row"><span class="chip" style="background:'+DIRS[item(id).d].bg+'">'+T(DIRS[item(id).d].name)+'</span> '+esc(T(item(id).t))+'</div>').join("")||'<div class="small mute">'+T("Пока пусто.")+'</div>';
+  const apps=S.apps.map(a=>'<div class="row"><b>'+esc(T(item(a.t).t))+'</b> <span class="pill">'+T(a.kind)+'</span> <span class="chip known">'+T(a.st)+'</span></div>').join("")||'<div class="small mute">'+T("Пока пусто.")+'</div>';
+  const wl=S.wait.map(w=>'<div class="row">⏳ '+esc(T(w))+'</div>').join("")+(S.consult?'<div class="row">⏳ '+T("Консультация")+'</div>':'')||'<div class="small mute">'+T("Пока пусто.")+'</div>';
+  return `<div class="wrap sub">${A("Кабинет «Мой путь»: подборки, избранное, выбранные варианты, статусы, напоминания о сроках, лист ожидания. Общий для всех направлений.")}
+  <h1>${T("Мой путь")}</h1><p class="lead">${T("Всё, что вы собрали: подборки, избранное, заявки и напоминания.")}</p>
+  <div class="grid g2" style="margin-top:14px">
+   <div class="card"><h3>${T("Подборки")}</h3>${sav}</div><div class="card"><h3>${T("Избранное")}</h3>${fav}</div>
+   <div class="card"><h3>${T("Заявки и статусы")}</h3>${apps}</div>
+   <div class="card"><h3>${T("Лист ожидания")}</h3>${wl}</div>
+  </div></div>`;
+}
+function vMap(){
+  const R=[
+   ["1–2. Осознание, поиск сайта","Встречает материалы; поисковая система → портал","Главная: страна, язык и валюта подставлены; свободный запрос","docs/27"],
+   ["3. Выбор направления и ввод условий","Выбирает, что искать → форма → проверка недостающего","Вкладки направлений, панель поиска, подсветка незаполненного","Обязательность не утверждена"],
+   ["4. Подбор и выдача","Выдача, фильтры, сравнение до 4, избранное","Календарь цен, сортировка, карточки с картинкой и ценой, фильтр по цене","Данные демонстрационные"],
+   ["4. Подборка подошла?","Ответ да или нет → статистика","Вопрос с пояснением: ответ делает подбор точнее","—"],
+   ["Блоки 6–8","Плашки и баннеры","Одна плашка на экран","Блок 6: статус под вопросом"],
+   ["5. Выбор варианта","Профессия → вуз; «большая кнопка»","«Где учиться»; окно из трёх вариантов","Заявка через портал — гипотеза"],
+   ["5. Возврат","Статус; письмо по email","Вкладка сайта, статус, «Мой путь»","docs/21"]];
+  return `<div class="wrap sub"><h1>Соответствие карте</h1><table class="map"><tr><th>Этап карты</th><th>Узлы</th><th>Экран</th><th>Статус</th></tr>${R.map(r=>'<tr>'+r.map(c=>'<td>'+esc(c)+'</td>').join("")+'</tr>').join("")}</table></div>`;
+}
+
+/* ---------- каркас ---------- */
+function openModal(h){$("#modal").innerHTML=h;$("#ov").classList.add("on")}
+function closeModal(){$("#ov").classList.remove("on")}
+$("#ov").addEventListener("click",e=>{if(e.target.id==="ov")closeModal()});
+const SCR={home:vHome,search:vSearch,results:vResults,outbound:vOutbound,returned:vReturned,services:vServices,orient:vOrient,consult:vConsult,cabinet:vCabinet,map:vMap};
+function setLang(l){S.lang=l;render()}
+function render(){
+  LI=curLang();
+  document.documentElement.lang=LI;document.documentElement.dir=LI==="ar"?"rtl":"ltr";
+  $("#nav").innerHTML='<button data-s="home" onclick="go(\'home\')">'+T("Поиск")+'</button><button data-s="orient" onclick="go(\'orient\')">'+T("Не знаете, кем стать?")+'</button><button data-s="cabinet" onclick="go(\'cabinet\')">'+T("Мой путь")+' <span class="badge">'+cabCount()+'</span></button><button data-s="map" onclick="go(\'map\')">Соответствие карте</button>';
+  $("#ctx").innerHTML=T("Вы из:")+' <select onchange="setCountry(this.value)">'+Object.keys(CTRY).map(c=>'<option value="'+c+'"'+(S.country===c?' selected':'')+'>'+T(c)+'</option>').join("")+'</select><select onchange="setLang(this.value)">'+Object.keys(LANGS).map(l=>'<option value="'+l+'"'+(LI===l?' selected':'')+'>'+LANGS[l]+'</option>').join("")+'</select><span class="small">'+CTRY[S.country].cur+'</span>';
+  $("#view").innerHTML=SCR[S.screen]();
+  $("#foot").textContent=T("Концепт портала. Все названия, цены, курсы, сроки и иллюстрации демонстрационные. Цены пересчитаны по демонстрационному курсу. Концепт не утверждён основателем.");
+  document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.s===S.screen||(b.dataset.s==="home"&&["search","results"].includes(S.screen))));
+}
+window.__S=S;window.__go=(s)=>{S.screen=s;render();window.scrollTo(0,0)};window.__render=render;
+render();
+</script>
+</body>
+</html>
