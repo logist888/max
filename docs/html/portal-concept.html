@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Концепт портала Mainexperts: поиск обучения и профессий</title>
+<style>
+:root{
+  --ink:#101010;--bg:#f8f8f8;--card:#fff;--line:#e2e2e2;--mute:#5f5f5f;--gold:#c0a870;--gold-d:#9a8350;
+  --vuz:#4a6fd0;--vuz-bg:#e6edfb;--col:#3f9a55;--col-bg:#e1f3e6;--pro:#8a5cc0;--pro-bg:#f0e7fa;--kp:#d08a3a;--kp-bg:#fdecd9;
+  --ok:#2f8f4e;--warn:#b7791f;--bad:#c0392b;
+  --r:12px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,"Segoe UI",Arial,"DejaVu Sans",sans-serif}
+button{font:inherit;cursor:pointer}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+/* шапка */
+header.top{background:var(--ink);color:#fff;position:sticky;top:0;z-index:20}
+header.top .wrap{display:flex;align-items:center;gap:18px;min-height:58px;flex-wrap:wrap;padding-top:6px;padding-bottom:6px}
+.logo{font-weight:700;letter-spacing:.3px;cursor:pointer;display:flex;align-items:center;gap:8px}
+.logo i{display:inline-block;width:10px;height:10px;background:var(--gold);border-radius:2px}
+.nav{display:flex;gap:4px;flex-wrap:wrap}
+.nav button{background:none;border:0;color:#d8d8d8;padding:8px 12px;border-radius:8px}
+.nav button:hover,.nav button.on{background:#2a2a2a;color:#fff}
+.sp{flex:1}
+.ctx{display:flex;gap:8px;align-items:center;font-size:13px;color:#cfcfcf;flex-wrap:wrap}
+.ctx select{background:#2a2a2a;color:#fff;border:1px solid #444;border-radius:8px;padding:5px 8px;font:inherit}
+.badge{display:inline-block;background:var(--gold);color:var(--ink);border-radius:999px;font-size:12px;font-weight:600;padding:1px 8px;min-width:20px;text-align:center}
+.tgl{display:flex;align-items:center;gap:6px;font-size:13px;color:#e8e8e8;cursor:pointer;user-select:none}
+.tgl input{accent-color:var(--gold)}
+/* общие блоки */
+main{padding:26px 0 60px}
+h1{font-size:34px;line-height:1.15;margin:0 0 10px}
+h2{font-size:22px;margin:0 0 10px}
+h3{font-size:16px;margin:0 0 6px}
+.lead{font-size:17px;color:#333;max-width:760px}
+.mute{color:var(--mute)}
+.small{font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.btn{border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:10px;padding:10px 16px;font-weight:600}
+.btn:hover{background:#2b2b2b}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.btn.gold:hover{background:#cdb985}
+.btn.ghost{background:#fff;color:var(--ink);border-color:#bdbdbd}
+.btn.ghost:hover{background:#f0f0f0}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.sm{padding:6px 11px;font-size:13px;border-radius:8px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:860px){.g3,.g4{grid-template-columns:repeat(2,1fr)}h1{font-size:27px}}
+@media(max-width:560px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.chip{display:inline-flex;align-items:center;gap:6px;background:#efefef;border:1px solid var(--line);border-radius:999px;padding:3px 11px;font-size:13px}
+.chip.btnlike{cursor:pointer;background:#fff}.chip.btnlike:hover{border-color:var(--gold-d);background:#faf6ec}
+.chip.known{background:#eef7f0;border-color:#bfdcc7}
+.chip.known b{font-weight:600}
+.chip .x{cursor:pointer;color:#888}
+.tag{display:inline-block;border-radius:6px;font-size:12px;padding:1px 8px;font-weight:600}
+.tag.hyp{background:#fff1cf;color:#7a5b00;border:1px dashed #c9a43a}
+.tag.demo{background:#eee;color:#555}
+.tag.open{background:#fde4e1;color:#8a2b20}
+/* направления */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 14px}
+.tab{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:11px 18px;font-weight:600;display:flex;gap:8px;align-items:center}
+.tab i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.tab[data-d=vuz] i{background:var(--vuz)}.tab[data-d=col] i{background:var(--col)}.tab[data-d=pro] i{background:var(--pro)}.tab[data-d=kp] i{background:var(--kp)}
+.tab.on{color:#fff;border-color:transparent}
+.tab.on[data-d=vuz]{background:var(--vuz)}.tab.on[data-d=col]{background:var(--col)}.tab.on[data-d=pro]{background:var(--pro)}.tab.on[data-d=kp]{background:var(--kp)}
+.tab.on i{background:#fff}
+.tab:hover:not(.on){border-color:#999}
+/* формы */
+label{display:block;font-weight:600;font-size:14px;margin:0 0 5px}
+input[type=text],input[type=email],input[type=number],select,textarea{width:100%;border:1px solid #c9c9c9;border-radius:9px;padding:9px 11px;font:inherit;background:#fff}
+textarea{min-height:90px;resize:vertical}
+.field{margin-bottom:14px}
+.field.req label::after{content:" *";color:var(--bad)}
+.field.miss input,.field.miss select{border-color:var(--bad);background:#fff7f6}
+.opts{display:flex;gap:8px;flex-wrap:wrap}
+.opt{border:1.5px solid #c9c9c9;background:#fff;border-radius:999px;padding:6px 14px;font-size:14px}
+.opt.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.opt:hover:not(.on){border-color:#777}
+.hint{font-size:13px;color:var(--mute);margin-top:4px}
+details.more{border:1px dashed #bdbdbd;border-radius:10px;padding:10px 14px;background:#fff}
+details.more summary{cursor:pointer;font-weight:600}
+/* результаты */
+.res{display:grid;grid-template-columns:250px 1fr;gap:18px}
+@media(max-width:860px){.res{grid-template-columns:1fr}}
+.cardr{background:#fff;border:1px solid var(--line);border-left:5px solid var(--c,#999);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:8px}
+.cardr h3{font-size:17px}
+.kv{display:flex;gap:6px 16px;flex-wrap:wrap;font-size:13px;color:#333}
+.kv span b{font-weight:600}
+.bar{height:7px;background:#e8e8e8;border-radius:5px;overflow:hidden;width:130px;display:inline-block;vertical-align:middle}
+.bar i{display:block;height:100%;background:var(--c,#777)}
+.fav{border:0;background:none;font-size:20px;line-height:1;color:#999;padding:2px 6px}
+.fav.on{color:#d6a100}
+.cmp{font-size:13px}
+.slot{margin:14px 0}
+.plash{border:1.5px solid var(--gold);background:#fbf6e8;border-radius:var(--r);padding:14px 16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.plash .t{flex:1;min-width:240px}
+.plash .x{background:none;border:0;font-size:20px;color:#888}
+.cmpbar{position:sticky;bottom:0;background:var(--ink);color:#fff;border-radius:12px;padding:10px 16px;margin-top:14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+/* модальное окно */
+.ov{position:fixed;inset:0;background:rgba(10,10,10,.55);display:none;align-items:center;justify-content:center;z-index:40;padding:16px}
+.ov.on{display:flex}
+.modal{background:#fff;border-radius:16px;max-width:640px;width:100%;padding:22px;max-height:92vh;overflow:auto}
+.opt-card{border:1.5px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;cursor:pointer;background:#fff}
+.opt-card:hover{border-color:var(--gold-d);background:#fdfaf2}
+.opt-card .t{flex:1;min-width:220px}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:10px;z-index:60;display:none;max-width:90vw}
+.toast.on{display:block}
+/* аннотации к карте */
+.anno{display:none;background:#fff8d9;border:1px dashed #b79a2a;border-radius:8px;font-size:12.5px;color:#5a4a00;padding:6px 10px;margin:8px 0}
+body.anno-on .anno{display:block}
+.anno b{font-weight:700}
+table.map{border-collapse:collapse;width:100%;font-size:13.5px;background:#fff}
+table.map th,table.map td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+table.map th{background:#f0ece0}
+footer{border-top:1px solid var(--line);padding:16px 0 30px;color:var(--mute);font-size:13px}
+.hide{display:none!important}
+.tile{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer;text-align:left}
+.tile:hover{border-color:var(--gold-d);background:#fdfaf2}
+.tile q{font-weight:600;display:block;margin-bottom:3px}
+.steps{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.step{flex:1;min-width:190px;border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px}
+.step .n{width:24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;display:inline-flex;justify-content:center;align-items:center;font-size:13px;margin-bottom:6px}
+.pill{font-size:12px;border-radius:999px;padding:1px 9px;background:#eee}
+.sttl{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<header class="top">
+ <div class="wrap">
+  <div class="logo" onclick="go('home')"><i></i>MainExperts</div>
+  <nav class="nav" id="nav">
+   <button data-s="home" onclick="go('home')">Поиск</button>
+   <button data-s="orient" onclick="go('orient')">Не знаете, кем стать?</button>
+   <button data-s="cabinet" onclick="go('cabinet')">Мой путь <span class="badge" id="cabCount">0</span></button>
+   <button data-s="map" onclick="go('map')">Соответствие карте</button>
+  </nav>
+  <div class="sp"></div>
+  <div class="ctx">
+   <span>Вы из:</span>
+   <select id="country" onchange="S.country=this.value;toast('Страна изменена: '+this.value+'. Язык и валюта подставлены.');render()">
+    <option>Казахстан</option><option>Россия</option><option>ОАЭ</option><option>Узбекистан</option><option>Другая страна</option>
+   </select>
+   <span class="small" id="ctxlang">русский · тенге</span>
+  </div>
+  <label class="tgl"><input type="checkbox" id="annoSw" onchange="document.body.classList.toggle('anno-on',this.checked)"> Показать привязку к карте</label>
+ </div>
+</header>
+
+<main><div class="wrap" id="view"></div></main>
+
+<footer><div class="wrap">Концепт портала, 04.11.2026. Все вузы, колледжи, профессии, программы, числа и сроки на экранах — демонстрационные, не настоящие. Допущение карты: в базе есть всё и на всех языках. Цены и состав услуг не заданы. Концепт не утверждён основателем.</div></footer>
+
+<div class="ov" id="ov"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* ---------- данные (демонстрационные) ---------- */
+const DIRS={
+ vuz:{name:"Вузы",color:"var(--vuz)",bg:"var(--vuz-bg)",big:"Перейти или подать заявку"},
+ col:{name:"Колледжи",color:"var(--col)",bg:"var(--col-bg)",big:"Перейти или подать заявку"},
+ pro:{name:"Профессии",color:"var(--pro)",bg:"var(--pro-bg)",big:"Где учиться"},
+ kp:{name:"Короткие программы",color:"var(--kp)",bg:"var(--kp-bg)",big:"Перейти или записаться"}
+};
+const LANGCUR={"Казахстан":"русский · тенге","Россия":"русский · рубли","ОАЭ":"русский · дирхамы","Узбекистан":"русский · сумы","Другая страна":"русский · ваша валюта"};
+const DATA={
+ vuz:[
+  {id:"v1",t:"Технический университет, город А (демо)",tags:["Бакалавриат","Инженерия","Очно"],chance:70,deadline:"15 января",pros:["Инженер-робототехник","Инженер-программист"]},
+  {id:"v2",t:"Университет прикладных наук, город Б (демо)",tags:["Бакалавриат","IT","Очно и онлайн"],chance:55,deadline:"1 марта",pros:["Инженер-программист","Дизайнер продукта"]},
+  {id:"v3",t:"Институт искусств и дизайна, город В (демо)",tags:["Бакалавриат","Дизайн","Очно"],chance:40,deadline:"20 февраля",pros:["Дизайнер продукта"]},
+  {id:"v4",t:"Медицинский университет, город Г (демо)",tags:["Специалитет","Медицина","Очно"],chance:30,deadline:"10 февраля",pros:["Врач-кардиолог"]},
+  {id:"v5",t:"Школа бизнеса, город Д (демо)",tags:["Магистратура","Менеджмент","Очно"],chance:60,deadline:"5 апреля",pros:["Менеджер проектов"]}
+ ],
+ col:[
+  {id:"c1",t:"Колледж информационных технологий, город А (демо)",tags:["СПО","Программирование","Очно"],chance:80,deadline:"20 июня",pros:["Инженер-программист"]},
+  {id:"c2",t:"Колледж дизайна и медиа, город Б (демо)",tags:["СПО","Дизайн","Очно"],chance:75,deadline:"1 июля",pros:["Дизайнер продукта"]},
+  {id:"c3",t:"Медицинский колледж, город В (демо)",tags:["СПО","Сестринское дело","Очно"],chance:65,deadline:"25 июня",pros:["Врач-кардиолог"]}
+ ],
+ pro:[
+  {id:"p1",t:"Инженер-робототехник",tags:["Техника","Работа с людьми и машинами"],demand:"Растёт (демо)",salary:"Вилка в вашей валюте подставится из открытых источников с датой",risk:"Низкий (демо)",skills:"Математика, программирование, схемотехника",vuz:["v1"]},
+  {id:"p2",t:"Дизайнер продукта",tags:["Творчество","IT"],demand:"Стабильный (демо)",salary:"Вилка в вашей валюте подставится из открытых источников с датой",risk:"Средний (демо)",skills:"Рисунок, исследование пользователей, прототипы",vuz:["v2","v3","c2"]},
+  {id:"p3",t:"Инженер-программист",tags:["IT","Техника"],demand:"Растёт (демо)",salary:"Вилка в вашей валюте подставится из открытых источников с датой",risk:"Средний (демо)",skills:"Логика, языки программирования, английский",vuz:["v1","v2","c1"]},
+  {id:"p4",t:"Врач-кардиолог",tags:["Медицина"],demand:"Стабильный (демо)",salary:"Вилка в вашей валюте подставится из открытых источников с датой",risk:"Низкий (демо)",skills:"Биология, химия, стрессоустойчивость",vuz:["v4","c3"]},
+  {id:"p5",t:"Менеджер проектов",tags:["Бизнес","Работа с людьми"],demand:"Стабильный (демо)",salary:"Вилка в вашей валюте подставится из открытых источников с датой",risk:"Средний (демо)",skills:"Коммуникация, планирование, лидерство",vuz:["v5"]}
+ ],
+ kp:[
+  {id:"k1",t:"Летняя школа программирования (демо)",tags:["Онлайн","Июль, 2 недели","12–16 лет"],lang:"русский, английский"},
+  {id:"k2",t:"Языковой лагерь в Европе (демо)",tags:["Очно","Август, 3 недели","12–17 лет"],lang:"английский"},
+  {id:"k3",t:"Курс по рисунку и дизайну, 8 месяцев (демо)",tags:["Онлайн","С сентября, 8 месяцев","14–18 лет"],lang:"русский"},
+  {id:"k4",t:"Подготовка к поступлению в технический вуз, 10 месяцев (демо)",tags:["Онлайн","С сентября, 10 месяцев","15–18 лет"],lang:"русский"}
+ ]
+};
+const FORMS={
+ vuz:{req:[
+   {k:"level",l:"Какое образование ищете?",type:"opts",o:["Бакалавриат","Магистратура","Специалитет"]},
+   {k:"where",l:"Где хотите учиться?",type:"where"},
+   {k:"year",l:"В каком году планируете поступать?",type:"opts",o:["2027","2028","2029 и позже"]},
+   {k:"topic",l:"Какое направление интересует?",type:"text",ph:"например, инженерия, медицина, IT"}],
+  note:"Состав обязательных вопросов по категории зафиксирован командой как рабочая логика, не утверждён."},
+ col:{req:[
+   {k:"where",l:"Где хотите учиться?",type:"where"},
+   {k:"year",l:"В каком году планируете поступать?",type:"opts",o:["2027","2028","2029 и позже"]},
+   {k:"topic",l:"Какая специальность интересует?",type:"text",ph:"например, программирование, дизайн"}],
+  note:"Для колледжа набор обязательных полей не согласован: предыдущий класс и возраст — открытые вопросы."},
+ pro:{req:[
+   {k:"interests",l:"Что любит и умеет ваш ребёнок?",type:"text",ph:"интересы и сильные стороны, например, математика, рисунок"},
+   {k:"where",l:"Где хотел бы работать?",type:"where"}],
+  note:"Если профессия уже известна, достаточно её названия: это альтернативный вход, а не вопрос всем.",known:true},
+ kp:{req:[
+   {k:"format",l:"Онлайн или очно?",type:"opts",o:["Онлайн","Очно"]},
+   {k:"country",l:"Если очно: в какой стране?",type:"text",ph:"страна или несколько",cond:s=>s.f.format==="Очно"},
+   {k:"period",l:"Когда хотите начать?",type:"opts",o:["Лето 2027","Осень 2027","Ближайший месяц","Укажу даты"]},
+   {k:"topic",l:"Какая тема?",type:"text",ph:"например, английский, программирование"}],
+  note:"Для долгих курсов (6–12 месяцев) нужен период начала; для коротких — сезон, месяц или даты."}
+};
+const CHIPS=[
+ {q:"Какие есть крутые вузы, где моему сыну будет хорошо учиться?",d:"vuz",f:{level:"Бакалавриат"}},
+ {q:"Кем будет работать мой ребёнок, если он любит рисовать?",d:"pro",f:{interests:"рисунок"}},
+ {q:"Куда поступать с такими баллами?",d:"vuz",f:{}},
+ {q:"Не поступил никуда: какие у нас есть варианты сейчас?",d:"col",f:{}},
+ {q:"Хочу подтянуть ребёнка летом: какие есть программы?",d:"kp",f:{period:"Лето 2027"}},
+ {q:"Какие профессии будут востребованы через десять лет?",d:"pro",f:{}}
+];
+const TILES=[
+ ["Не знаю, в чём он силён","orient"],
+ ["Не знаю, какой вуз выбрать","vuz"],
+ ["Не знаю, хватит ли баллов","vuz"],
+ ["Он ничего не хочет, как его заинтересовать","orient"],
+ ["Страх, что образование окажется ненужным","pro"],
+ ["Мы не сошлись с мужем в выборе профессии","orient"]
+];
+
+/* ---------- состояние ---------- */
+const S={screen:"home",d:"vuz",country:"Казахстан",f:{},opt:{},quiz:false,quizProf:null,favs:[],cmp:[],saved:[],apps:[],wait:[],consult:null,
+  plashOff:{},fit:null,profFilter:null,returned:{},bigFor:null,emailGiven:false,email:"",hist:[]};
+const $=s=>document.querySelector(s);
+function esc(t){return String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("on"),2600)}
+function go(s,keep){S.screen=s;render();window.scrollTo(0,0)}
+function setD(d){S.d=d;S.f=S.f||{};render()}
+function item(id){for(const d in DATA){const x=DATA[d].find(y=>y.id===id);if(x)return Object.assign({d},x)}}
+function missing(){const fm=FORMS[S.d];return fm.req.filter(r=>(!r.cond||r.cond(S))&&!S.f[r.k])}
+function cabCount(){return S.saved.length+S.favs.length+S.apps.length+S.wait.length+(S.consult?1:0)}
+function chipsKnown(){
+  const out=[["Откуда",S.country]];
+  if(S.quiz)out.push(["Из скрининга","интересы и направления подставлены"]);
+  if(S.profFilter)out.push(["Профессия",item(S.profFilter).t]);
+  for(const r of FORMS[S.d].req){if(S.f[r.k])out.push([r.l.replace(/\?$/,""),S.f[r.k]])}
+  return out;
+}
+const A=(t)=>'<div class="anno"><b>Карта:</b> '+t+'</div>';
+
+/* ---------- экраны ---------- */
+function tabsHtml(){return '<div class="tabs" role="tablist">'+Object.keys(DIRS).map(k=>'<button class="tab '+(S.d===k?'on':'')+'" data-d="'+k+'" role="tab" onclick="setD(\''+k+'\')"><i></i>'+DIRS[k].name+'</button>').join("")+'</div>'}
+
+function vHome(){
+  return `
+  ${A("Этап 2, узел «Главная страница»: страна, язык и валюта подставлены, над поиском переключатель направлений. Допущение: база полная.")}
+  <h1>Где ребёнку будет хорошо учиться<br>и кем он может стать</h1>
+  <p class="lead">Вузы, колледжи, профессии и короткие программы в одном месте. Вы из <b>${esc(S.country)}</b>: страна, язык и валюта уже подставлены. Направление можно сменить в любой момент, подборка сохранится.</p>
+  ${A("Этап 3, узел «Выбирает, что искать»: переключатель остаётся над поиском на каждой странице.")}
+  ${tabsHtml()}
+  <div class="card">
+   <div class="sttl"><h2 style="margin:0">${DIRS[S.d].name}: с чего начнём</h2><span class="small mute">Вопросы зависят от направления</span></div>
+   <p class="mute small">${esc(FORMS[S.d].note)}</p>
+   <div class="row"><button class="btn gold" onclick="go('search')">Подобрать: ${DIRS[S.d].name.toLowerCase()}</button>
+   <button class="btn ghost" onclick="skip()">Показать без вопросов (с тем, что известно)</button></div>
+  </div>
+  ${A("Этап 1–2: клиент формулирует задачу своими словами, а не словом «профориентация». Тексты — из болей клиентов (docs/27) [гипотеза].")}
+  <h2 style="margin-top:26px">Или расскажите своими словами</h2>
+  <div class="row" style="align-items:flex-start"><textarea id="free" placeholder="Например: сын любит физику, живём в Казахстане, хотим хороший вуз, но не знаем, хватит ли баллов"></textarea></div>
+  <div class="row" style="margin:8px 0 14px"><button class="btn" onclick="freeText()">Подобрать по описанию</button><span class="small mute">Портал определит направление и подставит то, что поймёт. Недостающее спросит.</span></div>
+  <div class="grid g3">${CHIPS.map((c,i)=>'<button class="tile" onclick="chip('+i+')"><q>«'+esc(c.q)+'»</q><span class="small mute">'+DIRS[c.d].name+'</span></button>').join("")}</div>
+  <h2 style="margin-top:26px">С чем приходят родители</h2>
+  <div class="grid g3">${TILES.map(t=>'<button class="tile" onclick="tile(\''+t[1]+'\')"><q>'+esc(t[0])+'</q><span class="small mute">'+(t[1]==="orient"?"Разобраться в сильных сторонах":"Открыть: "+DIRS[t[1]].name.toLowerCase())+'</span></button>').join("")}</div>
+  ${A("Этап 2: доверие. Источник и дата данных на каждой карточке; бренд незнакомый. [гипотеза: сигнал доверия повышает переход]")}
+  <div class="grid g3" style="margin-top:22px">
+   <div class="card"><h3>Всё в одном месте</h3><div class="small mute">Вузы, колледжи, профессии и короткие программы. Из профессии — к вузам, из вуза — к профессиям.</div></div>
+   <div class="card"><h3>Источник и дата</h3><div class="small mute">Каждое число на карточке с указанием, откуда оно и на какую дату. Данных нет — так и написано.</div></div>
+   <div class="card"><h3>Спросим только недостающее</h3><div class="small mute">Что известно из вашего запроса и квиза, повторно не спрашиваем. Любой ответ можно изменить.</div></div>
+  </div>`;
+}
+function tile(t){if(t==="orient")go("orient");else{S.d=t;go("search")}}
+function chip(i){const c=CHIPS[i];S.d=c.d;S.f=Object.assign({},c.f);go("search")}
+function freeText(){
+  const t=($("#free").value||"").toLowerCase();
+  let d="vuz";
+  if(/професси|кем (буд|стать)|работ/.test(t))d="pro";
+  else if(/колледж|не поступ/.test(t))d="col";
+  else if(/лет(о|ом)|курс|лагер|програм/.test(t))d="kp";
+  S.d=d;S.f={};
+  if(/физик|математик|it|программ/.test(t))S.f[d==="pro"?"interests":"topic"]=/физик/.test(t)?"физика":/математик/.test(t)?"математика":"программирование";
+  if(/бакалавр/.test(t))S.f.level="Бакалавриат";
+  toast("Определили направление: "+DIRS[d].name+". Подставили то, что поняли.");
+  go("search");
+}
+function skip(){go("results")}
+
+function fieldHtml(r){
+  const v=S.f[r.k]||"";const miss=S.showMiss&&!v?" miss":"";
+  let inp="";
+  if(r.type==="opts")inp='<div class="opts">'+r.o.map(o=>'<button class="opt '+(v===o?'on':'')+'" onclick="setF(\''+r.k+'\',\''+o+'\')">'+o+'</button>').join("")+'</div>';
+  else if(r.type==="where")inp='<div class="opts">'+["Моя страна","Другая страна","Несколько стран","Онлайн","Где угодно"].map(o=>'<button class="opt '+(v===o?'on':'')+'" onclick="setF(\''+r.k+'\',\''+o+'\')">'+o+'</button>').join("")+'</div><div class="hint">Город необязателен: уточнить можно позже. Несколько стран — возможно; окончательное ограничение не решено.</div>';
+  else inp='<input type="text" value="'+esc(v)+'" placeholder="'+esc(r.ph||"")+'" oninput="S.f[\''+r.k+'\']=this.value">';
+  return '<div class="field req'+miss+'"><label>'+esc(r.l)+'</label>'+inp+'</div>';
+}
+function setF(k,v){S.f[k]=v;render()}
+
+function vSearch(){
+  const fm=FORMS[S.d],miss=missing();
+  const known=chipsKnown();
+  return `
+  ${tabsHtml()}
+  ${A("Этап 3, узлы «Форма направления» → «Проверяет, чего не хватает» → «Спрашивает недостающее»: у каждого направления своя форма и свои вопросы. Обязательность полей по категориям не утверждена.")}
+  <div class="grid" style="grid-template-columns:2fr 1fr;align-items:start">
+   <div class="card">
+    <h2>${DIRS[S.d].name}: расскажите о задаче</h2>
+    <div class="mute small" style="margin-bottom:12px">${esc(fm.note)}</div>
+    ${fm.known?'<div class="field"><label>Профессия уже известна? (необязательно)</label><input type="text" placeholder="название профессии" value="'+esc(S.f.known||"")+'" oninput="S.f.known=this.value;S.f.interests=S.f.interests||this.value"></div>':''}
+    ${fm.req.filter(r=>!r.cond||r.cond(S)).map(fieldHtml).join("")}
+    <details class="more"><summary>Уточнить по желанию</summary>
+     <div style="margin-top:12px" class="grid g2">
+      <div class="field"><label>Для кого ищете?</label><div class="opts"><button class="opt on">Ребёнок</button><button class="opt">Для себя</button></div></div>
+      <div class="field"><label>Сколько лет учащемуся?</label><input type="number" min="5" max="60" placeholder="возраст"></div>
+      <div class="field"><label>Языки учащегося (можно несколько)</label><div class="opts"><button class="opt" onclick="this.classList.toggle('on')">русский</button><button class="opt" onclick="this.classList.toggle('on')">английский</button><button class="opt" onclick="this.classList.toggle('on')">арабский</button></div><div class="hint">Не язык интерфейса и не изучаемый язык.</div></div>
+      <div class="field"><label>Срок обучения</label><select><option>Не важно</option><option>Недели</option><option>Месяцы</option><option>1 год</option><option>Несколько лет</option></select></div>
+      <div class="field"><label>Бюджет</label><div class="opts"><button class="opt" onclick="pickBud(this)">Пока не определился</button><button class="opt" onclick="pickBud(this)">Без ограничения</button><button class="opt" onclick="pickBud(this)">Укажу сумму</button></div><div class="hint">«Пока не определился» и «без ограничения» — разные ответы.</div></div>
+      <div class="field"><label>Город обучения</label><input type="text" placeholder="по желанию"></div>
+      <div class="field"><label>Какие навыки хотите развить?</label><input type="text" placeholder="по желанию"></div>
+     </div>
+    </details>
+    ${A("Этап 3, узел «Отвечает на недостающие вопросы; по желанию уточняет»: возраст, языки, срок, бюджет, город, навыки — фильтры, не блокирующие выдачу.")}
+    <div class="row" style="margin-top:14px">
+     <button class="btn gold" onclick="showRes()">Показать подборку</button>
+     <span class="small ${miss.length?'':'mute'}" style="color:${miss.length?'var(--bad)':'inherit'}">${miss.length?('Осталось ответить: '+miss.length):'Всё необходимое известно'}</span>
+    </div>
+   </div>
+   <div>
+    <div class="card" style="margin-bottom:12px">
+     <h3>Уже известно</h3>
+     <div class="small mute" style="margin-bottom:6px">Это не спрашиваем повторно. Любой ответ можно изменить.</div>
+     <div class="row" style="gap:6px">${known.map(k=>'<span class="chip known"><span>'+esc(k[0])+':</span> <b>'+esc(k[1])+'</b></span>').join("")}</div>
+     ${A("Этап 3, узел «Проверяет, чего не хватает»: ответы запроса и квиза становятся редактируемыми фильтрами, известное не переспрашиваем.")}
+    </div>
+    <div class="card">
+     <h3>Нужна помощь с выбором направления?</h3>
+     <div class="small mute" style="margin:4px 0 10px">Ответьте на несколько вопросов о ребёнке. Подборка от этого не скроется.</div>
+     <button class="btn ghost sm" onclick="go('orient')">Помогите определиться</button>
+     ${A("Этап 3: вопрос ведёт в блок «Профориентация» и не блокирует выдачу.")}
+    </div>
+   </div>
+  </div>`;
+}
+function pickBud(b){b.parentNode.querySelectorAll(".opt").forEach(x=>x.classList.remove("on"));b.classList.add("on")}
+function showRes(){const m=missing();if(m.length){S.showMiss=true;render();toast("Осталось ответить на обязательные вопросы: "+m.length);return}S.showMiss=false;go("results")}
+
+function resList(){
+  const wd=(arr,d)=>arr.map(x=>Object.assign({d},x));
+  if(S.d==="vuz"||S.d==="col"){
+    if(S.profFilter){const p=item(S.profFilter);return wd(DATA.vuz,"vuz").concat(wd(DATA.col,"col")).filter(x=>x.pros&&x.pros.includes(p.t))}
+    return wd(DATA[S.d],S.d);
+  }
+  let list=wd(DATA[S.d],S.d);
+  if(S.d==="pro"&&S.quizProf)list.sort((a,b)=>(b.t===S.quizProf)-(a.t===S.quizProf));
+  return list;
+}
+function cardHtml(x){
+  const d=x.d||S.d;const dd=DIRS[d],fav=S.favs.includes(x.id),cmp=S.cmp.includes(x.id);
+  let body="";
+  if(d==="vuz"||d==="col"){
+    body='<div class="kv"><span><b>Шансы по баллам:</b> <span class="bar" style="--c:'+dd.color+'"><i style="width:'+x.chance+'%"></i></span> <span class="tag demo">демо</span></span><span><b>Срок подачи:</b> '+x.deadline+' <span class="tag demo">демо</span></span><span><b>Цена за весь срок:</b> в вашей валюте (источник и дата — в карточке)</span></div>'
+      +'<div class="small"><b>Ведёт к профессиям:</b> '+(x.pros||[]).map(p=>{const pi=DATA.pro.find(q=>q.t===p);return '<button class="chip btnlike" onclick="toPro(\''+(pi?pi.id:"")+'\')">'+esc(p)+'</button>'}).join(" ")+'</div>';
+  }else if(d==="pro"){
+    body='<div class="kv"><span><b>Спрос:</b> '+x.demand+'</span><span><b>Риск автоматизации:</b> '+x.risk+'</span></div><div class="small"><b>Зарплатная вилка:</b> '+x.salary+'</div><div class="small"><b>Нужные навыки:</b> '+x.skills+'</div>';
+  }else{
+    body='<div class="kv"><span><b>Языки:</b> '+x.lang+'</span><span><b>Цена:</b> в вашей валюте</span></div>';
+  }
+  const bigLabel=d==="pro"?"Где учиться":(d==="kp"?"Перейти или записаться":"Перейти или подать заявку");
+  return '<div class="cardr" style="--c:'+dd.color+'"><div class="sttl"><h3>'+esc(x.t)+'</h3><button class="fav '+(fav?'on':'')+'" title="В избранное" onclick="toggleFav(\''+x.id+'\')">'+(fav?'★':'☆')+'</button></div>'
+   +'<div class="row" style="gap:6px">'+x.tags.map(t=>'<span class="chip">'+esc(t)+'</span>').join("")+'</div>'+body
+   +'<div class="row" style="margin-top:4px"><button class="btn sm" onclick="big(\''+x.id+'\')">'+bigLabel+'</button><label class="cmp"><input type="checkbox" '+(cmp?'checked':'')+' onchange="toggleCmp(\''+x.id+'\',this.checked)"> сравнить</label><span class="small mute">Источник и дата: 03.11.2026 (демо)</span></div></div>';
+}
+function toPro(id){if(!id)return;S.d="pro";S.profFilter=null;S.quizProf=item(id).t;go("results");toast("Профессии, к которым ведёт программа: показали профессию первой.")}
+function toggleFav(id){const i=S.favs.indexOf(id);if(i<0){S.favs.push(id);toast("Добавлено в избранное. Оно сохранится при смене направления.")}else S.favs.splice(i,1);render()}
+function toggleCmp(id,on){if(on){if(S.cmp.length>=4){toast("Сравнить можно до четырёх вариантов");render();return}S.cmp.push(id)}else S.cmp=S.cmp.filter(x=>x!==id);render()}
+function plashka(){
+  if(S.cmp.length>=3&&!S.plashOff.consult)return ["consult",'<b>Не уверены? Поможем сузить выбор.</b><div class="small mute">Вы сравниваете '+S.cmp.length+' варианта. Можно записаться на короткий разговор или оставить анкету. <span class="tag hyp">статус блока под вопросом</span></div>',"Оставить анкету","consult"];
+  if(S.favs.length>=1&&!S.plashOff.pack)return ["pack",'<b>Поможем построить путь.</b><div class="small mute">Услуги по поступлению и сопровождению: состав и условия пока не определены, можно встать в лист ожидания.</div>',"Посмотреть услуги","services"];
+  if(!S.plashOff.banner&&!S.quiz)return ["banner",'<b>Не знаете, что изучать или кем стать?</b><div class="small mute">Бесплатный разбор сильных сторон ребёнка займёт несколько минут. Результат подставится в поиск.</div>',"Пройти разбор","orient"];
+  return null;
+}
+function vResults(){
+  const list=resList();const known=chipsKnown();const pl=plashka();
+  return `
+  ${tabsHtml()}
+  ${A("Этап 4: переключатель направлений. «Хочет посмотреть другое направление?» — да: подборка и избранное сохраняются.")}
+  <div class="sttl"><h2>${DIRS[S.d].name}: подборка</h2>
+   <div class="row"><button class="btn ghost sm" onclick="saveSel()">Сохранить подборку</button><button class="btn ghost sm" onclick="shareSel()">Поделиться</button></div></div>
+  ${A("Этап 4, узлы «Сохраняет подборку» и «Подборка подошла?»: сохранить, отправить ссылкой ребёнку и семье; ответ идёт в статистику.")}
+  <div class="row" style="gap:6px;margin:6px 0 12px">${known.map(k=>'<span class="chip known"><span>'+esc(k[0])+':</span> <b>'+esc(k[1])+'</b> <span class="x" onclick="go(\'search\')" title="Изменить">✎</span></span>').join("")}</div>
+  ${S.profFilter?'<div class="plash" style="margin-bottom:12px"><div class="t">Подобрали программы под профессию <b>'+esc(item(S.profFilter).t)+'</b>. <span class="small mute">Фильтры подставлены автоматически.</span></div><button class="btn ghost sm" onclick="S.profFilter=null;render()">Сбросить</button></div>':''}
+  <div class="res">
+   <aside class="card" style="align-self:start">
+    <h3>Фильтры</h3>
+    <div class="field"><label>Сортировка</label><select><option>Сначала подходящие</option><option>По цене</option><option>По сроку подачи</option></select></div>
+    <div class="field"><label>Язык обучения</label><select><option>Любой</option><option>Русский</option><option>Английский</option></select></div>
+    <div class="field"><label>Стоимость</label><select><option>Любая</option><option>До среднего уровня</option></select></div>
+    <div class="field"><label>Слежение</label><label style="font-weight:400"><input type="checkbox" checked> письмо за 30 дней до срока подачи${S.d==="pro"?" и о новых профессиях":""}</label></div>
+    ${A("Этап 4, узлы «Фильтрует, сортирует, добавляет в избранное, сравнивает до 4 вариантов».")}
+   </aside>
+   <section>
+    <div class="grid" style="gap:12px">${list.map((x,i)=>cardHtml(x)+(i===2&&pl?'':'')).join("")||'<div class="card">По этим условиям ничего нет. Измените условия или направление.</div>'}</div>
+    ${pl?'<div class="slot"><div class="plash"><div class="t">'+pl[1]+'</div><button class="btn gold sm" onclick="go(\''+pl[3]+'\')">'+pl[2]+'</button><button class="x" title="Закрыть: в этой сессии не покажем" onclick="S.plashOff[\''+pl[0]+'\']=true;render()">×</button></div>'+A("Блоки 6–8 появляются плашками и баннерами; не до первой полезной выдачи, не больше одной на экран, закрытая не возвращается в сессии.")+'</div>':''}
+    <div class="card" style="margin-top:14px"><h3>Подборка подошла?</h3>
+     <div class="row"><button class="btn ${S.fit==='yes'?'gold':'ghost'} sm" onclick="fit('yes')">Да</button><button class="btn ${S.fit==='no'?'gold':'ghost'} sm" onclick="fit('no')">Нет</button>
+     <span class="small mute">Ответы идут в статистику подборок.</span></div>
+     ${S.fit==='no'?'<div class="small" style="margin-top:8px">Что поменять? <button class="chip btnlike" onclick="go(\'search\')">Изменить условия</button> <button class="chip btnlike" onclick="nextDir()">Посмотреть другое направление</button></div>':''}</div>
+   </section>
+  </div>
+  ${S.cmp.length?'<div class="cmpbar"><span>К сравнению: <b>'+S.cmp.length+'</b> из 4</span><span class="small" style="color:#ccc">'+S.cmp.map(id=>esc(item(id).t)).join(" · ")+'</span><span class="sp"></span><button class="btn gold sm" onclick="compare()">Сравнить</button><button class="btn ghost sm" onclick="S.cmp=[];render()">Очистить</button></div>':''}`;
+}
+function fit(v){S.fit=v;toast(v==="yes"?"Спасибо: ответ записан в статистику подборок.":"Спасибо: ответ записан. Подскажем, что поменять.");render()}
+function nextDir(){const ks=Object.keys(DIRS);S.d=ks[(ks.indexOf(S.d)+1)%ks.length];S.fit=null;render()}
+function saveSel(){S.saved.push({d:S.d,n:resList().length,date:"04.11.2026"});toast("Подборка сохранена в «Мой путь».");render()}
+function shareSel(){toast("Ссылка на подборку скопирована: можно показать ребёнку и семье.")}
+function compare(){
+  const rows=S.cmp.map(id=>item(id));
+  openModal('<h2>Сравнение</h2><table class="map"><tr><th></th>'+rows.map(r=>'<th>'+esc(r.t)+'</th>').join("")+'</tr><tr><td>Направление</td>'+rows.map(r=>'<td>'+DIRS[r.d].name+'</td>').join("")+'</tr><tr><td>Теги</td>'+rows.map(r=>'<td>'+r.tags.join(", ")+'</td>').join("")+'</tr><tr><td>Шансы по баллам</td>'+rows.map(r=>'<td>'+(r.chance?r.chance+"% (демо)":"—")+'</td>').join("")+'</tr><tr><td>Срок подачи</td>'+rows.map(r=>'<td>'+(r.deadline||"—")+'</td>').join("")+'</tr></table><div class="row" style="margin-top:12px"><button class="btn ghost" onclick="closeModal()">Закрыть</button></div>');
+}
+
+/* большая кнопка */
+function big(id){
+  const x=item(id);S.bigFor=id;
+  if(x.d==="pro"){
+    // профессия → подбор вуза с готовыми фильтрами
+    S.profFilter=id;S.d="vuz";S.f=Object.assign({},S.f);closeModal();render();
+    toast("Профессия «"+x.t+"» передана в подбор: фильтры подставлены.");window.scrollTo(0,0);return;
+  }
+  openModal('<h2>'+esc(x.t)+'</h2><p class="mute small">Выберите, как двигаться дальше. Окно с вариантами; набор вариантов ещё не утверждён.</p>'
+   +'<div class="opt-card" onclick="goSite()"><div class="t"><b>Перейти на сайт учреждения</b><div class="small mute">Откроется новая вкладка, эта останется. Попросим email, чтобы сохранить подборку и напомнить о сроках.</div></div><span class="pill">оплата за клик</span></div>'
+   +'<div class="opt-card" onclick="pseudo()"><div class="t"><b>Подготовить заявку через портал</b> <span class="tag hyp">гипотеза</span><div class="small mute">Цифровая копия анкеты, вы заполняете её сами или просите помощника. Небольшая оплата; сумма не задана.</div></div></div>'
+   +'<div class="opt-card" onclick="closeModal();go(\'services\')"><div class="t"><b>Услуги и пакеты</b><div class="small mute">Поступление, подбор «под ключ», поступление плюс виза (как отель плюс билет). Чего ещё нет — лист ожидания.</div></div></div>'
+   +'<div class="anno"><b>Карта:</b> этап 5, узлы «Нажимает большую кнопку» → «Открывает окно с вариантами» → «Что выбирает?» (сайт · заявка через портал · услуги).</div>'
+   +'<div class="row"><button class="btn ghost" onclick="closeModal()">Закрыть</button></div>');
+}
+function goSite(){
+  openModal('<h2>Оставьте email</h2><p class="mute small">Сохраним подборку и напомним о сроках. Это необязательно, но так вы не потеряете выбор.</p><div class="field"><label>Email</label><input type="email" id="em" placeholder="name@example.com" value="'+esc(S.email)+'"></div>'
+   +'<div class="anno"><b>Карта:</b> этап 5, узел «Оставляет email: портал просит его перед переходом».</div>'
+   +'<div class="row"><button class="btn gold" onclick="toSite(true)">Сохранить и перейти</button><button class="btn ghost" onclick="toSite(false)">Перейти без email</button></div>');
+}
+function toSite(withMail){
+  if(withMail){S.email=($("#em").value||"").trim();S.emailGiven=!!S.email}
+  closeModal();S.screen="outbound";render();window.scrollTo(0,0);
+}
+function pseudo(){
+  const x=item(S.bigFor);
+  openModal('<h2>Заявка через портал <span class="tag hyp">гипотеза</span></h2><p class="mute small">'+esc(x.t)+'. Портал готовит цифровую копию анкеты на основе ваших ответов. Подать её вы можете сами или передать помощнику.</p><div class="field"><label>Имя ребёнка</label><input type="text"></div><div class="field"><label>Email</label><input type="email" value="'+esc(S.email)+'"></div><p class="small mute">Оплата небольшой суммы; сумма не задана, вопрос не решён.</p>'
+   +'<div class="row"><button class="btn gold" onclick="S.apps.push({t:\''+esc(x.t)+'\',st:\'заявка готовится\',kind:\'через портал\'});closeModal();toast(\'Заявка добавлена в «Мой путь».\');render()">Подготовить заявку</button><button class="btn ghost" onclick="closeModal()">Отмена</button></div>');
+}
+function vOutbound(){
+  const x=item(S.bigFor);
+  return `${A("Этап 5, узел «Новая вкладка: сайт учреждения; вкладка портала остаётся открытой». Вкладка портала здесь — левая; правая — сайт вуза.")}
+  <div class="card" style="max-width:760px;margin:20px auto">
+   <div class="sttl"><h2>Вы на сайте учреждения (имитация новой вкладки)</h2><span class="tag demo">демо</span></div>
+   <p class="mute">Здесь клиент читает требования и подаёт заявку: <b>${esc(x.t)}</b>. Портал остаётся открытым в соседней вкладке.</p>
+   <div class="card" style="background:#f4f4f4"><div class="small mute">Сайт учреждения: страница нужной программы, а не главная</div></div>
+   <div class="row" style="margin-top:14px"><button class="btn gold" onclick="go('returned')">Я вернулся на портал</button><button class="btn ghost" onclick="leave()">Закрыть и не возвращаться</button></div>
+  </div>`;
+}
+function leave(){toast(S.emailGiven?"Клиент ушёл. Через время портал напишет на "+S.email+": что дальше (виза, курсы, следующая услуга).":"Клиент ушёл без email: вернуть его письмом нельзя.");go("home")}
+function vReturned(){
+  const x=item(S.bigFor);
+  return `${A("Этап 5, узел «Возвращается на портал и отмечает статус: подал, записался, пока думает».")}
+  <div class="card" style="max-width:700px;margin:20px auto"><h2>Как продвигаются дела?</h2><p class="mute">${esc(x.t)}</p>
+   <div class="row">${["Подал заявку","Записался","Пока думаю","Не буду подавать"].map(s=>'<button class="btn ghost" onclick="setStatus(\''+s+'\')">'+s+'</button>').join("")}</div>
+  </div>`;
+}
+function setStatus(s){const x=item(S.bigFor);S.apps=S.apps.filter(a=>a.t!==x.t||a.kind!=="сайт учреждения");S.apps.push({t:x.t,st:s,kind:"сайт учреждения"});toast("Статус сохранён в «Мой путь». Напомним о сроках.");go("cabinet")}
+
+function vServices(){
+  const L=[["Поступление: подготовка и подача заявок","Помощь с документами и сроками"],["Индивидуальный подбор","Подбор вариантов под ребёнка вместе со специалистом"],["Поступление «под ключ»","Подбор, подача, сопровождение"],["Поступление плюс виза","Пакет: как отель плюс билет"],["Сопровождение при переезде и адаптации","Жильё, школа, первые месяцы [гипотеза]"]];
+  return `${A("Блок 8: «Дополнительные пакеты и услуги агентства». Состав и цены не заданы; исполнители — партнёры-провайдеры [гипотеза]. Вместо цены — лист ожидания для проверки спроса.")}
+  <h1>Услуги и пакеты</h1><p class="lead">Состав и условия пока определяются. Встаньте в лист ожидания на то, что вам нужно: так мы поймём спрос.</p>
+  <div class="grid g2" style="margin-top:14px">${L.map((s,i)=>'<div class="card"><h3>'+s[0]+'</h3><p class="small mute">'+s[1]+'</p><button class="btn sm '+(S.wait.includes(s[0])?'ghost':'gold')+'" onclick="joinWait(\''+s[0]+'\')">'+(S.wait.includes(s[0])?'В листе ожидания ✓':'Встать в лист ожидания')+'</button></div>').join("")}</div>`;
+}
+function joinWait(n){if(!S.wait.includes(n)){S.wait.push(n);toast("Вы в листе ожидания. Напишем, когда услуга откроется.")}render()}
+
+function vOrient(){
+  const q=[["Что ему интереснее?",["Разбираться, как всё устроено","Придумывать и рисовать","Помогать и общаться","Организовывать и вести"]],["Как он чаще всего проводит свободное время?",["Читает или смотрит видео","Играет в компьютерные игры","Занимается спортом или музыкой","С друзьями"]],["Что у него получается лучше всего?",["Математика и логика","Язык и речь","Рисунок и творчество","Работа руками"]]];
+  S.quizA=S.quizA||{};
+  return `${A("Блок 7: «Профориентация». Баннер «Не знаете, что изучать или кем стать?» → бесплатный скрининг → карта рисков выбора → подробный отчёт (цена зависит от канала и страны) → подходящие профессии в фильтры и в индекс соответствия вузов.")}
+  <h1>Не знаете, кем стать?</h1><p class="lead">Несколько вопросов о ребёнке: в чём он силён, что ему интересно. Результат подставится в поиск. Это ориентир, а не диагноз.</p>
+  <div class="steps"><div class="step"><div class="n">1</div><b>Бесплатный скрининг</b><div class="small mute">Короткие вопросы о ребёнке</div></div><div class="step"><div class="n">2</div><b>Карта рисков выбора и первые направления</b><div class="small mute">Бесплатно</div></div><div class="step"><div class="n">3</div><b>Подробный отчёт</b><div class="small mute">Цена зависит от канала и страны; состав отчёта — как в Профиле 360</div></div><div class="step"><div class="n">4</div><b>Результат в поиске</b><div class="small mute">Подходящие профессии и индекс соответствия вузов</div></div></div>
+  <div class="card"><h2>Скрининг (демо: три вопроса)</h2>
+  ${q.map((x,i)=>'<div class="field"><label>'+x[0]+'</label><div class="opts">'+x[1].map(o=>'<button class="opt '+(S.quizA[i]===o?'on':'')+'" onclick="S.quizA['+i+']=\''+o+'\';render()">'+o+'</button>').join("")+'</div></div>').join("")}
+  <button class="btn gold" onclick="finishQuiz()" ${Object.keys(S.quizA).length<3?'disabled':''}>Показать результат</button></div>
+  ${S.quizDone?`<div class="card" style="margin-top:14px"><h2>Первые направления (демо)</h2><p class="small mute">Бесплатная карта: направления без деталей. Спрос, зарплатные вилки и риски — в подробном отчёте. <span class="tag open">спорный пункт: открыто или платно</span></p><div class="row"><span class="chip">Техника и IT</span><span class="chip">Творчество и дизайн</span><span class="chip">Бизнес и управление</span></div><div class="row" style="margin-top:12px"><button class="btn gold" onclick="applyQuiz()">Подставить в поиск профессий</button><button class="btn ghost" onclick="toast('Подробный отчёт: цена зависит от канала и страны (не задана).')">Подробный отчёт</button></div></div>`:''}`;
+}
+function finishQuiz(){S.quizDone=true;render()}
+function applyQuiz(){S.quiz=true;S.quizProf="Дизайнер продукта";S.d="pro";S.f={interests:"рисунок, математика",where:"Где угодно"};S.plashOff.banner=true;toast("Результат подставлен в поиск. Ответы можно изменить.");go("results")}
+
+function vConsult(){
+  return `${A("Блок 6: «15-минутная консультация». Статус под вопросом: бесплатные консультации могут заменить анкетой, контактом и листом ожидания; провайдеры-агентства дают свои 15 минут.")}
+  <h1>Поможем сузить выбор</h1><p class="lead">Коротко опишите ситуацию. Если консультация доступна, мы предложим время; если нет — свяжемся письмом. <span class="tag hyp">статус блока под вопросом</span></p>
+  <div class="card" style="max-width:640px"><div class="field"><label>Как вас зовут?</label><input type="text" id="cn"></div><div class="field"><label>Email</label><input type="email" id="ce" value="${esc(S.email)}"></div><div class="field"><label>Что хотите обсудить?</label><textarea id="cq" placeholder="Например: не можем выбрать между двумя специальностями"></textarea></div>
+  <button class="btn gold" onclick="S.consult={q:($('#cq').value||'вопрос').slice(0,80)};toast('Заявка принята. Ответим письмом.');go('cabinet')">Отправить</button></div>`;
+}
+
+function vCabinet(){
+  const sav=S.saved.map(s=>'<div class="row"><span class="chip" style="background:'+DIRS[s.d].bg+'">'+DIRS[s.d].name+'</span> '+s.n+' вариантов, '+s.date+'</div>').join("")||'<div class="small mute">Подборок пока нет.</div>';
+  const fav=S.favs.map(id=>'<div class="row"><span class="chip" style="background:'+DIRS[item(id).d].bg+'">'+DIRS[item(id).d].name+'</span> '+esc(item(id).t)+'</div>').join("")||'<div class="small mute">Избранного пока нет.</div>';
+  const apps=S.apps.map(a=>'<div class="row"><b>'+esc(a.t)+'</b> <span class="pill">'+esc(a.kind)+'</span> <span class="chip known">'+esc(a.st)+'</span></div>').join("")||'<div class="small mute">Заявок пока нет.</div>';
+  const wl=S.wait.map(w=>'<div class="row">⏳ '+esc(w)+'</div>').join("")||'<div class="small mute">Вы не в листе ожидания.</div>';
+  return `${A("Кабинет «Мой путь»: подборки, избранное, выбранные варианты, статусы, напоминания о сроках, лист ожидания. Хранит данные между направлениями.")}
+  <h1>Мой путь</h1><p class="lead">Всё, что вы собрали: подборки, избранное, заявки и напоминания. Направления сменяют друг друга, кабинет общий.</p>
+  <div class="grid g2" style="margin-top:14px">
+   <div class="card"><h3>Подборки</h3>${sav}</div>
+   <div class="card"><h3>Избранное</h3>${fav}</div>
+   <div class="card"><h3>Заявки и статусы</h3>${apps}</div>
+   <div class="card"><h3>Напоминания о сроках</h3>${S.favs.concat(S.apps.map(a=>a.t)).length?'<div class="small">Письмо за 30 дней до срока подачи для избранного <span class="tag demo">демо</span></div>':'<div class="small mute">Добавьте варианты в избранное, чтобы получать напоминания.</div>'}<div class="small mute" style="margin-top:6px">Email: ${S.email?esc(S.email):'не указан'}</div></div>
+   <div class="card"><h3>Лист ожидания</h3>${wl}${S.consult?'<div class="row">⏳ Консультация: '+esc(S.consult.q)+'</div>':''}</div>
+   <div class="card"><h3>Что дальше</h3><div class="row"><button class="btn ghost sm" onclick="go('home')">Новый поиск</button><button class="btn ghost sm" onclick="go('orient')">Разбор сильных сторон</button><button class="btn ghost sm" onclick="go('services')">Услуги</button></div></div>
+  </div>`;
+}
+
+function vMap(){
+  const R=[
+   ["1. Осознание проблемы","Встречает материалы, решает искать","Тексты материалов на языке болей клиента","docs/27 [гипотеза]"],
+   ["2. Поиск сайта сервиса","Поисковая система → ссылка на портал → «Доверяет сервису?»","Главная: страна, язык, валюта; блок доверия; свободный запрос","Допущение: база полная"],
+   ["3. Выбор направления и ввод условий","Выбирает, что искать → форма направления","Переключатель направлений, форма и «Уже известно»","Обязательность полей не утверждена (сводка 27.10)"],
+   ["3. …","Проверяет, чего не хватает → спрашивает недостающее → уточняет по желанию","Поля с красной отметкой, блок «Уточнить по желанию»","Бюджет: «не определился» ≠ «без ограничения»"],
+   ["4. Подбор и выдача","Выдача направления, фильтры, сравнение до 4, избранное","Карточки, фильтры, панель сравнения","Все данные демонстрационные"],
+   ["4. …","Сохраняет подборку → «Подборка подошла?» → другое направление?","Кнопки сохранить/поделиться, вопрос «Подошла?», переключатель","Статистика ответов"],
+   ["Блоки 6–8 в поиске","Плашки и баннеры по условию","Баннер профориентации, плашка консультации, плашка услуг (одна на экран)","Блок 6: статус под вопросом"],
+   ["5. Выбор варианта","Профессия → подбор вуза; вуз/колледж/программа → «большая кнопка»","Кнопка «Где учиться» у профессии; «Перейти или подать заявку» у вуза","Окно вариантов не утверждено"],
+   ["5. «Большая кнопка»","Сайт (email) · заявка через портал · услуги","Окно с тремя вариантами, email, имитация новой вкладки","Заявка через портал — гипотеза"],
+   ["5. Возврат","Возвращается и отмечает статус; письмо по email","Экран «Как продвигаются дела?», кабинет «Мой путь»","Письмо: docs/21 (цепочка)"],
+   ["Блок 7. Профориентация","Скрининг → карта → отчёт → в поиск","Экран «Не знаете, кем стать?», подстановка в поиск профессий","Открытое или платное — не решено"],
+   ["Блок 8. Услуги и пакеты","Лист ожидания на услуги","Экран «Услуги и пакеты»","Состав и цены не заданы"]];
+  return `<h1>Соответствие карте</h1><p class="lead">Какой экран концепта какому узлу карты соответствует. Карта: <a href="cjm-poisk-vse-napravleniya.html">cjm-poisk-vse-napravleniya.html</a>.</p>
+  <table class="map"><tr><th>Этап карты</th><th>Узлы схемы</th><th>Экран или элемент концепта</th><th>Статус</th></tr>${R.map(r=>'<tr>'+r.map(c=>'<td>'+esc(c)+'</td>').join("")+'</tr>').join("")}</table>
+  <h2 style="margin-top:24px">Дорожки портала и направления</h2>
+  <div class="grid g4">${Object.keys(DIRS).map(k=>'<div class="card" style="border-left:5px solid '+DIRS[k].color+'"><h3>'+DIRS[k].name+'</h3><div class="small mute">'+esc(FORMS[k].note)+'</div></div>').join("")}</div>`;
+}
+
+/* ---------- каркас ---------- */
+function openModal(h){$("#modal").innerHTML=h;$("#ov").classList.add("on")}
+function closeModal(){$("#ov").classList.remove("on")}
+$("#ov").addEventListener("click",e=>{if(e.target.id==="ov")closeModal()});
+const SCR={home:vHome,search:vSearch,results:vResults,outbound:vOutbound,returned:vReturned,services:vServices,orient:vOrient,consult:vConsult,cabinet:vCabinet,map:vMap};
+function render(){
+  $("#view").innerHTML=SCR[S.screen]();
+  $("#cabCount").textContent=cabCount();
+  $("#ctxlang").textContent=LANGCUR[S.country];$("#country").value=S.country;
+  document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.s===S.screen||(b.dataset.s==="home"&&["search","results"].includes(S.screen))));
+}
+window.__S=S;window.__go=(s)=>{S.screen=s;render();window.scrollTo(0,0)};window.__render=render;
+render();
+</script>
+</body>
+</html>
