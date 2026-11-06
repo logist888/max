@@ -241,6 +241,13 @@ h3{font-size:16px;margin:0 0 6px}
 .pf.miss label{color:#ffb3b3}
 .panel .go{align-self:stretch;min-width:130px;border-radius:10px;font-size:17px}
 .compact .hero{padding:14px 0 22px}
+@media(min-width:900px){
+ .panel:not(.wrap){flex-wrap:nowrap}
+ .panel:not(.wrap) .pf{min-width:0;padding:8px 12px}
+ .panel:not(.wrap) .pf label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+ .panel:not(.wrap) .pf input,.panel:not(.wrap) .pf select,.panel:not(.wrap) .pfsel{font-size:15px}
+ .panel:not(.wrap) .go{min-width:0;flex:0 0 108px;padding:0 14px;font-size:16px}
+}
 .compact .tabs{margin:0 0 12px}
 .sub{padding-top:24px}
 /* выдача */
@@ -320,7 +327,7 @@ h3{font-size:16px;margin:0 0 6px}
 .vchips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
 
 .pfsel{display:block;width:100%;text-align:start;border:0;background:transparent;color:#fff;font-size:16px;font-weight:600;padding:3px 18px 3px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;position:relative;font-family:inherit}
-.pf:has(.pfsel)::after{content:"";position:absolute;inset-inline-end:14px;top:50%;width:7px;height:7px;border-inline-end:2px solid #b9c8de;border-bottom:2px solid #b9c8de;transform:translateY(-2px) rotate(45deg);pointer-events:none}
+.pf:has(.pfsel)::after{content:"";position:absolute;inset-inline-end:14px;top:60%;width:7px;height:7px;border-inline-end:2px solid #b9c8de;border-bottom:2px solid #b9c8de;transform:translateY(-2px) rotate(45deg);pointer-events:none}
 .topstrip{display:none;background:#d9c19a;color:#2a1f0e;text-align:center;font-size:14px;font-weight:600;padding:8px 12px;line-height:1.25}
 .topstrip a{color:#2a1f0e;text-decoration:underline;cursor:pointer;font-weight:700;margin-inline-start:6px}
 .ov.sheetov{align-items:center}
@@ -612,7 +619,7 @@ function panel(){
   else if(S.d==="col")fs=from+pfield("Где учиться","where",whereF("where",1),has("where"))+pfield("Когда","year",selF("year",YEARS,"Год поступления"),has("year"))+pfield("Специальность","topic",selF("topic",TOPICS.col,"Выберите"),has("topic"));
   else if(S.d==="pro")fs=from+pfield("Где учиться","study",whereF("study",1),false)+pfield("Где хотел бы работать","where",whereF("where",0),has("where"))+pfield("Интересы и навыки","interests",selF("interests",TOPICS.pro,"Выберите"),has("interests"));
   else fs=from+pfield("Где учиться","where",whereF("where",1),false)+pfield("Формат","format",selF("format",FMT,"Выберите"),has("format"))+pfield("Когда","period",selF("period",PERIODS,"Период"),has("period"))+(S.f.period==="Укажу даты"?pfield("Дата начала","dateFrom",dateF("dateFrom"),has("dateFrom"))+pfield("Дата окончания","dateTo",dateF("dateTo"),has("dateTo")):"")+pfield("Тема","topic",selF("topic",TOPICS.kp,"Выберите"),has("topic"))+pfield("Длительность","duration",selF("duration",DURS,"Любая"),false)+pfield("Возраст на старте","age",selF("age",AGES,"Любой"),false);
-  return '<div class="panel">'+fs+'<button class="btn gold go" onclick="search()">'+T("Найти")+'</button></div>';
+  return '<div class="panel'+(S.d==="kp"&&S.f.period==="Укажу даты"?' wrap':'')+'">'+fs+'<button class="btn gold go" onclick="search()">'+T("Найти")+'</button></div>';
 }
 function onPanel(){if(S.screen==="results")render()}
 function tabsHtml(){return '<div class="tabs" role="tablist">'+Object.keys(DIRS).map(k=>'<button class="tab '+(S.d===k?'on':'')+'" data-d="'+k+'" role="tab" onclick="setD(\''+k+'\')"><i></i>'+T(DIRS[k].name)+'</button>').join("")+'</div>'}
