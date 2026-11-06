@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="15235" height="4742" viewBox="0 0 15235 4742" font-family="Inter,'Segoe UI',Arial,'DejaVu Sans',sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="19750" height="5062" viewBox="0 0 19750 5062" font-family="Inter,'Segoe UI',Arial,'DejaVu Sans',sans-serif">
 <title>CJM: единый поток слева направо. Поиск и подбор обучения на портале Mainexperts</title>
 <defs><filter id="sh" x="-10%" y="-10%" width="125%" height="135%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity=".22"/></filter></defs>
-<rect width="15235" height="4742" fill="#ffffff"/>
+<rect width="19750" height="5062" fill="#ffffff"/>
 <g id="backgrounds">
-<rect x="0.0" y="0.0" width="15196.5" height="563.4" fill="#f3f3f3"/>
+<rect x="0.0" y="0.0" width="19711.5" height="563.4" fill="#f3f3f3"/>
 <rect x="0.0" y="0.0" width="122.5" height="55.0" fill="#7b7b7b"/>
 <rect x="116.5" y="0.0" width="6.0" height="55.0" fill="#f3f3f3"/>
 <rect x="0.0" y="49.0" width="122.5" height="6.0" fill="#f3f3f3"/>
@@ -30,11 +30,11 @@
 <rect x="0.0" y="539.4" width="122.5" height="6.0" fill="#f3f3f3"/>
 <rect x="122.5" y="451.9" width="2580.0" height="93.5" fill="#e9e9e9"/>
 <rect x="122.5" y="539.4" width="2580.0" height="6.0" fill="#f3f3f3"/>
-<rect x="0.0" y="763.4" width="15235.0" height="54.0" fill="#2b2b2b"/>
-<rect x="0.0" y="811.4" width="15235.0" height="6.0" fill="#f3f3f3"/>
-<rect x="0.0" y="2639.4" width="15235.0" height="54.0" fill="#0f7de6"/>
-<rect x="0.0" y="2687.4" width="15235.0" height="6.0" fill="#f3f3f3"/>
-<rect x="0.0" y="2693.4" width="15196.5" height="2049.0" fill="#f3f3f3"/>
+<rect x="0.0" y="763.4" width="19750.0" height="54.0" fill="#2b2b2b"/>
+<rect x="0.0" y="811.4" width="19750.0" height="6.0" fill="#f3f3f3"/>
+<rect x="0.0" y="2639.4" width="19750.0" height="54.0" fill="#0f7de6"/>
+<rect x="0.0" y="2687.4" width="19750.0" height="6.0" fill="#f3f3f3"/>
+<rect x="0.0" y="2693.4" width="19711.5" height="2369.0" fill="#f3f3f3"/>
 <rect x="0.0" y="2693.4" width="122.5" height="43.0" fill="#7b7b7b"/>
 <rect x="116.5" y="2693.4" width="6.0" height="43.0" fill="#f3f3f3"/>
 <rect x="0.0" y="2730.4" width="122.5" height="6.0" fill="#f3f3f3"/>
@@ -62,6 +62,12 @@
 <rect x="12592.5" y="2693.4" width="2580.0" height="43.0" fill="#0f7de6"/>
 <rect x="12592.5" y="2730.4" width="2580.0" height="6.0" fill="#f3f3f3"/>
 <rect x="12592.5" y="2693.4" width="6.0" height="43.0" fill="#f3f3f3"/>
+<rect x="15172.5" y="2693.4" width="2580.0" height="43.0" fill="#0f7de6"/>
+<rect x="15172.5" y="2730.4" width="2580.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15172.5" y="2693.4" width="6.0" height="43.0" fill="#f3f3f3"/>
+<rect x="17752.5" y="2693.4" width="1935.0" height="43.0" fill="#0f7de6"/>
+<rect x="17752.5" y="2730.4" width="1935.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17752.5" y="2693.4" width="6.0" height="43.0" fill="#f3f3f3"/>
 <rect x="0.0" y="2736.4" width="122.5" height="213.0" fill="#7b7b7b"/>
 <rect x="116.5" y="2736.4" width="6.0" height="213.0" fill="#f3f3f3"/>
 <rect x="0.0" y="2943.4" width="122.5" height="6.0" fill="#f3f3f3"/>
@@ -83,9 +89,9 @@
 <rect x="0.0" y="3983.4" width="122.5" height="241.0" fill="#7b7b7b"/>
 <rect x="116.5" y="3983.4" width="6.0" height="241.0" fill="#f3f3f3"/>
 <rect x="0.0" y="4218.4" width="122.5" height="6.0" fill="#f3f3f3"/>
-<rect x="0.0" y="4224.4" width="122.5" height="500.0" fill="#7b7b7b"/>
-<rect x="116.5" y="4224.4" width="6.0" height="500.0" fill="#f3f3f3"/>
-<rect x="0.0" y="4718.4" width="122.5" height="6.0" fill="#f3f3f3"/>
+<rect x="0.0" y="4224.4" width="122.5" height="820.0" fill="#7b7b7b"/>
+<rect x="116.5" y="4224.4" width="6.0" height="820.0" fill="#f3f3f3"/>
+<rect x="0.0" y="5038.4" width="122.5" height="6.0" fill="#f3f3f3"/>
 <rect x="122.5" y="2736.4" width="860.0" height="213.0" fill="#e9e9e9"/>
 <rect x="122.5" y="2943.4" width="860.0" height="6.0" fill="#f3f3f3"/>
 <rect x="122.5" y="2736.4" width="6.0" height="213.0" fill="#f3f3f3"/>
@@ -110,6 +116,12 @@
 <rect x="12592.5" y="2736.4" width="2580.0" height="213.0" fill="#e9e9e9"/>
 <rect x="12592.5" y="2943.4" width="2580.0" height="6.0" fill="#f3f3f3"/>
 <rect x="12592.5" y="2736.4" width="6.0" height="213.0" fill="#f3f3f3"/>
+<rect x="15172.5" y="2736.4" width="2580.0" height="213.0" fill="#e9e9e9"/>
+<rect x="15172.5" y="2943.4" width="2580.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15172.5" y="2736.4" width="6.0" height="213.0" fill="#f3f3f3"/>
+<rect x="17752.5" y="2736.4" width="1935.0" height="213.0" fill="#e9e9e9"/>
+<rect x="17752.5" y="2943.4" width="1935.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17752.5" y="2736.4" width="6.0" height="213.0" fill="#f3f3f3"/>
 <rect x="122.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
 <rect x="122.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
 <rect x="337.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
@@ -250,6 +262,48 @@
 <rect x="14742.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
 <rect x="14957.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
 <rect x="14957.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15172.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
+<rect x="15172.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15387.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
+<rect x="15387.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15602.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
+<rect x="15602.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15817.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
+<rect x="15817.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16032.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
+<rect x="16032.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16247.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
+<rect x="16247.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16462.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
+<rect x="16462.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16677.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
+<rect x="16677.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16892.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
+<rect x="16892.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17107.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
+<rect x="17107.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17322.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
+<rect x="17322.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17537.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
+<rect x="17537.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17752.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
+<rect x="17752.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17967.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
+<rect x="17967.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18182.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
+<rect x="18182.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18397.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
+<rect x="18397.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18612.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
+<rect x="18612.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18827.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
+<rect x="18827.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="19042.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
+<rect x="19042.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="19257.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
+<rect x="19257.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="19472.5" y="2949.4" width="215.0" height="307.0" fill="#e9e9e9"/>
+<rect x="19472.5" y="3250.4" width="215.0" height="6.0" fill="#f3f3f3"/>
 <rect x="122.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
 <rect x="122.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
 <rect x="337.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
@@ -390,6 +444,48 @@
 <rect x="14742.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
 <rect x="14957.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
 <rect x="14957.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15172.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
+<rect x="15172.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15387.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
+<rect x="15387.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15602.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
+<rect x="15602.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15817.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
+<rect x="15817.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16032.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
+<rect x="16032.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16247.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
+<rect x="16247.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16462.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
+<rect x="16462.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16677.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
+<rect x="16677.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16892.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
+<rect x="16892.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17107.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
+<rect x="17107.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17322.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
+<rect x="17322.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17537.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
+<rect x="17537.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17752.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
+<rect x="17752.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17967.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
+<rect x="17967.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18182.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
+<rect x="18182.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18397.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
+<rect x="18397.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18612.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
+<rect x="18612.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18827.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
+<rect x="18827.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="19042.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
+<rect x="19042.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="19257.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
+<rect x="19257.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="19472.5" y="3256.4" width="215.0" height="191.5" fill="#e9e9e9"/>
+<rect x="19472.5" y="3441.9" width="215.0" height="6.0" fill="#f3f3f3"/>
 <rect x="122.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
 <rect x="122.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
 <rect x="337.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
@@ -530,6 +626,48 @@
 <rect x="14742.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
 <rect x="14957.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
 <rect x="14957.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15172.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
+<rect x="15172.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15387.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
+<rect x="15387.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15602.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
+<rect x="15602.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15817.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
+<rect x="15817.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16032.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
+<rect x="16032.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16247.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
+<rect x="16247.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16462.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
+<rect x="16462.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16677.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
+<rect x="16677.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16892.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
+<rect x="16892.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17107.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
+<rect x="17107.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17322.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
+<rect x="17322.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17537.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
+<rect x="17537.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17752.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
+<rect x="17752.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17967.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
+<rect x="17967.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18182.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
+<rect x="18182.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18397.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
+<rect x="18397.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18612.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
+<rect x="18612.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18827.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
+<rect x="18827.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="19042.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
+<rect x="19042.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="19257.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
+<rect x="19257.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="19472.5" y="3447.9" width="215.0" height="130.5" fill="#e9e9e9"/>
+<rect x="19472.5" y="3572.4" width="215.0" height="6.0" fill="#f3f3f3"/>
 <rect x="122.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
 <rect x="122.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
 <rect x="337.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
@@ -670,6 +808,48 @@
 <rect x="14742.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
 <rect x="14957.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
 <rect x="14957.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15172.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
+<rect x="15172.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15387.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
+<rect x="15387.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15602.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
+<rect x="15602.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15817.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
+<rect x="15817.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16032.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
+<rect x="16032.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16247.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
+<rect x="16247.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16462.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
+<rect x="16462.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16677.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
+<rect x="16677.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16892.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
+<rect x="16892.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17107.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
+<rect x="17107.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17322.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
+<rect x="17322.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17537.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
+<rect x="17537.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17752.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
+<rect x="17752.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17967.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
+<rect x="17967.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18182.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
+<rect x="18182.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18397.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
+<rect x="18397.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18612.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
+<rect x="18612.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18827.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
+<rect x="18827.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="19042.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
+<rect x="19042.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="19257.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
+<rect x="19257.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="19472.5" y="3578.4" width="215.0" height="175.0" fill="#e9e9e9"/>
+<rect x="19472.5" y="3747.4" width="215.0" height="6.0" fill="#f3f3f3"/>
 <rect x="122.5" y="3753.4" width="215.0" height="77.2" fill="#eaf5e4"/>
 <rect x="122.5" y="3830.1" width="215.0" height="77.2" fill="#fdf3cf"/>
 <rect x="122.5" y="3906.7" width="215.0" height="77.2" fill="#f9e3e3"/>
@@ -950,6 +1130,90 @@
 <rect x="14957.5" y="3830.1" width="215.0" height="77.2" fill="#fdf3cf"/>
 <rect x="14957.5" y="3906.7" width="215.0" height="77.2" fill="#f9e3e3"/>
 <rect x="14957.5" y="3977.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15172.5" y="3753.4" width="215.0" height="77.2" fill="#eaf5e4"/>
+<rect x="15172.5" y="3830.1" width="215.0" height="77.2" fill="#fdf3cf"/>
+<rect x="15172.5" y="3906.7" width="215.0" height="77.2" fill="#f9e3e3"/>
+<rect x="15172.5" y="3977.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15387.5" y="3753.4" width="215.0" height="77.2" fill="#eaf5e4"/>
+<rect x="15387.5" y="3830.1" width="215.0" height="77.2" fill="#fdf3cf"/>
+<rect x="15387.5" y="3906.7" width="215.0" height="77.2" fill="#f9e3e3"/>
+<rect x="15387.5" y="3977.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15602.5" y="3753.4" width="215.0" height="77.2" fill="#eaf5e4"/>
+<rect x="15602.5" y="3830.1" width="215.0" height="77.2" fill="#fdf3cf"/>
+<rect x="15602.5" y="3906.7" width="215.0" height="77.2" fill="#f9e3e3"/>
+<rect x="15602.5" y="3977.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15817.5" y="3753.4" width="215.0" height="77.2" fill="#eaf5e4"/>
+<rect x="15817.5" y="3830.1" width="215.0" height="77.2" fill="#fdf3cf"/>
+<rect x="15817.5" y="3906.7" width="215.0" height="77.2" fill="#f9e3e3"/>
+<rect x="15817.5" y="3977.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16032.5" y="3753.4" width="215.0" height="77.2" fill="#eaf5e4"/>
+<rect x="16032.5" y="3830.1" width="215.0" height="77.2" fill="#fdf3cf"/>
+<rect x="16032.5" y="3906.7" width="215.0" height="77.2" fill="#f9e3e3"/>
+<rect x="16032.5" y="3977.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16247.5" y="3753.4" width="215.0" height="77.2" fill="#eaf5e4"/>
+<rect x="16247.5" y="3830.1" width="215.0" height="77.2" fill="#fdf3cf"/>
+<rect x="16247.5" y="3906.7" width="215.0" height="77.2" fill="#f9e3e3"/>
+<rect x="16247.5" y="3977.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16462.5" y="3753.4" width="215.0" height="77.2" fill="#eaf5e4"/>
+<rect x="16462.5" y="3830.1" width="215.0" height="77.2" fill="#fdf3cf"/>
+<rect x="16462.5" y="3906.7" width="215.0" height="77.2" fill="#f9e3e3"/>
+<rect x="16462.5" y="3977.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16677.5" y="3753.4" width="215.0" height="77.2" fill="#eaf5e4"/>
+<rect x="16677.5" y="3830.1" width="215.0" height="77.2" fill="#fdf3cf"/>
+<rect x="16677.5" y="3906.7" width="215.0" height="77.2" fill="#f9e3e3"/>
+<rect x="16677.5" y="3977.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16892.5" y="3753.4" width="215.0" height="77.2" fill="#eaf5e4"/>
+<rect x="16892.5" y="3830.1" width="215.0" height="77.2" fill="#fdf3cf"/>
+<rect x="16892.5" y="3906.7" width="215.0" height="77.2" fill="#f9e3e3"/>
+<rect x="16892.5" y="3977.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17107.5" y="3753.4" width="215.0" height="77.2" fill="#eaf5e4"/>
+<rect x="17107.5" y="3830.1" width="215.0" height="77.2" fill="#fdf3cf"/>
+<rect x="17107.5" y="3906.7" width="215.0" height="77.2" fill="#f9e3e3"/>
+<rect x="17107.5" y="3977.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17322.5" y="3753.4" width="215.0" height="77.2" fill="#eaf5e4"/>
+<rect x="17322.5" y="3830.1" width="215.0" height="77.2" fill="#fdf3cf"/>
+<rect x="17322.5" y="3906.7" width="215.0" height="77.2" fill="#f9e3e3"/>
+<rect x="17322.5" y="3977.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17537.5" y="3753.4" width="215.0" height="77.2" fill="#eaf5e4"/>
+<rect x="17537.5" y="3830.1" width="215.0" height="77.2" fill="#fdf3cf"/>
+<rect x="17537.5" y="3906.7" width="215.0" height="77.2" fill="#f9e3e3"/>
+<rect x="17537.5" y="3977.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17752.5" y="3753.4" width="215.0" height="77.2" fill="#eaf5e4"/>
+<rect x="17752.5" y="3830.1" width="215.0" height="77.2" fill="#fdf3cf"/>
+<rect x="17752.5" y="3906.7" width="215.0" height="77.2" fill="#f9e3e3"/>
+<rect x="17752.5" y="3977.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17967.5" y="3753.4" width="215.0" height="77.2" fill="#eaf5e4"/>
+<rect x="17967.5" y="3830.1" width="215.0" height="77.2" fill="#fdf3cf"/>
+<rect x="17967.5" y="3906.7" width="215.0" height="77.2" fill="#f9e3e3"/>
+<rect x="17967.5" y="3977.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18182.5" y="3753.4" width="215.0" height="77.2" fill="#eaf5e4"/>
+<rect x="18182.5" y="3830.1" width="215.0" height="77.2" fill="#fdf3cf"/>
+<rect x="18182.5" y="3906.7" width="215.0" height="77.2" fill="#f9e3e3"/>
+<rect x="18182.5" y="3977.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18397.5" y="3753.4" width="215.0" height="77.2" fill="#eaf5e4"/>
+<rect x="18397.5" y="3830.1" width="215.0" height="77.2" fill="#fdf3cf"/>
+<rect x="18397.5" y="3906.7" width="215.0" height="77.2" fill="#f9e3e3"/>
+<rect x="18397.5" y="3977.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18612.5" y="3753.4" width="215.0" height="77.2" fill="#eaf5e4"/>
+<rect x="18612.5" y="3830.1" width="215.0" height="77.2" fill="#fdf3cf"/>
+<rect x="18612.5" y="3906.7" width="215.0" height="77.2" fill="#f9e3e3"/>
+<rect x="18612.5" y="3977.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18827.5" y="3753.4" width="215.0" height="77.2" fill="#eaf5e4"/>
+<rect x="18827.5" y="3830.1" width="215.0" height="77.2" fill="#fdf3cf"/>
+<rect x="18827.5" y="3906.7" width="215.0" height="77.2" fill="#f9e3e3"/>
+<rect x="18827.5" y="3977.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="19042.5" y="3753.4" width="215.0" height="77.2" fill="#eaf5e4"/>
+<rect x="19042.5" y="3830.1" width="215.0" height="77.2" fill="#fdf3cf"/>
+<rect x="19042.5" y="3906.7" width="215.0" height="77.2" fill="#f9e3e3"/>
+<rect x="19042.5" y="3977.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="19257.5" y="3753.4" width="215.0" height="77.2" fill="#eaf5e4"/>
+<rect x="19257.5" y="3830.1" width="215.0" height="77.2" fill="#fdf3cf"/>
+<rect x="19257.5" y="3906.7" width="215.0" height="77.2" fill="#f9e3e3"/>
+<rect x="19257.5" y="3977.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="19472.5" y="3753.4" width="215.0" height="77.2" fill="#eaf5e4"/>
+<rect x="19472.5" y="3830.1" width="215.0" height="77.2" fill="#fdf3cf"/>
+<rect x="19472.5" y="3906.7" width="215.0" height="77.2" fill="#f9e3e3"/>
+<rect x="19472.5" y="3977.4" width="215.0" height="6.0" fill="#f3f3f3"/>
 <rect x="122.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
 <rect x="122.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
 <rect x="337.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
@@ -1090,146 +1354,230 @@
 <rect x="14742.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
 <rect x="14957.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
 <rect x="14957.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="122.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="122.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="337.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="337.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="552.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="552.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="767.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="767.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="982.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="982.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="1197.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="1197.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="1412.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="1412.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="1627.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="1627.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="1842.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="1842.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="2057.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="2057.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="2272.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="2272.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="2487.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="2487.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="2702.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="2702.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="2917.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="2917.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="3132.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="3132.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="3347.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="3347.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="3562.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="3562.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="3777.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="3777.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="3992.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="3992.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="4207.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="4207.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="4422.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="4422.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="4637.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="4637.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="4852.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="4852.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="5067.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="5067.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="5282.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="5282.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="5497.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="5497.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="5712.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="5712.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="5927.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="5927.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="6142.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="6142.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="6357.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="6357.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="6572.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="6572.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="6787.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="6787.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="7002.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="7002.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="7217.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="7217.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="7432.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="7432.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="7647.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="7647.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="7862.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="7862.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="8077.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="8077.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="8292.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="8292.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="8507.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="8507.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="8722.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="8722.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="8937.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="8937.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="9152.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="9152.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="9367.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="9367.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="9582.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="9582.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="9797.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="9797.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="10012.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="10012.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="10227.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="10227.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="10442.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="10442.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="10657.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="10657.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="10872.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="10872.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="11087.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="11087.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="11302.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="11302.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="11517.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="11517.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="11732.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="11732.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="11947.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="11947.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="12162.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="12162.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="12377.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="12377.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="12592.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="12592.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="12807.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="12807.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="13022.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="13022.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="13237.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="13237.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="13452.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="13452.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="13667.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="13667.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="13882.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="13882.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="14097.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="14097.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="14312.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="14312.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="14527.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="14527.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="14742.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="14742.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
-<rect x="14957.5" y="4224.4" width="215.0" height="500.0" fill="#e9e9e9"/>
-<rect x="14957.5" y="4718.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15172.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
+<rect x="15172.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15387.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
+<rect x="15387.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15602.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
+<rect x="15602.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15817.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
+<rect x="15817.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16032.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
+<rect x="16032.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16247.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
+<rect x="16247.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16462.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
+<rect x="16462.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16677.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
+<rect x="16677.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16892.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
+<rect x="16892.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17107.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
+<rect x="17107.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17322.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
+<rect x="17322.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17537.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
+<rect x="17537.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17752.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
+<rect x="17752.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17967.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
+<rect x="17967.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18182.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
+<rect x="18182.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18397.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
+<rect x="18397.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18612.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
+<rect x="18612.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18827.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
+<rect x="18827.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="19042.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
+<rect x="19042.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="19257.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
+<rect x="19257.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="19472.5" y="3983.4" width="215.0" height="241.0" fill="#e9e9e9"/>
+<rect x="19472.5" y="4218.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="122.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="122.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="337.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="337.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="552.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="552.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="767.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="767.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="982.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="982.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="1197.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="1197.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="1412.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="1412.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="1627.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="1627.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="1842.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="1842.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="2057.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="2057.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="2272.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="2272.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="2487.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="2487.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="2702.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="2702.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="2917.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="2917.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="3132.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="3132.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="3347.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="3347.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="3562.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="3562.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="3777.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="3777.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="3992.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="3992.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="4207.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="4207.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="4422.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="4422.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="4637.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="4637.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="4852.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="4852.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="5067.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="5067.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="5282.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="5282.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="5497.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="5497.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="5712.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="5712.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="5927.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="5927.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="6142.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="6142.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="6357.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="6357.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="6572.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="6572.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="6787.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="6787.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="7002.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="7002.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="7217.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="7217.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="7432.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="7432.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="7647.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="7647.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="7862.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="7862.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="8077.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="8077.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="8292.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="8292.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="8507.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="8507.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="8722.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="8722.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="8937.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="8937.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="9152.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="9152.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="9367.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="9367.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="9582.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="9582.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="9797.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="9797.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="10012.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="10012.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="10227.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="10227.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="10442.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="10442.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="10657.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="10657.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="10872.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="10872.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="11087.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="11087.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="11302.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="11302.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="11517.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="11517.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="11732.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="11732.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="11947.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="11947.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="12162.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="12162.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="12377.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="12377.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="12592.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="12592.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="12807.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="12807.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="13022.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="13022.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="13237.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="13237.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="13452.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="13452.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="13667.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="13667.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="13882.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="13882.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="14097.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="14097.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="14312.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="14312.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="14527.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="14527.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="14742.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="14742.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="14957.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="14957.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15172.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="15172.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15387.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="15387.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15602.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="15602.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="15817.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="15817.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16032.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="16032.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16247.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="16247.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16462.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="16462.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16677.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="16677.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="16892.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="16892.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17107.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="17107.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17322.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="17322.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17537.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="17537.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17752.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="17752.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="17967.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="17967.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18182.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="18182.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18397.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="18397.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18612.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="18612.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="18827.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="18827.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="19042.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="19042.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="19257.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="19257.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
+<rect x="19472.5" y="4224.4" width="215.0" height="820.0" fill="#e9e9e9"/>
+<rect x="19472.5" y="5038.4" width="215.0" height="6.0" fill="#f3f3f3"/>
 </g>
 <g id="labels">
 <text x="11.6" y="29.3" font-size="13.0" font-weight="400" fill="#ffffff" textLength="93.3" lengthAdjust="spacingAndGlyphs">Название CJM</text>
@@ -1254,6 +1602,8 @@
 <text x="8622.4" y="2717.0" font-size="14.0" font-weight="600" fill="#ffffff" textLength="206.1" lengthAdjust="spacingAndGlyphs">6. 15-минутная консультация</text>
 <text x="11130.4" y="2717.0" font-size="14.0" font-weight="600" fill="#ffffff" textLength="135.3" lengthAdjust="spacingAndGlyphs">7. Профориентация</text>
 <text x="13721.6" y="2717.0" font-size="14.0" font-weight="600" fill="#ffffff" textLength="327.8" lengthAdjust="spacingAndGlyphs">8. Дополнительные пакеты и услуги агентства</text>
+<text x="16378.9" y="2717.0" font-size="14.0" font-weight="600" fill="#ffffff" textLength="173.1" lengthAdjust="spacingAndGlyphs">9. Сохранение и аккаунт</text>
+<text x="18610.3" y="2717.0" font-size="14.0" font-weight="600" fill="#ffffff" textLength="225.4" lengthAdjust="spacingAndGlyphs">10. «Сохранённое» и сравнение</text>
 <text x="22.8" y="2844.7" font-size="13.0" font-weight="400" fill="#ffffff" textLength="71.0" lengthAdjust="spacingAndGlyphs">Цель этапа</text>
 <text x="27.3" y="3096.7" font-size="13.0" font-weight="400" fill="#ffffff" textLength="61.8" lengthAdjust="spacingAndGlyphs">Действия</text>
 <text x="32.8" y="3112.7" font-size="13.0" font-weight="400" fill="#ffffff" textLength="50.8" lengthAdjust="spacingAndGlyphs">клиента</text>
@@ -1268,15 +1618,15 @@
 <text x="21.6" y="4097.7" font-size="13.0" font-weight="400" fill="#ffffff" textLength="73.4" lengthAdjust="spacingAndGlyphs">улучшению</text>
 <text x="19.0" y="4113.7" font-size="13.0" font-weight="400" fill="#ffffff" textLength="78.5" lengthAdjust="spacingAndGlyphs">клиентского</text>
 <text x="39.1" y="4129.7" font-size="13.0" font-weight="400" fill="#ffffff" textLength="38.4" lengthAdjust="spacingAndGlyphs">опыта</text>
-<text x="26.9" y="4436.2" font-size="13.0" font-weight="400" fill="#ffffff" textLength="62.7" lengthAdjust="spacingAndGlyphs">Вставки и</text>
-<text x="25.0" y="4452.2" font-size="13.0" font-weight="400" fill="#ffffff" textLength="66.5" lengthAdjust="spacingAndGlyphs">баннеры в</text>
-<text x="15.7" y="4468.2" font-size="13.0" font-weight="400" fill="#ffffff" textLength="85.0" lengthAdjust="spacingAndGlyphs">поиске: где и</text>
-<text x="40.4" y="4484.2" font-size="13.0" font-weight="400" fill="#ffffff" textLength="35.7" lengthAdjust="spacingAndGlyphs">когда</text>
-<text x="12.3" y="4500.2" font-size="13.0" font-weight="400" fill="#ffffff" textLength="91.9" lengthAdjust="spacingAndGlyphs">показываются</text>
-<text x="14.2" y="4516.2" font-size="13.0" font-weight="400" fill="#ffffff" textLength="88.2" lengthAdjust="spacingAndGlyphs">(блоки 5, 6, 7)</text>
+<text x="26.9" y="4596.2" font-size="13.0" font-weight="400" fill="#ffffff" textLength="62.7" lengthAdjust="spacingAndGlyphs">Вставки и</text>
+<text x="25.0" y="4612.2" font-size="13.0" font-weight="400" fill="#ffffff" textLength="66.5" lengthAdjust="spacingAndGlyphs">баннеры в</text>
+<text x="15.7" y="4628.2" font-size="13.0" font-weight="400" fill="#ffffff" textLength="85.0" lengthAdjust="spacingAndGlyphs">поиске: где и</text>
+<text x="40.4" y="4644.2" font-size="13.0" font-weight="400" fill="#ffffff" textLength="35.7" lengthAdjust="spacingAndGlyphs">когда</text>
+<text x="12.3" y="4660.2" font-size="13.0" font-weight="400" fill="#ffffff" textLength="91.9" lengthAdjust="spacingAndGlyphs">показываются</text>
+<text x="18.8" y="4676.2" font-size="13.0" font-weight="400" fill="#ffffff" textLength="78.9" lengthAdjust="spacingAndGlyphs">(блоки 6–10)</text>
 </g>
 <g id="flowchart">
-<svg x="0.0" y="563.4" xmlns="http://www.w3.org/2000/svg" width="15235" height="190" viewBox="0 0 15235 190" font-family="Inter,Segoe UI,Arial,DejaVu Sans,sans-serif"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#333"></path></marker></defs><rect width="100%" height="100%" fill="#fff"></rect><text x="24" y="28" font-size="14" font-weight="700" fill="#1d1d1d">Условные обозначения (нотация блок-схем по ГОСТ 19.701-90, ISO 5807)</text>
+<svg x="0.0" y="563.4" xmlns="http://www.w3.org/2000/svg" width="19750" height="190" viewBox="0 0 19750 190" font-family="Inter,Segoe UI,Arial,DejaVu Sans,sans-serif"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#333"></path></marker></defs><rect width="100%" height="100%" fill="#fff"></rect><text x="24" y="28" font-size="14" font-weight="700" fill="#1d1d1d">Условные обозначения (нотация блок-схем по ГОСТ 19.701-90, ISO 5807)</text>
 <rect x="42.0" y="63.0" width="176" height="54.0" rx="27.0" fill="#2b2b2b" stroke="#111" stroke-width="1.6"></rect><text x="130.0" y="94.0" text-anchor="middle" font-size="11" fill="#fff"><tspan x="130.0" dy="0">Начало или конец</tspan></text>
 <rect x="260.0" y="59.0" width="164" height="62.0" rx="3" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"></rect><text x="342.0" y="94.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="342.0" dy="0">Действие, шаг процесса</tspan></text>
 <polygon points="542.0,38.0 628.0,90.0 542.0,142.0 456.0,90.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"></polygon><text x="542.0" y="87.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="542.0" dy="0">Решение,</tspan><tspan x="542.0" dy="13">развилка</tspan></text>
@@ -1296,42 +1646,42 @@
 <rect x="2025" y="160" width="34" height="20" fill="#ffe4cc" stroke="#d08a3a" stroke-width="1.6"></rect><text x="2067" y="174" font-size="11" fill="#222">Портал: короткие программы</text>
 <rect x="2240" y="160" width="34" height="20" fill="#ececec" stroke="#6f6f6f" stroke-width="1.6"></rect><text x="2282" y="174" font-size="11" fill="#222">Внешние сервисы, консультант, агентство</text>
 <rect x="2495" y="160" width="34" height="20" fill="#ececec" stroke="#6f6f6f" stroke-width="1.6" stroke-dasharray="6 4"></rect><text x="2537" y="174" font-size="11" fill="#222">пунктирная рамка — гипотеза, не подтверждённая данными</text></svg>
-<svg x="0.0" y="817.4" xmlns="http://www.w3.org/2000/svg" width="15235" height="1812" viewBox="0 20 15235 1812" font-family="Inter,'Segoe UI',Arial,'DejaVu Sans',sans-serif"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#333"></path></marker></defs><rect x="0" y="20" width="15235" height="1812" fill="#fff"></rect><text x="24" y="46.0" font-size="18" font-weight="700" fill="#1d1d1d">Блок-схема пути клиента: поиск и подбор на портале — вузы, колледжи, профессии, короткие программы</text>
+<svg x="0.0" y="817.4" xmlns="http://www.w3.org/2000/svg" width="19750" height="1812" viewBox="0 20 19750 1812" font-family="Inter,'Segoe UI',Arial,'DejaVu Sans',sans-serif"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#333"></path></marker></defs><rect x="0" y="20" width="19750" height="1812" fill="#fff"></rect><text x="24" y="46.0" font-size="18" font-weight="700" fill="#1d1d1d">Блок-схема пути клиента: поиск и подбор на портале — вузы, колледжи, профессии, короткие программы</text>
 <text x="24" y="66.0" font-size="12" fill="#555">Единый поток слева направо. Портал разделён на дорожки по направлениям; клиент выбирает направление в переключателе и может сменить его в любой момент. Блоки 6, 7, 8 показываются плашками и баннерами; в конце каждого блока возврат в основной путь.</text>
-<rect x="0" y="124.0" width="15235.0" height="240.0" fill="#fafafa"></rect>
+<rect x="0" y="124.0" width="19750.0" height="240.0" fill="#fafafa"></rect>
 <rect x="0" y="124.0" width="122" height="240.0" fill="#7b7b7b"></rect>
-<line x1="0" y1="124.0" x2="15235.0" y2="124.0" stroke="#cfcfcf"></line>
+<line x1="0" y1="124.0" x2="19750.0" y2="124.0" stroke="#cfcfcf"></line>
 <text x="61" y="248.0" text-anchor="middle" font-size="13" fill="#fff">Клиент</text>
-<rect x="0" y="364.0" width="15235.0" height="240.0" fill="#f0f0f0"></rect>
+<rect x="0" y="364.0" width="19750.0" height="240.0" fill="#f0f0f0"></rect>
 <rect x="0" y="364.0" width="122" height="240.0" fill="#7b7b7b"></rect>
-<line x1="0" y1="364.0" x2="15235.0" y2="364.0" stroke="#cfcfcf"></line>
+<line x1="0" y1="364.0" x2="19750.0" y2="364.0" stroke="#cfcfcf"></line>
 <text x="61" y="480.0" text-anchor="middle" font-size="13" fill="#fff">Портал: общая</text>
 <text x="61" y="496.0" text-anchor="middle" font-size="13" fill="#fff">часть</text>
-<rect x="0" y="604.0" width="15235.0" height="240.0" fill="#fafafa"></rect>
+<rect x="0" y="604.0" width="19750.0" height="240.0" fill="#fafafa"></rect>
 <rect x="0" y="604.0" width="122" height="240.0" fill="#7b7b7b"></rect>
-<line x1="0" y1="604.0" x2="15235.0" y2="604.0" stroke="#cfcfcf"></line>
+<line x1="0" y1="604.0" x2="19750.0" y2="604.0" stroke="#cfcfcf"></line>
 <text x="61" y="728.0" text-anchor="middle" font-size="13" fill="#fff">Портал: вузы</text>
-<rect x="0" y="844.0" width="15235.0" height="240.0" fill="#f0f0f0"></rect>
+<rect x="0" y="844.0" width="19750.0" height="240.0" fill="#f0f0f0"></rect>
 <rect x="0" y="844.0" width="122" height="240.0" fill="#7b7b7b"></rect>
-<line x1="0" y1="844.0" x2="15235.0" y2="844.0" stroke="#cfcfcf"></line>
+<line x1="0" y1="844.0" x2="19750.0" y2="844.0" stroke="#cfcfcf"></line>
 <text x="61" y="968.0" text-anchor="middle" font-size="13" fill="#fff">Портал: колледжи</text>
-<rect x="0" y="1084.0" width="15235.0" height="240.0" fill="#fafafa"></rect>
+<rect x="0" y="1084.0" width="19750.0" height="240.0" fill="#fafafa"></rect>
 <rect x="0" y="1084.0" width="122" height="240.0" fill="#7b7b7b"></rect>
-<line x1="0" y1="1084.0" x2="15235.0" y2="1084.0" stroke="#cfcfcf"></line>
+<line x1="0" y1="1084.0" x2="19750.0" y2="1084.0" stroke="#cfcfcf"></line>
 <text x="61" y="1200.0" text-anchor="middle" font-size="13" fill="#fff">Портал:</text>
 <text x="61" y="1216.0" text-anchor="middle" font-size="13" fill="#fff">профессии</text>
-<rect x="0" y="1324.0" width="15235.0" height="240.0" fill="#f0f0f0"></rect>
+<rect x="0" y="1324.0" width="19750.0" height="240.0" fill="#f0f0f0"></rect>
 <rect x="0" y="1324.0" width="122" height="240.0" fill="#7b7b7b"></rect>
-<line x1="0" y1="1324.0" x2="15235.0" y2="1324.0" stroke="#cfcfcf"></line>
+<line x1="0" y1="1324.0" x2="19750.0" y2="1324.0" stroke="#cfcfcf"></line>
 <text x="61" y="1440.0" text-anchor="middle" font-size="13" fill="#fff">Портал: короткие</text>
 <text x="61" y="1456.0" text-anchor="middle" font-size="13" fill="#fff">программы</text>
-<rect x="0" y="1564.0" width="15235.0" height="240.0" fill="#fafafa"></rect>
+<rect x="0" y="1564.0" width="19750.0" height="240.0" fill="#fafafa"></rect>
 <rect x="0" y="1564.0" width="122" height="240.0" fill="#7b7b7b"></rect>
-<line x1="0" y1="1564.0" x2="15235.0" y2="1564.0" stroke="#cfcfcf"></line>
+<line x1="0" y1="1564.0" x2="19750.0" y2="1564.0" stroke="#cfcfcf"></line>
 <text x="61" y="1672.0" text-anchor="middle" font-size="13" fill="#fff">Внешние сервисы,</text>
 <text x="61" y="1688.0" text-anchor="middle" font-size="13" fill="#fff">консультант,</text>
 <text x="61" y="1704.0" text-anchor="middle" font-size="13" fill="#fff">агентство</text>
-<line x1="0" y1="1804.0" x2="15235.0" y2="1804.0" stroke="#cfcfcf"></line>
+<line x1="0" y1="1804.0" x2="19750.0" y2="1804.0" stroke="#cfcfcf"></line>
 <rect x="126.5" y="78.0" width="852.0" height="34" fill="#12c4d4"></rect>
 <text x="552.5" y="100.0" text-anchor="middle" font-size="14" font-weight="600" fill="#fff">1. Осознание проблемы</text>
 <line x1="122.5" y1="78.0" x2="122.5" y2="1804.0" stroke="#b5b5b5" stroke-dasharray="3 5"></line>
@@ -1356,6 +1706,12 @@
 <rect x="12596.5" y="78.0" width="2572.0" height="34" fill="#0f7de6"></rect>
 <text x="13882.5" y="100.0" text-anchor="middle" font-size="14" font-weight="600" fill="#fff">8. Дополнительные пакеты и услуги агентства</text>
 <line x1="12592.5" y1="78.0" x2="12592.5" y2="1804.0" stroke="#b5b5b5" stroke-dasharray="3 5"></line>
+<rect x="15176.5" y="78.0" width="2572.0" height="34" fill="#0f7de6"></rect>
+<text x="16462.5" y="100.0" text-anchor="middle" font-size="14" font-weight="600" fill="#fff">9. Сохранение и аккаунт</text>
+<line x1="15172.5" y1="78.0" x2="15172.5" y2="1804.0" stroke="#b5b5b5" stroke-dasharray="3 5"></line>
+<rect x="17756.5" y="78.0" width="1927.0" height="34" fill="#0f7de6"></rect>
+<text x="18720.0" y="100.0" text-anchor="middle" font-size="14" font-weight="600" fill="#fff">10. «Сохранённое» и сравнение</text>
+<line x1="17752.5" y1="78.0" x2="17752.5" y2="1804.0" stroke="#b5b5b5" stroke-dasharray="3 5"></line>
 <path d="M318.0 244.0 L363.0 244.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
 <path d="M527.0 244.0 L574.0 244.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
 <path d="M746.0 244.0 L793.0 244.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
@@ -1458,6 +1814,10 @@
 <text x="7110.0" y="385.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">по письму</text>
 <path d="M7192.0 244.0 L7316.0 244.0 Q7325.0 244.0 7325.0 253.0 L7325.0 405.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
 <path d="M7407.0 484.0 L7452.0 484.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<path d="M4100.0 319.0 L4100.0 511.5" fill="none" stroke="#7a7a7a" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#ah)"></path>
+<text x="4100.0" y="408.2" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">сердечко</text>
+<path d="M3885.0 325.5 L3885.0 511.5" fill="none" stroke="#7a7a7a" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#ah)"></path>
+<text x="3885.0" y="411.5" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">сравнить</text>
 <path d="M7843.0 484.0 L7888.0 484.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
 <path d="M8052.0 484.0 L8176.0 484.0 Q8185.0 484.0 8185.0 475.0 L8185.0 296.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
 <path d="M8271.0 244.0 L8320.0 244.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
@@ -1513,12 +1873,52 @@
 <path d="M14635.0 536.0 L14635.0 567.0 Q14635.0 576.0 14644.0 576.0 L15056.0 576.0 Q15065.0 576.0 15065.0 567.0 L15065.0 514.5" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
 <text x="14650.0" y="558.0" text-anchor="start" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Нет</text>
 <path d="M14932.0 484.0 L14977.0 484.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<path d="M15368.0 484.0 L15413.0 484.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<path d="M15577.0 484.0 L15624.0 484.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<path d="M15796.0 484.0 L15839.0 484.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<text x="15818.0" y="477.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Нет</text>
+<path d="M15710.0 432.0 L15710.0 159.0 Q15710.0 150.0 15719.0 150.0 L17421.0 150.0 Q17430.0 150.0 17430.0 159.0 L17430.0 448.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<text x="16570.0" y="143.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Да: тост «Сохранено», ссылка «Посмотреть»</text>
+<path d="M15925.0 432.0 L15925.0 368.2 Q15925.0 359.2 15934.0 359.2 L16131.0 359.2 Q16140.0 359.2 16140.0 350.2 L16140.0 286.5" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<text x="15940.0" y="410.0" text-anchor="start" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Нет</text>
+<path d="M16011.0 484.0 L16058.0 484.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<text x="16033.0" y="477.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Да</text>
+<path d="M16140.0 520.0 L16140.0 567.0 Q16140.0 576.0 16149.0 576.0 L17636.0 576.0 Q17645.0 576.0 17645.0 567.0 L17645.0 281.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<text x="16892.5" y="569.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">окно не повторяется</text>
+<path d="M16220.0 244.0 L16269.0 244.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<path d="M16441.0 244.0 L16490.0 244.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<text x="16463.0" y="237.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Создать</text>
+<path d="M16355.0 192.0 L16355.0 173.0 Q16355.0 164.0 16364.0 164.0 L17636.0 164.0 Q17645.0 164.0 17645.0 173.0 L17645.0 207.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<text x="17000.0" y="157.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Позже: окно не повторяется, выбор живёт в браузере</text>
+<path d="M16650.0 244.0 L16776.0 244.0 Q16785.0 244.0 16785.0 253.0 L16785.0 1653.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<path d="M16867.0 1684.0 L16991.0 1684.0 Q17000.0 1684.0 17000.0 1675.0 L17000.0 280.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<path d="M17080.0 244.0 L17206.0 244.0 Q17215.0 244.0 17215.0 253.0 L17215.0 448.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<path d="M17297.0 484.0 L17348.0 484.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<path d="M17512.0 484.0 L17636.0 484.0 Q17645.0 484.0 17645.0 475.0 L17645.0 281.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<path d="M17948.0 484.0 L17993.0 484.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<path d="M18157.0 484.0 L18281.0 484.0 Q18290.0 484.0 18290.0 475.0 L18290.0 299.5" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<path d="M18370.0 244.0 L18419.0 244.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<path d="M18591.0 244.0 L18711.0 244.0 Q18720.0 244.0 18720.0 253.0 L18720.0 441.5" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<text x="18613.0" y="237.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Да</text>
+<path d="M18505.0 192.0 L18505.0 159.0 Q18505.0 150.0 18514.0 150.0 L19571.0 150.0 Q19580.0 150.0 19580.0 159.0 L19580.0 207.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<text x="19042.5" y="143.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Нет: возвращается в поиск и сохраняет ещё</text>
+<path d="M18802.0 484.0 L18926.0 484.0 Q18935.0 484.0 18935.0 475.0 L18935.0 275.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<path d="M19015.0 244.0 L19064.0 244.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<path d="M19236.0 244.0 L19283.0 244.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<text x="19258.0" y="237.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Да</text>
+<path d="M19150.0 192.0 L19150.0 183.0 Q19150.0 174.0 19159.0 174.0 L19571.0 174.0 Q19580.0 174.0 19580.0 183.0 L19580.0 207.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
+<text x="19365.0" y="167.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Нет: консультация или возврат в поиск</text>
+<path d="M19447.0 244.0 L19492.0 244.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"></path>
 <path d="M4745.0 590.0 L4745.0 1725.0 Q4745.0 1734.0 4754.0 1734.0 L9896.0 1734.0 Q9905.0 1734.0 9905.0 1725.0 L9905.0 514.5" fill="none" stroke="#7a7a7a" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#ah)"></path>
 <text x="7325.0" y="1727.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">блок 7 правее; после него снова вводит условия</text>
 <path d="M4960.0 596.5 L4960.0 1747.0 Q4960.0 1756.0 4969.0 1756.0 L7746.0 1756.0 Q7755.0 1756.0 7755.0 1747.0 L7755.0 527.5" fill="none" stroke="#7a7a7a" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#ah)"></path>
 <text x="6357.5" y="1749.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">блок 6 правее; после него снова сравнивает</text>
 <path d="M5390.0 590.0 L5390.0 1769.0 Q5390.0 1778.0 5399.0 1778.0 L12691.0 1778.0 Q12700.0 1778.0 12700.0 1769.0 L12700.0 521.0" fill="none" stroke="#7a7a7a" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#ah)"></path>
 <text x="9045.0" y="1771.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">блок 8 правее; после него переходит к выбору варианта</text>
+<path d="M4100.0 596.5 L4100.0 1783.0 Q4100.0 1792.0 4109.0 1792.0 L15271.0 1792.0 Q15280.0 1792.0 15280.0 1783.0 L15280.0 521.0" fill="none" stroke="#7a7a7a" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#ah)"></path>
+<text x="9690.0" y="1785.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">блок 9 правее; после него снова в выдачу</text>
+<path d="M3885.0 596.5 L3885.0 1799.0 Q3885.0 1808.0 3894.0 1808.0 L17851.0 1808.0 Q17860.0 1808.0 17860.0 1799.0 L17860.0 534.0" fill="none" stroke="#7a7a7a" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#ah)"></path>
+<text x="10872.5" y="1801.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">блок 10 правее; после него к выбору варианта</text>
 <path d="M6250.0 123.0 L6250.0 125.5 Q6250.0 128.0 6259.0 128.0 L12691.0 128.0 Q12700.0 128.0 12700.0 137.0 L12700.0 447.0" fill="none" stroke="#7a7a7a" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#ah)"></path>
 <text x="9475.0" y="121.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">блок 8 правее; после него возвращается к «большой кнопке»</text>
 <rect x="142.0" y="213.5" width="176" height="61.0" rx="30.5" fill="#2b2b2b" stroke="#111" stroke-width="1.6"></rect><text x="230.0" y="235.0" text-anchor="middle" font-size="11" fill="#fff"><tspan x="230.0" dy="0">Начало: родитель живёт</tspan><tspan x="230.0" dy="13">обычной жизнью, выбор</tspan><tspan x="230.0" dy="13">ещё не ощущается</tspan></text>
@@ -1577,6 +1977,8 @@
 <rect x="7028.0" y="208.0" width="164" height="72.0" rx="3" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"></rect><text x="7110.0" y="228.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="7110.0" dy="0">Возвращается на портал</tspan><tspan x="7110.0" dy="13">и отмечает статус:</tspan><tspan x="7110.0" dy="13">подал, записался, пока</tspan><tspan x="7110.0" dy="13">думает</tspan></text>
 <path d="M7243.0 405.0 H7407.0 V555.0 C7366.0 543.0 7325.0 567.0 7325.0 555.0 C7284.0 543.0 7243.0 565.0 7243.0 555.0 Z" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"></path><text x="7325.0" y="429.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="7325.0" dy="0">Сердечко и</tspan><tspan x="7325.0" dy="13">«Сохранённое» по</tspan><tspan x="7325.0" dy="13">категориям (образец —</tspan><tspan x="7325.0" dy="13">«Favourites» в UCAS):</tspan><tspan x="7325.0" dy="13">короткий список до 4</tspan><tspan x="7325.0" dy="13">и сравнение; вузы,</tspan><tspan x="7325.0" dy="13">колледжи, профессии,</tspan><tspan x="7325.0" dy="13">программы, подборки,</tspan><tspan x="7325.0" dy="13">статьи, заявки;</tspan><tspan x="7325.0" dy="13">напоминания о сроках</tspan></text>
 <rect x="7452.0" y="453.5" width="176" height="61.0" rx="30.5" fill="#2b2b2b" stroke="#111" stroke-width="1.6"></rect><text x="7540.0" y="475.0" text-anchor="middle" font-size="11" fill="#fff"><tspan x="7540.0" dy="0">Конец: путь выбран,</tspan><tspan x="7540.0" dy="13">статус отслеживается в</tspan><tspan x="7540.0" dy="13">«Сохранённом»</tspan></text>
+<rect x="4020.0" y="511.5" width="160" height="85.0" rx="2" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"></rect><line x1="4032.0" y1="511.5" x2="4032.0" y2="596.5" stroke="#2a8fbd" stroke-width="1.6"></line><line x1="4168.0" y1="511.5" x2="4168.0" y2="596.5" stroke="#2a8fbd" stroke-width="1.6"></line><text x="4100.0" y="532.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="4100.0" dy="0">Блок 9:</tspan><tspan x="4100.0" dy="13">сохранение и</tspan><tspan x="4100.0" dy="13">аккаунт</tspan><tspan x="4100.0" dy="13">(подпроцесс</tspan><tspan x="4100.0" dy="13">правее)</tspan></text>
+<rect x="3805.0" y="511.5" width="160" height="85.0" rx="2" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"></rect><line x1="3817.0" y1="511.5" x2="3817.0" y2="596.5" stroke="#2a8fbd" stroke-width="1.6"></line><line x1="3953.0" y1="511.5" x2="3953.0" y2="596.5" stroke="#2a8fbd" stroke-width="1.6"></line><text x="3885.0" y="532.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="3885.0" dy="0">Блок 10:</tspan><tspan x="3885.0" dy="13">«Сохранённое» и</tspan><tspan x="3885.0" dy="13">сравнение</tspan><tspan x="3885.0" dy="13">(подпроцесс</tspan><tspan x="3885.0" dy="13">правее)</tspan></text>
 <rect x="7667.0" y="440.5" width="176" height="87.0" rx="43.5" fill="#2b2b2b" stroke="#111" stroke-width="1.6"></rect><text x="7755.0" y="462.0" text-anchor="middle" font-size="11" fill="#fff"><tspan x="7755.0" dy="0">Начало блока 6: клиент</tspan><tspan x="7755.0" dy="13">сравнивает 3 и более</tspan><tspan x="7755.0" dy="13">вариантов или</tspan><tspan x="7755.0" dy="13">возвращается в поиск</tspan><tspan x="7755.0" dy="13">повторно</tspan></text>
 <rect x="7888.0" y="453.0" width="164" height="62.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"></rect><text x="7970.0" y="475.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="7970.0" dy="0">Показывает плашку «Не</tspan><tspan x="7970.0" dy="13">уверены? 15 минут с</tspan><tspan x="7970.0" dy="13">консультантом»</tspan></text>
 <polygon points="8185.0,192.0 8271.0,244.0 8185.0,296.0 8099.0,244.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"></polygon><text x="8185.0" y="241.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="8185.0" dy="0">Откликается на</tspan><tspan x="8185.0" dy="13">плашку?</tspan></text>
@@ -1613,9 +2015,31 @@
 <rect x="14338.0" y="453.0" width="164" height="62.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"></rect><text x="14420.0" y="481.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="14420.0" dy="0">Присылает письмо с</tspan><tspan x="14420.0" dy="13">просьбой об отзыве</tspan></text>
 <polygon points="14635.0,432.0 14721.0,484.0 14635.0,536.0 14549.0,484.0" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"></polygon><text x="14635.0" y="475.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="14635.0" dy="0">Есть второй</tspan><tspan x="14635.0" dy="13">ребёнок в</tspan><tspan x="14635.0" dy="13">семье?</tspan></text>
 <rect x="14768.0" y="453.0" width="164" height="62.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"></rect><text x="14850.0" y="475.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="14850.0" dy="0">Предлагает</tspan><tspan x="14850.0" dy="13">профориентацию для</tspan><tspan x="14850.0" dy="13">второго ребёнка</tspan></text>
-<rect x="14977.0" y="453.5" width="176" height="61.0" rx="30.5" fill="#2b2b2b" stroke="#111" stroke-width="1.6"></rect><text x="15065.0" y="475.0" text-anchor="middle" font-size="11" fill="#fff"><tspan x="15065.0" dy="0">Конец блока 8: возврат</tspan><tspan x="15065.0" dy="13">к шагу «Нажимает</tspan><tspan x="15065.0" dy="13">«Перейти на сайт»»</tspan></text></svg>
+<rect x="14977.0" y="453.5" width="176" height="61.0" rx="30.5" fill="#2b2b2b" stroke="#111" stroke-width="1.6"></rect><text x="15065.0" y="475.0" text-anchor="middle" font-size="11" fill="#fff"><tspan x="15065.0" dy="0">Конец блока 8: возврат</tspan><tspan x="15065.0" dy="13">к шагу «Нажимает</tspan><tspan x="15065.0" dy="13">«Перейти на сайт»»</tspan></text>
+<rect x="15192.0" y="447.0" width="176" height="74.0" rx="37.0" fill="#2b2b2b" stroke="#111" stroke-width="1.6"></rect><text x="15280.0" y="468.5" text-anchor="middle" font-size="11" fill="#fff"><tspan x="15280.0" dy="0">Начало блока 9: клиент</tspan><tspan x="15280.0" dy="13">нажимает сердечко у</tspan><tspan x="15280.0" dy="13">карточки, в сравнении</tspan><tspan x="15280.0" dy="13">или у статьи</tspan></text>
+<rect x="15413.0" y="448.0" width="164" height="72.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"></rect><text x="15495.0" y="468.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="15495.0" dy="0">Закрашивает сердечко и</tspan><tspan x="15495.0" dy="13">сохраняет вариант</tspan><tspan x="15495.0" dy="13">сразу; регистрации не</tspan><tspan x="15495.0" dy="13">требует</tspan></text>
+<polygon points="15710.0,432.0 15796.0,484.0 15710.0,536.0 15624.0,484.0" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"></polygon><text x="15710.0" y="481.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="15710.0" dy="0">Аккаунт уже</tspan><tspan x="15710.0" dy="13">создан?</tspan></text>
+<polygon points="15925.0,432.0 16011.0,484.0 15925.0,536.0 15839.0,484.0" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"></polygon><text x="15925.0" y="481.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="15925.0" dy="0">Окно аккаунта</tspan><tspan x="15925.0" dy="13">уже показывали?</tspan></text>
+<polygon points="16068.0,201.5 16228.0,201.5 16212.0,286.5 16052.0,286.5" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"></polygon><text x="16140.0" y="222.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="16140.0" dy="0">Видит окно «Не</tspan><tspan x="16140.0" dy="13">потеряйте</tspan><tspan x="16140.0" dy="13">сохранённое»:</tspan><tspan x="16140.0" dy="13">«Создать аккаунт»</tspan><tspan x="16140.0" dy="13">или «Позже»</tspan></text>
+<rect x="16058.0" y="448.0" width="164" height="72.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"></rect><text x="16140.0" y="468.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="16140.0" dy="0">Показывает тост</tspan><tspan x="16140.0" dy="13">«Создайте аккаунт,</tspan><tspan x="16140.0" dy="13">чтобы не потерять</tspan><tspan x="16140.0" dy="13">выбор» со ссылкой</tspan></text>
+<polygon points="16355.0,192.0 16441.0,244.0 16355.0,296.0 16269.0,244.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"></polygon><text x="16355.0" y="241.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="16355.0" dy="0">Создаёт</tspan><tspan x="16355.0" dy="13">аккаунт?</tspan></text>
+<polygon points="16498.0,213.0 16658.0,213.0 16642.0,275.0 16482.0,275.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"></polygon><text x="16570.0" y="235.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="16570.0" dy="0">Вводит email или</tspan><tspan x="16570.0" dy="13">выбирает Google,</tspan><tspan x="16570.0" dy="13">Apple, Facebook</tspan></text>
+<rect x="16703.0" y="1653.0" width="164" height="62.0" rx="3" fill="#ececec" stroke="#6f6f6f" stroke-width="1.6"></rect><text x="16785.0" y="1675.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="16785.0" dy="0">Отправляет код на</tspan><tspan x="16785.0" dy="13">email (внешняя почта);</tspan><tspan x="16785.0" dy="13">пароль не нужен</tspan></text>
+<polygon points="16928.0,208.0 17088.0,208.0 17072.0,280.0 16912.0,280.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"></polygon><text x="17000.0" y="228.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="17000.0" dy="0">Вводит код из</tspan><tspan x="17000.0" dy="13">письма (в демо</tspan><tspan x="17000.0" dy="13">подходит любой код</tspan><tspan x="17000.0" dy="13">из 4–6 цифр)</tspan></text>
+<rect x="17133.0" y="448.0" width="164" height="72.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"></rect><text x="17215.0" y="468.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="17215.0" dy="0">Создаёт аккаунт,</tspan><tspan x="17215.0" dy="13">привязывает</tspan><tspan x="17215.0" dy="13">сохранённое, включает</tspan><tspan x="17215.0" dy="13">напоминания о сроках</tspan></text>
+<rect x="17348.0" y="448.0" width="164" height="72.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"></rect><text x="17430.0" y="468.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="17430.0" dy="0">Показывает тост</tspan><tspan x="17430.0" dy="13">«Сохранено. Напомним о</tspan><tspan x="17430.0" dy="13">сроках подачи» со</tspan><tspan x="17430.0" dy="13">ссылкой «Посмотреть»</tspan></text>
+<rect x="17557.0" y="207.0" width="176" height="74.0" rx="37.0" fill="#2b2b2b" stroke="#111" stroke-width="1.6"></rect><text x="17645.0" y="228.5" text-anchor="middle" font-size="11" fill="#fff"><tspan x="17645.0" dy="0">Конец блока 9: возврат</tspan><tspan x="17645.0" dy="13">в выдачу или к</tspan><tspan x="17645.0" dy="13">странице, откуда</tspan><tspan x="17645.0" dy="13">нажато сердечко</tspan></text>
+<rect x="17772.0" y="434.0" width="176" height="100.0" rx="50.0" fill="#2b2b2b" stroke="#111" stroke-width="1.6"></rect><text x="17860.0" y="455.5" text-anchor="middle" font-size="11" fill="#fff"><tspan x="17860.0" dy="0">Начало блока 10:</tspan><tspan x="17860.0" dy="13">клиент открывает</tspan><tspan x="17860.0" dy="13">«Сохранённое»</tspan><tspan x="17860.0" dy="13">(сердечко в шапке) или</tspan><tspan x="17860.0" dy="13">нажимает «Сравнить» в</tspan><tspan x="17860.0" dy="13">выдаче</tspan></text>
+<path d="M17993.0 431.0 H18157.0 V529.0 C18116.0 517.0 18075.0 541.0 18075.0 529.0 C18034.0 517.0 17993.0 539.0 17993.0 529.0 Z" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"></path><text x="18075.0" y="455.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="18075.0" dy="0">Страница</tspan><tspan x="18075.0" dy="13">«Сохранённое»: два</tspan><tspan x="18075.0" dy="13">счётчика, короткий</tspan><tspan x="18075.0" dy="13">список до 4,</tspan><tspan x="18075.0" dy="13">коллекции по</tspan><tspan x="18075.0" dy="13">категориям</tspan></text>
+<polygon points="18218.0,188.5 18378.0,188.5 18362.0,299.5 18202.0,299.5" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"></polygon><text x="18290.0" y="209.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="18290.0" dy="0">Открывает</tspan><tspan x="18290.0" dy="13">коллекцию,</tspan><tspan x="18290.0" dy="13">добавляет варианты</tspan><tspan x="18290.0" dy="13">в короткий список,</tspan><tspan x="18290.0" dy="13">включает</tspan><tspan x="18290.0" dy="13">«Напоминать о</tspan><tspan x="18290.0" dy="13">сроке»</tspan></text>
+<polygon points="18505.0,192.0 18591.0,244.0 18505.0,296.0 18419.0,244.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"></polygon><text x="18505.0" y="228.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="18505.0" dy="0">В коротком</tspan><tspan x="18505.0" dy="13">списке 2</tspan><tspan x="18505.0" dy="13">варианта и</tspan><tspan x="18505.0" dy="13">больше?</tspan></text>
+<rect x="18638.0" y="441.5" width="164" height="85.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"></rect><text x="18720.0" y="462.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="18720.0" dy="0">Открывает сравнение:</tspan><tspan x="18720.0" dy="13">до 4 колонок, лучшее</tspan><tspan x="18720.0" dy="13">значение в строке</tspan><tspan x="18720.0" dy="13">подсвечено, итоговые</tspan><tspan x="18720.0" dy="13">фразы</tspan></text>
+<polygon points="18863.0,213.0 19023.0,213.0 19007.0,275.0 18847.0,275.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"></polygon><text x="18935.0" y="235.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="18935.0" dy="0">Включает «Только</tspan><tspan x="18935.0" dy="13">различия», убирает</tspan><tspan x="18935.0" dy="13">лишнюю колонку</tspan></text>
+<polygon points="19150.0,192.0 19236.0,244.0 19150.0,296.0 19064.0,244.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"></polygon><text x="19150.0" y="248.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="19150.0" dy="0">Выбрал вариант?</tspan></text>
+<rect x="19283.0" y="213.0" width="164" height="62.0" rx="3" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"></rect><text x="19365.0" y="235.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="19365.0" dy="0">Нажимает «большую</tspan><tspan x="19365.0" dy="13">кнопку» у выбранного</tspan><tspan x="19365.0" dy="13">варианта</tspan></text>
+<rect x="19492.0" y="207.0" width="176" height="74.0" rx="37.0" fill="#2b2b2b" stroke="#111" stroke-width="1.6"></rect><text x="19580.0" y="228.5" text-anchor="middle" font-size="11" fill="#fff"><tspan x="19580.0" dy="0">Конец блока 10:</tspan><tspan x="19580.0" dy="13">переход к «большой</tspan><tspan x="19580.0" dy="13">кнопке» или возврат в</tspan><tspan x="19580.0" dy="13">поиск</tspan></text></svg>
 </g>
-<g id="arrows"><defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#444"></path></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#d33"></path></marker></defs><path d="M318.29107666015625 3003.40625 C348.29107666015625 3003.40625,325.992431640625 3019.90625,355.992431640625 3019.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M534.007568359375 3019.90625 C564.007568359375 3019.90625,541.8539428710938 3003.40625,571.8539428710938 3003.40625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M748.1460571289062 3003.40625 C778.1460571289062 3003.40625,756.4221801757812 3003.40625,786.4221801757812 3003.40625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M963.5778198242188 3003.40625 C993.5778198242188 3003.40625,971.1364135742188 3011.65625,1001.1364135742188 3011.65625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M1089.9999694824219 3063.434326171875 L1090 3071.599609375" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M1178.2900390625 3155.15625 C1304.8560791015625 3155.15625,1304.8560791015625 3003.40625,1431.422119140625 3003.40625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M1608.577880859375 3003.40625 C1638.577880859375 3003.40625,1616.4927978515625 3019.90625,1646.4927978515625 3019.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M1823.5072021484375 3019.90625 C1853.5072021484375 3019.90625,1830.576416015625 3036.40625,1860.576416015625 3036.40625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M2039.423583984375 3036.40625 C2069.423583984375 3036.40625,2046.79638671875 3019.90625,2076.79638671875 3019.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M2253.20361328125 3019.90625 C2283.20361328125 3019.90625,2260.385498046875 3077.65625,2290.385498046875 3077.65625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M2469.614501953125 3077.65625 C2499.614501953125 3077.65625,2476.492919921875 3019.90625,2506.492919921875 3019.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M2683.507080078125 3019.90625 C2713.507080078125 3019.90625,2690.89306640625 3019.90625,2720.89306640625 3019.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M2899.10693359375 3019.90625 C2929.10693359375 3019.90625,2906.59423828125 2995.15625,2936.59423828125 2995.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M3113.40576171875 2995.15625 C3143.40576171875 2995.15625,3121.5361328125 3028.15625,3151.5361328125 3028.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M3328.4638671875 3028.15625 C3358.4638671875 3028.15625,3336.07666015625 3028.15625,3366.07666015625 3028.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M3543.92333984375 3028.15625 C3573.92333984375 3028.15625,3551.63671875 3003.40625,3581.63671875 3003.40625" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#a)"></path><path d="M3543.92333984375 3028.15625 C3669.7498779296875 3028.15625,3669.7498779296875 3036.40625,3795.576416015625 3036.40625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M3974.423583984375 3036.40625 C4004.423583984375 3036.40625,3980.989501953125 3044.65625,4010.989501953125 3044.65625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M4189.0107421875 3044.65625 C4219.0107421875 3044.65625,4196.5361328125 3028.15625,4226.5361328125 3028.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M4403.4638671875 3028.15625 C4433.4638671875 3028.15625,4410.99267578125 3019.90625,4440.99267578125 3019.90625" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#a)"></path><path d="M4403.4638671875 3028.15625 C4745.187744140625 3028.15625,4745.187744140625 2986.90625,5086.91162109375 2986.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M5263.08837890625 2986.90625 C5293.08837890625 2986.90625,5271.19189453125 3019.90625,5301.19189453125 3019.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M5478.80810546875 3019.90625 C5508.80810546875 3019.90625,5486.30712890625 3011.65625,5516.30712890625 3011.65625" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#a)"></path><path d="M5478.80810546875 3019.90625 C5605.29443359375 3019.90625,5605.29443359375 2986.90625,5731.78076171875 2986.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M5908.21923828125 2986.90625 C5938.21923828125 2986.90625,5916.0517578125 3011.65625,5946.0517578125 3011.65625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M6123.9482421875 3011.65625 C6153.9482421875 3011.65625,6131.59423828125 2995.15625,6161.59423828125 2995.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M6250 3029.978759765625 L6250 3038.139892578125" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#a)"></path><path d="M6250 3127.672607421875 L6250 3135.376953125" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#a)"></path><path d="M6338.40576171875 2995.15625 C6368.40576171875 2995.15625,6346.767578125 3028.15625,6376.767578125 3028.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M6553.232421875 3028.15625 C6583.232421875 3028.15625,6561.0517578125 3011.65625,6591.0517578125 3011.65625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M6768.9482421875 3011.65625 C6798.9482421875 3011.65625,6776.708984375 3003.40625,6806.708984375 3003.40625" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#a)"></path><path d="M6768.9482421875 3011.65625 C6895.220947265625 3011.65625,6895.220947265625 3003.40625,7021.49365234375 3003.40625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M7198.50634765625 3003.40625 C7228.50634765625 3003.40625,7206.7666015625 2995.15625,7236.7666015625 2995.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M8058.6318359375 2995.15625 C8185.16357421875 2995.15625,8185.16357421875 2986.90625,8311.6953125 2986.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M8488.3046875 2986.90625 C8518.3046875 2986.90625,8496.7666015625 2995.15625,8526.7666015625 2995.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M8703.2333984375 2995.15625 C8733.2333984375 2995.15625,8711.7119140625 2978.65625,8741.7119140625 2978.65625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M8918.2880859375 2978.65625 C9045.08544921875 2978.65625,9045.08544921875 2995.15625,9171.8828125 2995.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M9348.1171875 2995.15625 C9378.1171875 2995.15625,9356.65234375 2986.90625,9386.65234375 2986.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M10208.5068359375 3003.40625 C10335.0791015625 3003.40625,10335.0791015625 3011.65625,10461.6513671875 3011.65625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M10638.3486328125 3011.65625 C10668.3486328125 3011.65625,10646.568359375 2986.90625,10676.568359375 2986.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M10853.431640625 2986.90625 C11195.1572265625 2986.90625,11195.1572265625 2995.15625,11536.8828125 2995.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M11713.1171875 2995.15625 C11743.1171875 2995.15625,11721.65234375 2986.90625,11751.65234375 2986.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M11928.34765625 2986.90625 C12054.9921875 2986.90625,12054.9921875 3003.40625,12181.63671875 3003.40625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M11625 3029.213134765625 C11625 3069.213134765625,11410 2919.874267578125,11410 2959.874267578125" fill="none" stroke="#d33" stroke-width="1.6" marker-end="url(#ar)"></path><path d="M13003.17578125 2986.90625 C13129.8720703125 2986.90625,13129.8720703125 2986.90625,13256.568359375 2986.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M13433.431640625 2986.90625 C13560.17138671875 2986.90625,13560.17138671875 2986.90625,13686.9111328125 2986.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M13863.0888671875 2986.90625 C13893.0888671875 2986.90625,13871.537109375 2995.15625,13901.537109375 2995.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M14078.462890625 2995.15625 C14205.1220703125 2995.15625,14205.1220703125 2986.90625,14331.78125 2986.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M14508.21875 2986.90625 C14634.79345703125 2986.90625,14634.79345703125 2995.15625,14761.3681640625 2995.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M13990 3030.131591796875 L13990 3037.833251953125" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#a)"></path><path d="M5049.0107421875 4319.65625 C6465.1796875 4319.65625,6465.1796875 4311.40625,7881.3486328125 4311.40625" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#a)"></path><path d="M4834.423828125 4471.40625 C7432.5 4471.40625,7432.5 4471.40625,10030.576171875 4471.40625" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#a)"></path><path d="M5479.29541015625 4631.40625 C9152.692626953125 4631.40625,9152.692626953125 4631.40625,12826.08984375 4631.40625" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#a)"></path><path d="M222.5 3879.40625 C437.5 3879.40625,437.5 3947.15625,652.5 3947.15625 C760 3947.15625,760 3795.15625,867.5 3795.15625 C975.0000152587891 3795.15625,975.0000152587891 3871.15625,1082.5000305175781 3871.15625 C1297.500015258789 3871.15625,1297.500015258789 3947.15625,1512.5 3947.15625 C1727.5 3947.15625,1727.5 3795.15625,1942.5 3795.15625 C2050 3795.15625,2050 3871.15625,2157.5 3871.15625 C2265 3871.15625,2265 3862.90625,2372.5 3862.90625 C2480 3862.90625,2480 3786.90625,2587.5 3786.90625 C2695 3786.90625,2695 3786.90625,2802.5 3786.90625 C2910 3786.90625,2910 3947.15625,3017.5 3947.15625 C3125 3947.15625,3125 3862.90625,3232.5 3862.90625 C3340 3862.90625,3340 3786.90625,3447.5 3786.90625 C3662.5 3786.90625,3662.5 3947.15625,3877.5 3947.15625 C3985 3947.15625,3985 3871.15625,4092.5 3871.15625 C4307.5 3871.15625,4307.5 3947.15625,4522.5 3947.15625 C4630 3947.15625,4630 3786.90625,4737.5 3786.90625 C4952.5 3786.90625,4952.5 3862.90625,5167.5 3862.90625 C5382.5 3862.90625,5382.5 3871.15625,5597.5 3871.15625 C6027.5 3871.15625,6027.5 3795.15625,6457.5 3795.15625 C6887.5 3795.15625,6887.5 3938.90625,7317.5 3938.90625 C7747.5 3938.90625,7747.5 3947.15625,8177.5 3947.15625 C8715 3947.15625,8715 3795.15625,9252.5 3795.15625 C9897.5 3795.15625,9897.5 3871.15625,10542.5 3871.15625 C11187.5 3871.15625,11187.5 3947.15625,11832.5 3947.15625 C12585 3947.15625,12585 3938.90625,13337.5 3938.90625 C13982.5 3938.90625,13982.5 3786.90625,14627.5 3786.90625" fill="none" stroke="#8a8a8a" stroke-width="2" stroke-dasharray="2 5" stroke-linecap="round"></path></g>
+<g id="arrows"><defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#444"></path></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#d33"></path></marker></defs><path d="M318.29107666015625 3003.40625 C348.29107666015625 3003.40625,325.992431640625 3019.90625,355.992431640625 3019.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M534.007568359375 3019.90625 C564.007568359375 3019.90625,541.8539428710938 3003.40625,571.8539428710938 3003.40625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M748.1460571289062 3003.40625 C778.1460571289062 3003.40625,756.4221801757812 3003.40625,786.4221801757812 3003.40625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M963.5778198242188 3003.40625 C993.5778198242188 3003.40625,971.1364135742188 3011.65625,1001.1364135742188 3011.65625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M1089.9999694824219 3063.434326171875 L1090 3071.599609375" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M1178.2900390625 3155.15625 C1304.8560791015625 3155.15625,1304.8560791015625 3003.40625,1431.422119140625 3003.40625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M1608.577880859375 3003.40625 C1638.577880859375 3003.40625,1616.4927978515625 3019.90625,1646.4927978515625 3019.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M1823.5072021484375 3019.90625 C1853.5072021484375 3019.90625,1830.576416015625 3036.40625,1860.576416015625 3036.40625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M2039.423583984375 3036.40625 C2069.423583984375 3036.40625,2046.79638671875 3019.90625,2076.79638671875 3019.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M2253.20361328125 3019.90625 C2283.20361328125 3019.90625,2260.385498046875 3077.65625,2290.385498046875 3077.65625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M2469.614501953125 3077.65625 C2499.614501953125 3077.65625,2476.492919921875 3019.90625,2506.492919921875 3019.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M2683.507080078125 3019.90625 C2713.507080078125 3019.90625,2690.89306640625 3019.90625,2720.89306640625 3019.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M2899.10693359375 3019.90625 C2929.10693359375 3019.90625,2906.59423828125 2995.15625,2936.59423828125 2995.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M3113.40576171875 2995.15625 C3143.40576171875 2995.15625,3121.5361328125 3028.15625,3151.5361328125 3028.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M3328.4638671875 3028.15625 C3358.4638671875 3028.15625,3336.07666015625 3028.15625,3366.07666015625 3028.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M3543.92333984375 3028.15625 C3573.92333984375 3028.15625,3551.63671875 3003.40625,3581.63671875 3003.40625" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#a)"></path><path d="M3543.92333984375 3028.15625 C3669.7498779296875 3028.15625,3669.7498779296875 3036.40625,3795.576416015625 3036.40625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M3974.423583984375 3036.40625 C4004.423583984375 3036.40625,3980.989501953125 3044.65625,4010.989501953125 3044.65625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M4189.0107421875 3044.65625 C4219.0107421875 3044.65625,4196.5361328125 3028.15625,4226.5361328125 3028.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M4403.4638671875 3028.15625 C4433.4638671875 3028.15625,4410.99267578125 3019.90625,4440.99267578125 3019.90625" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#a)"></path><path d="M4403.4638671875 3028.15625 C4745.187744140625 3028.15625,4745.187744140625 2986.90625,5086.91162109375 2986.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M5263.08837890625 2986.90625 C5293.08837890625 2986.90625,5271.19189453125 3019.90625,5301.19189453125 3019.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M5478.80810546875 3019.90625 C5508.80810546875 3019.90625,5486.30712890625 3011.65625,5516.30712890625 3011.65625" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#a)"></path><path d="M5478.80810546875 3019.90625 C5605.29443359375 3019.90625,5605.29443359375 2986.90625,5731.78076171875 2986.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M5908.21923828125 2986.90625 C5938.21923828125 2986.90625,5916.0517578125 3011.65625,5946.0517578125 3011.65625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M6123.9482421875 3011.65625 C6153.9482421875 3011.65625,6131.59423828125 2995.15625,6161.59423828125 2995.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M6250 3029.978759765625 L6250 3038.139892578125" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#a)"></path><path d="M6250 3127.672607421875 L6250 3135.376953125" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#a)"></path><path d="M6338.40576171875 2995.15625 C6368.40576171875 2995.15625,6346.767578125 3028.15625,6376.767578125 3028.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M6553.232421875 3028.15625 C6583.232421875 3028.15625,6561.0517578125 3011.65625,6591.0517578125 3011.65625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M6768.9482421875 3011.65625 C6798.9482421875 3011.65625,6776.708984375 3003.40625,6806.708984375 3003.40625" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#a)"></path><path d="M6768.9482421875 3011.65625 C6895.220947265625 3011.65625,6895.220947265625 3003.40625,7021.49365234375 3003.40625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M7198.50634765625 3003.40625 C7228.50634765625 3003.40625,7206.7666015625 2995.15625,7236.7666015625 2995.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M8058.6318359375 2995.15625 C8185.16357421875 2995.15625,8185.16357421875 2986.90625,8311.6953125 2986.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M8488.3046875 2986.90625 C8518.3046875 2986.90625,8496.7666015625 2995.15625,8526.7666015625 2995.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M8703.2333984375 2995.15625 C8733.2333984375 2995.15625,8711.7119140625 2978.65625,8741.7119140625 2978.65625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M8918.2880859375 2978.65625 C9045.08544921875 2978.65625,9045.08544921875 2995.15625,9171.8828125 2995.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M9348.1171875 2995.15625 C9378.1171875 2995.15625,9356.65234375 2986.90625,9386.65234375 2986.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M10208.5068359375 3003.40625 C10335.0791015625 3003.40625,10335.0791015625 3011.65625,10461.6513671875 3011.65625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M10638.3486328125 3011.65625 C10668.3486328125 3011.65625,10646.568359375 2986.90625,10676.568359375 2986.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M10853.431640625 2986.90625 C11195.1572265625 2986.90625,11195.1572265625 2995.15625,11536.8828125 2995.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M11713.1171875 2995.15625 C11743.1171875 2995.15625,11721.65234375 2986.90625,11751.65234375 2986.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M11928.34765625 2986.90625 C12054.9921875 2986.90625,12054.9921875 3003.40625,12181.63671875 3003.40625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M11625 3029.213134765625 C11625 3069.213134765625,11410 2919.874267578125,11410 2959.874267578125" fill="none" stroke="#d33" stroke-width="1.6" marker-end="url(#ar)"></path><path d="M13003.17578125 2986.90625 C13129.8720703125 2986.90625,13129.8720703125 2986.90625,13256.568359375 2986.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M13433.431640625 2986.90625 C13560.17138671875 2986.90625,13560.17138671875 2986.90625,13686.9111328125 2986.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M13863.0888671875 2986.90625 C13893.0888671875 2986.90625,13871.537109375 2995.15625,13901.537109375 2995.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M14078.462890625 2995.15625 C14205.1220703125 2995.15625,14205.1220703125 2986.90625,14331.78125 2986.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M14508.21875 2986.90625 C14634.79345703125 2986.90625,14634.79345703125 2995.15625,14761.3681640625 2995.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M13990 3030.131591796875 L13990 3037.833251953125" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#a)"></path><path d="M15368.693359375 3011.65625 C15398.693359375 3011.65625,15376.63671875 3003.40625,15406.63671875 3003.40625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M15583.36328125 3003.40625 C15817.048828125 3003.40625,15817.048828125 3028.15625,16050.734375 3028.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M16229.265625 3028.15625 C16259.265625 3028.15625,16236.6953125 2986.90625,16266.6953125 2986.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M16443.3046875 2986.90625 C16473.3046875 2986.90625,16451.765625 2995.15625,16481.765625 2995.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M16658.234375 2995.15625 C16784.9013671875 2995.15625,16784.9013671875 2986.90625,16911.568359375 2986.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M17088.431640625 2986.90625 C17118.431640625 2986.90625,17096.853515625 3003.40625,17126.853515625 3003.40625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M17303.146484375 3003.40625 C17333.146484375 3003.40625,17311.421875 3003.40625,17341.421875 3003.40625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M16355 3013.4794921875 L16355.00048828125 3020.72607421875" fill="none" stroke="#d33" stroke-width="1.6" marker-end="url(#ar)"></path><path d="M18163.576171875 2995.15625 C18193.576171875 2995.15625,18171.796875 3019.90625,18201.796875 3019.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M18378.203125 3019.90625 C18408.203125 3019.90625,18386.421875 3003.40625,18416.421875 3003.40625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M18593.578125 3003.40625 C18623.578125 3003.40625,18601.63671875 3003.40625,18631.63671875 3003.40625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M18808.36328125 3003.40625 C18838.36328125 3003.40625,18816.369140625 2995.15625,18846.369140625 2995.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M19023.630859375 2995.15625 C19053.630859375 2995.15625,19031.6953125 2986.90625,19061.6953125 2986.90625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M19238.3046875 2986.90625 C19268.3046875 2986.90625,19246.765625 2995.15625,19276.765625 2995.15625" fill="none" stroke="#444" stroke-width="1.6" marker-end="url(#a)"></path><path d="M18505 3046.630859375 L18505 3054.181640625" fill="none" stroke="#d33" stroke-width="1.6" marker-end="url(#ar)"></path><path d="M5049.0107421875 4319.65625 C6465.1796875 4319.65625,6465.1796875 4311.40625,7881.3486328125 4311.40625" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#a)"></path><path d="M4834.423828125 4471.40625 C7432.5 4471.40625,7432.5 4471.40625,10030.576171875 4471.40625" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#a)"></path><path d="M5479.29541015625 4631.40625 C9152.692626953125 4631.40625,9152.692626953125 4631.40625,12826.08984375 4631.40625" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#a)"></path><path d="M4188.26123046875 4791.40625 C9796.982666015625 4791.40625,9796.982666015625 4791.40625,15405.7041015625 4791.40625" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#a)"></path><path d="M3974.29541015625 4951.40625 C10980.516845703125 4951.40625,10980.516845703125 4951.40625,17986.73828125 4951.40625" fill="none" stroke="#444" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#a)"></path><path d="M222.5 3879.40625 C437.5 3879.40625,437.5 3947.15625,652.5 3947.15625 C760 3947.15625,760 3795.15625,867.5 3795.15625 C975.0000152587891 3795.15625,975.0000152587891 3871.15625,1082.5000305175781 3871.15625 C1297.500015258789 3871.15625,1297.500015258789 3947.15625,1512.5 3947.15625 C1727.5 3947.15625,1727.5 3795.15625,1942.5 3795.15625 C2050 3795.15625,2050 3871.15625,2157.5 3871.15625 C2265 3871.15625,2265 3862.90625,2372.5 3862.90625 C2480 3862.90625,2480 3786.90625,2587.5 3786.90625 C2695 3786.90625,2695 3786.90625,2802.5 3786.90625 C2910 3786.90625,2910 3947.15625,3017.5 3947.15625 C3125 3947.15625,3125 3862.90625,3232.5 3862.90625 C3340 3862.90625,3340 3786.90625,3447.5 3786.90625 C3662.5 3786.90625,3662.5 3947.15625,3877.5 3947.15625 C3985 3947.15625,3985 3871.15625,4092.5 3871.15625 C4307.5 3871.15625,4307.5 3947.15625,4522.5 3947.15625 C4630 3947.15625,4630 3786.90625,4737.5 3786.90625 C4952.5 3786.90625,4952.5 3862.90625,5167.5 3862.90625 C5382.5 3862.90625,5382.5 3871.15625,5597.5 3871.15625 C6027.5 3871.15625,6027.5 3795.15625,6457.5 3795.15625 C6887.5 3795.15625,6887.5 3938.90625,7317.5 3938.90625 C7747.5 3938.90625,7747.5 3947.15625,8177.5 3947.15625 C8715 3947.15625,8715 3795.15625,9252.5 3795.15625 C9897.5 3795.15625,9897.5 3871.15625,10542.5 3871.15625 C11187.5 3871.15625,11187.5 3947.15625,11832.5 3947.15625 C12585 3947.15625,12585 3938.90625,13337.5 3938.90625 C13982.5 3938.90625,13982.5 3786.90625,14627.5 3786.90625 C15165 3786.90625,15165 3786.90625,15702.5 3786.90625 C16132.5 3786.90625,16132.5 3862.90625,16562.5 3862.90625 C16992.5 3862.90625,16992.5 3938.90625,17422.5 3938.90625 C17745 3938.90625,17745 3786.90625,18067.5 3786.90625 C18390 3786.90625,18390 3795.15625,18712.5 3795.15625 C19035 3795.15625,19035 3938.90625,19357.5 3938.90625" fill="none" stroke="#8a8a8a" stroke-width="2" stroke-dasharray="2 5" stroke-linecap="round"></path></g>
 <g id="stickies">
 <g transform="rotate(0.70 890.5 161.7)">
 <rect x="140.5" y="122.0" width="1500.0" height="79.4" rx="2" fill="#ffee77" filter="url(#sh)"/>
@@ -1864,6 +2288,31 @@
 <text x="13902.5" y="2771.4" font-size="12.5" font-weight="400" fill="#222222" textLength="128.5" lengthAdjust="spacingAndGlyphs">Услуги агентства как</text>
 <text x="13902.5" y="2787.9" font-size="12.5" font-weight="400" fill="#222222" textLength="97.1" lengthAdjust="spacingAndGlyphs">каталог пока не</text>
 <text x="13902.5" y="2804.4" font-size="12.5" font-weight="400" fill="#222222" textLength="76.0" lengthAdjust="spacingAndGlyphs">определены</text>
+</g>
+<g transform="rotate(-0.40 16372.5 2798.7)">
+<rect x="16284.5" y="2748.4" width="176.0" height="100.5" rx="2" fill="#ffee77" filter="url(#sh)"/>
+<text x="16294.5" y="2769.4" font-size="12.5" font-weight="400" fill="#222222" textLength="132.5" lengthAdjust="spacingAndGlyphs">Сохранить выбор без</text>
+<text x="16294.5" y="2785.9" font-size="12.5" font-weight="400" fill="#222222" textLength="139.5" lengthAdjust="spacingAndGlyphs">трения и только потом</text>
+<text x="16294.5" y="2802.4" font-size="12.5" font-weight="400" fill="#222222" textLength="119.6" lengthAdjust="spacingAndGlyphs">попросить аккаунт:</text>
+<text x="16294.5" y="2818.9" font-size="12.5" font-weight="400" fill="#222222" textLength="104.2" lengthAdjust="spacingAndGlyphs">клиент не теряет</text>
+<text x="16294.5" y="2835.4" font-size="12.5" font-weight="400" fill="#222222" textLength="57.4" lengthAdjust="spacingAndGlyphs">действие</text>
+</g>
+<g transform="rotate(1.00 16558.5 2798.7)">
+<rect x="16470.5" y="2748.4" width="176.0" height="100.5" rx="2" fill="#dcdcdc" filter="url(#sh)"/>
+<text x="16480.5" y="2769.4" font-size="12.5" font-weight="400" fill="#222222" textLength="124.4" lengthAdjust="spacingAndGlyphs">Аккаунт без пароля:</text>
+<text x="16480.5" y="2785.9" font-size="12.5" font-weight="400" fill="#222222" textLength="137.5" lengthAdjust="spacingAndGlyphs">email и код из письма;</text>
+<text x="16480.5" y="2802.4" font-size="12.5" font-weight="400" fill="#222222" textLength="144.5" lengthAdjust="spacingAndGlyphs">образцы — Skyscanner,</text>
+<text x="16480.5" y="2818.9" font-size="12.5" font-weight="400" fill="#222222" textLength="108.2" lengthAdjust="spacingAndGlyphs">Авиасейлс, UCAS</text>
+<text x="16480.5" y="2835.4" font-size="12.5" font-weight="400" fill="#222222" textLength="57.8" lengthAdjust="spacingAndGlyphs">(docs/29)</text>
+</g>
+<g transform="rotate(1.00 18723.0 2806.9)">
+<rect x="18635.0" y="2748.4" width="176.0" height="117.0" rx="2" fill="#ffe38a" filter="url(#sh)"/>
+<text x="18645.0" y="2769.4" font-size="12.5" font-weight="400" fill="#222222" textLength="145.1" lengthAdjust="spacingAndGlyphs">Сузить сохранённое до</text>
+<text x="18645.0" y="2785.9" font-size="12.5" font-weight="400" fill="#222222" textLength="119.1" lengthAdjust="spacingAndGlyphs">короткого списка и</text>
+<text x="18645.0" y="2802.4" font-size="12.5" font-weight="400" fill="#222222" textLength="137.0" lengthAdjust="spacingAndGlyphs">сравнить варианты на</text>
+<text x="18645.0" y="2818.9" font-size="12.5" font-weight="400" fill="#222222" textLength="129.5" lengthAdjust="spacingAndGlyphs">одном экране, затем</text>
+<text x="18645.0" y="2835.4" font-size="12.5" font-weight="400" fill="#222222" textLength="125.7" lengthAdjust="spacingAndGlyphs">перейти к «большой</text>
+<text x="18645.0" y="2851.9" font-size="12.5" font-weight="400" fill="#222222" textLength="50.1" lengthAdjust="spacingAndGlyphs">кнопке»</text>
 </g>
 <g transform="rotate(-0.40 230.0 3003.4)">
 <rect x="142.0" y="2961.4" width="176.0" height="84.0" rx="2" fill="#ffe38a" filter="url(#sh)"/>
@@ -2265,6 +2714,122 @@
 <text x="14772.0" y="2998.9" font-size="12.5" font-weight="400" fill="#222222" textLength="128.5" lengthAdjust="spacingAndGlyphs">профориентация для</text>
 <text x="14772.0" y="3015.4" font-size="12.5" font-weight="400" fill="#222222" textLength="102.4" lengthAdjust="spacingAndGlyphs">второго ребёнка</text>
 </g>
+<g transform="rotate(-0.80 15280.0 3011.7)">
+<rect x="15192.0" y="2961.4" width="176.0" height="100.5" rx="2" fill="#ffee77" filter="url(#sh)"/>
+<text x="15202.0" y="2982.4" font-size="12.5" font-weight="400" fill="#222222" textLength="136.2" lengthAdjust="spacingAndGlyphs">Нажимает сердечко у</text>
+<text x="15202.0" y="2998.9" font-size="12.5" font-weight="400" fill="#222222" textLength="90.2" lengthAdjust="spacingAndGlyphs">карточки вуза,</text>
+<text x="15202.0" y="3015.4" font-size="12.5" font-weight="400" fill="#222222" textLength="139.2" lengthAdjust="spacingAndGlyphs">колледжа, программы</text>
+<text x="15202.0" y="3031.9" font-size="12.5" font-weight="400" fill="#222222" textLength="133.6" lengthAdjust="spacingAndGlyphs">или профессии (или у</text>
+<text x="15202.0" y="3048.4" font-size="12.5" font-weight="400" fill="#222222" textLength="44.9" lengthAdjust="spacingAndGlyphs">статьи)</text>
+</g>
+<g transform="rotate(0.50 15495.0 3003.4)">
+<rect x="15407.0" y="2961.4" width="176.0" height="84.0" rx="2" fill="#ffe38a" filter="url(#sh)"/>
+<text x="15417.0" y="2982.4" font-size="12.5" font-weight="400" fill="#222222" textLength="125.4" lengthAdjust="spacingAndGlyphs">Видит, что сердечко</text>
+<text x="15417.0" y="2998.9" font-size="12.5" font-weight="400" fill="#222222" textLength="134.6" lengthAdjust="spacingAndGlyphs">закрасилось: вариант</text>
+<text x="15417.0" y="3015.4" font-size="12.5" font-weight="400" fill="#222222" textLength="124.0" lengthAdjust="spacingAndGlyphs">сохранён сразу, без</text>
+<text x="15417.0" y="3031.9" font-size="12.5" font-weight="400" fill="#222222" textLength="78.2" lengthAdjust="spacingAndGlyphs">регистрации</text>
+</g>
+<g transform="rotate(-1.10 16140.0 3028.2)">
+<rect x="16052.0" y="2961.4" width="176.0" height="133.5" rx="2" fill="#fff59d" filter="url(#sh)"/>
+<text x="16062.0" y="2982.4" font-size="12.5" font-weight="400" fill="#222222" textLength="96.7" lengthAdjust="spacingAndGlyphs">Видит окно «Не</text>
+<text x="16062.0" y="2998.9" font-size="12.5" font-weight="400" fill="#222222" textLength="62.6" lengthAdjust="spacingAndGlyphs">потеряйте</text>
+<text x="16062.0" y="3015.4" font-size="12.5" font-weight="400" fill="#222222" textLength="91.1" lengthAdjust="spacingAndGlyphs">сохранённое»:</text>
+<text x="16062.0" y="3031.9" font-size="12.5" font-weight="400" fill="#222222" textLength="120.7" lengthAdjust="spacingAndGlyphs">напомним о сроках</text>
+<text x="16062.0" y="3048.4" font-size="12.5" font-weight="400" fill="#222222" textLength="119.1" lengthAdjust="spacingAndGlyphs">подачи и сохраним</text>
+<text x="16062.0" y="3064.9" font-size="12.5" font-weight="400" fill="#222222" textLength="102.5" lengthAdjust="spacingAndGlyphs">выбор на любом</text>
+<text x="16062.0" y="3081.4" font-size="12.5" font-weight="400" fill="#222222" textLength="70.0" lengthAdjust="spacingAndGlyphs">устройстве</text>
+</g>
+<g transform="rotate(0.70 16355.0 2986.9)">
+<rect x="16267.0" y="2961.4" width="176.0" height="51.0" rx="2" fill="#7fd2f5" filter="url(#sh)"/>
+<text x="16277.0" y="2982.4" font-size="12.5" font-weight="600" fill="#222222" textLength="129.1" lengthAdjust="spacingAndGlyphs">Выбирает: «Создать</text>
+<text x="16277.0" y="2998.9" font-size="12.5" font-weight="600" fill="#222222" textLength="143.4" lengthAdjust="spacingAndGlyphs">аккаунт» или «Позже»</text>
+</g>
+<g transform="rotate(-1.10 16355.0 3072.7)">
+<rect x="16267.0" y="3022.4" width="176.0" height="100.5" rx="2" fill="#f59a9a" filter="url(#sh)"/>
+<text x="16277.0" y="3043.4" font-size="12.5" font-weight="400" fill="#222222" textLength="95.6" lengthAdjust="spacingAndGlyphs">Часть клиентов</text>
+<text x="16277.0" y="3059.9" font-size="12.5" font-weight="400" fill="#222222" textLength="123.5" lengthAdjust="spacingAndGlyphs">нажимает «Позже»:</text>
+<text x="16277.0" y="3076.4" font-size="12.5" font-weight="400" fill="#222222" textLength="135.4" lengthAdjust="spacingAndGlyphs">выбор живёт только в</text>
+<text x="16277.0" y="3092.9" font-size="12.5" font-weight="400" fill="#222222" textLength="111.7" lengthAdjust="spacingAndGlyphs">браузере, окно не</text>
+<text x="16277.0" y="3109.4" font-size="12.5" font-weight="400" fill="#222222" textLength="76.6" lengthAdjust="spacingAndGlyphs">повторяется</text>
+</g>
+<g transform="rotate(-0.40 16570.0 2995.2)">
+<rect x="16482.0" y="2961.4" width="176.0" height="67.5" rx="2" fill="#ffe38a" filter="url(#sh)"/>
+<text x="16492.0" y="2982.4" font-size="12.5" font-weight="400" fill="#222222" textLength="104.1" lengthAdjust="spacingAndGlyphs">Вводит email или</text>
+<text x="16492.0" y="2998.9" font-size="12.5" font-weight="400" fill="#222222" textLength="130.6" lengthAdjust="spacingAndGlyphs">выбирает вход через</text>
+<text x="16492.0" y="3015.4" font-size="12.5" font-weight="400" fill="#222222" textLength="148.8" lengthAdjust="spacingAndGlyphs">Google, Apple, Facebook</text>
+</g>
+<g transform="rotate(1.00 17000.0 2986.9)">
+<rect x="16912.0" y="2961.4" width="176.0" height="51.0" rx="2" fill="#fff9c4" filter="url(#sh)"/>
+<text x="16922.0" y="2982.4" font-size="12.5" font-weight="400" fill="#222222" textLength="139.0" lengthAdjust="spacingAndGlyphs">Вводит код из письма;</text>
+<text x="16922.0" y="2998.9" font-size="12.5" font-weight="400" fill="#222222" textLength="104.3" lengthAdjust="spacingAndGlyphs">пароль не нужен</text>
+</g>
+<g transform="rotate(0.20 17215.0 3003.4)">
+<rect x="17127.0" y="2961.4" width="176.0" height="84.0" rx="2" fill="#fff59d" filter="url(#sh)"/>
+<text x="17137.0" y="2982.4" font-size="12.5" font-weight="400" fill="#222222" textLength="112.9" lengthAdjust="spacingAndGlyphs">Получает аккаунт:</text>
+<text x="17137.0" y="2998.9" font-size="12.5" font-weight="400" fill="#222222" textLength="151.8" lengthAdjust="spacingAndGlyphs">сохранённое привязано,</text>
+<text x="17137.0" y="3015.4" font-size="12.5" font-weight="400" fill="#222222" textLength="139.8" lengthAdjust="spacingAndGlyphs">напоминания о сроках</text>
+<text x="17137.0" y="3031.9" font-size="12.5" font-weight="400" fill="#222222" textLength="62.8" lengthAdjust="spacingAndGlyphs">включены</text>
+</g>
+<g transform="rotate(-0.80 17430.0 3003.4)">
+<rect x="17342.0" y="2961.4" width="176.0" height="84.0" rx="2" fill="#ffee77" filter="url(#sh)"/>
+<text x="17352.0" y="2982.4" font-size="12.5" font-weight="400" fill="#222222" textLength="148.2" lengthAdjust="spacingAndGlyphs">Видит тост «Сохранено.</text>
+<text x="17352.0" y="2998.9" font-size="12.5" font-weight="400" fill="#222222" textLength="122.6" lengthAdjust="spacingAndGlyphs">Напомним о сроках</text>
+<text x="17352.0" y="3015.4" font-size="12.5" font-weight="400" fill="#222222" textLength="125.3" lengthAdjust="spacingAndGlyphs">подачи» со ссылкой</text>
+<text x="17352.0" y="3031.9" font-size="12.5" font-weight="400" fill="#222222" textLength="89.6" lengthAdjust="spacingAndGlyphs">«Посмотреть»</text>
+</g>
+<g transform="rotate(1.00 18075.0 2995.2)">
+<rect x="17987.0" y="2961.4" width="176.0" height="67.5" rx="2" fill="#fff9c4" filter="url(#sh)"/>
+<text x="17997.0" y="2982.4" font-size="12.5" font-weight="400" fill="#222222" textLength="66.4" lengthAdjust="spacingAndGlyphs">Открывает</text>
+<text x="17997.0" y="2998.9" font-size="12.5" font-weight="400" fill="#222222" textLength="115.1" lengthAdjust="spacingAndGlyphs">«Сохранённое» по</text>
+<text x="17997.0" y="3015.4" font-size="12.5" font-weight="400" fill="#222222" textLength="110.9" lengthAdjust="spacingAndGlyphs">сердечку в шапке</text>
+</g>
+<g transform="rotate(0.20 18290.0 3019.9)">
+<rect x="18202.0" y="2961.4" width="176.0" height="117.0" rx="2" fill="#fff59d" filter="url(#sh)"/>
+<text x="18212.0" y="2982.4" font-size="12.5" font-weight="400" fill="#222222" textLength="132.5" lengthAdjust="spacingAndGlyphs">Видит два счётчика и</text>
+<text x="18212.0" y="2998.9" font-size="12.5" font-weight="400" fill="#222222" textLength="83.0" lengthAdjust="spacingAndGlyphs">коллекции по</text>
+<text x="18212.0" y="3015.4" font-size="12.5" font-weight="400" fill="#222222" textLength="111.0" lengthAdjust="spacingAndGlyphs">категориям: вузы,</text>
+<text x="18212.0" y="3031.9" font-size="12.5" font-weight="400" fill="#222222" textLength="143.1" lengthAdjust="spacingAndGlyphs">колледжи, программы,</text>
+<text x="18212.0" y="3048.4" font-size="12.5" font-weight="400" fill="#222222" textLength="137.6" lengthAdjust="spacingAndGlyphs">профессии, подборки,</text>
+<text x="18212.0" y="3064.9" font-size="12.5" font-weight="400" fill="#222222" textLength="88.8" lengthAdjust="spacingAndGlyphs">статьи, заявки</text>
+</g>
+<g transform="rotate(-0.80 18505.0 3003.4)">
+<rect x="18417.0" y="2961.4" width="176.0" height="84.0" rx="2" fill="#ffee77" filter="url(#sh)"/>
+<text x="18427.0" y="2982.4" font-size="12.5" font-weight="400" fill="#222222" textLength="139.3" lengthAdjust="spacingAndGlyphs">Добавляет варианты в</text>
+<text x="18427.0" y="2998.9" font-size="12.5" font-weight="400" fill="#222222" textLength="154.0" lengthAdjust="spacingAndGlyphs">короткий список (до 4) и</text>
+<text x="18427.0" y="3015.4" font-size="12.5" font-weight="400" fill="#222222" textLength="145.4" lengthAdjust="spacingAndGlyphs">включает «Напоминать</text>
+<text x="18427.0" y="3031.9" font-size="12.5" font-weight="400" fill="#222222" textLength="54.4" lengthAdjust="spacingAndGlyphs">о сроке»</text>
+</g>
+<g transform="rotate(-0.80 18505.0 3097.4)">
+<rect x="18417.0" y="3055.4" width="176.0" height="84.0" rx="2" fill="#f59a9a" filter="url(#sh)"/>
+<text x="18427.0" y="3076.4" font-size="12.5" font-weight="400" fill="#222222" textLength="148.8" lengthAdjust="spacingAndGlyphs">Если вариантов меньше</text>
+<text x="18427.0" y="3092.9" font-size="12.5" font-weight="400" fill="#222222" textLength="155.9" lengthAdjust="spacingAndGlyphs">двух, сравнивать нечего:</text>
+<text x="18427.0" y="3109.4" font-size="12.5" font-weight="400" fill="#222222" textLength="137.4" lengthAdjust="spacingAndGlyphs">возвращается в поиск</text>
+<text x="18427.0" y="3125.9" font-size="12.5" font-weight="400" fill="#222222" textLength="91.7" lengthAdjust="spacingAndGlyphs">сохранять ещё</text>
+</g>
+<g transform="rotate(0.50 18720.0 3003.4)">
+<rect x="18632.0" y="2961.4" width="176.0" height="84.0" rx="2" fill="#7fd2f5" filter="url(#sh)"/>
+<text x="18642.0" y="2982.4" font-size="12.5" font-weight="600" fill="#222222" textLength="148.8" lengthAdjust="spacingAndGlyphs">Нажимает «Сравнить»:</text>
+<text x="18642.0" y="2998.9" font-size="12.5" font-weight="600" fill="#222222" textLength="126.3" lengthAdjust="spacingAndGlyphs">видит до 4 колонок,</text>
+<text x="18642.0" y="3015.4" font-size="12.5" font-weight="600" fill="#222222" textLength="109.1" lengthAdjust="spacingAndGlyphs">лучшее значение</text>
+<text x="18642.0" y="3031.9" font-size="12.5" font-weight="600" fill="#222222" textLength="75.4" lengthAdjust="spacingAndGlyphs">подсвечено</text>
+</g>
+<g transform="rotate(-1.10 18935.0 2995.2)">
+<rect x="18847.0" y="2961.4" width="176.0" height="67.5" rx="2" fill="#fff59d" filter="url(#sh)"/>
+<text x="18857.0" y="2982.4" font-size="12.5" font-weight="400" fill="#222222" textLength="113.1" lengthAdjust="spacingAndGlyphs">Включает «Только</text>
+<text x="18857.0" y="2998.9" font-size="12.5" font-weight="400" fill="#222222" textLength="121.2" lengthAdjust="spacingAndGlyphs">различия», убирает</text>
+<text x="18857.0" y="3015.4" font-size="12.5" font-weight="400" fill="#222222" textLength="106.7" lengthAdjust="spacingAndGlyphs">лишнюю колонку</text>
+</g>
+<g transform="rotate(0.70 19150.0 2986.9)">
+<rect x="19062.0" y="2961.4" width="176.0" height="51.0" rx="2" fill="#7fd2f5" filter="url(#sh)"/>
+<text x="19072.0" y="2982.4" font-size="12.5" font-weight="600" fill="#222222" textLength="143.2" lengthAdjust="spacingAndGlyphs">Решает, какой вариант</text>
+<text x="19072.0" y="2998.9" font-size="12.5" font-weight="600" fill="#222222" textLength="53.2" lengthAdjust="spacingAndGlyphs">выбрать</text>
+</g>
+<g transform="rotate(-0.40 19365.0 2995.2)">
+<rect x="19277.0" y="2961.4" width="176.0" height="67.5" rx="2" fill="#ffe38a" filter="url(#sh)"/>
+<text x="19287.0" y="2982.4" font-size="12.5" font-weight="400" fill="#222222" textLength="131.1" lengthAdjust="spacingAndGlyphs">Нажимает «большую</text>
+<text x="19287.0" y="2998.9" font-size="12.5" font-weight="400" fill="#222222" textLength="137.6" lengthAdjust="spacingAndGlyphs">кнопку» у выбранного</text>
+<text x="19287.0" y="3015.4" font-size="12.5" font-weight="400" fill="#222222" textLength="56.4" lengthAdjust="spacingAndGlyphs">варианта</text>
+</g>
 <g transform="rotate(-1.10 230.0 3310.4)">
 <rect x="142.0" y="3268.4" width="176.0" height="84.0" rx="2" fill="#fff59d" filter="url(#sh)"/>
 <text x="152.0" y="3289.4" font-size="12.5" font-weight="400" fill="#222222" textLength="124.3" lengthAdjust="spacingAndGlyphs">«Какие крутые вузы</text>
@@ -2479,6 +3044,46 @@
 <rect x="14762.0" y="3268.4" width="176.0" height="51.0" rx="2" fill="#fff59d" filter="url(#sh)"/>
 <text x="14772.0" y="3289.4" font-size="12.5" font-weight="400" fill="#222222" textLength="143.3" lengthAdjust="spacingAndGlyphs">Контроль над данными</text>
 <text x="14772.0" y="3305.9" font-size="12.5" font-weight="400" fill="#222222" textLength="50.8" lengthAdjust="spacingAndGlyphs">ребёнка</text>
+</g>
+<g transform="rotate(0.70 15495.0 3302.2)">
+<rect x="15407.0" y="3268.4" width="176.0" height="67.5" rx="2" fill="#fff9c4" filter="url(#sh)"/>
+<text x="15417.0" y="3289.4" font-size="12.5" font-weight="400" fill="#222222" textLength="87.5" lengthAdjust="spacingAndGlyphs">Сохранить, не</text>
+<text x="15417.0" y="3305.9" font-size="12.5" font-weight="400" fill="#222222" textLength="87.8" lengthAdjust="spacingAndGlyphs">отвлекаясь на</text>
+<text x="15417.0" y="3322.4" font-size="12.5" font-weight="400" fill="#222222" textLength="81.3" lengthAdjust="spacingAndGlyphs">регистрацию</text>
+</g>
+<g transform="rotate(0.20 16140.0 3293.9)">
+<rect x="16052.0" y="3268.4" width="176.0" height="51.0" rx="2" fill="#ffe38a" filter="url(#sh)"/>
+<text x="16062.0" y="3289.4" font-size="12.5" font-weight="400" fill="#222222" textLength="153.9" lengthAdjust="spacingAndGlyphs">Не потерять выбор, если</text>
+<text x="16062.0" y="3305.9" font-size="12.5" font-weight="400" fill="#222222" textLength="98.9" lengthAdjust="spacingAndGlyphs">закрою вкладку</text>
+</g>
+<g transform="rotate(-1.10 16785.0 3285.7)">
+<rect x="16697.0" y="3268.4" width="176.0" height="34.5" rx="2" fill="#ffee77" filter="url(#sh)"/>
+<text x="16707.0" y="3289.4" font-size="12.5" font-weight="400" fill="#222222" textLength="150.5" lengthAdjust="spacingAndGlyphs">Не придумывать пароль</text>
+</g>
+<g transform="rotate(1.00 17430.0 3293.9)">
+<rect x="17342.0" y="3268.4" width="176.0" height="51.0" rx="2" fill="#fff59d" filter="url(#sh)"/>
+<text x="17352.0" y="3289.4" font-size="12.5" font-weight="400" fill="#222222" textLength="131.0" lengthAdjust="spacingAndGlyphs">Понять, зачем нужен</text>
+<text x="17352.0" y="3305.9" font-size="12.5" font-weight="400" fill="#222222" textLength="47.7" lengthAdjust="spacingAndGlyphs">аккаунт</text>
+</g>
+<g transform="rotate(0.50 18075.0 3293.9)">
+<rect x="17987.0" y="3268.4" width="176.0" height="51.0" rx="2" fill="#fff9c4" filter="url(#sh)"/>
+<text x="17997.0" y="3289.4" font-size="12.5" font-weight="400" fill="#222222" textLength="152.5" lengthAdjust="spacingAndGlyphs">Видеть всё сохранённое</text>
+<text x="17997.0" y="3305.9" font-size="12.5" font-weight="400" fill="#222222" textLength="89.4" lengthAdjust="spacingAndGlyphs">по категориям</text>
+</g>
+<g transform="rotate(0.70 18505.0 3293.9)">
+<rect x="18417.0" y="3268.4" width="176.0" height="51.0" rx="2" fill="#ffee77" filter="url(#sh)"/>
+<text x="18427.0" y="3289.4" font-size="12.5" font-weight="400" fill="#222222" textLength="155.0" lengthAdjust="spacingAndGlyphs">Сравнить 2–4 варианта и</text>
+<text x="18427.0" y="3305.9" font-size="12.5" font-weight="400" fill="#222222" textLength="126.7" lengthAdjust="spacingAndGlyphs">понять, какой лучше</text>
+</g>
+<g transform="rotate(1.00 18935.0 3293.9)">
+<rect x="18847.0" y="3268.4" width="176.0" height="51.0" rx="2" fill="#fff9c4" filter="url(#sh)"/>
+<text x="18857.0" y="3289.4" font-size="12.5" font-weight="400" fill="#222222" textLength="155.7" lengthAdjust="spacingAndGlyphs">Получить напоминание о</text>
+<text x="18857.0" y="3305.9" font-size="12.5" font-weight="400" fill="#222222" textLength="83.9" lengthAdjust="spacingAndGlyphs">сроке подачи</text>
+</g>
+<g transform="rotate(-0.80 19365.0 3293.9)">
+<rect x="19277.0" y="3268.4" width="176.0" height="51.0" rx="2" fill="#ffee77" filter="url(#sh)"/>
+<text x="19287.0" y="3289.4" font-size="12.5" font-weight="400" fill="#222222" textLength="123.5" lengthAdjust="spacingAndGlyphs">Не вводить условия</text>
+<text x="19287.0" y="3305.9" font-size="12.5" font-weight="400" fill="#222222" textLength="42.6" lengthAdjust="spacingAndGlyphs">заново</text>
 </g>
 <g transform="rotate(-1.10 230.0 3477.2)">
 <rect x="142.0" y="3459.9" width="176.0" height="34.5" rx="2" fill="#ffffff" filter="url(#sh)"/>
@@ -2747,6 +3352,59 @@
 <text x="14987.0" y="3480.9" font-size="12.5" font-weight="400" fill="#222222" textLength="131.5" lengthAdjust="spacingAndGlyphs">Возможны подписки;</text>
 <text x="14987.0" y="3497.4" font-size="12.5" font-weight="400" fill="#222222" textLength="138.2" lengthAdjust="spacingAndGlyphs">состав и условия пока</text>
 <text x="14987.0" y="3513.9" font-size="12.5" font-weight="400" fill="#222222" textLength="94.2" lengthAdjust="spacingAndGlyphs">не определены</text>
+</g>
+<g transform="rotate(0.70 15495.0 3477.2)">
+<rect x="15407.0" y="3459.9" width="176.0" height="34.5" rx="2" fill="#ffffff" filter="url(#sh)"/>
+<text x="15417.0" y="3480.9" font-size="12.5" font-weight="400" fill="#222222" textLength="130.7" lengthAdjust="spacingAndGlyphs">Сердечко у карточки</text>
+</g>
+<g transform="rotate(1.00 15925.0 3501.9)">
+<rect x="15837.0" y="3459.9" width="176.0" height="84.0" rx="2" fill="#ffffff" filter="url(#sh)"/>
+<text x="15847.0" y="3480.9" font-size="12.5" font-weight="400" fill="#222222" textLength="124.7" lengthAdjust="spacingAndGlyphs">Окно «Не потеряйте</text>
+<text x="15847.0" y="3497.4" font-size="12.5" font-weight="400" fill="#222222" textLength="146.1" lengthAdjust="spacingAndGlyphs">сохранённое» (образец</text>
+<text x="15847.0" y="3513.9" font-size="12.5" font-weight="400" fill="#222222" textLength="152.7" lengthAdjust="spacingAndGlyphs">— Skyscanner: «Sign up /</text>
+<text x="15847.0" y="3530.4" font-size="12.5" font-weight="400" fill="#222222" textLength="81.5" lengthAdjust="spacingAndGlyphs">Maybe later»)</text>
+</g>
+<g transform="rotate(0.50 16570.0 3477.2)">
+<rect x="16482.0" y="3459.9" width="176.0" height="34.5" rx="2" fill="#ffffff" filter="url(#sh)"/>
+<text x="16492.0" y="3480.9" font-size="12.5" font-weight="400" fill="#222222" textLength="101.1" lengthAdjust="spacingAndGlyphs">Письмо с кодом</text>
+</g>
+<g transform="rotate(0.70 17000.0 3485.4)">
+<rect x="16912.0" y="3459.9" width="176.0" height="51.0" rx="2" fill="#ffffff" filter="url(#sh)"/>
+<text x="16922.0" y="3480.9" font-size="12.5" font-weight="400" fill="#222222" textLength="101.3" lengthAdjust="spacingAndGlyphs">Тост со ссылкой</text>
+<text x="16922.0" y="3497.4" font-size="12.5" font-weight="400" fill="#222222" textLength="89.6" lengthAdjust="spacingAndGlyphs">«Посмотреть»</text>
+</g>
+<g transform="rotate(1.00 17430.0 3485.4)">
+<rect x="17342.0" y="3459.9" width="176.0" height="51.0" rx="2" fill="#dcdcdc" filter="url(#sh)"/>
+<text x="17352.0" y="3480.9" font-size="12.5" font-weight="400" fill="#222222" textLength="140.8" lengthAdjust="spacingAndGlyphs">Внешний вход: Google,</text>
+<text x="17352.0" y="3497.4" font-size="12.5" font-weight="400" fill="#222222" textLength="99.4" lengthAdjust="spacingAndGlyphs">Apple, Facebook</text>
+</g>
+<g transform="rotate(-0.80 17860.0 3493.7)">
+<rect x="17772.0" y="3459.9" width="176.0" height="67.5" rx="2" fill="#ffffff" filter="url(#sh)"/>
+<text x="17782.0" y="3480.9" font-size="12.5" font-weight="400" fill="#222222" textLength="59.2" lengthAdjust="spacingAndGlyphs">Страница</text>
+<text x="17782.0" y="3497.4" font-size="12.5" font-weight="400" fill="#222222" textLength="155.3" lengthAdjust="spacingAndGlyphs">«Сохранённое» (образец</text>
+<text x="17782.0" y="3513.9" font-size="12.5" font-weight="400" fill="#222222" textLength="145.4" lengthAdjust="spacingAndGlyphs">— «Favourites» в UCAS)</text>
+</g>
+<g transform="rotate(-1.10 18290.0 3477.2)">
+<rect x="18202.0" y="3459.9" width="176.0" height="34.5" rx="2" fill="#ffffff" filter="url(#sh)"/>
+<text x="18212.0" y="3480.9" font-size="12.5" font-weight="400" fill="#222222" textLength="135.4" lengthAdjust="spacingAndGlyphs">Короткий список до 4</text>
+</g>
+<g transform="rotate(-0.40 18720.0 3493.7)">
+<rect x="18632.0" y="3459.9" width="176.0" height="67.5" rx="2" fill="#ffffff" filter="url(#sh)"/>
+<text x="18642.0" y="3480.9" font-size="12.5" font-weight="400" fill="#222222" textLength="110.6" lengthAdjust="spacingAndGlyphs">Экран сравнения:</text>
+<text x="18642.0" y="3497.4" font-size="12.5" font-weight="400" fill="#222222" textLength="126.9" lengthAdjust="spacingAndGlyphs">лучшее подсвечено,</text>
+<text x="18642.0" y="3513.9" font-size="12.5" font-weight="400" fill="#222222" textLength="117.3" lengthAdjust="spacingAndGlyphs">«Только различия»</text>
+</g>
+<g transform="rotate(0.20 19150.0 3485.4)">
+<rect x="19062.0" y="3459.9" width="176.0" height="51.0" rx="2" fill="#ffffff" filter="url(#sh)"/>
+<text x="19072.0" y="3480.9" font-size="12.5" font-weight="400" fill="#222222" textLength="97.5" lengthAdjust="spacingAndGlyphs">Переключатель</text>
+<text x="19072.0" y="3497.4" font-size="12.5" font-weight="400" fill="#222222" textLength="140.8" lengthAdjust="spacingAndGlyphs">«Напоминать о сроке»</text>
+</g>
+<g transform="rotate(0.50 19580.0 3501.9)">
+<rect x="19492.0" y="3459.9" width="176.0" height="84.0" rx="2" fill="#dcdcdc" filter="url(#sh)"/>
+<text x="19502.0" y="3480.9" font-size="12.5" font-weight="400" fill="#222222" textLength="113.5" lengthAdjust="spacingAndGlyphs">Данные ребёнка в</text>
+<text x="19502.0" y="3497.4" font-size="12.5" font-weight="400" fill="#222222" textLength="119.3" lengthAdjust="spacingAndGlyphs">аккаунте родителя:</text>
+<text x="19502.0" y="3513.9" font-size="12.5" font-weight="400" fill="#222222" textLength="145.0" lengthAdjust="spacingAndGlyphs">юридическая проверка</text>
+<text x="19502.0" y="3530.4" font-size="12.5" font-weight="400" fill="#222222" textLength="58.0" lengthAdjust="spacingAndGlyphs">(docs/05)</text>
 </g>
 <g transform="rotate(-1.10 230.0 3632.4)">
 <rect x="142.0" y="3590.4" width="176.0" height="84.0" rx="2" fill="#a7e38c" filter="url(#sh)"/>
@@ -3026,6 +3684,55 @@
 <text x="14772.0" y="3627.9" font-size="12.5" font-weight="400" fill="#222222" textLength="150.4" lengthAdjust="spacingAndGlyphs">подачу, а не за решение</text>
 <text x="14772.0" y="3644.4" font-size="12.5" font-weight="400" fill="#222222" textLength="125.2" lengthAdjust="spacingAndGlyphs">приёмной комиссии</text>
 </g>
+<g transform="rotate(0.70 15495.0 3624.2)">
+<rect x="15407.0" y="3590.4" width="176.0" height="67.5" rx="2" fill="#a7e38c" filter="url(#sh)"/>
+<text x="15417.0" y="3611.4" font-size="12.5" font-weight="400" fill="#222222" textLength="142.8" lengthAdjust="spacingAndGlyphs">Сердечко срабатывает</text>
+<text x="15417.0" y="3627.9" font-size="12.5" font-weight="400" fill="#222222" textLength="117.2" lengthAdjust="spacingAndGlyphs">сразу, действие не</text>
+<text x="15417.0" y="3644.4" font-size="12.5" font-weight="400" fill="#222222" textLength="54.5" lengthAdjust="spacingAndGlyphs">теряется</text>
+</g>
+<g transform="rotate(0.20 16140.0 3615.9)">
+<rect x="16052.0" y="3590.4" width="176.0" height="51.0" rx="2" fill="#a7e38c" filter="url(#sh)"/>
+<text x="16062.0" y="3611.4" font-size="12.5" font-weight="400" fill="#222222" textLength="112.5" lengthAdjust="spacingAndGlyphs">Без пароля: полей</text>
+<text x="16062.0" y="3627.9" font-size="12.5" font-weight="400" fill="#222222" textLength="129.0" lengthAdjust="spacingAndGlyphs">меньше, чем у UCAS</text>
+</g>
+<g transform="rotate(-1.10 16785.0 3632.4)">
+<rect x="16697.0" y="3590.4" width="176.0" height="84.0" rx="2" fill="#f59a9a" filter="url(#sh)"/>
+<text x="16707.0" y="3611.4" font-size="12.5" font-weight="400" fill="#222222" textLength="146.4" lengthAdjust="spacingAndGlyphs">Часть клиентов нажмёт</text>
+<text x="16707.0" y="3627.9" font-size="12.5" font-weight="400" fill="#222222" textLength="147.2" lengthAdjust="spacingAndGlyphs">«Позже» и не вернётся:</text>
+<text x="16707.0" y="3644.4" font-size="12.5" font-weight="400" fill="#222222" textLength="135.4" lengthAdjust="spacingAndGlyphs">выбор живёт только в</text>
+<text x="16707.0" y="3660.9" font-size="12.5" font-weight="400" fill="#222222" textLength="57.2" lengthAdjust="spacingAndGlyphs">браузере</text>
+</g>
+<g transform="rotate(1.00 17430.0 3624.2)">
+<rect x="17342.0" y="3590.4" width="176.0" height="67.5" rx="2" fill="#f59a9a" filter="url(#sh)"/>
+<text x="17352.0" y="3611.4" font-size="12.5" font-weight="400" fill="#222222" textLength="144.4" lengthAdjust="spacingAndGlyphs">Письмо с кодом может</text>
+<text x="17352.0" y="3627.9" font-size="12.5" font-weight="400" fill="#222222" textLength="130.7" lengthAdjust="spacingAndGlyphs">попасть в спам: вход</text>
+<text x="17352.0" y="3644.4" font-size="12.5" font-weight="400" fill="#222222" textLength="47.5" lengthAdjust="spacingAndGlyphs">встанет</text>
+</g>
+<g transform="rotate(0.50 18075.0 3632.4)">
+<rect x="17987.0" y="3590.4" width="176.0" height="84.0" rx="2" fill="#a7e38c" filter="url(#sh)"/>
+<text x="17997.0" y="3611.4" font-size="12.5" font-weight="400" fill="#222222" textLength="126.6" lengthAdjust="spacingAndGlyphs">Сравнение отвечает</text>
+<text x="17997.0" y="3627.9" font-size="12.5" font-weight="400" fill="#222222" textLength="94.4" lengthAdjust="spacingAndGlyphs">одной строкой:</text>
+<text x="17997.0" y="3644.4" font-size="12.5" font-weight="400" fill="#222222" textLength="112.5" lengthAdjust="spacingAndGlyphs">«Дешевле всего»,</text>
+<text x="17997.0" y="3660.9" font-size="12.5" font-weight="400" fill="#222222" textLength="126.3" lengthAdjust="spacingAndGlyphs">«Выше совпадение»</text>
+</g>
+<g transform="rotate(0.70 18505.0 3624.2)">
+<rect x="18417.0" y="3590.4" width="176.0" height="67.5" rx="2" fill="#a7e38c" filter="url(#sh)"/>
+<text x="18427.0" y="3611.4" font-size="12.5" font-weight="400" fill="#222222" textLength="104.9" lengthAdjust="spacingAndGlyphs">Короткий список</text>
+<text x="18427.0" y="3627.9" font-size="12.5" font-weight="400" fill="#222222" textLength="111.3" lengthAdjust="spacingAndGlyphs">снижает перегруз</text>
+<text x="18427.0" y="3644.4" font-size="12.5" font-weight="400" fill="#222222" textLength="56.0" lengthAdjust="spacingAndGlyphs">выбором</text>
+</g>
+<g transform="rotate(1.00 18935.0 3624.2)">
+<rect x="18847.0" y="3590.4" width="176.0" height="67.5" rx="2" fill="#f59a9a" filter="url(#sh)"/>
+<text x="18857.0" y="3611.4" font-size="12.5" font-weight="400" fill="#222222" textLength="138.3" lengthAdjust="spacingAndGlyphs">Сердечко одно: чтобы</text>
+<text x="18857.0" y="3627.9" font-size="12.5" font-weight="400" fill="#222222" textLength="122.7" lengthAdjust="spacingAndGlyphs">сравнить, варианты</text>
+<text x="18857.0" y="3644.4" font-size="12.5" font-weight="400" fill="#222222" textLength="106.7" lengthAdjust="spacingAndGlyphs">нужно сохранить</text>
+</g>
+<g transform="rotate(-0.80 19365.0 3624.2)">
+<rect x="19277.0" y="3590.4" width="176.0" height="67.5" rx="2" fill="#f59a9a" filter="url(#sh)"/>
+<text x="19287.0" y="3611.4" font-size="12.5" font-weight="400" fill="#222222" textLength="134.6" lengthAdjust="spacingAndGlyphs">Напоминания пока не</text>
+<text x="19287.0" y="3627.9" font-size="12.5" font-weight="400" fill="#222222" textLength="135.9" lengthAdjust="spacingAndGlyphs">отправляются: тексты</text>
+<text x="19287.0" y="3644.4" font-size="12.5" font-weight="400" fill="#222222" textLength="104.4" lengthAdjust="spacingAndGlyphs">писем — docs/21</text>
+</g>
 <g transform="rotate(-1.10 222.5 3879.4)">
 <rect x="134.5" y="3837.4" width="176.0" height="84.0" rx="2" fill="#ffd84d" filter="url(#sh)"/>
 <text x="144.5" y="3858.4" font-size="12.5" font-weight="400" fill="#222222" textLength="125.5" lengthAdjust="spacingAndGlyphs">Спокойствие: жизнь</text>
@@ -3178,6 +3885,37 @@
 <rect x="14539.5" y="3761.4" width="176.0" height="51.0" rx="2" fill="#a7e38c" filter="url(#sh)"/>
 <text x="14549.5" y="3782.4" font-size="12.5" font-weight="400" fill="#222222" textLength="138.4" lengthAdjust="spacingAndGlyphs">Спокойствие: «подачу</text>
 <text x="14549.5" y="3798.9" font-size="12.5" font-weight="400" fill="#222222" textLength="134.3" lengthAdjust="spacingAndGlyphs">ведут, я вижу статус»</text>
+</g>
+<g transform="rotate(-0.40 15702.5 3786.9)">
+<rect x="15614.5" y="3761.4" width="176.0" height="51.0" rx="2" fill="#a7e38c" filter="url(#sh)"/>
+<text x="15624.5" y="3782.4" font-size="12.5" font-weight="400" fill="#222222" textLength="124.1" lengthAdjust="spacingAndGlyphs">Лёгкость: «нажал, и</text>
+<text x="15624.5" y="3798.9" font-size="12.5" font-weight="400" fill="#222222" textLength="86.9" lengthAdjust="spacingAndGlyphs">сохранилось»</text>
+</g>
+<g transform="rotate(0.50 16562.5 3862.9)">
+<rect x="16474.5" y="3837.4" width="176.0" height="51.0" rx="2" fill="#ffd84d" filter="url(#sh)"/>
+<text x="16484.5" y="3858.4" font-size="12.5" font-weight="400" fill="#222222" textLength="153.4" lengthAdjust="spacingAndGlyphs">Нейтрально: «зачем мне</text>
+<text x="16484.5" y="3874.9" font-size="12.5" font-weight="400" fill="#222222" textLength="61.3" lengthAdjust="spacingAndGlyphs">аккаунт?»</text>
+</g>
+<g transform="rotate(1.00 17422.5 3938.9)">
+<rect x="17334.5" y="3913.4" width="176.0" height="51.0" rx="2" fill="#f59a9a" filter="url(#sh)"/>
+<text x="17344.5" y="3934.4" font-size="12.5" font-weight="400" fill="#222222" textLength="132.2" lengthAdjust="spacingAndGlyphs">Раздражение: «опять</text>
+<text x="17344.5" y="3950.9" font-size="12.5" font-weight="400" fill="#222222" textLength="88.4" lengthAdjust="spacingAndGlyphs">просят почту»</text>
+</g>
+<g transform="rotate(0.50 18067.5 3786.9)">
+<rect x="17979.5" y="3761.4" width="176.0" height="51.0" rx="2" fill="#a7e38c" filter="url(#sh)"/>
+<text x="17989.5" y="3782.4" font-size="12.5" font-weight="400" fill="#222222" textLength="155.2" lengthAdjust="spacingAndGlyphs">Порядок: «всё собрано в</text>
+<text x="17989.5" y="3798.9" font-size="12.5" font-weight="400" fill="#222222" textLength="87.6" lengthAdjust="spacingAndGlyphs">одном месте»</text>
+</g>
+<g transform="rotate(-0.40 18712.5 3795.2)">
+<rect x="18624.5" y="3761.4" width="176.0" height="67.5" rx="2" fill="#a7e38c" filter="url(#sh)"/>
+<text x="18634.5" y="3782.4" font-size="12.5" font-weight="400" fill="#222222" textLength="144.1" lengthAdjust="spacingAndGlyphs">Ясность: «видно, какой</text>
+<text x="18634.5" y="3798.9" font-size="12.5" font-weight="400" fill="#222222" textLength="126.2" lengthAdjust="spacingAndGlyphs">дешевле и ближе по</text>
+<text x="18634.5" y="3815.4" font-size="12.5" font-weight="400" fill="#222222" textLength="43.4" lengthAdjust="spacingAndGlyphs">сроку»</text>
+</g>
+<g transform="rotate(-0.80 19357.5 3938.9)">
+<rect x="19269.5" y="3913.4" width="176.0" height="51.0" rx="2" fill="#f59a9a" filter="url(#sh)"/>
+<text x="19279.5" y="3934.4" font-size="12.5" font-weight="400" fill="#222222" textLength="152.5" lengthAdjust="spacingAndGlyphs">Тревога: «а если выбрал</text>
+<text x="19279.5" y="3950.9" font-size="12.5" font-weight="400" fill="#222222" textLength="50.8" lengthAdjust="spacingAndGlyphs">не тот?»</text>
 </g>
 <g transform="rotate(0.70 230.0 4078.7)">
 <rect x="142.0" y="3995.4" width="176.0" height="166.5" rx="2" fill="#ffffff" filter="url(#sh)"/>
@@ -3433,6 +4171,44 @@
 <text x="14772.0" y="4032.9" font-size="12.5" font-weight="400" fill="#222222" textLength="142.5" lengthAdjust="spacingAndGlyphs">одном направлении до</text>
 <text x="14772.0" y="4049.4" font-size="12.5" font-weight="400" fill="#222222" textLength="53.8" lengthAdjust="spacingAndGlyphs">каталога</text>
 </g>
+<g transform="rotate(1.00 15710.0 4029.2)">
+<rect x="15622.0" y="3995.4" width="176.0" height="67.5" rx="2" fill="#ffffff" filter="url(#sh)"/>
+<text x="15632.0" y="4016.4" font-size="12.5" font-weight="400" fill="#222222" textLength="139.5" lengthAdjust="spacingAndGlyphs">Проверить окно после</text>
+<text x="15632.0" y="4032.9" font-size="12.5" font-weight="400" fill="#222222" textLength="100.5" lengthAdjust="spacingAndGlyphs">первого и после</text>
+<text x="15632.0" y="4049.4" font-size="12.5" font-weight="400" fill="#222222" textLength="115.9" lengthAdjust="spacingAndGlyphs">третьего сердечка</text>
+</g>
+<g transform="rotate(-1.10 16570.0 4029.2)">
+<rect x="16482.0" y="3995.4" width="176.0" height="67.5" rx="2" fill="#ffffff" filter="url(#sh)"/>
+<text x="16492.0" y="4016.4" font-size="12.5" font-weight="400" fill="#222222" textLength="155.3" lengthAdjust="spacingAndGlyphs">Измерить долю «Позже»</text>
+<text x="16492.0" y="4032.9" font-size="12.5" font-weight="400" fill="#222222" textLength="140.0" lengthAdjust="spacingAndGlyphs">и возвратов по ссылке</text>
+<text x="16492.0" y="4049.4" font-size="12.5" font-weight="400" fill="#222222" textLength="50.2" lengthAdjust="spacingAndGlyphs">из тоста</text>
+</g>
+<g transform="rotate(0.20 17430.0 4029.2)">
+<rect x="17342.0" y="3995.4" width="176.0" height="67.5" rx="2" fill="#ffffff" filter="url(#sh)"/>
+<text x="17352.0" y="4016.4" font-size="12.5" font-weight="400" fill="#222222" textLength="135.3" lengthAdjust="spacingAndGlyphs">Следить за временем</text>
+<text x="17352.0" y="4032.9" font-size="12.5" font-weight="400" fill="#222222" textLength="129.8" lengthAdjust="spacingAndGlyphs">доставки и спамом у</text>
+<text x="17352.0" y="4049.4" font-size="12.5" font-weight="400" fill="#222222" textLength="98.6" lengthAdjust="spacingAndGlyphs">письма с кодом</text>
+</g>
+<g transform="rotate(-1.10 18075.0 4037.4)">
+<rect x="17987.0" y="3995.4" width="176.0" height="84.0" rx="2" fill="#ffffff" filter="url(#sh)"/>
+<text x="17997.0" y="4016.4" font-size="12.5" font-weight="400" fill="#222222" textLength="97.1" lengthAdjust="spacingAndGlyphs">Измерить долю</text>
+<text x="17997.0" y="4032.9" font-size="12.5" font-weight="400" fill="#222222" textLength="82.1" lengthAdjust="spacingAndGlyphs">дошедших от</text>
+<text x="17997.0" y="4049.4" font-size="12.5" font-weight="400" fill="#222222" textLength="91.2" lengthAdjust="spacingAndGlyphs">сохранения до</text>
+<text x="17997.0" y="4065.9" font-size="12.5" font-weight="400" fill="#222222" textLength="65.4" lengthAdjust="spacingAndGlyphs">сравнения</text>
+</g>
+<g transform="rotate(1.00 18720.0 4037.4)">
+<rect x="18632.0" y="3995.4" width="176.0" height="84.0" rx="2" fill="#ffffff" filter="url(#sh)"/>
+<text x="18642.0" y="4016.4" font-size="12.5" font-weight="400" fill="#222222" textLength="135.8" lengthAdjust="spacingAndGlyphs">Пометка «лучшее» не</text>
+<text x="18642.0" y="4032.9" font-size="12.5" font-weight="400" fill="#222222" textLength="114.6" lengthAdjust="spacingAndGlyphs">должна выглядеть</text>
+<text x="18642.0" y="4049.4" font-size="12.5" font-weight="400" fill="#222222" textLength="152.2" lengthAdjust="spacingAndGlyphs">рекомендацией платных</text>
+<text x="18642.0" y="4065.9" font-size="12.5" font-weight="400" fill="#222222" textLength="56.0" lengthAdjust="spacingAndGlyphs">карточек</text>
+</g>
+<g transform="rotate(0.50 19365.0 4029.2)">
+<rect x="19277.0" y="3995.4" width="176.0" height="67.5" rx="2" fill="#ffffff" filter="url(#sh)"/>
+<text x="19287.0" y="4016.4" font-size="12.5" font-weight="400" fill="#222222" textLength="95.4" lengthAdjust="spacingAndGlyphs">Для профессий</text>
+<text x="19287.0" y="4032.9" font-size="12.5" font-weight="400" fill="#222222" textLength="137.1" lengthAdjust="spacingAndGlyphs">добавить в сравнение</text>
+<text x="19287.0" y="4049.4" font-size="12.5" font-weight="400" fill="#222222" textLength="131.5" lengthAdjust="spacingAndGlyphs">зарплаты по странам</text>
+</g>
 <g transform="rotate(-1.10 230.0 4261.9)">
 <rect x="142.0" y="4236.4" width="176.0" height="51.0" rx="2" fill="#dcdcdc" filter="url(#sh)"/>
 <text x="152.0" y="4257.4" font-size="12.5" font-weight="400" fill="#222222" textLength="131.0" lengthAdjust="spacingAndGlyphs">Вставок нет: человек</text>
@@ -3449,6 +4225,24 @@
 <text x="2087.0" y="4273.9" font-size="12.5" font-weight="400" fill="#222222" textLength="114.2" lengthAdjust="spacingAndGlyphs">направлений — на</text>
 <text x="2087.0" y="4290.4" font-size="12.5" font-weight="400" fill="#222222" textLength="153.3" lengthAdjust="spacingAndGlyphs">каждой странице; это не</text>
 <text x="2087.0" y="4306.9" font-size="12.5" font-weight="400" fill="#222222" textLength="144.4" lengthAdjust="spacingAndGlyphs">плашка, а часть поиска</text>
+</g>
+<g transform="rotate(1.00 3885.0 4951.4)">
+<rect x="3797.0" y="4876.4" width="176.0" height="150.0" rx="2" fill="#7fd2f5" filter="url(#sh)"/>
+<text x="3807.0" y="4897.4" font-size="12.5" font-weight="600" fill="#222222" textLength="80.0" lengthAdjust="spacingAndGlyphs">Сравнение и</text>
+<text x="3807.0" y="4913.9" font-size="12.5" font-weight="600" fill="#222222" textLength="130.1" lengthAdjust="spacingAndGlyphs">«Сохранённое»: при</text>
+<text x="3807.0" y="4930.4" font-size="12.5" font-weight="600" fill="#222222" textLength="152.2" lengthAdjust="spacingAndGlyphs">сохранённых вариантах</text>
+<text x="3807.0" y="4946.9" font-size="12.5" font-weight="600" fill="#222222" textLength="150.2" lengthAdjust="spacingAndGlyphs">— панель «Сравнить» и</text>
+<text x="3807.0" y="4963.4" font-size="12.5" font-weight="600" fill="#222222" textLength="128.1" lengthAdjust="spacingAndGlyphs">сердечко в шапке →</text>
+<text x="3807.0" y="4979.9" font-size="12.5" font-weight="600" fill="#222222" textLength="129.2" lengthAdjust="spacingAndGlyphs">блок 10, подпроцесс</text>
+<text x="3807.0" y="4996.4" font-size="12.5" font-weight="600" fill="#222222" textLength="44.6" lengthAdjust="spacingAndGlyphs">правее</text>
+</g>
+<g transform="rotate(0.20 4100.0 4791.4)">
+<rect x="4012.0" y="4716.4" width="176.0" height="150.0" rx="2" fill="#7fd2f5" filter="url(#sh)"/>
+<text x="4022.0" y="4737.4" font-size="12.5" font-weight="600" fill="#222222" textLength="137.5" lengthAdjust="spacingAndGlyphs">Сердечко у карточки:</text>
+<text x="4022.0" y="4753.9" font-size="12.5" font-weight="600" fill="#222222" textLength="99.1" lengthAdjust="spacingAndGlyphs">сохранение без</text>
+<text x="4022.0" y="4770.4" font-size="12.5" font-weight="600" fill="#222222" textLength="151.6" lengthAdjust="spacingAndGlyphs">блокировки, затем окно</text>
+<text x="4022.0" y="4786.9" font-size="12.5" font-weight="600" fill="#222222" textLength="119.4" lengthAdjust="spacingAndGlyphs">аккаунта → блок 9,</text>
+<text x="4022.0" y="4803.4" font-size="12.5" font-weight="600" fill="#222222" textLength="124.0" lengthAdjust="spacingAndGlyphs">подпроцесс правее</text>
 </g>
 <g transform="rotate(-1.10 4745.0 4471.4)">
 <rect x="4657.0" y="4396.4" width="176.0" height="150.0" rx="2" fill="#7fd2f5" filter="url(#sh)"/>
@@ -3533,6 +4327,36 @@
 <text x="13052.0" y="4577.4" font-size="12.5" font-weight="400" fill="#222222" textLength="141.6" lengthAdjust="spacingAndGlyphs">Правило: только после</text>
 <text x="13052.0" y="4593.9" font-size="12.5" font-weight="400" fill="#222222" textLength="126.2" lengthAdjust="spacingAndGlyphs">выбора конкретного</text>
 <text x="13052.0" y="4610.4" font-size="12.5" font-weight="400" fill="#222222" textLength="56.4" lengthAdjust="spacingAndGlyphs">варианта</text>
+</g>
+<g transform="rotate(1.00 15495.0 4791.4)">
+<rect x="15407.0" y="4716.4" width="176.0" height="150.0" rx="2" fill="#ffe38a" filter="url(#sh)"/>
+<text x="15417.0" y="4737.4" font-size="12.5" font-weight="400" fill="#222222" textLength="121.3" lengthAdjust="spacingAndGlyphs">Сердечко у каждой</text>
+<text x="15417.0" y="4753.9" font-size="12.5" font-weight="400" fill="#222222" textLength="130.0" lengthAdjust="spacingAndGlyphs">карточки в выдаче, в</text>
+<text x="15417.0" y="4770.4" font-size="12.5" font-weight="400" fill="#222222" textLength="135.0" lengthAdjust="spacingAndGlyphs">сравнении и у статьи;</text>
+<text x="15417.0" y="4786.9" font-size="12.5" font-weight="400" fill="#222222" textLength="87.3" lengthAdjust="spacingAndGlyphs">окно аккаунта</text>
+<text x="15417.0" y="4803.4" font-size="12.5" font-weight="400" fill="#222222" textLength="111.0" lengthAdjust="spacingAndGlyphs">показывается при</text>
+<text x="15417.0" y="4819.9" font-size="12.5" font-weight="400" fill="#222222" textLength="122.8" lengthAdjust="spacingAndGlyphs">первом сохранении</text>
+</g>
+<g transform="rotate(0.20 15710.0 4791.4)">
+<rect x="15622.0" y="4716.4" width="176.0" height="150.0" rx="2" fill="#dcdcdc" filter="url(#sh)"/>
+<text x="15632.0" y="4737.4" font-size="12.5" font-weight="400" fill="#222222" textLength="89.5" lengthAdjust="spacingAndGlyphs">Правило: окно</text>
+<text x="15632.0" y="4753.9" font-size="12.5" font-weight="400" fill="#222222" textLength="143.2" lengthAdjust="spacingAndGlyphs">показывается один раз</text>
+<text x="15632.0" y="4770.4" font-size="12.5" font-weight="400" fill="#222222" textLength="107.1" lengthAdjust="spacingAndGlyphs">за сессию; после</text>
+<text x="15632.0" y="4786.9" font-size="12.5" font-weight="400" fill="#222222" textLength="145.1" lengthAdjust="spacingAndGlyphs">«Позже» — только тост</text>
+<text x="15632.0" y="4803.4" font-size="12.5" font-weight="400" fill="#222222" textLength="70.2" lengthAdjust="spacingAndGlyphs">со ссылкой</text>
+</g>
+<g transform="rotate(0.20 18075.0 4951.4)">
+<rect x="17987.0" y="4876.4" width="176.0" height="150.0" rx="2" fill="#fff9c4" filter="url(#sh)"/>
+<text x="17997.0" y="4897.4" font-size="12.5" font-weight="400" fill="#222222" textLength="131.2" lengthAdjust="spacingAndGlyphs">Сердечко в шапке со</text>
+<text x="17997.0" y="4913.9" font-size="12.5" font-weight="400" fill="#222222" textLength="116.3" lengthAdjust="spacingAndGlyphs">счётчиком; панель</text>
+<text x="17997.0" y="4930.4" font-size="12.5" font-weight="400" fill="#222222" textLength="136.7" lengthAdjust="spacingAndGlyphs">«Сравнить» в выдаче,</text>
+<text x="17997.0" y="4946.9" font-size="12.5" font-weight="400" fill="#222222" textLength="128.7" lengthAdjust="spacingAndGlyphs">когда в направлении</text>
+<text x="17997.0" y="4963.4" font-size="12.5" font-weight="400" fill="#222222" textLength="129.5" lengthAdjust="spacingAndGlyphs">сохранены варианты</text>
+</g>
+<g transform="rotate(-0.80 18290.0 4951.4)">
+<rect x="18202.0" y="4876.4" width="176.0" height="150.0" rx="2" fill="#dcdcdc" filter="url(#sh)"/>
+<text x="18212.0" y="4897.4" font-size="12.5" font-weight="400" fill="#222222" textLength="139.0" lengthAdjust="spacingAndGlyphs">Короткий список до 4:</text>
+<text x="18212.0" y="4913.9" font-size="12.5" font-weight="400" fill="#222222" textLength="113.5" lengthAdjust="spacingAndGlyphs">предел сравнения</text>
 </g>
 </g>
 </svg>
