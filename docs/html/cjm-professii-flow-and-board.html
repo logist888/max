@@ -1,0 +1,838 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CJM профессий: единый поток слева направо</title><style>
+*{box-sizing:border-box}
+body{margin:0;background:#fff;font-family:Inter,"Segoe UI",Arial,"DejaVu Sans",sans-serif;color:#222}
+
+.lab{background:#7b7b7b;color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center;text-align:center;padding:8px;border-bottom:6px solid #f3f3f3;border-right:6px solid #f3f3f3}
+.cell{background:#e9e9e9;border-bottom:6px solid #f3f3f3;padding:12px;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:flex-start;position:relative;min-width:0}
+.cell.first{border-left:6px solid #f3f3f3}
+.goalrow{flex-direction:row;justify-content:center;flex-wrap:wrap;align-items:flex-start}
+.title{background:#e9e9e9;border-bottom:6px solid #f3f3f3;padding:14px 18px;font-size:15px;display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start}
+.title h1{font-size:18px;margin:0;font-weight:600}
+.stage{background:#12c4d4;color:#fff;font-weight:600;font-size:14px;text-align:center;padding:10px 12px;display:flex;align-items:center;justify-content:center;border-left:6px solid #f3f3f3;border-bottom:6px solid #f3f3f3}
+.stage.blue{background:#0f7de6}
+.band{background:#2b2b2b;color:#fff;font-size:15px;font-weight:600;padding:14px 20px;margin-top:14px;border-bottom:6px solid #f3f3f3}
+.st{width:176px;padding:9px 10px;font-size:12.5px;line-height:1.32;border-radius:2px;box-shadow:0 2px 5px rgba(0,0,0,.2);transform:rotate(var(--r,0deg));position:relative;z-index:2;overflow-wrap:anywhere}
+.y1{background:#fff59d}.y2{background:#ffee77}.y3{background:#ffe38a}.y4{background:#fff9c4}
+.g{background:#a7e38c}.r{background:#f59a9a}.o{background:#ffb674}.b{background:#7fd2f5;font-weight:600}
+.w{background:#fff}.gr{background:#dcdcdc}
+.ghost{background:rgba(255,245,157,.45);border:2px dashed #b9a93a;box-shadow:none}
+.emo{position:absolute;left:12px;width:176px}
+.emocell{height:230px;padding:0;background:linear-gradient(#eaf5e4 0 33.3%,#fdf3cf 33.3% 66.6%,#f9e3e3 66.6%)}
+.ey{background:#ffd84d}
+.elg{display:flex;flex-direction:column;gap:5px;margin-top:10px;font-size:11px}
+.elg span{padding:3px 8px;border-radius:2px;color:#222}
+.ep{background:#a7e38c}.en{background:#ffd84d}.em{background:#f59a9a}
+svg#over{position:absolute;left:0;top:0;pointer-events:none;z-index:1;overflow:visible}
+.leg{display:flex;flex-wrap:wrap;gap:14px;align-items:center;font-size:12px}
+.leg .st{width:auto;padding:5px 12px;transform:none;box-shadow:none}
+.drv{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start}
+.wide{width:auto;max-width:880px;font-size:14px;padding:12px 16px}
+
+.bgrid{position:relative;display:grid;width:max-content;background:#f3f3f3;padding:0 24px 18px 0}
+.band{background:#2b2b2b;color:#fff;font:600 16px Inter,Segoe UI,Arial,DejaVu Sans,sans-serif;padding:14px 24px;margin-top:10px}
+#page{position:relative;width:max-content;min-width:100%}
+svg.flow{display:block}
+</style></head><body><div id="page">
+<div class="bgrid head" style="grid-template-columns:122.5px repeat(66,215px)">
+<div class="lab" style="grid-row:1">Название CJM</div><div class="title" style="grid-row:1;grid-column:2/span 12"><h1>Поиск и подбор профессии на портале Mainexperts: версия «как авиабилеты»</h1></div>
+<div class="lab" style="grid-row:2">Job To Be Done</div><div class="title" style="grid-row:2;grid-column:2/span 12">Подобрать профессии под интересы и сильные стороны, сравнить их между собой, выбрать из понравившихся</div>
+<div class="lab" style="grid-row:3">Допущение</div><div class="title" style="grid-row:3;grid-column:2/span 12"><div class="st y2" style="--r:0.7deg;width:auto;max-width:1500px;font-size:14px;padding:12px 16px">Допущение карты: в базе есть все профессии мира на всех языках: описание, обязанности, нужные навыки, спрос, зарплатные вилки по странам, тренды, риски автоматизации и пути обучения; всё проиндексировано. Клиент из любой страны ищет профессию для себя или ребёнка по схеме «откуда — кем — где», как билеты в авиасейлс: страна жизни, интересы и сильные стороны, страна работы. Каталог, кабинет и консультации — один продукт с единым входом.</div></div>
+<div class="lab" style="grid-row:4">Драйверы и барьеры использования</div><div class="title" style="grid-row:4;grid-column:2/span 12;flex-direction:column"><div class="drv"><div class="st g" style="--r:-1.1deg;">Все профессии в одном месте, на своём языке</div><div class="st g" style="--r:0.7deg;">Поиск «откуда — кем — где», как билеты</div><div class="st g" style="--r:-0.4deg;">Спрос, зарплатные вилки и тренды по странам</div><div class="st g" style="--r:1.0deg;">Подборка профессий под профиль ребёнка</div><div class="st g" style="--r:0.2deg;">Слежение за спросом и новыми профессиями</div><div class="st g" style="--r:-0.8deg;">Видеозвонок до покупки (его просит большинство опрошенных родителей)</div><div class="st g" style="--r:0.5deg;">От профессии сразу к пути обучения</div></div><div class="drv"><div class="st r" style="--r:-0.4deg;">Перегруз выбором: профессий слишком много</div><div class="st r" style="--r:1.0deg;">Доверие к незнакомому бренду</div><div class="st r" style="--r:0.2deg;">Данные о спросе и зарплатах устаревают: нужна свежесть</div><div class="st r" style="--r:-0.8deg;">Плашки и баннеры, показанные рано, ломают доверие</div><div class="st r" style="--r:0.5deg;">Возможна низкая конверсия в оплату: часть клиентов уходит на цене</div><div class="st r" style="--r:-1.1deg;">«Зачем ребёнку профориентация, ему же в вуз?»</div><div class="st r" style="--r:0.7deg;">Описание профессии не заменяет живой опыт</div><div class="st r" style="--r:-0.4deg;">Клиент уходит на сайт учебного заведения и может не вернуться</div><div class="st r" style="--r:1.0deg;">Состав и цены дополнительных пакетов не заданы</div></div></div>
+<div class="lab" style="grid-row:5">Условные обозначения</div><div class="title" style="grid-row:5;grid-column:2/span 12"><div class="leg"><span class="st g">Драйвер или хороший опыт</span><span class="st r">Барьер или риск, который остаётся</span><span class="st y1">Шаг, мысль, идея</span><span class="st b">Ключевой переход или вставка в поиске</span><span class="st ghost">Гипотеза, не подтверждённая данными</span><span class="st gr">Пояснение</span><span class="st g">Положительная эмоция</span><span class="st ey">Нейтральная</span><span class="st r">Отрицательная</span><span>Как читать: весь процесс идёт одним потоком слева направо: сверху блок-схема, под ней стикеры в тех же колонках. Шаги клиента стоят под своими узлами схемы. Стрелки между стикерами повторяют ход процесса; точечная линия в эмоциях — кривая настроения</span></div></div>
+</div>
+<svg class="flow" xmlns="http://www.w3.org/2000/svg" width="14375" height="190" viewBox="0 0 14375 190" font-family="Inter,Segoe UI,Arial,DejaVu Sans,sans-serif"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#333"/></marker></defs><rect width="100%" height="100%" fill="#fff"/><text x="24" y="28" font-size="14" font-weight="700" fill="#1d1d1d">Условные обозначения (нотация блок-схем по ГОСТ 19.701-90, ISO 5807)</text>
+<rect x="42.0" y="63.0" width="176" height="54.0" rx="27.0" fill="#2b2b2b" stroke="#111" stroke-width="1.6"/><text x="130.0" y="94.0" text-anchor="middle" font-size="11" fill="#fff"><tspan x="130.0" dy="0">Начало или конец</tspan></text>
+<rect x="260.0" y="59.0" width="164" height="62.0" rx="3" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="342.0" y="94.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="342.0" dy="0">Действие, шаг процесса</tspan></text>
+<polygon points="542.0,38.0 628.0,90.0 542.0,142.0 456.0,90.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="542.0" y="87.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="542.0" dy="0">Решение,</tspan><tspan x="542.0" dy="13">развилка</tspan></text>
+<polygon points="672.0,59.0 832.0,59.0 816.0,121.0 656.0,121.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="744.0" y="87.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="744.0" dy="0">Ввод или вывод</tspan><tspan x="744.0" dy="13">данных клиентом</tspan></text>
+<path d="M874.0 57.0 H1038.0 V115.0 C997.0 103.0 956.0 127.0 956.0 115.0 C915.0 103.0 874.0 125.0 874.0 115.0 Z" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="956.0" y="94.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="956.0" dy="0">Документ, результат</tspan></text>
+<path d="M1094.0 60.0 V120.0 A62.0 9.0 0 0 0 1218.0 120.0 V60.0 A62.0 9.0 0 0 0 1094.0 60.0 Z" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><ellipse cx="1156.0" cy="60.0" rx="62.0" ry="9" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="1156.0" y="94.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="1156.0" dy="0">База данных</tspan></text>
+<polygon points="1231.0,59.0 1401.0,59.0 1385.0,121.0 1247.0,121.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="1316.0" y="94.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="1316.0" dy="0">Ручная операция</tspan></text>
+<rect x="1442.0" y="54.0" width="160" height="72.0" rx="2" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><line x1="1454.0" y1="54.0" x2="1454.0" y2="126.0" stroke="#a58f12" stroke-width="1.6"/><line x1="1590.0" y1="54.0" x2="1590.0" y2="126.0" stroke="#a58f12" stroke-width="1.6"/><text x="1522.0" y="74.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="1522.0" dy="0">Предопределённый</tspan><tspan x="1522.0" dy="13">процесс</tspan><tspan x="1522.0" dy="13">(подпроцесс</tspan><tspan x="1522.0" dy="13">правее)</tspan></text>
+<path d="M1630.0 65.0 H1794.0 L1806.0 77.0 V115.0 H1630.0 Z" fill="#fffbe0" stroke="#b9a93a" stroke-width="1.2" stroke-dasharray="4 3"/><text x="1718.0" y="94.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="1718.0" dy="0">Примечание</tspan></text>
+<line x1="130" y1="170" x2="220" y2="170" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/><text x="230" y="174" font-size="11" fill="#222">основной поток</text>
+<line x1="460" y1="170" x2="550" y2="170" stroke="#7a7a7a" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#ah)"/><text x="560" y="174" font-size="11" fill="#222">необязательный переход, возврат из подпроцесса</text>
+<rect x="950" y="160" width="34" height="20" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="992" y="174" font-size="11" fill="#222">Клиент</text>
+<rect x="1200" y="160" width="34" height="20" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="1242" y="174" font-size="11" fill="#222">Портал и платформа</text>
+<rect x="1450" y="160" width="34" height="20" fill="#ececec" stroke="#6f6f6f" stroke-width="1.6"/><text x="1492" y="174" font-size="11" fill="#222">Внешние сервисы, консультант, агентство</text>
+<rect x="1730" y="160" width="34" height="20" fill="#ececec" stroke="#6f6f6f" stroke-width="1.6" stroke-dasharray="6 4"/><text x="1772" y="174" font-size="11" fill="#222">пунктирная рамка — гипотеза, не подтверждённая данными</text></svg>
+<div class="band">Блок-схема: единый поток слева направо</div>
+<svg class="flow" xmlns="http://www.w3.org/2000/svg" width="14375" height="1032" viewBox="0 20 14375 1032" font-family="Inter,'Segoe UI',Arial,'DejaVu Sans',sans-serif"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#333"/></marker></defs><rect x="0" y="20" width="14375" height="1032" fill="#fff"/><text x="24" y="46.0" font-size="18" font-weight="700" fill="#1d1d1d">Блок-схема пути клиента: поиск и подбор профессии на портале (версия «как авиабилеты»)</text>
+<text x="24" y="66.0" font-size="12" fill="#555">Единый поток слева направо. Этапы 1–5, затем блоки 6, 7, 8. Блоки показываются плашками и баннерами в поиске; в конце каждого блока возврат в основной путь.</text>
+<rect x="0" y="124.0" width="14375.0" height="300.0" fill="#fafafa"/>
+<rect x="0" y="124.0" width="122" height="300.0" fill="#7b7b7b"/>
+<line x1="0" y1="124.0" x2="14375.0" y2="124.0" stroke="#cfcfcf"/>
+<text x="61" y="278.0" text-anchor="middle" font-size="13" fill="#fff">Клиент</text>
+<rect x="0" y="424.0" width="14375.0" height="300.0" fill="#f0f0f0"/>
+<rect x="0" y="424.0" width="122" height="300.0" fill="#7b7b7b"/>
+<line x1="0" y1="424.0" x2="14375.0" y2="424.0" stroke="#cfcfcf"/>
+<text x="61" y="570.0" text-anchor="middle" font-size="13" fill="#fff">Портал и</text>
+<text x="61" y="586.0" text-anchor="middle" font-size="13" fill="#fff">платформа</text>
+<rect x="0" y="724.0" width="14375.0" height="300.0" fill="#fafafa"/>
+<rect x="0" y="724.0" width="122" height="300.0" fill="#7b7b7b"/>
+<line x1="0" y1="724.0" x2="14375.0" y2="724.0" stroke="#cfcfcf"/>
+<text x="61" y="862.0" text-anchor="middle" font-size="13" fill="#fff">Внешние сервисы,</text>
+<text x="61" y="878.0" text-anchor="middle" font-size="13" fill="#fff">консультант,</text>
+<text x="61" y="894.0" text-anchor="middle" font-size="13" fill="#fff">агентство</text>
+<line x1="0" y1="1024.0" x2="14375.0" y2="1024.0" stroke="#cfcfcf"/>
+<rect x="126.5" y="78.0" width="852.0" height="34" fill="#12c4d4"/>
+<text x="552.5" y="100.0" text-anchor="middle" font-size="14" font-weight="600" fill="#fff">1. Осознание проблемы</text>
+<line x1="122.5" y1="78.0" x2="122.5" y2="1024.0" stroke="#b5b5b5" stroke-dasharray="3 5"/>
+<rect x="986.5" y="78.0" width="1067.0" height="34" fill="#12c4d4"/>
+<text x="1520.0" y="100.0" text-anchor="middle" font-size="14" font-weight="600" fill="#fff">2. Поиск сайта сервиса</text>
+<line x1="982.5" y1="78.0" x2="982.5" y2="1024.0" stroke="#b5b5b5" stroke-dasharray="3 5"/>
+<rect x="2061.5" y="78.0" width="2142.0" height="34" fill="#12c4d4"/>
+<text x="3132.5" y="100.0" text-anchor="middle" font-size="14" font-weight="600" fill="#fff">3. Поиск и подбор профессии (блоки 6 и 7 появляются плашками и баннерами)</text>
+<line x1="2057.5" y1="78.0" x2="2057.5" y2="1024.0" stroke="#b5b5b5" stroke-dasharray="3 5"/>
+<rect x="4211.5" y="78.0" width="637.0" height="34" fill="#0f7de6"/>
+<text x="4530.0" y="100.0" text-anchor="middle" font-size="14" font-weight="600" fill="#fff">4. Переход к подбору вуза под профессию</text>
+<line x1="4207.5" y1="78.0" x2="4207.5" y2="1024.0" stroke="#b5b5b5" stroke-dasharray="3 5"/>
+<rect x="4856.5" y="78.0" width="1927.0" height="34" fill="#0f7de6"/>
+<text x="5820.0" y="100.0" text-anchor="middle" font-size="14" font-weight="600" fill="#fff">5. «Большая кнопка» у карточки вуза: сайт, заявка или услуга</text>
+<line x1="4852.5" y1="78.0" x2="4852.5" y2="1024.0" stroke="#b5b5b5" stroke-dasharray="3 5"/>
+<rect x="6791.5" y="78.0" width="2142.0" height="34" fill="#0f7de6"/>
+<text x="7862.5" y="100.0" text-anchor="middle" font-size="14" font-weight="600" fill="#fff">6. 15-минутная консультация</text>
+<line x1="6787.5" y1="78.0" x2="6787.5" y2="1024.0" stroke="#b5b5b5" stroke-dasharray="3 5"/>
+<rect x="8941.5" y="78.0" width="2787.0" height="34" fill="#0f7de6"/>
+<text x="10335.0" y="100.0" text-anchor="middle" font-size="14" font-weight="600" fill="#fff">7. Профориентация</text>
+<line x1="8937.5" y1="78.0" x2="8937.5" y2="1024.0" stroke="#b5b5b5" stroke-dasharray="3 5"/>
+<rect x="11736.5" y="78.0" width="2572.0" height="34" fill="#0f7de6"/>
+<text x="13022.5" y="100.0" text-anchor="middle" font-size="14" font-weight="600" fill="#fff">8. Дополнительные пакеты и услуги агентства</text>
+<line x1="11732.5" y1="78.0" x2="11732.5" y2="1024.0" stroke="#b5b5b5" stroke-dasharray="3 5"/>
+<path d="M318.0 274.0 L363.0 274.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M527.0 274.0 L574.0 274.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M746.0 274.0 L793.0 274.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="768.0" y="267.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Да</text>
+<path d="M660.0 222.0 L660.0 191.0 Q660.0 182.0 651.0 182.0 L454.0 182.0 Q445.0 182.0 445.0 191.0 L445.0 231.5" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="552.5" y="175.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Нет: проходит мимо</text>
+<path d="M957.0 274.0 L1010.0 274.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M1170.0 274.0 L1296.0 274.0 Q1305.0 274.0 1305.0 283.0 L1305.0 838.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M1387.0 874.0 L1401.5 874.0 Q1410.5 874.0 1410.5 865.0 L1410.5 283.0 Q1410.5 274.0 1419.5 274.0 L1434.0 274.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M1606.0 274.0 L1726.0 274.0 Q1735.0 274.0 1735.0 283.0 L1735.0 538.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="1628.0" y="267.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Да</text>
+<path d="M1520.0 326.0 L1520.0 865.0 Q1520.0 874.0 1529.0 874.0 L1647.0 874.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="1535.0" y="348.0" text-anchor="start" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Нет</text>
+<path d="M1817.0 574.0 L1831.5 574.0 Q1840.5 574.0 1840.5 565.0 L1840.5 283.0 Q1840.5 274.0 1849.5 274.0 L1864.0 274.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M1950.0 326.0 L1950.0 847.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="1965.0" y="348.0" text-anchor="start" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Нет</text>
+<path d="M2036.0 274.0 L2085.0 274.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="2058.0" y="267.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Да</text>
+<path d="M2245.0 274.0 L2262.5 274.0 Q2271.5 274.0 2271.5 283.0 L2271.5 525.0 Q2271.5 534.0 2280.5 534.0 L2298.0 534.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M2380.0 565.0 L2380.0 593.0" fill="none" stroke="#7a7a7a" stroke-width="1.6" stroke-dasharray="6 5"/>
+<path d="M2462.0 534.0 L2513.0 534.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M2677.0 534.0 L2801.0 534.0 Q2810.0 534.0 2810.0 525.0 L2810.0 326.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M2724.0 274.0 L2677.0 274.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="2702.0" y="267.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Нет</text>
+<path d="M2595.0 243.0 L2595.0 191.0 Q2595.0 182.0 2586.0 182.0 L2174.0 182.0 Q2165.0 182.0 2165.0 191.0 L2165.0 218.5" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M2896.0 274.0 L2943.0 274.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="2918.0" y="267.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Да</text>
+<path d="M3107.0 274.0 L3158.0 274.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M3322.0 274.0 L3369.0 274.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M3541.0 274.0 L3661.0 274.0 Q3670.0 274.0 3670.0 283.0 L3670.0 502.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="3563.0" y="267.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Да</text>
+<path d="M3455.0 222.0 L3455.0 207.0 Q3455.0 198.0 3446.0 198.0 L3034.0 198.0 Q3025.0 198.0 3025.0 207.0 L3025.0 238.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="3240.0" y="191.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Нет: меняет условия</text>
+<path d="M3455.0 326.0 L3455.0 583.0" fill="none" stroke="#7a7a7a" stroke-width="1.6" stroke-dasharray="6 5"/>
+<path d="M3670.0 606.0 L3670.0 656.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="3685.0" y="628.0" text-anchor="start" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Да</text>
+<path d="M3756.0 554.0 L3799.0 554.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="3778.0" y="547.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Нет</text>
+<path d="M3885.0 606.0 L3885.0 649.5" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="3900.0" y="628.0" text-anchor="start" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Да</text>
+<path d="M3971.0 554.0 L4091.0 554.0 Q4100.0 554.0 4100.0 545.0 L4100.0 326.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="3993.0" y="547.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Нет</text>
+<path d="M4100.0 222.0 L4100.0 175.0 Q4100.0 166.0 4091.0 166.0 L3034.0 166.0 Q3025.0 166.0 3025.0 175.0 L3025.0 238.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="3562.5" y="159.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Нет: продолжает сравнивать или меняет условия</text>
+<path d="M4186.0 274.0 L4233.0 274.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="4208.0" y="267.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Да</text>
+<path d="M4186.0 274.0 L4201.5 274.0 Q4210.5 274.0 4210.5 283.0 L4210.5 585.0 Q4210.5 594.0 4219.5 594.0 L4235.0 594.0" fill="none" stroke="#7a7a7a" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#ah)"/>
+<text x="4210.5" y="427.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">плашка пакета</text>
+<path d="M4397.0 274.0 L4521.0 274.0 Q4530.0 274.0 4530.0 283.0 L4530.0 538.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M4610.0 574.0 L4625.5 574.0 Q4634.5 574.0 4634.5 565.0 L4634.5 283.0 Q4634.5 274.0 4643.5 274.0 L4659.0 274.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M4530.0 819.5 L4530.0 610.0" fill="none" stroke="#7a7a7a" stroke-width="1.6" stroke-dasharray="6 5"/>
+<path d="M4745.0 326.0 L4745.0 843.5" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="4760.0" y="348.0" text-anchor="start" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Нет</text>
+<path d="M4831.0 274.0 L4845.5 274.0 Q4854.5 274.0 4854.5 283.0 L4854.5 325.0 Q4854.5 334.0 4863.5 334.0 L4878.0 334.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="4853.0" y="267.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Да</text>
+<path d="M5042.0 334.0 L5166.0 334.0 Q5175.0 334.0 5175.0 343.0 L5175.0 525.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M5257.0 574.0 L5271.5 574.0 Q5280.5 574.0 5280.5 565.0 L5280.5 343.0 Q5280.5 334.0 5289.5 334.0 L5304.0 334.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M5390.0 282.0 L5390.0 205.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="5405.0" y="260.0" text-anchor="start" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Услуги и пакеты</text>
+<path d="M5390.0 386.0 L5390.0 531.5" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="5405.0" y="408.0" text-anchor="start" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Заявка через портал</text>
+<path d="M5476.0 334.0 L5525.0 334.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="5498.0" y="327.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">На сайт</text>
+<path d="M5472.0 574.0 L5811.0 574.0 Q5820.0 574.0 5820.0 583.0 L5820.0 838.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M5685.0 334.0 L5811.0 334.0 Q5820.0 334.0 5820.0 343.0 L5820.0 838.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M5902.0 874.0 L5916.5 874.0 Q5925.5 874.0 5925.5 865.0 L5925.5 283.0 Q5925.5 274.0 5934.5 274.0 L5949.0 274.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M6035.0 326.0 L6035.0 558.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="6050.0" y="348.0" text-anchor="start" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Нет</text>
+<path d="M6121.0 274.0 L6168.0 274.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="6143.0" y="267.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Да</text>
+<path d="M6117.0 594.0 L6241.0 594.0 Q6250.0 594.0 6250.0 585.0 L6250.0 310.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="6250.0" y="445.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">по письму</text>
+<path d="M6332.0 274.0 L6456.0 274.0 Q6465.0 274.0 6465.0 283.0 L6465.0 534.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M6547.0 574.0 L6592.0 574.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M6983.0 574.0 L7028.0 574.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M7192.0 574.0 L7316.0 574.0 Q7325.0 574.0 7325.0 565.0 L7325.0 326.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M7411.0 274.0 L7460.0 274.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="7433.0" y="267.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Да</text>
+<path d="M7325.0 222.0 L7325.0 189.0 Q7325.0 180.0 7334.0 180.0 L8821.0 180.0 Q8830.0 180.0 8830.0 189.0 L8830.0 243.5" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="8077.5" y="173.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Нет: закрывает плашку, в этой сессии она не возвращается</text>
+<path d="M7620.0 274.0 L7746.0 274.0 Q7755.0 274.0 7755.0 283.0 L7755.0 531.5" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M7837.0 574.0 L7961.0 574.0 Q7970.0 574.0 7970.0 583.0 L7970.0 837.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M7628.0 874.0 L7893.0 874.0" fill="none" stroke="#7a7a7a" stroke-width="1.6" stroke-dasharray="6 5"/>
+<path d="M8047.0 874.0 L8103.0 874.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M8267.0 874.0 L8391.0 874.0 Q8400.0 874.0 8400.0 865.0 L8400.0 605.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M8482.0 574.0 L8606.0 574.0 Q8615.0 574.0 8615.0 565.0 L8615.0 305.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M8697.0 274.0 L8742.0 274.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M9133.0 574.0 L9178.0 574.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M9342.0 574.0 L9466.0 574.0 Q9475.0 574.0 9475.0 565.0 L9475.0 326.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M9561.0 274.0 L9610.0 274.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="9583.0" y="267.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Да</text>
+<path d="M9475.0 222.0 L9475.0 189.0 Q9475.0 180.0 9484.0 180.0 L11616.0 180.0 Q11625.0 180.0 11625.0 189.0 L11625.0 247.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="9490.0" y="200.0" text-anchor="start" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Нет: закрывает баннер</text>
+<path d="M9770.0 274.0 L9896.0 274.0 Q9905.0 274.0 9905.0 283.0 L9905.0 540.5" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M9987.0 574.0 L10111.0 574.0 Q10120.0 574.0 10120.0 565.0 L10120.0 326.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M10206.0 274.0 L10326.0 274.0 Q10335.0 274.0 10335.0 283.0 L10335.0 538.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="10228.0" y="267.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Да</text>
+<path d="M10120.0 222.0 L10120.0 189.0 Q10120.0 180.0 10129.0 180.0 L11616.0 180.0 Q11625.0 180.0 11625.0 189.0 L11625.0 247.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="10135.0" y="200.0" text-anchor="start" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Нет: карта сохранена</text>
+<path d="M10417.0 574.0 L10541.0 574.0 Q10550.0 574.0 10550.0 565.0 L10550.0 326.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M10636.0 274.0 L10756.0 274.0 Q10765.0 274.0 10765.0 283.0 L10765.0 843.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="10658.0" y="267.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Да</text>
+<path d="M10550.0 222.0 L10550.0 189.0 Q10550.0 180.0 10559.0 180.0 L11616.0 180.0 Q11625.0 180.0 11625.0 189.0 L11625.0 247.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="10565.0" y="200.0" text-anchor="start" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Нет: часть клиентов уходит на цене</text>
+<path d="M10847.0 874.0 L10864.5 874.0 Q10873.5 874.0 10873.5 865.0 L10873.5 283.0 Q10873.5 274.0 10882.5 274.0 L10900.0 274.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M11060.0 274.0 L11186.0 274.0 Q11195.0 274.0 11195.0 283.0 L11195.0 540.5" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M11277.0 574.0 L11328.0 574.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M11492.0 574.0 L11616.0 574.0 Q11625.0 574.0 11625.0 565.0 L11625.0 301.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M11928.0 574.0 L11973.0 574.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M12137.0 574.0 L12261.0 574.0 Q12270.0 574.0 12270.0 565.0 L12270.0 326.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M12356.0 274.0 L12403.0 274.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="12378.0" y="267.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Да</text>
+<path d="M12270.0 222.0 L12270.0 189.0 Q12270.0 180.0 12279.0 180.0 L14196.0 180.0 Q14205.0 180.0 14205.0 189.0 L14205.0 543.5" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="12285.0" y="200.0" text-anchor="start" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Нет: плашка закрыта</text>
+<path d="M12567.0 274.0 L12614.0 274.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M12786.0 274.0 L12906.0 274.0 Q12915.0 274.0 12915.0 283.0 L12915.0 543.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="12808.0" y="267.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Да</text>
+<path d="M12700.0 222.0 L12700.0 189.0 Q12700.0 180.0 12709.0 180.0 L14196.0 180.0 Q14205.0 180.0 14205.0 189.0 L14205.0 543.5" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="12715.0" y="200.0" text-anchor="start" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Нет: возможна заявка позже</text>
+<path d="M12915.0 839.0 L12915.0 605.0" fill="none" stroke="#7a7a7a" stroke-width="1.6" stroke-dasharray="6 5"/>
+<path d="M12997.0 574.0 L13121.0 574.0 Q13130.0 574.0 13130.0 583.0 L13130.0 818.5" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M13212.0 874.0 L13336.0 874.0 Q13345.0 874.0 13345.0 865.0 L13345.0 607.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M13427.0 574.0 L13478.0 574.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M13642.0 574.0 L13689.0 574.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M13861.0 574.0 L13908.0 574.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="13883.0" y="567.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Да</text>
+<path d="M13775.0 626.0 L13775.0 657.0 Q13775.0 666.0 13784.0 666.0 L14196.0 666.0 Q14205.0 666.0 14205.0 657.0 L14205.0 604.5" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="13790.0" y="648.0" text-anchor="start" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">Нет</text>
+<path d="M14072.0 574.0 L14117.0 574.0" fill="none" stroke="#333" stroke-width="1.6" marker-end="url(#ah)"/>
+<path d="M3670.0 728.0 L3670.0 927.0 Q3670.0 936.0 3679.0 936.0 L9036.0 936.0 Q9045.0 936.0 9045.0 927.0 L9045.0 604.5" fill="none" stroke="#7a7a7a" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#ah)"/>
+<text x="6357.5" y="929.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">блок 7 правее; после него снова вводит условия</text>
+<path d="M3885.0 734.5 L3885.0 955.0 Q3885.0 964.0 3894.0 964.0 L6886.0 964.0 Q6895.0 964.0 6895.0 955.0 L6895.0 617.5" fill="none" stroke="#7a7a7a" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#ah)"/>
+<text x="5390.0" y="957.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">блок 6 правее; после него снова сравнивает</text>
+<path d="M4315.0 630.0 L4315.0 983.0 Q4315.0 992.0 4324.0 992.0 L11831.0 992.0 Q11840.0 992.0 11840.0 983.0 L11840.0 617.5" fill="none" stroke="#7a7a7a" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#ah)"/>
+<text x="8077.5" y="985.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">блок 8 правее; после него переходит к подбору вуза</text>
+<path d="M5390.0 133.0 L5390.0 136.5 Q5390.0 140.0 5399.0 140.0 L11831.0 140.0 Q11840.0 140.0 11840.0 149.0 L11840.0 530.5" fill="none" stroke="#7a7a7a" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#ah)"/>
+<text x="8615.0" y="133.0" text-anchor="middle" font-size="11" font-weight="600" fill="#222" stroke="#fafafa" stroke-width="4" paint-order="stroke">блок 8 правее; после него возвращается к «большой кнопке»</text>
+<rect x="142.0" y="237.0" width="176" height="74.0" rx="37.0" fill="#2b2b2b" stroke="#111" stroke-width="1.6"/><text x="230.0" y="258.5" text-anchor="middle" font-size="11" fill="#fff"><tspan x="230.0" dy="0">Начало: родитель живёт</tspan><tspan x="230.0" dy="13">обычной жизнью, выбор</tspan><tspan x="230.0" dy="13">профессии ещё не</tspan><tspan x="230.0" dy="13">ощущается</tspan></text>
+<rect x="363.0" y="231.5" width="164" height="85.0" rx="3" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="445.0" y="252.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="445.0" dy="0">Встречает материалы:</tspan><tspan x="445.0" dy="13">ролик о профессии,</tspan><tspan x="445.0" dy="13">статья, реклама,</tspan><tspan x="445.0" dy="13">рассказ другого</tspan><tspan x="445.0" dy="13">родителя</tspan></text>
+<polygon points="660.0,222.0 746.0,274.0 660.0,326.0 574.0,274.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="660.0" y="271.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="660.0" dy="0">Понял, что пора</tspan><tspan x="660.0" dy="13">разбираться?</tspan></text>
+<rect x="793.0" y="243.0" width="164" height="62.0" rx="3" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="875.0" y="271.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="875.0" dy="0">Решает пойти в</tspan><tspan x="875.0" dy="13">поисковую систему</tspan></text>
+<polygon points="1018.0,238.0 1178.0,238.0 1162.0,310.0 1002.0,310.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="1090.0" y="258.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="1090.0" dy="0">Открывает</tspan><tspan x="1090.0" dy="13">поисковую систему</tspan><tspan x="1090.0" dy="13">или нейросеть,</tspan><tspan x="1090.0" dy="13">вводит запрос</tspan></text>
+<rect x="1223.0" y="838.0" width="164" height="72.0" rx="3" fill="#ececec" stroke="#6f6f6f" stroke-width="1.6"/><text x="1305.0" y="858.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="1305.0" dy="0">Поисковая система</tspan><tspan x="1305.0" dy="13">показывает выдачу:</tspan><tspan x="1305.0" dy="13">ссылки на портал и</tspan><tspan x="1305.0" dy="13">другие сайты</tspan></text>
+<polygon points="1520.0,222.0 1606.0,274.0 1520.0,326.0 1434.0,274.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="1520.0" y="271.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="1520.0" dy="0">Выбирает ссылку</tspan><tspan x="1520.0" dy="13">на портал?</tspan></text>
+<rect x="1647.0" y="847.0" width="176" height="54.0" rx="27.0" fill="#2b2b2b" stroke="#111" stroke-width="1.6"/><text x="1735.0" y="871.5" text-anchor="middle" font-size="11" fill="#fff"><tspan x="1735.0" dy="0">Конец: клиент уходит к</tspan><tspan x="1735.0" dy="13">другому сервису</tspan></text>
+<rect x="1653.0" y="538.0" width="164" height="72.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="1735.0" y="558.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="1735.0" dy="0">Страница «профессии в</tspan><tspan x="1735.0" dy="13">вашей стране и за</tspan><tspan x="1735.0" dy="13">рубежом»: страна, язык</tspan><tspan x="1735.0" dy="13">и валюта подставлены</tspan></text>
+<polygon points="1950.0,222.0 2036.0,274.0 1950.0,326.0 1864.0,274.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="1950.0" y="271.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="1950.0" dy="0">Доверяет</tspan><tspan x="1950.0" dy="13">сервису?</tspan></text>
+<rect x="1862.0" y="847.0" width="176" height="54.0" rx="27.0" fill="#2b2b2b" stroke="#111" stroke-width="1.6"/><text x="1950.0" y="871.5" text-anchor="middle" font-size="11" fill="#fff"><tspan x="1950.0" dy="0">Конец: клиент уходит с</tspan><tspan x="1950.0" dy="13">портала</tspan></text>
+<polygon points="2093.0,218.5 2253.0,218.5 2237.0,329.5 2077.0,329.5" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="2165.0" y="239.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="2165.0" dy="0">Вводит условия:</tspan><tspan x="2165.0" dy="13">где живёт, где</tspan><tspan x="2165.0" dy="13">хочет работать,</tspan><tspan x="2165.0" dy="13">интересы и сильные</tspan><tspan x="2165.0" dy="13">стороны, возраст</tspan><tspan x="2165.0" dy="13">ребёнка, формат</tspan><tspan x="2165.0" dy="13">работы</tspan></text>
+<rect x="2298.0" y="503.0" width="164" height="62.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="2380.0" y="538.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="2380.0" dy="0">Ищет профессии по базе</tspan></text>
+<path d="M2318.0 602.0 V662.0 A62.0 9.0 0 0 0 2442.0 662.0 V602.0 A62.0 9.0 0 0 0 2318.0 602.0 Z" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><ellipse cx="2380.0" cy="602.0" rx="62.0" ry="9" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="2380.0" y="623.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="2380.0" dy="0">База профессий</tspan><tspan x="2380.0" dy="13">мира: спрос,</tspan><tspan x="2380.0" dy="13">доход, навыки</tspan></text>
+<rect x="2513.0" y="498.0" width="164" height="72.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="2595.0" y="518.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="2595.0" dy="0">Формирует выдачу:</tspan><tspan x="2595.0" dy="13">спрос, зарплатные</tspan><tspan x="2595.0" dy="13">вилки, тренды, нужные</tspan><tspan x="2595.0" dy="13">навыки</tspan></text>
+<rect x="2513.0" y="243.0" width="164" height="62.0" rx="3" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="2595.0" y="271.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="2595.0" dy="0">Меняет условия или</tspan><tspan x="2595.0" dy="13">выбирает «кем угодно»</tspan></text>
+<polygon points="2810.0,222.0 2896.0,274.0 2810.0,326.0 2724.0,274.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="2810.0" y="271.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="2810.0" dy="0">Есть подходящие</tspan><tspan x="2810.0" dy="13">профессии?</tspan></text>
+<rect x="2943.0" y="238.0" width="164" height="72.0" rx="3" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="3025.0" y="258.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="3025.0" dy="0">Фильтрует, сортирует,</tspan><tspan x="3025.0" dy="13">добавляет в избранное,</tspan><tspan x="3025.0" dy="13">сравнивает до 4</tspan><tspan x="3025.0" dy="13">профессий</tspan></text>
+<rect x="3158.0" y="238.0" width="164" height="72.0" rx="3" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="3240.0" y="258.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="3240.0" dy="0">Сохраняет подборку в</tspan><tspan x="3240.0" dy="13">кабинете или</tspan><tspan x="3240.0" dy="13">отправляет ссылкой</tspan><tspan x="3240.0" dy="13">ребёнку и семье</tspan></text>
+<polygon points="3455.0,222.0 3541.0,274.0 3455.0,326.0 3369.0,274.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="3455.0" y="271.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="3455.0" dy="0">Подборка</tspan><tspan x="3455.0" dy="13">подошла?</tspan></text>
+<rect x="3373.0" y="583.0" width="164" height="62.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="3455.0" y="605.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="3455.0" dy="0">Записывает ответ «да»</tspan><tspan x="3455.0" dy="13">или «нет» в статистику</tspan><tspan x="3455.0" dy="13">подборок</tspan></text>
+<polygon points="3670.0,502.0 3756.0,554.0 3670.0,606.0 3584.0,554.0" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="3670.0" y="545.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="3670.0" dy="0">Широкий поиск,</tspan><tspan x="3670.0" dy="13">профессия не</tspan><tspan x="3670.0" dy="13">выбрана?</tspan></text>
+<rect x="3590.0" y="656.0" width="160" height="72.0" rx="2" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><line x1="3602.0" y1="656.0" x2="3602.0" y2="728.0" stroke="#2a8fbd" stroke-width="1.6"/><line x1="3738.0" y1="656.0" x2="3738.0" y2="728.0" stroke="#2a8fbd" stroke-width="1.6"/><text x="3670.0" y="676.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="3670.0" dy="0">Блок 7:</tspan><tspan x="3670.0" dy="13">Профориентация</tspan><tspan x="3670.0" dy="13">(подпроцесс</tspan><tspan x="3670.0" dy="13">правее)</tspan></text>
+<polygon points="3885.0,502.0 3971.0,554.0 3885.0,606.0 3799.0,554.0" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="3885.0" y="538.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="3885.0" dy="0">Сравнивает 3 и</tspan><tspan x="3885.0" dy="13">более профессий</tspan><tspan x="3885.0" dy="13">или вернулся</tspan><tspan x="3885.0" dy="13">повторно?</tspan></text>
+<rect x="3805.0" y="649.5" width="160" height="85.0" rx="2" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><line x1="3817.0" y1="649.5" x2="3817.0" y2="734.5" stroke="#2a8fbd" stroke-width="1.6"/><line x1="3953.0" y1="649.5" x2="3953.0" y2="734.5" stroke="#2a8fbd" stroke-width="1.6"/><text x="3885.0" y="670.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="3885.0" dy="0">Блок 6:</tspan><tspan x="3885.0" dy="13">15-минутная</tspan><tspan x="3885.0" dy="13">консультация</tspan><tspan x="3885.0" dy="13">(подпроцесс</tspan><tspan x="3885.0" dy="13">правее)</tspan></text>
+<polygon points="4100.0,222.0 4186.0,274.0 4100.0,326.0 4014.0,274.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="4100.0" y="271.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="4100.0" dy="0">Определился с</tspan><tspan x="4100.0" dy="13">профессией?</tspan></text>
+<rect x="4235.0" y="558.0" width="160" height="72.0" rx="2" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><line x1="4247.0" y1="558.0" x2="4247.0" y2="630.0" stroke="#2a8fbd" stroke-width="1.6"/><line x1="4383.0" y1="558.0" x2="4383.0" y2="630.0" stroke="#2a8fbd" stroke-width="1.6"/><text x="4315.0" y="578.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="4315.0" dy="0">Блок 8: пакеты и</tspan><tspan x="4315.0" dy="13">услуги агентства</tspan><tspan x="4315.0" dy="13">(подпроцесс</tspan><tspan x="4315.0" dy="13">правее)</tspan></text>
+<rect x="4233.0" y="238.0" width="164" height="72.0" rx="3" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="4315.0" y="258.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="4315.0" dy="0">Нажимает «Где</tspan><tspan x="4315.0" dy="13">учиться»: профессия</tspan><tspan x="4315.0" dy="13">передаётся в подбор</tspan><tspan x="4315.0" dy="13">вуза</tspan></text>
+<rect x="4450.0" y="538.0" width="160" height="72.0" rx="2" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><line x1="4462.0" y1="538.0" x2="4462.0" y2="610.0" stroke="#2a8fbd" stroke-width="1.6"/><line x1="4598.0" y1="538.0" x2="4598.0" y2="610.0" stroke="#2a8fbd" stroke-width="1.6"/><text x="4530.0" y="558.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="4530.0" dy="0">Подбор вуза под</tspan><tspan x="4530.0" dy="13">профессию:</tspan><tspan x="4530.0" dy="13">процесс «Поиск и</tspan><tspan x="4530.0" dy="13">подбор обучения»</tspan></text>
+<path d="M4442.0 819.5 H4606.0 L4618.0 831.5 V928.5 H4442.0 Z" fill="#fffbe0" stroke="#b9a93a" stroke-width="1.2" stroke-dasharray="4 3"/><text x="4530.0" y="839.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="4530.0" dy="0">Другой вход: клиент</tspan><tspan x="4530.0" dy="13">начинает с вуза,</tspan><tspan x="4530.0" dy="13">профессии видны в</tspan><tspan x="4530.0" dy="13">карточке вуза; вузы,</tspan><tspan x="4530.0" dy="13">профессии и курсы —</tspan><tspan x="4530.0" dy="13">отдельные страницы</tspan><tspan x="4530.0" dy="13">выдачи</tspan></text>
+<polygon points="4745.0,222.0 4831.0,274.0 4745.0,326.0 4659.0,274.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="4745.0" y="271.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="4745.0" dy="0">Выбрал вуз и</tspan><tspan x="4745.0" dy="13">программу?</tspan></text>
+<rect x="4657.0" y="843.5" width="176" height="61.0" rx="30.5" fill="#2b2b2b" stroke="#111" stroke-width="1.6"/><text x="4745.0" y="865.0" text-anchor="middle" font-size="11" fill="#fff"><tspan x="4745.0" dy="0">Конец: клиент не</tspan><tspan x="4745.0" dy="13">выбрал вуз и ушёл с</tspan><tspan x="4745.0" dy="13">портала</tspan></text>
+<rect x="4878.0" y="303.0" width="164" height="62.0" rx="3" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="4960.0" y="325.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="4960.0" dy="0">Нажимает «большую</tspan><tspan x="4960.0" dy="13">кнопку» у карточки</tspan><tspan x="4960.0" dy="13">вуза</tspan></text>
+<rect x="5093.0" y="525.0" width="164" height="98.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="5175.0" y="545.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="5175.0" dy="0">Открывает окно с</tspan><tspan x="5175.0" dy="13">вариантами: сайт вуза,</tspan><tspan x="5175.0" dy="13">заявка через портал,</tspan><tspan x="5175.0" dy="13">услуги и пакеты; чего</tspan><tspan x="5175.0" dy="13">ещё нет — лист</tspan><tspan x="5175.0" dy="13">ожидания</tspan></text>
+<polygon points="5390.0,282.0 5476.0,334.0 5390.0,386.0 5304.0,334.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="5390.0" y="338.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="5390.0" dy="0">Что выбирает?</tspan></text>
+<rect x="5310.0" y="133.0" width="160" height="72.0" rx="2" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><line x1="5322.0" y1="133.0" x2="5322.0" y2="205.0" stroke="#a58f12" stroke-width="1.6"/><line x1="5458.0" y1="133.0" x2="5458.0" y2="205.0" stroke="#a58f12" stroke-width="1.6"/><text x="5390.0" y="153.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="5390.0" dy="0">Блок 8: услуги и</tspan><tspan x="5390.0" dy="13">пакеты</tspan><tspan x="5390.0" dy="13">(подпроцесс</tspan><tspan x="5390.0" dy="13">правее)</tspan></text>
+<rect x="5308.0" y="531.5" width="164" height="85.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6" stroke-dasharray="6 4"/><text x="5390.0" y="552.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="5390.0" dy="0">Готовит заявку на</tspan><tspan x="5390.0" dy="13">портале: цифровая</tspan><tspan x="5390.0" dy="13">копия анкеты;</tspan><tspan x="5390.0" dy="13">небольшая оплата</tspan><tspan x="5390.0" dy="13">(гипотеза)</tspan></text>
+<polygon points="5533.0,303.0 5693.0,303.0 5677.0,365.0 5517.0,365.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="5605.0" y="325.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="5605.0" dy="0">Оставляет email:</tspan><tspan x="5605.0" dy="13">портал просит его</tspan><tspan x="5605.0" dy="13">перед переходом</tspan></text>
+<rect x="5738.0" y="838.0" width="164" height="72.0" rx="3" fill="#ececec" stroke="#6f6f6f" stroke-width="1.6"/><text x="5820.0" y="858.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="5820.0" dy="0">Новая вкладка: сайт</tspan><tspan x="5820.0" dy="13">вуза или курса;</tspan><tspan x="5820.0" dy="13">вкладка портала</tspan><tspan x="5820.0" dy="13">остаётся открытой</tspan></text>
+<polygon points="6035.0,222.0 6121.0,274.0 6035.0,326.0 5949.0,274.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="6035.0" y="271.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="6035.0" dy="0">Вернулся на</tspan><tspan x="6035.0" dy="13">портал?</tspan></text>
+<rect x="5953.0" y="558.0" width="164" height="72.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="6035.0" y="578.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="6035.0" dy="0">Через время пишет на</tspan><tspan x="6035.0" dy="13">email: что дальше</tspan><tspan x="6035.0" dy="13">(виза, курсы,</tspan><tspan x="6035.0" dy="13">следующая услуга)</tspan></text>
+<rect x="6168.0" y="238.0" width="164" height="72.0" rx="3" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="6250.0" y="258.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="6250.0" dy="0">Возвращается на портал</tspan><tspan x="6250.0" dy="13">и отмечает статус:</tspan><tspan x="6250.0" dy="13">подал, записался, пока</tspan><tspan x="6250.0" dy="13">думает</tspan></text>
+<path d="M6383.0 534.0 H6547.0 V606.0 C6506.0 594.0 6465.0 618.0 6465.0 606.0 C6424.0 594.0 6383.0 616.0 6383.0 606.0 Z" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="6465.0" y="558.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="6465.0" dy="0">Кабинет «Мой путь»:</tspan><tspan x="6465.0" dy="13">профессии, выбранные</tspan><tspan x="6465.0" dy="13">вузы и программы,</tspan><tspan x="6465.0" dy="13">напоминания о сроках</tspan></text>
+<rect x="6592.0" y="543.5" width="176" height="61.0" rx="30.5" fill="#2b2b2b" stroke="#111" stroke-width="1.6"/><text x="6680.0" y="565.0" text-anchor="middle" font-size="11" fill="#fff"><tspan x="6680.0" dy="0">Конец: путь выбран,</tspan><tspan x="6680.0" dy="13">статус отслеживается в</tspan><tspan x="6680.0" dy="13">кабинете</tspan></text>
+<rect x="6807.0" y="530.5" width="176" height="87.0" rx="43.5" fill="#2b2b2b" stroke="#111" stroke-width="1.6"/><text x="6895.0" y="552.0" text-anchor="middle" font-size="11" fill="#fff"><tspan x="6895.0" dy="0">Начало блока 6: клиент</tspan><tspan x="6895.0" dy="13">сравнивает 3 и более</tspan><tspan x="6895.0" dy="13">профессий или</tspan><tspan x="6895.0" dy="13">возвращается в поиск</tspan><tspan x="6895.0" dy="13">повторно</tspan></text>
+<rect x="7028.0" y="543.0" width="164" height="62.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="7110.0" y="565.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="7110.0" dy="0">Показывает плашку «Не</tspan><tspan x="7110.0" dy="13">уверены? 15 минут с</tspan><tspan x="7110.0" dy="13">консультантом»</tspan></text>
+<polygon points="7325.0,222.0 7411.0,274.0 7325.0,326.0 7239.0,274.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="7325.0" y="271.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="7325.0" dy="0">Откликается на</tspan><tspan x="7325.0" dy="13">плашку?</tspan></text>
+<polygon points="7468.0,238.0 7628.0,238.0 7612.0,310.0 7452.0,310.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="7540.0" y="258.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="7540.0" dy="0">Выбирает время в</tspan><tspan x="7540.0" dy="13">своём часовом</tspan><tspan x="7540.0" dy="13">поясе, оставляет</tspan><tspan x="7540.0" dy="13">вопросы</tspan></text>
+<rect x="7673.0" y="531.5" width="164" height="85.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="7755.0" y="552.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="7755.0" dy="0">Записывает на</tspan><tspan x="7755.0" dy="13">консультацию и</tspan><tspan x="7755.0" dy="13">передаёт подборку</tspan><tspan x="7755.0" dy="13">профессий и вопросы</tspan><tspan x="7755.0" dy="13">консультанту</tspan></text>
+<path d="M7452.0 800.0 H7616.0 L7628.0 812.0 V948.0 H7452.0 Z" fill="#fffbe0" stroke="#b9a93a" stroke-width="1.2" stroke-dasharray="4 3"/><text x="7540.0" y="819.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="7540.0" dy="0">Лимит слотов в день и</tspan><tspan x="7540.0" dy="13">очередь ожидания;</tspan><tspan x="7540.0" dy="13">консультацию ведёт</tspan><tspan x="7540.0" dy="13">специалист с нужными</tspan><tspan x="7540.0" dy="13">компетенциями. Статус</tspan><tspan x="7540.0" dy="13">под вопросом:</tspan><tspan x="7540.0" dy="13">бесплатные консультации</tspan><tspan x="7540.0" dy="13">могут заменить анкетой,</tspan><tspan x="7540.0" dy="13">контактом и листом</tspan><tspan x="7540.0" dy="13">ожидания</tspan></text>
+<polygon points="7885.0,837.0 8055.0,837.0 8039.0,911.0 7901.0,911.0" fill="#ececec" stroke="#6f6f6f" stroke-width="1.6"/><text x="7970.0" y="858.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="7970.0" dy="0">Консультант</tspan><tspan x="7970.0" dy="13">изучает подборку и</tspan><tspan x="7970.0" dy="13">проводит</tspan><tspan x="7970.0" dy="13">видеоконсультацию</tspan></text>
+<path d="M8103.0 841.0 H8267.0 V899.0 C8226.0 887.0 8185.0 911.0 8185.0 899.0 C8144.0 887.0 8103.0 909.0 8103.0 899.0 Z" fill="#ececec" stroke="#6f6f6f" stroke-width="1.6"/><text x="8185.0" y="871.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="8185.0" dy="0">Резюме и сохранённые</tspan><tspan x="8185.0" dy="13">профессии</tspan></text>
+<rect x="8318.0" y="543.0" width="164" height="62.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="8400.0" y="571.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="8400.0" dy="0">Сохраняет резюме в</tspan><tspan x="8400.0" dy="13">кабинете клиента</tspan></text>
+<rect x="8533.0" y="243.0" width="164" height="62.0" rx="3" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="8615.0" y="271.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="8615.0" dy="0">Возвращается в поиск с</tspan><tspan x="8615.0" dy="13">суженным выбором</tspan></text>
+<rect x="8742.0" y="243.5" width="176" height="61.0" rx="30.5" fill="#2b2b2b" stroke="#111" stroke-width="1.6"/><text x="8830.0" y="265.0" text-anchor="middle" font-size="11" fill="#fff"><tspan x="8830.0" dy="0">Конец блока 6: возврат</tspan><tspan x="8830.0" dy="13">к шагу «Фильтрует,</tspan><tspan x="8830.0" dy="13">сортирует, сравнивает»</tspan></text>
+<rect x="8957.0" y="543.5" width="176" height="61.0" rx="30.5" fill="#2b2b2b" stroke="#111" stroke-width="1.6"/><text x="9045.0" y="565.0" text-anchor="middle" font-size="11" fill="#fff"><tspan x="9045.0" dy="0">Начало блока 7:</tspan><tspan x="9045.0" dy="13">широкий поиск,</tspan><tspan x="9045.0" dy="13">профессия не выбрана</tspan></text>
+<rect x="9178.0" y="538.0" width="164" height="72.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="9260.0" y="558.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="9260.0" dy="0">Показывает баннер «Не</tspan><tspan x="9260.0" dy="13">знаете, кем стать?»</tspan><tspan x="9260.0" dy="13">после первой полезной</tspan><tspan x="9260.0" dy="13">выдачи</tspan></text>
+<polygon points="9475.0,222.0 9561.0,274.0 9475.0,326.0 9389.0,274.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="9475.0" y="271.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="9475.0" dy="0">Откликается на</tspan><tspan x="9475.0" dy="13">баннер?</tspan></text>
+<polygon points="9618.0,238.0 9778.0,238.0 9762.0,310.0 9602.0,310.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="9690.0" y="258.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="9690.0" dy="0">Проходит</tspan><tspan x="9690.0" dy="13">бесплатный</tspan><tspan x="9690.0" dy="13">скрининг: отвечает</tspan><tspan x="9690.0" dy="13">на вопросы</tspan></text>
+<path d="M9823.0 540.5 H9987.0 V599.5 C9946.0 587.5 9905.0 611.5 9905.0 599.5 C9864.0 587.5 9823.0 609.5 9823.0 599.5 Z" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="9905.0" y="565.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="9905.0" dy="0">Бесплатная карта</tspan><tspan x="9905.0" dy="13">рисков выбора и</tspan><tspan x="9905.0" dy="13">первые направления</tspan></text>
+<polygon points="10120.0,222.0 10206.0,274.0 10120.0,326.0 10034.0,274.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="10120.0" y="271.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="10120.0" dy="0">Хочет полный</tspan><tspan x="10120.0" dy="13">разбор?</tspan></text>
+<rect x="10253.0" y="538.0" width="164" height="72.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="10335.0" y="558.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="10335.0" dy="0">Показывает</tspan><tspan x="10335.0" dy="13">предложение: цена</tspan><tspan x="10335.0" dy="13">зависит от канала и</tspan><tspan x="10335.0" dy="13">страны</tspan></text>
+<polygon points="10550.0,222.0 10636.0,274.0 10550.0,326.0 10464.0,274.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="10550.0" y="278.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="10550.0" dy="0">Оплачивает?</tspan></text>
+<rect x="10683.0" y="843.0" width="164" height="62.0" rx="3" fill="#ececec" stroke="#6f6f6f" stroke-width="1.6"/><text x="10765.0" y="871.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="10765.0" dy="0">Оплата на странице</tspan><tspan x="10765.0" dy="13">платёжного провайдера</tspan></text>
+<polygon points="10908.0,243.0 11068.0,243.0 11052.0,305.0 10892.0,305.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="10980.0" y="271.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="10980.0" dy="0">Проходит</tspan><tspan x="10980.0" dy="13">диагностику</tspan></text>
+<path d="M11113.0 540.5 H11277.0 V599.5 C11236.0 587.5 11195.0 611.5 11195.0 599.5 C11154.0 587.5 11113.0 609.5 11113.0 599.5 Z" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="11195.0" y="565.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="11195.0" dy="0">Подробный отчёт:</tspan><tspan x="11195.0" dy="13">ориентир, а не</tspan><tspan x="11195.0" dy="13">диагностика</tspan></text>
+<rect x="11328.0" y="531.5" width="164" height="85.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="11410.0" y="552.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="11410.0" dy="0">Подставляет подходящие</tspan><tspan x="11410.0" dy="13">профессии в фильтры</tspan><tspan x="11410.0" dy="13">поиска и в индекс</tspan><tspan x="11410.0" dy="13">соответствия при</tspan><tspan x="11410.0" dy="13">подборе вуза</tspan></text>
+<rect x="11537.0" y="247.0" width="176" height="54.0" rx="27.0" fill="#2b2b2b" stroke="#111" stroke-width="1.6"/><text x="11625.0" y="271.5" text-anchor="middle" font-size="11" fill="#fff"><tspan x="11625.0" dy="0">Конец блока 7: возврат</tspan><tspan x="11625.0" dy="13">к вводу условий поиска</tspan></text>
+<rect x="11752.0" y="530.5" width="176" height="87.0" rx="43.5" fill="#2b2b2b" stroke="#111" stroke-width="1.6"/><text x="11840.0" y="552.0" text-anchor="middle" font-size="11" fill="#fff"><tspan x="11840.0" dy="0">Начало блока 8:</tspan><tspan x="11840.0" dy="13">выбрана профессия или</tspan><tspan x="11840.0" dy="13">нажата «большая</tspan><tspan x="11840.0" dy="13">кнопка» у вуза и</tspan><tspan x="11840.0" dy="13">выбраны услуги</tspan></text>
+<rect x="11973.0" y="538.0" width="164" height="72.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="12055.0" y="558.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="12055.0" dy="0">Показывает плашку</tspan><tspan x="12055.0" dy="13">«Поможем построить</tspan><tspan x="12055.0" dy="13">путь в профессию» у</tspan><tspan x="12055.0" dy="13">выбранной профессии</tspan></text>
+<polygon points="12270.0,222.0 12356.0,274.0 12270.0,326.0 12184.0,274.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="12270.0" y="271.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="12270.0" dy="0">Откликается на</tspan><tspan x="12270.0" dy="13">плашку?</tspan></text>
+<rect x="12403.0" y="243.0" width="164" height="62.0" rx="3" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="12485.0" y="265.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="12485.0" dy="0">Смотрит состав пакета</tspan><tspan x="12485.0" dy="13">и цену: цена зависит</tspan><tspan x="12485.0" dy="13">от канала и страны</tspan></text>
+<polygon points="12700.0,222.0 12786.0,274.0 12700.0,326.0 12614.0,274.0" fill="#fff3a8" stroke="#a58f12" stroke-width="1.6"/><text x="12700.0" y="278.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="12700.0" dy="0">Берёт пакет?</tspan></text>
+<rect x="12833.0" y="543.0" width="164" height="62.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="12915.0" y="571.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="12915.0" dy="0">Оформляет заявку или</tspan><tspan x="12915.0" dy="13">оплату</tspan></text>
+<path d="M12827.0 839.0 H12991.0 L13003.0 851.0 V909.0 H12827.0 Z" fill="#fffbe0" stroke="#b9a93a" stroke-width="1.2" stroke-dasharray="4 3"/><text x="12915.0" y="858.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="12915.0" dy="0">Состав и цены пакетов</tspan><tspan x="12915.0" dy="13">не заданы; возможны</tspan><tspan x="12915.0" dy="13">подписки (пока не</tspan><tspan x="12915.0" dy="13">проработаны)</tspan></text>
+<rect x="13048.0" y="818.5" width="164" height="111.0" rx="3" fill="#ececec" stroke="#6f6f6f" stroke-width="1.6" stroke-dasharray="6 4"/><text x="13130.0" y="839.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="13130.0" dy="0">Услуга: поступление,</tspan><tspan x="13130.0" dy="13">подбор «под ключ»,</tspan><tspan x="13130.0" dy="13">поступление плюс виза</tspan><tspan x="13130.0" dy="13">(как отель плюс</tspan><tspan x="13130.0" dy="13">билет); исполняют</tspan><tspan x="13130.0" dy="13">партнёры-провайдеры</tspan><tspan x="13130.0" dy="13">(гипотеза)</tspan></text>
+<path d="M13263.0 541.0 H13427.0 V599.0 C13386.0 587.0 13345.0 611.0 13345.0 599.0 C13304.0 587.0 13263.0 609.0 13263.0 599.0 Z" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="13345.0" y="571.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="13345.0" dy="0">Кабинет «Мой путь»:</tspan><tspan x="13345.0" dy="13">статусы и сроки</tspan></text>
+<rect x="13478.0" y="543.0" width="164" height="62.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="13560.0" y="571.5" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="13560.0" dy="0">Присылает письмо с</tspan><tspan x="13560.0" dy="13">просьбой об отзыве</tspan></text>
+<polygon points="13775.0,522.0 13861.0,574.0 13775.0,626.0 13689.0,574.0" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="13775.0" y="565.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="13775.0" dy="0">Есть второй</tspan><tspan x="13775.0" dy="13">ребёнок в</tspan><tspan x="13775.0" dy="13">семье?</tspan></text>
+<rect x="13908.0" y="543.0" width="164" height="62.0" rx="3" fill="#d4f0fb" stroke="#2a8fbd" stroke-width="1.6"/><text x="13990.0" y="565.0" text-anchor="middle" font-size="11" fill="#1d1d1d"><tspan x="13990.0" dy="0">Предлагает</tspan><tspan x="13990.0" dy="13">профориентацию для</tspan><tspan x="13990.0" dy="13">второго ребёнка</tspan></text>
+<rect x="14117.0" y="543.5" width="176" height="61.0" rx="30.5" fill="#2b2b2b" stroke="#111" stroke-width="1.6"/><text x="14205.0" y="565.0" text-anchor="middle" font-size="11" fill="#fff"><tspan x="14205.0" dy="0">Конец блока 8: возврат</tspan><tspan x="14205.0" dy="13">к шагу «Нажимает «Где</tspan><tspan x="14205.0" dy="13">учиться»»</tspan></text></svg>
+<div class="band" style="background:#0f7de6">Стикеры: те же колонки, что у схемы выше; каждый шаг клиента — под своим узлом</div>
+<div class="bgrid" style="grid-template-columns:122.5px repeat(66,215px)">
+<div class="lab" style="grid-row:1">Слои / Этапы</div>
+<div class="stage" style="grid-row:1;grid-column:2/span 4">1. Осознание проблемы</div>
+<div class="stage" style="grid-row:1;grid-column:6/span 5">2. Поиск сайта сервиса</div>
+<div class="stage" style="grid-row:1;grid-column:11/span 10">3. Поиск и подбор профессии</div>
+<div class="stage blue" style="grid-row:1;grid-column:21/span 3">4. Переход к подбору вуза под профессию</div>
+<div class="stage blue" style="grid-row:1;grid-column:24/span 9">5. «Большая кнопка» у карточки вуза: сайт, заявка или услуга</div>
+<div class="stage blue" style="grid-row:1;grid-column:33/span 10">6. 15-минутная консультация</div>
+<div class="stage blue" style="grid-row:1;grid-column:43/span 13">7. Профориентация</div>
+<div class="stage blue" style="grid-row:1;grid-column:56/span 12">8. Дополнительные пакеты и услуги агентства</div>
+<div class="lab" style="grid-row:2">Цель этапа</div>
+<div class="lab" style="grid-row:3">Действия клиента</div>
+<div class="lab" style="grid-row:4">Ожидания и мысли клиента</div>
+<div class="lab" style="grid-row:5">Точки взаимодействия</div>
+<div class="lab" style="grid-row:6">Опыт клиента</div>
+<div class="lab" style="grid-row:7">Эмоции клиента</div>
+<div class="lab" style="grid-row:8">Идеи по улучшению клиентского опыта</div>
+<div class="lab" style="grid-row:9">Вставки и баннеры в поиске: где и когда показываются (блоки 6, 7, 8)</div>
+<div class="cell goalrow first" style="grid-row:2;grid-column:2/span 4"><div class="st y2" style="--r:0.7deg;">Понять, что выбор профессии пора начинать, и решить найти варианты</div></div>
+<div class="cell goalrow first" style="grid-row:2;grid-column:6/span 5"><div class="st y3" style="--r:-0.4deg;">Найти сервис, который покажет все профессии, и убедиться, что ему можно доверять</div></div>
+<div class="cell goalrow first" style="grid-row:2;grid-column:11/span 10"><div class="st y4" style="--r:1.0deg;">Выбрать из понравившихся: найти профессии под интересы и сильные стороны и сравнить их между собой</div><div class="st y1" style="--r:0.2deg;">Увидеть «откуда — кем — где», как в авиабилетах: спрос, доход и путь к профессии в нужной стране</div></div>
+<div class="cell goalrow first" style="grid-row:2;grid-column:21/span 3"><div class="st y1" style="--r:0.2deg;">Передать выбранную профессию в подбор вуза: найти, где и чему учиться, чтобы прийти к этой профессии</div></div>
+<div class="cell goalrow first" style="grid-row:2;grid-column:24/span 9"><div class="st y2" style="--r:-0.8deg;">Дойти от выбранного вуза до результата: клиент сам решает — перейти на сайт вуза, подать заявку через портал или взять услугу; на любом пути портал берёт email, чтобы вернуть клиента</div></div>
+<div class="cell goalrow first" style="grid-row:2;grid-column:33/span 10"><div class="st y2" style="--r:-0.8deg;">Снять сомнение и сузить выбор до 2–3 профессий за 15 минут с живым человеком</div></div>
+<div class="cell goalrow first" style="grid-row:2;grid-column:43/span 13"><div class="st y3" style="--r:0.5deg;">Определить профессии, которые подходят именно этому ребёнку: диагностика, подробный отчёт, ИИ-консультант, повторное прохождение для сравнения</div><div class="st gr" style="--r:-1.1deg;">Отчёт — ориентир, а не диагностика; успех в профессии не гарантируется</div></div>
+<div class="cell goalrow first" style="grid-row:2;grid-column:56/span 12"><div class="st y4" style="--r:-1.1deg;">Довести выбор до результата: карта навыков и траектория обучения, сопровождение поступления; пакет для второго ребёнка; возможны подписки (пока не проработаны)</div><div class="st ghost" style="--r:0.7deg;">Услуги агентства как каталог допродаж пока не определены</div></div>
+<div class="cell " style="grid-row:3;grid-column:2"><div class="st y3" id="s1a1" style="--r:-0.4deg;">Живёт обычной жизнью: школа, кружки, разговоры о том, кем быть, когда вырастешь</div></div>
+<div class="cell " style="grid-row:3;grid-column:3"><div class="st y4" id="s1a2" style="--r:1.0deg;">Встречает материалы: ролик о профессии, статью «какие профессии будут востребованы», рекламу, рассказ другого родителя</div></div>
+<div class="cell " style="grid-row:3;grid-column:4"><div class="st y1" id="s1a3" style="--r:0.2deg;">Замечает: ребёнок не знает, кем хочет стать, а времени до выбора всё меньше</div></div>
+<div class="cell " style="grid-row:3;grid-column:5"><div class="st b" id="s1a4" style="--r:-0.8deg;">Решает пойти в поисковую систему и узнать, какие бывают профессии</div></div>
+<div class="cell " style="grid-row:3;grid-column:6"><div class="st y4" id="s2a1" style="--r:1.0deg;">Открывает поисковую систему или спрашивает нейросеть; или вводит название портала, которое запомнил</div><div class="st y1" id="s2a2" style="--r:0.2deg;">Вводит запрос: «кем стать», «какие профессии востребованы», «профессии для подростка, который любит технику»</div></div>
+<div class="cell " style="grid-row:3;grid-column:7"></div>
+<div class="cell " style="grid-row:3;grid-column:8"><div class="st y2" id="s2a3" style="--r:-0.8deg;">Смотрит выдачу, сравнивает сайты и выбирает ссылку на портал</div></div>
+<div class="cell " style="grid-row:3;grid-column:9"><div class="st b" id="s2a4" style="--r:0.5deg;">Попадает на страницу «профессии в вашей стране и за рубежом»: страна, язык и валюта подставлены</div></div>
+<div class="cell " style="grid-row:3;grid-column:10"><div class="st y1" id="s2a5" style="--r:-1.1deg;">Видит форму поиска «откуда — кем — где» над списком профессий</div></div>
+<div class="cell " style="grid-row:3;grid-column:11"><div class="st y1" id="s3a1" style="--r:0.2deg;">Вводит условия: где живёт, где хочет работать (страна или «где угодно»), интересы и сильные стороны, возраст и класс ребёнка, формат работы</div><div class="st y3" id="s3q" style="--r:0.5deg;">Или ищет «кем угодно»: какие профессии подойдут под интересы и желаемый доход</div></div>
+<div class="cell " style="grid-row:3;grid-column:12"></div>
+<div class="cell " style="grid-row:3;grid-column:13"><div class="st y1" id="s3a4" style="--r:-1.1deg;">Смотрит выдачу: спрос, зарплатная вилка в своей валюте, тренды и нужные навыки</div><div class="st y4" id="s3a7" style="--r:1.0deg;">Не нашёл — меняет интересы, страну или желаемый доход</div></div>
+<div class="cell " style="grid-row:3;grid-column:14"></div>
+<div class="cell " style="grid-row:3;grid-column:15"><div class="st y2" id="s3a5" style="--r:0.7deg;">Фильтрует и сортирует: спрос, доход, обучение, риск автоматизации, формат работы</div><div class="st y3" id="s3a6" style="--r:-0.4deg;">Добавляет профессии в избранное, сравнивает до 4, включает слежение за спросом</div></div>
+<div class="cell " style="grid-row:3;grid-column:16"><div class="st y2" id="s3s" style="--r:0.7deg;">Сохраняет подборку в кабинете или отправляет ссылкой ребёнку и семье</div></div>
+<div class="cell " style="grid-row:3;grid-column:17"><div class="st b" id="s3f" style="--r:-0.4deg;">Отвечает, подошла ли подборка: да или нет</div></div>
+<div class="cell " style="grid-row:3;grid-column:18"></div>
+<div class="cell " style="grid-row:3;grid-column:19"></div>
+<div class="cell " style="grid-row:3;grid-column:20"><div class="st b" id="s3a8" style="--r:0.2deg;">Решает, какая профессия подходит</div></div>
+<div class="cell " style="grid-row:3;grid-column:21"><div class="st b" id="s4a2" style="--r:0.5deg;">Нажимает «Где учиться»: профессия передаётся в подбор вуза</div></div>
+<div class="cell " style="grid-row:3;grid-column:22"><div class="st y1" id="s4a3" style="--r:-1.1deg;">Смотрит вузы, колледжи и курсы, которые ведут к профессии: страна, формат, срок, стоимость</div></div>
+<div class="cell " style="grid-row:3;grid-column:23"><div class="st y2" id="s4a4" style="--r:0.7deg;">Выбирает вуз и программу, которые ведут к профессии</div></div>
+<div class="cell " style="grid-row:3;grid-column:24"><div class="st b" id="s5a1" style="--r:0.5deg;">Нажимает «большую кнопку» у карточки вуза</div></div>
+<div class="cell " style="grid-row:3;grid-column:25"><div class="st y1" id="s5p" style="--r:-1.1deg;">Видит окно с вариантами: перейти на сайт вуза, подать заявку через портал, взять услугу или пакет</div></div>
+<div class="cell " style="grid-row:3;grid-column:26"><div class="st b" id="s5c" style="--r:0.7deg;">Выбирает: сам на сайт вуза, заявка через портал или услуга</div><div class="st ghost" id="s5app" style="--r:0.5deg;">Готовит заявку через портал и вносит небольшую оплату (гипотеза)</div><div class="st y4" id="s5svc" style="--r:1.0deg;">Или выбирает услугу: поступление, подбор «под ключ», поступление плюс виза</div></div>
+<div class="cell " style="grid-row:3;grid-column:27"><div class="st y1" id="s5m" style="--r:0.2deg;">Оставляет email, чтобы сохранить подборку и получать напоминания</div></div>
+<div class="cell " style="grid-row:3;grid-column:28"><div class="st y1" id="s5a2" style="--r:-1.1deg;">Изучает требования и подаёт заявку на сайте вуза; вкладка портала остаётся открытой</div></div>
+<div class="cell " style="grid-row:3;grid-column:29"><div class="st y3" id="s5r" style="--r:-0.4deg;">Если не вернулся сам — получает письмо: что дальше (виза, курсы, следующая услуга)</div></div>
+<div class="cell " style="grid-row:3;grid-column:30"><div class="st y2" id="s5a3" style="--r:0.7deg;">Возвращается на портал и отмечает статус: подал, записался, пока думает</div></div>
+<div class="cell " style="grid-row:3;grid-column:31"><div class="st y3" id="s5a4" style="--r:-0.4deg;">Получает напоминания о сроках подачи и начале обучения</div></div>
+<div class="cell " style="grid-row:3;grid-column:32"></div>
+<div class="cell " style="grid-row:3;grid-column:33"></div>
+<div class="cell " style="grid-row:3;grid-column:34"><div class="st y1" id="m5a1" style="--r:-1.1deg;">Видит плашку «Не уверены? 15 минут с консультантом»</div></div>
+<div class="cell " style="grid-row:3;grid-column:35"></div>
+<div class="cell " style="grid-row:3;grid-column:36"><div class="st y2" id="m5a2" style="--r:0.7deg;">Выбирает время в своём часовом поясе</div></div>
+<div class="cell " style="grid-row:3;grid-column:37"><div class="st y3" id="m5a3" style="--r:-0.4deg;">Оставляет вопросы; подборка профессий передаётся консультанту</div></div>
+<div class="cell " style="grid-row:3;grid-column:38"><div class="st b" id="m5a4" style="--r:1.0deg;">Проводит видеозвонок</div></div>
+<div class="cell " style="grid-row:3;grid-column:39"></div>
+<div class="cell " style="grid-row:3;grid-column:40"><div class="st y1" id="m5a5" style="--r:0.2deg;">Получает резюме и сохранённые профессии в кабинете</div></div>
+<div class="cell " style="grid-row:3;grid-column:41"><div class="st y2" id="m5a6" style="--r:-0.8deg;">Возвращается в поиск с суженным выбором</div></div>
+<div class="cell " style="grid-row:3;grid-column:42"></div>
+<div class="cell " style="grid-row:3;grid-column:43"></div>
+<div class="cell " style="grid-row:3;grid-column:44"><div class="st y2" id="m6a1" style="--r:0.7deg;">Видит баннер «Не знаете, кем стать?»</div></div>
+<div class="cell " style="grid-row:3;grid-column:45"></div>
+<div class="cell " style="grid-row:3;grid-column:46"><div class="st y3" id="m6a2" style="--r:-0.4deg;">Проходит бесплатный скрининг</div></div>
+<div class="cell " style="grid-row:3;grid-column:47"><div class="st y4" id="m6a3" style="--r:1.0deg;">Получает бесплатную карту рисков выбора и первые направления</div></div>
+<div class="cell " style="grid-row:3;grid-column:48"></div>
+<div class="cell " style="grid-row:3;grid-column:49"></div>
+<div class="cell " style="grid-row:3;grid-column:50"><div class="st r" id="m6out" style="--r:1.0deg;">Часть клиентов уходит на цене</div></div>
+<div class="cell " style="grid-row:3;grid-column:51"><div class="st b" id="m6a4" style="--r:0.2deg;">Нажимает «пройти профориентацию» и оплачивает</div></div>
+<div class="cell " style="grid-row:3;grid-column:52"><div class="st y2" id="m6a5" style="--r:-0.8deg;">Проходит диагностику</div></div>
+<div class="cell " style="grid-row:3;grid-column:53"></div>
+<div class="cell " style="grid-row:3;grid-column:54"><div class="st b" id="m6a6" style="--r:0.5deg;">Получает отчёт; подходящие профессии подставлены в фильтры поиска</div></div>
+<div class="cell " style="grid-row:3;grid-column:55"></div>
+<div class="cell " style="grid-row:3;grid-column:56"></div>
+<div class="cell " style="grid-row:3;grid-column:57"><div class="st y3" id="m7a1" style="--r:-0.4deg;">Видит плашку у выбранной профессии</div></div>
+<div class="cell " style="grid-row:3;grid-column:58"></div>
+<div class="cell " style="grid-row:3;grid-column:59"><div class="st y4" id="m7a2" style="--r:1.0deg;">Смотрит состав пакета и цену</div></div>
+<div class="cell " style="grid-row:3;grid-column:60"></div>
+<div class="cell " style="grid-row:3;grid-column:61"><div class="st b" id="m7a3" style="--r:0.2deg;">Оставляет заявку или оплачивает</div></div>
+<div class="cell " style="grid-row:3;grid-column:62"><div class="st y2" id="m7a4" style="--r:-0.8deg;">Специалист строит траекторию обучения, клиент следит в кабинете</div><div class="st ghost" id="m7g" style="--r:0.7deg;">Услуги агентства через платформу (гипотеза)</div></div>
+<div class="cell " style="grid-row:3;grid-column:63"></div>
+<div class="cell " style="grid-row:3;grid-column:64"><div class="st y3" id="m7a5" style="--r:0.5deg;">Получает письмо с просьбой об отзыве</div></div>
+<div class="cell " style="grid-row:3;grid-column:65"></div>
+<div class="cell " style="grid-row:3;grid-column:66"><div class="st y1" id="m7a6" style="--r:-1.1deg;">Получает предложение: профориентация для второго ребёнка</div></div>
+<div class="cell " style="grid-row:3;grid-column:67"></div>
+<div class="cell " style="grid-row:4;grid-column:2"><div class="st y1" style="--r:-1.1deg;">«Какие вообще бывают профессии, кроме знакомых?»</div></div>
+<div class="cell " style="grid-row:4;grid-column:3"><div class="st y2" style="--r:0.7deg;">«С чего начать, чтобы не ошибиться?»</div></div>
+<div class="cell " style="grid-row:4;grid-column:4"><div class="st y3" style="--r:-0.4deg;">Страх: ребёнок выберет профессию без дохода или такую, что исчезнет</div></div>
+<div class="cell " style="grid-row:4;grid-column:5"><div class="st y4" style="--r:1.0deg;">«Зачем ребёнку профориентация, ему же в вуз?»</div></div>
+<div class="cell " style="grid-row:4;grid-column:6"><div class="st y1" style="--r:0.2deg;">Независимый справочник профессий, а не реклама курсов</div></div>
+<div class="cell " style="grid-row:4;grid-column:7"></div>
+<div class="cell " style="grid-row:4;grid-column:8"><div class="st y3" style="--r:0.5deg;">Понять за секунды, подойдёт ли сервис</div></div>
+<div class="cell " style="grid-row:4;grid-column:9"></div>
+<div class="cell " style="grid-row:4;grid-column:10"><div class="st y1" style="--r:0.7deg;">«А можно ли верить этим данным о зарплатах и спросе?»</div></div>
+<div class="cell " style="grid-row:4;grid-column:11"></div>
+<div class="cell " style="grid-row:4;grid-column:12"><div class="st y3" style="--r:1.0deg;">Как в авиабилетах: выбрал «откуда», «кем» и «где» — увидел всё сразу</div></div>
+<div class="cell " style="grid-row:4;grid-column:13"></div>
+<div class="cell " style="grid-row:4;grid-column:14"><div class="st y1" style="--r:-0.8deg;">Доход по стране в моей валюте и спрос на ближайшие годы</div></div>
+<div class="cell " style="grid-row:4;grid-column:15"></div>
+<div class="cell " style="grid-row:4;grid-column:16"><div class="st y3" style="--r:-1.1deg;">Подойдёт ли профессия моему ребёнку: интересы и сильные стороны</div></div>
+<div class="cell " style="grid-row:4;grid-column:17"></div>
+<div class="cell " style="grid-row:4;grid-column:18"><div class="st y1" style="--r:-0.4deg;">Какие навыки нужны и как их получить</div></div>
+<div class="cell " style="grid-row:4;grid-column:19"></div>
+<div class="cell " style="grid-row:4;grid-column:20"><div class="st y3" style="--r:0.2deg;">Данные свежие: спрос и зарплаты не устарели</div></div>
+<div class="cell " style="grid-row:4;grid-column:21"><div class="st y4" style="--r:-0.8deg;">Вузы и программы подобраны именно под выбранную профессию, а не общим списком</div></div>
+<div class="cell " style="grid-row:4;grid-column:22"></div>
+<div class="cell " style="grid-row:4;grid-column:23"><div class="st y2" style="--r:-1.1deg;">Не потерять подборку профессий при переходе</div></div>
+<div class="cell " style="grid-row:4;grid-column:24"></div>
+<div class="cell " style="grid-row:4;grid-column:25"><div class="st y4" style="--r:-0.4deg;">Понять, чем заявка через портал и услуга отличаются от простого перехода на сайт</div></div>
+<div class="cell " style="grid-row:4;grid-column:26"></div>
+<div class="cell " style="grid-row:4;grid-column:27"><div class="st y2" style="--r:0.2deg;">Ссылка ведёт на нужную программу, а не на главную страницу сайта</div></div>
+<div class="cell " style="grid-row:4;grid-column:28"></div>
+<div class="cell " style="grid-row:4;grid-column:29"><div class="st y4" style="--r:0.5deg;">Не потерять подборку при переходе: старая вкладка остаётся открытой</div></div>
+<div class="cell " style="grid-row:4;grid-column:30"></div>
+<div class="cell " style="grid-row:4;grid-column:31"><div class="st y2" style="--r:0.7deg;">Понимать, что делать после подачи</div></div>
+<div class="cell " style="grid-row:4;grid-column:32"></div>
+<div class="cell " style="grid-row:4;grid-column:33"></div>
+<div class="cell " style="grid-row:4;grid-column:34"><div class="st y1" style="--r:0.2deg;">Человек, который знает профессии, рынок труда и возраст ребёнка</div></div>
+<div class="cell " style="grid-row:4;grid-column:35"></div>
+<div class="cell " style="grid-row:4;grid-column:36"><div class="st y3" style="--r:0.5deg;">Помощь выбрать, а не продажа</div></div>
+<div class="cell " style="grid-row:4;grid-column:37"></div>
+<div class="cell " style="grid-row:4;grid-column:38"></div>
+<div class="cell " style="grid-row:4;grid-column:39"><div class="st y2" style="--r:-0.4deg;">Большинство опрошенных родителей хотят видеозвонок до покупки</div></div>
+<div class="cell " style="grid-row:4;grid-column:40"></div>
+<div class="cell " style="grid-row:4;grid-column:41"><div class="st y4" style="--r:0.2deg;">Поверит ли автоотчёту без человека?</div></div>
+<div class="cell " style="grid-row:4;grid-column:42"></div>
+<div class="cell " style="grid-row:4;grid-column:43"></div>
+<div class="cell " style="grid-row:4;grid-column:44"><div class="st y3" style="--r:-1.1deg;">«Зачем ребёнку профориентация, ему же в вуз?»</div></div>
+<div class="cell " style="grid-row:4;grid-column:45"></div>
+<div class="cell " style="grid-row:4;grid-column:46"></div>
+<div class="cell " style="grid-row:4;grid-column:47"><div class="st y2" style="--r:1.0deg;">«Какие профессии ему подойдут» — вот что нужно</div></div>
+<div class="cell " style="grid-row:4;grid-column:48"></div>
+<div class="cell " style="grid-row:4;grid-column:49"></div>
+<div class="cell " style="grid-row:4;grid-column:50"></div>
+<div class="cell " style="grid-row:4;grid-column:51"><div class="st y2" style="--r:-1.1deg;">«Отчёт получен, а что делать дальше?»</div></div>
+<div class="cell " style="grid-row:4;grid-column:52"></div>
+<div class="cell " style="grid-row:4;grid-column:53"></div>
+<div class="cell " style="grid-row:4;grid-column:54"><div class="st y1" style="--r:1.0deg;">Сомнение: стоит ли платить за полный разбор</div></div>
+<div class="cell " style="grid-row:4;grid-column:55"></div>
+<div class="cell " style="grid-row:4;grid-column:56"></div>
+<div class="cell " style="grid-row:4;grid-column:57"></div>
+<div class="cell " style="grid-row:4;grid-column:58"><div class="st y1" style="--r:-1.1deg;">Что делать дальше после выбора профессии</div></div>
+<div class="cell " style="grid-row:4;grid-column:59"></div>
+<div class="cell " style="grid-row:4;grid-column:60"></div>
+<div class="cell " style="grid-row:4;grid-column:61"></div>
+<div class="cell " style="grid-row:4;grid-column:62"><div class="st y1" style="--r:0.2deg;">Кто отвечает, если план не сработает</div></div>
+<div class="cell " style="grid-row:4;grid-column:63"></div>
+<div class="cell " style="grid-row:4;grid-column:64"></div>
+<div class="cell " style="grid-row:4;grid-column:65"></div>
+<div class="cell " style="grid-row:4;grid-column:66"><div class="st y1" style="--r:0.7deg;">Контроль над данными ребёнка</div></div>
+<div class="cell " style="grid-row:4;grid-column:67"></div>
+<div class="cell " style="grid-row:5;grid-column:2"><div class="st w" style="--r:-1.1deg;">Соцсети и видео</div><div class="st w" style="--r:-1.1deg;">Родительский чат и школа</div></div>
+<div class="cell " style="grid-row:5;grid-column:3"><div class="st w" style="--r:0.7deg;">Новости и статьи о рынке труда</div><div class="st w" style="--r:0.7deg;">Вебинар</div></div>
+<div class="cell " style="grid-row:5;grid-column:4"><div class="st w" style="--r:-0.4deg;">Реклама ВК и других площадок</div></div>
+<div class="cell " style="grid-row:5;grid-column:5"><div class="st w" style="--r:1.0deg;">Рассказ другого родителя</div></div>
+<div class="cell " style="grid-row:5;grid-column:6"><div class="st w" style="--r:0.2deg;">Яндекс и Google</div></div>
+<div class="cell " style="grid-row:5;grid-column:7"><div class="st w" style="--r:-0.8deg;">Нейросети с цитатой и ссылкой</div></div>
+<div class="cell " style="grid-row:5;grid-column:8"><div class="st w" style="--r:0.5deg;">Страница «профессии в вашей стране»</div></div>
+<div class="cell " style="grid-row:5;grid-column:9"><div class="st w" style="--r:-1.1deg;">Карточки профессий</div></div>
+<div class="cell " style="grid-row:5;grid-column:10"><div class="st gr" style="--r:0.7deg;">Заменители: сайты профориентации, бесплатные тесты, ChatGPT, обзоры «профессий будущего»</div></div>
+<div class="cell " style="grid-row:5;grid-column:11"><div class="st w" style="--r:-0.4deg;">Форма «откуда — кем — где»</div></div>
+<div class="cell " style="grid-row:5;grid-column:12"><div class="st w" style="--r:1.0deg;">Выдача и карточки профессий</div></div>
+<div class="cell " style="grid-row:5;grid-column:13"><div class="st w" style="--r:0.2deg;">График спроса и зарплат по годам</div></div>
+<div class="cell " style="grid-row:5;grid-column:14"><div class="st w" style="--r:-0.8deg;">Карта мира: где профессия востребована</div></div>
+<div class="cell " style="grid-row:5;grid-column:15"><div class="st w" style="--r:0.5deg;">Сравнение и избранное</div></div>
+<div class="cell " style="grid-row:5;grid-column:16"><div class="st w" style="--r:-1.1deg;">Слежение: письмо, если спрос изменился</div></div>
+<div class="cell " style="grid-row:5;grid-column:17"><div class="st w" style="--r:0.7deg;">Личный кабинет</div></div>
+<div class="cell " style="grid-row:5;grid-column:18"><div class="st w" style="--r:-0.4deg;">Чат-ассистент</div></div>
+<div class="cell " style="grid-row:5;grid-column:19"><div class="st gr" style="--r:1.0deg;">Плашки и баннеры в выдаче: подпроцессы блоков 6–8 — правее</div></div>
+<div class="cell " style="grid-row:5;grid-column:20"><div class="st w" style="--r:0.2deg;">Кнопки «Сохранить подборку», «Поделиться» и вопрос «Подборка подошла?»</div></div>
+<div class="cell " style="grid-row:5;grid-column:21"><div class="st w" style="--r:-0.8deg;">Кнопка «Где учиться» в карточке профессии</div></div>
+<div class="cell " style="grid-row:5;grid-column:22"><div class="st w" style="--r:0.5deg;">Подбор обучения: вузы, колледжи, курсы под профессию</div></div>
+<div class="cell " style="grid-row:5;grid-column:23"><div class="st w" style="--r:-1.1deg;">Кабинет «Мой путь»</div></div>
+<div class="cell " style="grid-row:5;grid-column:24"><div class="st w" style="--r:0.7deg;">«Большая кнопка» в карточке вуза и окно с вариантами</div></div>
+<div class="cell " style="grid-row:5;grid-column:25"></div>
+<div class="cell " style="grid-row:5;grid-column:26"><div class="st w" style="--r:1.0deg;">Сайт вуза, колледжа или курса в новой вкладке</div></div>
+<div class="cell " style="grid-row:5;grid-column:27"><div class="st w" style="--r:0.2deg;">Страница услуг и провайдеров: поступление, виза, пакеты</div></div>
+<div class="cell " style="grid-row:5;grid-column:28"></div>
+<div class="cell " style="grid-row:5;grid-column:29"><div class="st w" style="--r:0.5deg;">Лист ожидания для услуг и курсов, которых ещё нет</div></div>
+<div class="cell " style="grid-row:5;grid-column:30"><div class="st w" style="--r:-1.1deg;">Письмо: что дальше и напоминание о сроках</div></div>
+<div class="cell " style="grid-row:5;grid-column:31"></div>
+<div class="cell " style="grid-row:5;grid-column:32"><div class="st w" style="--r:-0.4deg;">Кабинет «Мой путь»</div></div>
+<div class="cell " style="grid-row:5;grid-column:33"><div class="st w" style="--r:1.0deg;">Плашка в выдаче</div></div>
+<div class="cell " style="grid-row:5;grid-column:34"></div>
+<div class="cell " style="grid-row:5;grid-column:35"><div class="st w" style="--r:-0.8deg;">Календарь записи</div></div>
+<div class="cell " style="grid-row:5;grid-column:36"><div class="st w" style="--r:0.5deg;">Письмо с календарём</div></div>
+<div class="cell " style="grid-row:5;grid-column:37"></div>
+<div class="cell " style="grid-row:5;grid-column:38"><div class="st w" style="--r:0.7deg;">Видеозвонок</div></div>
+<div class="cell " style="grid-row:5;grid-column:39"><div class="st w" style="--r:-0.4deg;">Резюме в кабинете</div></div>
+<div class="cell " style="grid-row:5;grid-column:40"><div class="st gr" style="--r:1.0deg;">Консультацию ведёт специалист с нужными компетенциями</div></div>
+<div class="cell " style="grid-row:5;grid-column:41"></div>
+<div class="cell " style="grid-row:5;grid-column:42"><div class="st ghost" style="--r:-0.8deg;">Статус блока под вопросом: возможна замена анкетой и листом ожидания</div></div>
+<div class="cell " style="grid-row:5;grid-column:43"><div class="st w" style="--r:0.5deg;">Баннер в поиске</div></div>
+<div class="cell " style="grid-row:5;grid-column:44"></div>
+<div class="cell " style="grid-row:5;grid-column:45"><div class="st w" style="--r:0.7deg;">Скрининг</div></div>
+<div class="cell " style="grid-row:5;grid-column:46"></div>
+<div class="cell " style="grid-row:5;grid-column:47"><div class="st w" style="--r:1.0deg;">Страница предложения</div></div>
+<div class="cell " style="grid-row:5;grid-column:48"></div>
+<div class="cell " style="grid-row:5;grid-column:49"><div class="st w" style="--r:-0.8deg;">Оплата</div></div>
+<div class="cell " style="grid-row:5;grid-column:50"></div>
+<div class="cell " style="grid-row:5;grid-column:51"><div class="st w" style="--r:-1.1deg;">Письма: не нажал купить, заказ не оплачен, отчёт готов</div></div>
+<div class="cell " style="grid-row:5;grid-column:52"></div>
+<div class="cell " style="grid-row:5;grid-column:53"><div class="st w" style="--r:-0.4deg;">Личный кабинет</div></div>
+<div class="cell " style="grid-row:5;grid-column:54"></div>
+<div class="cell " style="grid-row:5;grid-column:55"><div class="st gr" style="--r:0.2deg;">Цены разные: зависят от канала и страны; по уникальной ссылке партнёра возможна дополнительная скидка</div></div>
+<div class="cell " style="grid-row:5;grid-column:56"></div>
+<div class="cell " style="grid-row:5;grid-column:57"><div class="st w" style="--r:0.5deg;">Плашка у избранного</div></div>
+<div class="cell " style="grid-row:5;grid-column:58"></div>
+<div class="cell " style="grid-row:5;grid-column:59"><div class="st w" style="--r:0.7deg;">Страница пакета</div></div>
+<div class="cell " style="grid-row:5;grid-column:60"></div>
+<div class="cell " style="grid-row:5;grid-column:61"><div class="st w" style="--r:1.0deg;">Оплата</div></div>
+<div class="cell " style="grid-row:5;grid-column:62"></div>
+<div class="cell " style="grid-row:5;grid-column:63"><div class="st w" style="--r:-0.8deg;">Кабинет «Мой путь»</div></div>
+<div class="cell " style="grid-row:5;grid-column:64"></div>
+<div class="cell " style="grid-row:5;grid-column:65"><div class="st w" style="--r:-1.1deg;">Письма: отзыв, второй ребёнок</div></div>
+<div class="cell " style="grid-row:5;grid-column:66"></div>
+<div class="cell " style="grid-row:5;grid-column:67"><div class="st w" style="--r:-0.4deg;">Возможны подписки; состав и условия пока не определены</div></div>
+<div class="cell " style="grid-row:6;grid-column:2"><div class="st g" style="--r:-1.1deg;">Материал показывает, что профессий намного больше, чем знает ребёнок</div></div>
+<div class="cell " style="grid-row:6;grid-column:3"><div class="st g" style="--r:0.7deg;">Рассказ знакомого о его профессии убеждает сильнее рекламы</div></div>
+<div class="cell " style="grid-row:6;grid-column:4"><div class="st r" style="--r:-0.4deg;">Материалов много, они противоречат друг другу: непонятно, чему верить</div></div>
+<div class="cell " style="grid-row:6;grid-column:5"><div class="st r" style="--r:1.0deg;">Реклама обещает «профессии будущего»: ей не верят</div></div>
+<div class="cell " style="grid-row:6;grid-column:6"><div class="st g" style="--r:0.2deg;">Страна, язык и валюта подставлены сами</div></div>
+<div class="cell " style="grid-row:6;grid-column:7"><div class="st g" style="--r:-0.8deg;">Первый экран — форма поиска, а не описание компании</div></div>
+<div class="cell " style="grid-row:6;grid-column:8"></div>
+<div class="cell " style="grid-row:6;grid-column:9"><div class="st g" style="--r:-1.1deg;">Любая профессия есть в выдаче, даже редкая</div></div>
+<div class="cell " style="grid-row:6;grid-column:10"><div class="st r" style="--r:0.7deg;">Незнакомый бренд: нужен сигнал доверия — источник и дата данных</div></div>
+<div class="cell " style="grid-row:6;grid-column:11"><div class="st g" style="--r:-0.4deg;">Один экран вместо десятков статей и справочников</div></div>
+<div class="cell " style="grid-row:6;grid-column:12"><div class="st g" style="--r:1.0deg;">Всё на языке клиента: названия, обязанности, требования</div></div>
+<div class="cell " style="grid-row:6;grid-column:13"></div>
+<div class="cell " style="grid-row:6;grid-column:14"><div class="st g" style="--r:-0.8deg;">Видно, где профессия востребована и сколько в ней платят</div></div>
+<div class="cell " style="grid-row:6;grid-column:15"><div class="st g" style="--r:0.5deg;">Слежение напомнит, если спрос изменился</div></div>
+<div class="cell " style="grid-row:6;grid-column:16"><div class="st r" style="--r:-1.1deg;">Слишком много профессий: ребёнок и родитель теряются</div></div>
+<div class="cell " style="grid-row:6;grid-column:17"><div class="st r" style="--r:0.7deg;">Спрос и зарплаты меняются: данные нужно держать свежими</div></div>
+<div class="cell " style="grid-row:6;grid-column:18"></div>
+<div class="cell " style="grid-row:6;grid-column:19"><div class="st r" style="--r:1.0deg;">Названия профессий в разных странах не совпадают: перевод может исказить смысл</div></div>
+<div class="cell " style="grid-row:6;grid-column:20"><div class="st r" style="--r:0.2deg;">Баннеры в выдаче раздражают, если показаны до первой пользы</div></div>
+<div class="cell " style="grid-row:6;grid-column:21"><div class="st g" style="--r:-0.8deg;">Из профессии один клик к вузам, которые к ней ведут</div><div class="st r" style="--r:-0.8deg;">Один вуз ведёт к разным профессиям: связь профессии и программы может быть неочевидной</div></div>
+<div class="cell " style="grid-row:6;grid-column:22"><div class="st g" style="--r:0.5deg;">Профессия и подборка вузов хранятся в кабинете</div></div>
+<div class="cell " style="grid-row:6;grid-column:23"><div class="st r" style="--r:-1.1deg;">Клиент уходит в подбор вуза и на портал профессий может не вернуться</div></div>
+<div class="cell " style="grid-row:6;grid-column:24"><div class="st g" style="--r:0.7deg;">Три понятных пути на выбор: сам, через портал или с услугой</div></div>
+<div class="cell " style="grid-row:6;grid-column:25"></div>
+<div class="cell " style="grid-row:6;grid-column:26"><div class="st g" style="--r:1.0deg;">Профессия, вуз и статус заявки хранятся в кабинете</div></div>
+<div class="cell " style="grid-row:6;grid-column:27"><div class="st r" style="--r:0.2deg;">Клиент уходит с портала и может не вернуться</div></div>
+<div class="cell " style="grid-row:6;grid-column:28"></div>
+<div class="cell " style="grid-row:6;grid-column:29"><div class="st r" style="--r:0.5deg;">Портал не видит, подал ли клиент заявку, пока тот не отметит</div></div>
+<div class="cell " style="grid-row:6;grid-column:30"><div class="st r" style="--r:-1.1deg;">Топовые вузы принимают заявки вручную и за лиды платить не станут</div></div>
+<div class="cell " style="grid-row:6;grid-column:31"></div>
+<div class="cell " style="grid-row:6;grid-column:32"><div class="st r" style="--r:-0.4deg;">Набор вариантов в окне ещё не утверждён; часть услуг существует только как лист ожидания</div></div>
+<div class="cell " style="grid-row:6;grid-column:33"></div>
+<div class="cell " style="grid-row:6;grid-column:34"><div class="st g" style="--r:0.2deg;">Консультант видит подборку профессий клиента до звонка</div></div>
+<div class="cell " style="grid-row:6;grid-column:35"></div>
+<div class="cell " style="grid-row:6;grid-column:36"><div class="st g" style="--r:0.5deg;">Запись за минуту, время в часовом поясе клиента</div></div>
+<div class="cell " style="grid-row:6;grid-column:37"></div>
+<div class="cell " style="grid-row:6;grid-column:38"></div>
+<div class="cell " style="grid-row:6;grid-column:39"><div class="st r" style="--r:-0.4deg;">Консультантов не хватит при росте: нужен лимит слотов</div></div>
+<div class="cell " style="grid-row:6;grid-column:40"></div>
+<div class="cell " style="grid-row:6;grid-column:41"><div class="st r" style="--r:0.2deg;">Если звонок превратится в продажу, доверие упадёт</div></div>
+<div class="cell " style="grid-row:6;grid-column:42"></div>
+<div class="cell " style="grid-row:6;grid-column:43"></div>
+<div class="cell " style="grid-row:6;grid-column:44"><div class="st g" style="--r:-1.1deg;">Бесплатный первый шаг; оплата только за полный разбор</div></div>
+<div class="cell " style="grid-row:6;grid-column:45"></div>
+<div class="cell " style="grid-row:6;grid-column:46"><div class="st g" style="--r:-0.4deg;">Результат сразу становится фильтрами: подходящие профессии уже выбраны</div></div>
+<div class="cell " style="grid-row:6;grid-column:47"></div>
+<div class="cell " style="grid-row:6;grid-column:48"></div>
+<div class="cell " style="grid-row:6;grid-column:49"><div class="st r" style="--r:-0.8deg;">Возможна низкая конверсия в оплату: часть клиентов доходит до цены и уходит</div></div>
+<div class="cell " style="grid-row:6;grid-column:50"></div>
+<div class="cell " style="grid-row:6;grid-column:51"></div>
+<div class="cell " style="grid-row:6;grid-column:52"><div class="st r" style="--r:0.7deg;">Скрининг длинный: содержит много вопросов</div></div>
+<div class="cell " style="grid-row:6;grid-column:53"></div>
+<div class="cell " style="grid-row:6;grid-column:54"><div class="st r" style="--r:1.0deg;">Баннер до первой пользы раздражает</div></div>
+<div class="cell " style="grid-row:6;grid-column:55"></div>
+<div class="cell " style="grid-row:6;grid-column:56"></div>
+<div class="cell " style="grid-row:6;grid-column:57"><div class="st g" style="--r:0.5deg;">Профессия и сроки уже в кабинете: клиенту не нужно пересказывать</div></div>
+<div class="cell " style="grid-row:6;grid-column:58"></div>
+<div class="cell " style="grid-row:6;grid-column:59"><div class="st g" style="--r:0.7deg;">Родитель ведёт несколько профилей детей</div></div>
+<div class="cell " style="grid-row:6;grid-column:60"></div>
+<div class="cell " style="grid-row:6;grid-column:61"></div>
+<div class="cell " style="grid-row:6;grid-column:62"><div class="st r" style="--r:0.2deg;">Состав и цена пакетов не заданы</div></div>
+<div class="cell " style="grid-row:6;grid-column:63"></div>
+<div class="cell " style="grid-row:6;grid-column:64"><div class="st r" style="--r:0.5deg;">Плашку могут воспринять как навязывание</div></div>
+<div class="cell " style="grid-row:6;grid-column:65"></div>
+<div class="cell " style="grid-row:6;grid-column:66"><div class="st r" style="--r:0.7deg;">Агентство отвечает за план и подачу, а не за результат ребёнка в профессии</div></div>
+<div class="cell " style="grid-row:6;grid-column:67"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:2"><div class="st ey emo" data-emo="all" style="--r:-1.1deg;top:84px">Спокойствие: выбор профессии пока кажется далёким</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:3"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:4"><div class="st r emo" data-emo="all" style="--r:-0.4deg;top:160px">Беспокойство: «ребёнок не знает, кем быть, а время идёт»</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:5"><div class="st g emo" data-emo="all" style="--r:1.0deg;top:8px">Решимость: «надо разобраться и найти варианты»</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:6"><div class="st ey emo" data-emo="all" style="--r:0.2deg;top:84px">Деловой интерес: «посмотрим, что здесь есть»</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:7"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:8"><div class="st r emo" data-emo="all" style="--r:0.5deg;top:160px">Недоверие: «ещё один сайт с модными профессиями, кто за ним стоит?»</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:9"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:10"><div class="st g emo" data-emo="all" style="--r:0.7deg;top:8px">Облегчение: «нашёл сразу, и всё на моём языке»</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:11"><div class="st g emo" data-emo="all" style="--r:-0.4deg;top:8px">Азарт: «вижу профессии мира и доход по странам сразу, как в билетах»</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:12"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:13"><div class="st r emo" data-emo="all" style="--r:0.2deg;top:160px">Растерянность: «профессий слишком много, как выбрать»</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:14"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:15"><div class="st ey emo" data-emo="all" style="--r:0.5deg;top:84px">Сосредоточенность: сравнивает профессии рядом, взвешивает доход и спрос</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:16"><div class="st r emo" data-emo="all" style="--r:-1.1deg;top:160px">Тревога: «не исчезнет ли профессия, подойдёт ли ребёнку»</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:17"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:18"><div class="st g emo" data-emo="all" style="--r:-0.4deg;top:8px">Спокойствие: «изменения спроса под контролем, напомнят»</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:19"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:20"><div class="st g emo" data-emo="all" style="--r:0.2deg;top:8px">Уверенность: «вот эти профессии нам подходят»</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:21"><div class="st ey emo" data-emo="all" style="--r:-0.8deg;top:84px">Собранность: профессия выбрана, осталось найти, где учиться</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:22"><div class="st g emo" data-emo="all" style="--r:0.5deg;top:8px">Уверенность: «вузы подобраны именно под эту профессию»</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:23"><div class="st r emo" data-emo="all" style="--r:-1.1deg;top:160px">Опасение: «подойдёт ли вуз и не упустим ли срок»</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:24"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:25"><div class="st ey emo" data-emo="all" style="--r:-0.4deg;top:84px">Решимость: вуз выбран, осталось понять, как подавать</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:26"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:27"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:28"><div class="st g emo" data-emo="all" style="--r:-0.8deg;top:8px">Уверенность: «понятно, что делать сам, а где можно помочь»</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:29"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:30"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:31"><div class="st r emo" data-emo="all" style="--r:0.7deg;top:160px">Опасение: «не упустить бы что-то в заявке»</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:32"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:33"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:34"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:35"><div class="st r emo" data-emo="all" style="--r:-0.8deg;top:160px">Неуверенность: «не знаю, правильно ли выбираю профессию»</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:36"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:37"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:38"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:39"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:40"><div class="st g emo" data-emo="all" style="--r:1.0deg;top:8px">Облегчение: «живой человек помог сузить выбор»</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:41"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:42"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:43"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:44"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:45"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:46"><div class="st ey emo" data-emo="all" style="--r:-0.4deg;top:84px">Любопытство: «какие профессии покажет тест про моего ребёнка»</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:47"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:48"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:49"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:50"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:51"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:52"><div class="st r emo" data-emo="all" style="--r:0.7deg;top:160px">Настороженность: «за что платить и поможет ли это»</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:53"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:54"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:55"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:56"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:57"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:58"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:59"><div class="st r emo" data-emo="all" style="--r:0.7deg;top:160px">Опасение: «опять будут продавать»</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:60"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:61"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:62"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:63"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:64"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:65"><div class="st g emo" data-emo="all" style="--r:-1.1deg;top:8px">Спокойствие: «план ведут, я вижу статус»</div></div>
+<div class="cell emocell" style="grid-row:7;grid-column:66"></div>
+<div class="cell emocell" style="grid-row:7;grid-column:67"></div>
+<div class="cell " style="grid-row:8;grid-column:2"></div>
+<div class="cell " style="grid-row:8;grid-column:3"><div class="st w" style="--r:-0.4deg;">Материалы-подсказки: статьи, видео, посты «как выбрать профессию ребёнку»; в конце — название портала и запрос для поиска; измерить долю входов с таких материалов</div></div>
+<div class="cell " style="grid-row:8;grid-column:4"></div>
+<div class="cell " style="grid-row:8;grid-column:5"><div class="st w" style="--r:0.2deg;">Метка повода (выбор профиля, экзамены, новости о профессиях) в ссылках материалов; сравнить регистрации по поводам</div></div>
+<div class="cell " style="grid-row:8;grid-column:6"><div class="st w" style="--r:-0.8deg;">Страницы «профессия — страна» для каждой пары на всех языках; измерить долю входов из поиска</div></div>
+<div class="cell " style="grid-row:8;grid-column:7"></div>
+<div class="cell " style="grid-row:8;grid-column:8"><div class="st w" style="--r:-1.1deg;">Подпись источника и даты обновления на каждой карточке профессии</div></div>
+<div class="cell " style="grid-row:8;grid-column:9"></div>
+<div class="cell " style="grid-row:8;grid-column:10"><div class="st w" style="--r:-0.4deg;">Определять страну по геолокации, но дать сменить в один клик; измерить долю смен</div></div>
+<div class="cell " style="grid-row:8;grid-column:11"><div class="st w" style="--r:1.0deg;">График спроса и зарплат по годам и странам, как календарь цен в авиабилетах</div></div>
+<div class="cell " style="grid-row:8;grid-column:12"></div>
+<div class="cell " style="grid-row:8;grid-column:13"><div class="st w" style="--r:-0.8deg;">Режим «кем угодно»: какие профессии подойдут под интересы и желаемый доход</div></div>
+<div class="cell " style="grid-row:8;grid-column:14"></div>
+<div class="cell " style="grid-row:8;grid-column:15"><div class="st w" style="--r:-1.1deg;">Слежение за спросом и новыми профессиями письмом и в приложении</div></div>
+<div class="cell " style="grid-row:8;grid-column:16"><div class="st w" style="--r:0.7deg;">Правило вставок: ни одной плашки до первой полезной выдачи, не больше одной на экран</div></div>
+<div class="cell " style="grid-row:8;grid-column:17"></div>
+<div class="cell " style="grid-row:8;grid-column:18"><div class="st w" style="--r:1.0deg;">Измерять долю поисков, дошедших до сравнения и до выбора пути обучения</div></div>
+<div class="cell " style="grid-row:8;grid-column:19"></div>
+<div class="cell " style="grid-row:8;grid-column:20"><div class="st w" style="--r:-0.8deg;">Под подборкой: «Сохранить», «Поделиться» и вопрос «Подошла?»; ответы да и нет копить в статистику</div></div>
+<div class="cell " style="grid-row:8;grid-column:21"><div class="st w" style="--r:0.5deg;">Передавать профессию в подбор вуза готовыми фильтрами: специальности и страна уже выбраны</div><div class="st w" style="--r:0.5deg;">Вузы, профессии и курсы — отдельные страницы выдачи; курсы пока в проработке, вместо них контакт и лист ожидания</div></div>
+<div class="cell " style="grid-row:8;grid-column:22"><div class="st w" style="--r:-1.1deg;">Показывать в карточке вуза, к каким профессиям он ведёт; измерять возвраты на портал</div><div class="st w" style="--r:-1.1deg;">Профориентация даёт индекс соответствия: вузы можно ранжировать под ребёнка</div></div>
+<div class="cell " style="grid-row:8;grid-column:23"><div class="st w" style="--r:0.7deg;">Две двери в одну услугу: войти через профессию или через вуз; в обоих случаях профессии и вузы связаны</div></div>
+<div class="cell " style="grid-row:8;grid-column:24"></div>
+<div class="cell " style="grid-row:8;grid-column:25"><div class="st w" style="--r:1.0deg;">Первый запуск без усложнения: циклы «подборка — профориентация — переход на сайт»; главное — взять email и вернуться письмом</div></div>
+<div class="cell " style="grid-row:8;grid-column:26"></div>
+<div class="cell " style="grid-row:8;grid-column:27"><div class="st w" style="--r:-0.8deg;">Окно у большой кнопки: переход на сайт (оплата за клик), заявка через портал, услуги и пакеты («поступление плюс виза», как отель плюс билет)</div></div>
+<div class="cell " style="grid-row:8;grid-column:28"></div>
+<div class="cell " style="grid-row:8;grid-column:29"><div class="st w" style="--r:-1.1deg;">Монетизация гибридная: клики, затем лиды и заявки, затем услуги; что сработает, покажет рынок</div></div>
+<div class="cell " style="grid-row:8;grid-column:30"></div>
+<div class="cell " style="grid-row:8;grid-column:31"><div class="st w" style="--r:-0.4deg;">Лист ожидания на услуги и курсы: проверить спрос, не строя продукт</div></div>
+<div class="cell " style="grid-row:8;grid-column:32"></div>
+<div class="cell " style="grid-row:8;grid-column:33"></div>
+<div class="cell " style="grid-row:8;grid-column:34"><div class="st w" style="--r:-0.8deg;">Запустить вручную: считать плашки → записи → состоявшиеся звонки</div></div>
+<div class="cell " style="grid-row:8;grid-column:35"></div>
+<div class="cell " style="grid-row:8;grid-column:36"><div class="st w" style="--r:-1.1deg;">Сравнить автоматику и автоматику плюс звонок по оплатам</div></div>
+<div class="cell " style="grid-row:8;grid-column:37"></div>
+<div class="cell " style="grid-row:8;grid-column:38"></div>
+<div class="cell " style="grid-row:8;grid-column:39"><div class="st w" style="--r:1.0deg;">Лимит слотов в день и очередь ожидания</div></div>
+<div class="cell " style="grid-row:8;grid-column:40"></div>
+<div class="cell " style="grid-row:8;grid-column:41"><div class="st w" style="--r:-0.8deg;">Статус под вопросом: бесплатные консультации могут заменить анкетой, контактом (имя, email) и листом ожидания; провайдеры-агентства дают свои 15 минут</div></div>
+<div class="cell " style="grid-row:8;grid-column:42"></div>
+<div class="cell " style="grid-row:8;grid-column:43"></div>
+<div class="cell " style="grid-row:8;grid-column:44"></div>
+<div class="cell " style="grid-row:8;grid-column:45"><div class="st w" style="--r:-0.4deg;">Подставлять результат диагностики в фильтры поиска профессий: мост между отчётом и каталогом</div></div>
+<div class="cell " style="grid-row:8;grid-column:46"></div>
+<div class="cell " style="grid-row:8;grid-column:47"></div>
+<div class="cell " style="grid-row:8;grid-column:48"></div>
+<div class="cell " style="grid-row:8;grid-column:49"><div class="st w" style="--r:0.5deg;">Показывать баннер только после первой выдачи; считать баннер → скрининг → оплата</div></div>
+<div class="cell " style="grid-row:8;grid-column:50"></div>
+<div class="cell " style="grid-row:8;grid-column:51"></div>
+<div class="cell " style="grid-row:8;grid-column:52"></div>
+<div class="cell " style="grid-row:8;grid-column:53"><div class="st w" style="--r:1.0deg;">Проверить разные цены и каналы и выяснить, почему часть клиентов не доходит до оплаты</div></div>
+<div class="cell " style="grid-row:8;grid-column:54"></div>
+<div class="cell " style="grid-row:8;grid-column:55"></div>
+<div class="cell " style="grid-row:8;grid-column:56"></div>
+<div class="cell " style="grid-row:8;grid-column:57"></div>
+<div class="cell " style="grid-row:8;grid-column:58"><div class="st w" style="--r:0.7deg;">Собрать реестр пакетов и цены до запуска плашки</div></div>
+<div class="cell " style="grid-row:8;grid-column:59"></div>
+<div class="cell " style="grid-row:8;grid-column:60"></div>
+<div class="cell " style="grid-row:8;grid-column:61"></div>
+<div class="cell " style="grid-row:8;grid-column:62"><div class="st w" style="--r:-0.8deg;">Показывать плашку только у выбранной профессии; считать плашка → заявка → оплата</div></div>
+<div class="cell " style="grid-row:8;grid-column:63"></div>
+<div class="cell " style="grid-row:8;grid-column:64"></div>
+<div class="cell " style="grid-row:8;grid-column:65"></div>
+<div class="cell " style="grid-row:8;grid-column:66"><div class="st w" style="--r:-0.4deg;">Проверить спрос на одном направлении до каталога</div></div>
+<div class="cell " style="grid-row:8;grid-column:67"></div>
+<div class="cell " style="grid-row:9;grid-column:2"><div class="st gr" style="--r:-1.1deg;">Вставок нет: человек ещё не на портале</div></div>
+<div class="cell " style="grid-row:9;grid-column:3"></div>
+<div class="cell " style="grid-row:9;grid-column:4"></div>
+<div class="cell " style="grid-row:9;grid-column:5"></div>
+<div class="cell " style="grid-row:9;grid-column:6"></div>
+<div class="cell " style="grid-row:9;grid-column:7"><div class="st gr" style="--r:-0.8deg;">Вставок нет: сначала польза</div></div>
+<div class="cell " style="grid-row:9;grid-column:8"></div>
+<div class="cell " style="grid-row:9;grid-column:9"></div>
+<div class="cell " style="grid-row:9;grid-column:10"></div>
+<div class="cell " style="grid-row:9;grid-column:11"></div>
+<div class="cell " style="grid-row:9;grid-column:12"></div>
+<div class="cell " style="grid-row:9;grid-column:13"></div>
+<div class="cell " style="grid-row:9;grid-column:14"></div>
+<div class="cell " style="grid-row:9;grid-column:15"></div>
+<div class="cell " style="grid-row:9;grid-column:16"></div>
+<div class="cell " style="grid-row:9;grid-column:17"></div>
+<div class="cell " style="grid-row:9;grid-column:18"><div class="st b" id="i6" style="--r:-0.4deg;min-height:150px;margin-top:160px">Баннер «Не знаете, кем стать?» — при широком поиске, после первой полезной выдачи → блок 7, подпроцесс правее</div></div>
+<div class="cell " style="grid-row:9;grid-column:19"><div class="st b" id="i5" style="--r:1.0deg;min-height:150px;margin-top:0px">Плашка «Не уверены? 15 минут с консультантом» — при сравнении 3 и более профессий и при повторном возвращении → блок 6, подпроцесс правее</div></div>
+<div class="cell " style="grid-row:9;grid-column:20"></div>
+<div class="cell " style="grid-row:9;grid-column:21"><div class="st b" id="i7" style="--r:-0.8deg;min-height:150px;margin-top:320px">Плашка «Поможем построить путь в профессию» — у избранного и после выбора профессии → блок 8, подпроцесс правее</div></div>
+<div class="cell " style="grid-row:9;grid-column:22"></div>
+<div class="cell " style="grid-row:9;grid-column:23"></div>
+<div class="cell " style="grid-row:9;grid-column:24"></div>
+<div class="cell " style="grid-row:9;grid-column:25"></div>
+<div class="cell " style="grid-row:9;grid-column:26"></div>
+<div class="cell " style="grid-row:9;grid-column:27"></div>
+<div class="cell " style="grid-row:9;grid-column:28"></div>
+<div class="cell " style="grid-row:9;grid-column:29"></div>
+<div class="cell " style="grid-row:9;grid-column:30"></div>
+<div class="cell " style="grid-row:9;grid-column:31"></div>
+<div class="cell " style="grid-row:9;grid-column:32"></div>
+<div class="cell " style="grid-row:9;grid-column:33"></div>
+<div class="cell " style="grid-row:9;grid-column:34"><div class="st y3" id="w5" style="--r:0.5deg;min-height:150px;margin-top:0px">Плашка в выдаче и в сравнении: при сравнении 3 и более профессий, при повторном возвращении в поиск, при выборе профессии, к которой ведут разные пути</div></div>
+<div class="cell " style="grid-row:9;grid-column:35"><div class="st gr" style="--r:-1.1deg;min-height:150px;margin-top:0px">Правило: не до первой полезной выдачи; закрытая плашка не возвращается в этой сессии</div></div>
+<div class="cell " style="grid-row:9;grid-column:36"></div>
+<div class="cell " style="grid-row:9;grid-column:37"></div>
+<div class="cell " style="grid-row:9;grid-column:38"></div>
+<div class="cell " style="grid-row:9;grid-column:39"></div>
+<div class="cell " style="grid-row:9;grid-column:40"></div>
+<div class="cell " style="grid-row:9;grid-column:41"></div>
+<div class="cell " style="grid-row:9;grid-column:42"></div>
+<div class="cell " style="grid-row:9;grid-column:43"></div>
+<div class="cell " style="grid-row:9;grid-column:44"><div class="st y4" id="w6" style="--r:-1.1deg;min-height:150px;margin-top:160px">Баннер «Не знаете, кем стать?»: при широком поиске без выбранной профессии, после первой выдачи; плашка в избранном «подберём профессии под ребёнка»</div></div>
+<div class="cell " style="grid-row:9;grid-column:45"><div class="st gr" style="--r:0.7deg;min-height:150px;margin-top:160px">Правило: не до первой полезной выдачи; закрытый баннер не возвращается в этой сессии</div></div>
+<div class="cell " style="grid-row:9;grid-column:46"></div>
+<div class="cell " style="grid-row:9;grid-column:47"></div>
+<div class="cell " style="grid-row:9;grid-column:48"></div>
+<div class="cell " style="grid-row:9;grid-column:49"></div>
+<div class="cell " style="grid-row:9;grid-column:50"></div>
+<div class="cell " style="grid-row:9;grid-column:51"></div>
+<div class="cell " style="grid-row:9;grid-column:52"></div>
+<div class="cell " style="grid-row:9;grid-column:53"></div>
+<div class="cell " style="grid-row:9;grid-column:54"></div>
+<div class="cell " style="grid-row:9;grid-column:55"></div>
+<div class="cell " style="grid-row:9;grid-column:56"></div>
+<div class="cell " style="grid-row:9;grid-column:57"><div class="st y1" id="w7" style="--r:0.7deg;min-height:150px;margin-top:320px">Плашка у избранных профессий и после перехода в подбор вуза: «Поможем построить путь в профессию»; письмо с напоминанием и предложением помощи</div></div>
+<div class="cell " style="grid-row:9;grid-column:58"><div class="st gr" style="--r:-0.4deg;min-height:150px;margin-top:320px">Правило: только после выбора конкретной профессии</div></div>
+<div class="cell " style="grid-row:9;grid-column:59"></div>
+<div class="cell " style="grid-row:9;grid-column:60"></div>
+<div class="cell " style="grid-row:9;grid-column:61"></div>
+<div class="cell " style="grid-row:9;grid-column:62"></div>
+<div class="cell " style="grid-row:9;grid-column:63"></div>
+<div class="cell " style="grid-row:9;grid-column:64"></div>
+<div class="cell " style="grid-row:9;grid-column:65"></div>
+<div class="cell " style="grid-row:9;grid-column:66"></div>
+<div class="cell " style="grid-row:9;grid-column:67"></div>
+</div>
+<svg id="over"></svg></div>
+<script>
+const LINKS=[["s1a1","s1a2",{}],["s1a2","s1a3",{}],["s1a3","s1a4",{}],["s1a4","s2a1",{}],["s2a1","s2a2",{}],["s2a2","s2a3",{}],["s2a3","s2a4",{}],["s2a4","s2a5",{}],["s2a5","s3a1",{}],["s3a1","s3q",{dash:true}],["s3a1","s3a4",{}],["s3a4","s3a7",{}],["s3a4","s3a5",{}],["s3a5","s3a6",{}],["s3a6","s3s",{}],["s3s","s3f",{}],["s3f","s3a8",{}],["s3a8","s4a2",{}],["s4a2","s4a3",{}],["s4a3","s4a4",{}],["s4a4","s5a1",{}],["s5a1","s5p",{}],["s5p","s5c",{}],["s5c","s5app",{dash:true}],["s5app","s5svc",{dash:true}],["s5c","s5m",{}],["s5m","s5a2",{}],["s5a2","s5r",{dash:true}],["s5a2","s5a3",{}],["s5a3","s5a4",{}],["m5a1","m5a2",{}],["m5a2","m5a3",{}],["m5a3","m5a4",{}],["m5a4","m5a5",{}],["m5a5","m5a6",{}],["m6a1","m6a2",{}],["m6a2","m6a3",{}],["m6a3","m6a4",{}],["m6a4","m6a5",{}],["m6a5","m6a6",{}],["m6a4","m6out",{red:true}],["m7a1","m7a2",{}],["m7a2","m7a3",{}],["m7a3","m7a4",{}],["m7a4","m7a5",{}],["m7a5","m7a6",{}],["m7a4","m7g",{dash:true}],["i5","w5",{dash:true}],["i6","w6",{dash:true}],["i7","w7",{dash:true}]];
+const page=document.getElementById('page'),svg=document.getElementById('over');
+function P(el){const r=el.getBoundingClientRect(),b=page.getBoundingClientRect();
+ return{l:r.left-b.left,t:r.top-b.top,r:r.right-b.left,b:r.bottom-b.top,cx:(r.left+r.right)/2-b.left,cy:(r.top+r.bottom)/2-b.top}}
+function draw(){
+ const Wd=page.scrollWidth,Hd=page.scrollHeight;svg.setAttribute('width',Wd);svg.setAttribute('height',Hd);
+ let h='<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#444"/></marker>'+
+ '<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#d33"/></marker></defs>';
+ LINKS.forEach(([a,b,o])=>{
+  const A=document.getElementById(a),B=document.getElementById(b);if(!A||!B)return;
+  const p=P(A),q=P(B);let sx,sy,ex,ey,d;
+  const col=o.red?'#d33':'#444',mk=o.red?'ar':'a',dash=o.dash?' stroke-dasharray="6 5"':'';
+  if(Math.abs(p.cx-q.cx)<30){sx=p.cx;ex=q.cx;if(q.t>p.b){sy=p.b;ey=q.t}else{sy=p.t;ey=q.b}d='M'+sx+' '+sy+' L'+ex+' '+ey}
+  else if(q.l>p.r&&Math.abs(q.cy-p.cy)<400){sx=p.r;sy=p.cy;ex=q.l;ey=q.cy;const dx=Math.max(30,(ex-sx)/2);
+   d='M'+sx+' '+sy+' C'+(sx+dx)+' '+sy+','+(ex-dx)+' '+ey+','+ex+' '+ey}
+  else{sx=p.cx;sy=p.b;ex=q.cx;ey=q.t;const dy=Math.max(40,(ey-sy)/2);d='M'+sx+' '+sy+' C'+sx+' '+(sy+dy)+','+ex+' '+(ey-dy)+','+ex+' '+ey}
+  h+='<path d="'+d+'" fill="none" stroke="'+col+'" stroke-width="1.6"'+dash+' marker-end="url(#'+mk+')"/>';
+ });
+ const groups={};document.querySelectorAll('[data-emo]').forEach(el=>{(groups[el.dataset.emo]=groups[el.dataset.emo]||[]).push(el)});
+ Object.values(groups).forEach(g=>{const pts=g.map(el=>P(el)).map(r=>[r.cx,r.cy]).sort((x,y)=>x[0]-y[0]);
+  if(pts.length>1){let d='M'+pts[0][0]+' '+pts[0][1];for(let i=1;i<pts.length;i++){const mx=(pts[i-1][0]+pts[i][0])/2;d+=' C'+mx+' '+pts[i-1][1]+','+mx+' '+pts[i][1]+','+pts[i][0]+' '+pts[i][1]}
+   h+='<path d="'+d+'" fill="none" stroke="#8a8a8a" stroke-width="2" stroke-dasharray="2 5" stroke-linecap="round"/>'}});
+ svg.innerHTML=h;
+}
+window.addEventListener('load',draw);window.addEventListener('resize',draw);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(draw);
+</script></body></html>

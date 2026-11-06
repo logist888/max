@@ -1,0 +1,248 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CJM — поиск и подбор обучения на портале Mainexperts</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f3f3f3;font-family:Inter,"Segoe UI",Arial,"DejaVu Sans",sans-serif;color:#222}
+#board{position:relative;display:grid;grid-template-columns:150px repeat(25,200px);width:max-content;padding:24px;background:#f3f3f3}
+.lab{background:#7b7b7b;color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center;text-align:center;padding:8px;border-bottom:6px solid #f3f3f3;border-right:6px solid #f3f3f3}
+.cell{background:#e9e9e9;border-bottom:6px solid #f3f3f3;padding:12px 12px;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:flex-start;position:relative;min-width:0}
+.cell.first{border-left:6px solid #f3f3f3}
+.span{align-items:flex-start;justify-content:flex-start}
+.goalrow{flex-direction:row;justify-content:center;flex-wrap:wrap;align-items:flex-start}
+.title{background:#e9e9e9;border-bottom:6px solid #f3f3f3;padding:14px 18px;font-size:15px;display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start}
+.title h1{font-size:18px;margin:0;font-weight:600}
+.stage{background:#12c4d4;color:#fff;font-weight:600;font-size:14px;text-align:center;padding:10px 12px;display:flex;align-items:center;justify-content:center;border-left:6px solid #f3f3f3;border-bottom:6px solid #f3f3f3}
+.stage.blue{background:#0f7de6}
+.st{width:176px;padding:9px 10px;font-size:12.5px;line-height:1.32;border-radius:2px;box-shadow:0 2px 5px rgba(0,0,0,.2);transform:rotate(var(--r,0deg));position:relative;z-index:2;overflow-wrap:anywhere}
+.y1{background:#fff59d}.y2{background:#ffee77}.y3{background:#ffe38a}.y4{background:#fff9c4}
+.g{background:#a7e38c}.r{background:#f59a9a}.o{background:#ffb674}.b{background:#7fd2f5;font-weight:600}
+.w{background:#fff}.gr{background:#dcdcdc}
+.ghost{background:rgba(255,245,157,.45);border:2px dashed #b9a93a;box-shadow:none}
+.emo{position:absolute;left:12px;width:176px}
+.emocell{height:230px;padding:0}
+svg#over{position:absolute;left:0;top:0;pointer-events:none;z-index:1;overflow:visible}
+.note{position:absolute;z-index:3;background:#7fd2f5;font-size:12px;padding:8px 10px;width:210px;box-shadow:0 2px 5px rgba(0,0,0,.2);transform:rotate(-1deg)}
+.leg{display:flex;flex-wrap:wrap;gap:14px;align-items:center;font-size:12px}
+.leg .st{width:auto;padding:5px 12px;transform:none;box-shadow:none}
+.drv{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start}
+</style></head><body><div id="board">
+
+<div class="lab" style="grid-row:1">Название CJM</div><div class="title" style="grid-row:1;grid-column:2/span 9"><h1>Поиск и подбор обучения на портале Mainexperts</h1></div>
+<div class="lab" style="grid-row:2">Job To Be Done</div><div class="title" style="grid-row:2;grid-column:2/span 9">Подобрать образовательные учреждения, сравнить их между собой, выбрать из понравившихся</div>
+<div class="lab" style="grid-row:3">Драйверы и барьеры использования</div><div class="title" style="grid-row:3;grid-column:2/span 9;flex-direction:column"><div class="drv"><div class="st g" style="--r:-1.1deg;">Бесплатный первый шаг: тест или квиз</div><div class="st g" style="--r:0.7deg;">Цена и язык в своей валюте</div><div class="st g" style="--r:-0.4deg;">Сравнение до 4 позиций, закладки</div><div class="st g" style="--r:1.0deg;">Ассистент без аккаунта</div><div class="st g" style="--r:0.2deg;">Видеозвонок перед покупкой (7 из 9 родителей)</div><div class="st g" style="--r:-0.8deg;">Подборка под профиль и напоминания о сроках</div></div><div class="drv"><div class="st r" style="--r:-0.4deg;">«Дошла до цены — ушла»: около 10 лидов, оплат ноль</div><div class="st r" style="--r:1.0deg;">«Зачем ребёнку профориентация, ему же в вуз?»</div><div class="st r" style="--r:0.2deg;">Портал не выложен, в поиске его нет</div><div class="st r" style="--r:-0.8deg;">Данные о вузах неполны, проходных баллов нет</div><div class="st r" style="--r:0.5deg;">При переходе в тест всё заново, аккаунты не связаны</div><div class="st r" style="--r:-1.1deg;">Запись к эксперту не работает</div><div class="st r" style="--r:0.7deg;">Нет напоминания об оплате</div></div></div>
+<div class="lab" style="grid-row:4">Условные обозначения</div><div class="title" style="grid-row:4;grid-column:2/span 9"><div class="leg"><span class="st g">Драйвер или хороший опыт</span><span class="st r">Барьер или плохой опыт</span><span class="st y1">Шаг, мысль, идея</span><span class="st b">Ключевой переход</span><span class="st ghost">Задумано, но не подтверждено</span><span class="st gr">Пояснение</span><span>Стрелка — ход процесса; пунктир — задуманный или обходной путь; точечная линия в эмоциях — кривая настроения; синяя вертикаль — граница по сетке (между этапами 4 и 5), по карте клиентского пути граница портал/платформа проходит между этапами 3 и 4</span></div></div>
+<div style="grid-row:5;grid-column:1/-1;height:14px"></div>
+<div class="lab" style="grid-row:6">Слои / Этапы</div>
+<div class="stage" id="st1" style="grid-row:6;grid-column:2/span 3">1. Осознание проблемы</div>
+<div class="stage" id="st2" style="grid-row:6;grid-column:5/span 3">2. Поиск сайта сервиса</div>
+<div class="stage" id="st3" style="grid-row:6;grid-column:8/span 4">3. Поиск и подбор обучения</div>
+<div class="stage blue" id="st4" style="grid-row:6;grid-column:12/span 3">4. Переход на сайт образовательного учреждения</div>
+<div class="stage blue" id="st5" style="grid-row:6;grid-column:15/span 3">5. 15-минутная консультация</div>
+<div class="stage blue" id="st6" style="grid-row:6;grid-column:18/span 5">6. Покупка профориентации</div>
+<div class="stage blue" id="st7" style="grid-row:6;grid-column:23/span 4">7. Покупка дополнительных пакетов и услуг агентства</div>
+<div class="lab" style="grid-row:7">Цель этапа</div>
+<div class="cell span goalrow first" style="grid-row:7;grid-column:2/span 3"><div class="st y2" style="--r:0.7deg;">Понять, что выбор пути ребёнка нужно решать сейчас, и начать искать, куда поступать</div></div>
+<div class="cell span goalrow first" style="grid-row:7;grid-column:5/span 3"><div class="st y3" style="--r:-0.4deg;">Найти сервис, который поможет выбрать вуз, и решить, что ему можно доверять</div></div>
+<div class="cell span goalrow first" style="grid-row:7;grid-column:8/span 4"><div class="st y4" style="--r:1.0deg;">Держать понравившиеся программы под рукой, сравнить их рядом и выбрать из понравившихся</div><div class="st y1" style="--r:0.2deg;">Получить три подходящие страны и перейти к их программам</div></div>
+<div class="cell span goalrow first" style="grid-row:7;grid-column:12/span 3"><div class="st y1" style="--r:0.2deg;">Есть сейчас: получить помощь в выборе — пройти тест или поговорить с экспертом MainExperts</div><div class="st ghost" style="--r:-0.8deg;">Задумано: довести выбор до официального сайта вуза</div></div>
+<div class="cell span goalrow first" style="grid-row:7;grid-column:15/span 3"><div class="st y2" style="--r:-0.8deg;">Есть сейчас: продукта нет — определение, исполнитель и цена не заданы</div><div class="st ghost" style="--r:0.5deg;">Задумано: снять сомнение и дать живой контакт до покупки</div><div class="st gr" style="--r:-1.1deg;">Из портала в тест можно попасть сразу, минуя консультацию: так работает код</div></div>
+<div class="cell span goalrow first" style="grid-row:7;grid-column:18/span 5"><div class="st y3" style="--r:0.5deg;">Купить профориентацию — услугу, наполняющую Профиль 360: диагностика, отчёт около 40 страниц, ИИ-консультант, год подписки в подарок, второй проход</div><div class="st gr" style="--r:-1.1deg;">Отчёт — ориентир, а не диагностика; поступление не гарантируется</div></div>
+<div class="cell span goalrow first" style="grid-row:7;grid-column:23/span 4"><div class="st y4" style="--r:-1.1deg;">Удержать семью после отчёта и дать следующий шаг: второй проход, второй ребёнок, подписка</div><div class="st ghost" style="--r:0.7deg;">Услуги агентства как каталог допродаж пока не определены</div></div>
+<div class="lab" style="grid-row:8">Действия клиента</div>
+<div class="cell first" style="grid-row:8;grid-column:2"><div class="st y2" id="s1a1" style="--r:0.7deg;">Замечает повод: экзамены, приёмная кампания, разговор с другими родителями, новости про ИИ</div></div>
+<div class="cell" style="grid-row:8;grid-column:3"><div class="st y3" id="s1a2" style="--r:-0.4deg;">Видит рекламу ВК, ссылку вебинара или партнёра</div></div>
+<div class="cell" style="grid-row:8;grid-column:4"><div class="st b" id="s1a3" style="--r:1.0deg;">Кликает и попадает на лендинг или страницу скрининга</div><div class="st y1" id="s1a4" style="--r:0.2deg;">Или открывает чат Ассистента без регистрации</div></div>
+<div class="cell first" style="grid-row:8;grid-column:5"><div class="st y2" id="s2a1" style="--r:0.7deg;">Ищет вуз или программу в поисковике</div></div>
+<div class="cell" style="grid-row:8;grid-column:6"><div class="st b" id="s2a2" style="--r:-0.4deg;">Попадает на страницу портала (сейчас невозможно: портал не выложен)</div><div class="st y4" id="s2a3" style="--r:1.0deg;">Или вводит адрес mainexperts.online</div></div>
+<div class="cell" style="grid-row:8;grid-column:7"><div class="st y1" id="s2a4" style="--r:0.2deg;">Видит экран входа без описания сервиса</div></div>
+<div class="cell first" style="grid-row:8;grid-column:8"><div class="st y2" id="s3a1" style="--r:0.7deg;">Задаёт условия: откуда, что изучать, куда, уровень, бюджет</div><div class="st y2" id="s3q" style="--r:0.7deg;">Проходит квиз «какая страна подходит»</div></div>
+<div class="cell" style="grid-row:8;grid-column:9"><div class="st y3" id="s3a2" style="--r:-0.4deg;">Смотрит выдачу и карточки программ с ценой в своей валюте; не нашёл — возвращается и меняет условия</div><div class="st y2" id="s3calc" style="--r:0.7deg;">Считает шансы в калькуляторе баллов ЕГЭ</div></div>
+<div class="cell" style="grid-row:8;grid-column:10"><div class="st y4" id="s3a3" style="--r:1.0deg;">Добавляет в закладки (до 500) и сравнивает до 4 позиций</div></div>
+<div class="cell" style="grid-row:8;grid-column:11"><div class="st b" id="s3a4" style="--r:0.2deg;">Входит по коду из письма, чтобы сохранить подборку</div></div>
+<div class="cell first" style="grid-row:8;grid-column:12"><div class="st y2" id="s4a1" style="--r:0.7deg;">Решает, что одной подборки мало</div></div>
+<div class="cell" style="grid-row:8;grid-column:13"><div class="st b" id="s4a2" style="--r:-0.4deg;">Нажимает баннер теста, «Эксперт» в шапке или призыв после калькулятора</div><div class="st ghost" id="s4g" style="--r:0.7deg;">Задумано: нажимает «официальный сайт» на карточке вуза и уходит</div></div>
+<div class="cell" style="grid-row:8;grid-column:14"><div class="st y4" id="s4a3" style="--r:1.0deg;">Открывает mainexperts.online: скрининг или список экспертов</div><div class="st y1" id="s4a4" style="--r:0.2deg;">Входит и заполняет анкету заново</div></div>
+<div class="cell first" style="grid-row:8;grid-column:15"><div class="st y2" id="s5a1" style="--r:0.7deg;">Решает, что нужен живой человек</div></div>
+<div class="cell" style="grid-row:8;grid-column:16"><div class="st ghost" id="s5a2" style="--r:-0.4deg;">Записывается на 15-минутный звонок (не реализовано)</div><div class="st y4" id="s5a3" style="--r:1.0deg;">Открывает список экспертов — нужен вход</div></div>
+<div class="cell" style="grid-row:8;grid-column:17"><div class="st y1" id="s5a4" style="--r:0.2deg;">Видит выбор времени: запись не создаётся</div></div>
+<div class="cell first" style="grid-row:8;grid-column:18"><div class="st y2" id="s6a1" style="--r:0.7deg;">Проходит скрининг: 25–26 вопросов</div></div>
+<div class="cell" style="grid-row:8;grid-column:19"><div class="st y3" id="s6a2" style="--r:-0.4deg;">Вводит e-mail последним шагом</div></div>
+<div class="cell" style="grid-row:8;grid-column:20"><div class="st y4" id="s6a3" style="--r:1.0deg;">Получает отчёт «Готовность к выбору»</div></div>
+<div class="cell" style="grid-row:8;grid-column:21"><div class="st b" id="s6a4" style="--r:0.2deg;">Нажимает «пройти профориентацию» и видит предложение</div><div class="st r" id="s6out" style="--r:0.7deg;">Дошёл до цены — и ушёл</div></div>
+<div class="cell" style="grid-row:8;grid-column:22"><div class="st y2" id="s6a5" style="--r:-0.8deg;">Оплачивает на странице провайдера</div><div class="st y3" id="s6a6" style="--r:0.5deg;">Проходит диагностику 25–35 минут и получает отчёт около 40 страниц</div></div>
+<div class="cell first" style="grid-row:8;grid-column:23"><div class="st y2" id="s7a1" style="--r:0.7deg;">Читает отчёт и блок «Ваши следующие шаги»</div></div>
+<div class="cell" style="grid-row:8;grid-column:24"><div class="st y3" id="s7a2" style="--r:-0.4deg;">Получает письмо с просьбой об отзыве (день 3–7)</div></div>
+<div class="cell" style="grid-row:8;grid-column:25"><div class="st b" id="s7a3" style="--r:1.0deg;">Получает предложение: профориентация второму ребёнку и год подписки</div><div class="st ghost" id="s7g" style="--r:0.7deg;">Услуги агентства через платформу (гипотеза)</div></div>
+<div class="cell" style="grid-row:8;grid-column:26"><div class="st y1" id="s7a4" style="--r:0.2deg;">Ведёт профили детей, распределяет услуги пакета</div><div class="st y2" id="s7a5" style="--r:-0.8deg;">Подписка Pro или Ultima</div></div>
+<div class="lab" style="grid-row:9">Ожидания и мысли клиента</div>
+<div class="cell first" style="grid-row:9;grid-column:2"><div class="st y1" style="--r:-1.1deg;">«Куда поступать» — так звучит запрос</div></div>
+<div class="cell" style="grid-row:9;grid-column:3"><div class="st y3" style="--r:-0.4deg;">Страх: потерянные годы ребёнка</div></div>
+<div class="cell" style="grid-row:9;grid-column:4"><div class="st y1" style="--r:0.2deg;">«Зачем ребёнку профориентация, ему же в вуз?»</div></div>
+<div class="cell first" style="grid-row:9;grid-column:5"><div class="st y1" style="--r:-1.1deg;">Независимый справочник, а не реклама вуза</div></div>
+<div class="cell" style="grid-row:9;grid-column:6"><div class="st y3" style="--r:-0.4deg;">Понять, что это за сервис и можно ли ему доверять</div></div>
+<div class="cell" style="grid-row:9;grid-column:7"></div>
+<div class="cell first" style="grid-row:9;grid-column:8"><div class="st y1" style="--r:-1.1deg;">Честная выдача с ценой в своей валюте и шансом поступить</div></div>
+<div class="cell" style="grid-row:9;grid-column:9"><div class="st y3" style="--r:-0.4deg;">Список не теряется и открывается с телефона и компьютера</div></div>
+<div class="cell" style="grid-row:9;grid-column:10"><div class="st y1" style="--r:0.2deg;">Хочет увидеть проходные баллы, рейтинги и отзывы</div></div>
+<div class="cell" style="grid-row:9;grid-column:11"></div>
+<div class="cell first" style="grid-row:9;grid-column:12"><div class="st y1" style="--r:-1.1deg;">Чтобы MainExperts знал, что я уже выбрал на портале</div></div>
+<div class="cell" style="grid-row:9;grid-column:13"><div class="st y3" style="--r:-0.4deg;">Не потерять отобранное при переходе</div></div>
+<div class="cell" style="grid-row:9;grid-column:14"></div>
+<div class="cell first" style="grid-row:9;grid-column:15"><div class="st y1" style="--r:-1.1deg;">7 из 9 родителей хотят видеозвонок до покупки</div></div>
+<div class="cell" style="grid-row:9;grid-column:16"><div class="st y3" style="--r:-0.4deg;">8 из 9: отчёт вместе с экспертом</div></div>
+<div class="cell" style="grid-row:9;grid-column:17"><div class="st y1" style="--r:0.2deg;">Поверит ли автоотчёту без человека?</div></div>
+<div class="cell first" style="grid-row:9;grid-column:18"><div class="st y1" style="--r:-1.1deg;">«Дошла до цены — ушла»: около 10 лидов, оплат ноль</div></div>
+<div class="cell" style="grid-row:9;grid-column:19"><div class="st y3" style="--r:-0.4deg;">«Отчёт получен, а что делать дальше?»</div></div>
+<div class="cell" style="grid-row:9;grid-column:20"><div class="st y1" style="--r:0.2deg;">«Зачем ребёнку профориентация, ему же в вуз?»</div></div>
+<div class="cell" style="grid-row:9;grid-column:21"></div>
+<div class="cell" style="grid-row:9;grid-column:22"></div>
+<div class="cell first" style="grid-row:9;grid-column:23"><div class="st y1" style="--r:-1.1deg;">Что делать дальше после отчёта — нужен план, а не новая покупка</div></div>
+<div class="cell" style="grid-row:9;grid-column:24"><div class="st y3" style="--r:-0.4deg;">Контроль над данными ребёнка</div></div>
+<div class="cell" style="grid-row:9;grid-column:25"></div>
+<div class="cell" style="grid-row:9;grid-column:26"></div>
+<div class="lab" style="grid-row:10">Точки взаимодействия</div>
+<div class="cell first" style="grid-row:10;grid-column:2"><div class="st w" style="--r:-1.1deg;">Реклама ВК</div><div class="st w" style="--r:1.0deg;">Чат Ассистента</div></div>
+<div class="cell" style="grid-row:10;grid-column:3"><div class="st w" style="--r:0.7deg;">Ссылка вебинара, партнёрская ссылка</div><div class="st w" style="--r:0.2deg;">Лендинг и страница скрининга</div></div>
+<div class="cell" style="grid-row:10;grid-column:4"><div class="st w" style="--r:-0.4deg;">Мини-приложения VK и Telegram</div></div>
+<div class="cell first" style="grid-row:10;grid-column:5"><div class="st w" style="--r:-1.1deg;">Яндекс и Google</div><div class="st gr" style="--r:1.0deg;">Заменители: ВУЗ-навигатор Госуслуг, бесплатные тесты, ChatGPT</div></div>
+<div class="cell" style="grid-row:10;grid-column:6"><div class="st w" style="--r:0.7deg;">Страницы вузов и программ портала</div></div>
+<div class="cell" style="grid-row:10;grid-column:7"><div class="st w" style="--r:-0.4deg;">Прямой адрес mainexperts.online</div></div>
+<div class="cell first" style="grid-row:10;grid-column:8"><div class="st w" style="--r:-1.1deg;">Подбор программ</div><div class="st w" style="--r:0.2deg;">Закладки и сравнение</div></div>
+<div class="cell" style="grid-row:10;grid-column:9"><div class="st w" style="--r:0.7deg;">Страницы вузов и программ</div><div class="st w" style="--r:-0.8deg;">Моя подборка, письмо с кодом</div></div>
+<div class="cell" style="grid-row:10;grid-column:10"><div class="st w" style="--r:-0.4deg;">Калькулятор баллов ЕГЭ</div><div class="st w" style="--r:0.5deg;">Чат Ассистента</div></div>
+<div class="cell" style="grid-row:10;grid-column:11"><div class="st w" style="--r:1.0deg;">Квиз «какая страна подходит»</div></div>
+<div class="cell first" style="grid-row:10;grid-column:12"><div class="st w" style="--r:-1.1deg;">Баннер теста</div><div class="st w" style="--r:1.0deg;">Баннеры редакции</div></div>
+<div class="cell" style="grid-row:10;grid-column:13"><div class="st w" style="--r:0.7deg;">Кнопка «Эксперт» в шапке</div><div class="st ghost" style="--r:0.2deg;">Кнопка «Официальный сайт вуза» (проект)</div></div>
+<div class="cell" style="grid-row:10;grid-column:14"><div class="st w" style="--r:-0.4deg;">Призыв после калькулятора</div></div>
+<div class="cell first" style="grid-row:10;grid-column:15"><div class="st w" style="--r:-1.1deg;">Кнопка «Эксперт»</div><div class="st w" style="--r:1.0deg;">Письмо с календарём, комната звонка</div></div>
+<div class="cell" style="grid-row:10;grid-column:16"><div class="st w" style="--r:0.7deg;">Список экспертов (вход обязателен)</div><div class="st gr" style="--r:0.2deg;">Основатель лично берёт консультации на первых продажах</div></div>
+<div class="cell" style="grid-row:10;grid-column:17"><div class="st w" style="--r:-0.4deg;">Выбор времени (заглушка)</div></div>
+<div class="cell first" style="grid-row:10;grid-column:18"><div class="st w" style="--r:-1.1deg;">Скрининг</div><div class="st w" style="--r:-0.8deg;">Письма: «не нажал купить», «заказ не оплачен», «отчёт готов»</div></div>
+<div class="cell" style="grid-row:10;grid-column:19"><div class="st w" style="--r:0.7deg;">Страница предложения</div><div class="st w" style="--r:0.5deg;">Личный кабинет</div></div>
+<div class="cell" style="grid-row:10;grid-column:20"><div class="st w" style="--r:-0.4deg;">Корзина</div><div class="st gr" style="--r:-1.1deg;">Цена по каналам: ВК 15 000 → 599 ₽ (лесенка вниз); партнёры 20 000 / 35 000 / 50 000 ₽; в письмах цена переменная</div></div>
+<div class="cell" style="grid-row:10;grid-column:21"><div class="st w" style="--r:1.0deg;">Страница провайдера оплаты</div></div>
+<div class="cell" style="grid-row:10;grid-column:22"><div class="st w" style="--r:0.2deg;">Чат Ассистента</div></div>
+<div class="cell first" style="grid-row:10;grid-column:23"><div class="st w" style="--r:-1.1deg;">Письмо об отзыве и письмо про второго ребёнка</div><div class="st w" style="--r:0.2deg;">Ручное письмо менеджера из CRM</div></div>
+<div class="cell" style="grid-row:10;grid-column:24"><div class="st w" style="--r:0.7deg;">Профили детей</div></div>
+<div class="cell" style="grid-row:10;grid-column:25"><div class="st w" style="--r:-0.4deg;">Подписки: Free 0 / Pro 2 990 / Ultima 9 990 ₽ в месяц (не построены)</div></div>
+<div class="cell" style="grid-row:10;grid-column:26"><div class="st w" style="--r:1.0deg;">Каталог услуг (скрыт из меню)</div></div>
+<div class="lab" style="grid-row:11">Опыт клиента</div>
+<div class="cell first" style="grid-row:11;grid-column:2"><div class="st g" style="--r:-1.1deg;">Лендинг предлагает бесплатный первый шаг: тест или квиз</div></div>
+<div class="cell" style="grid-row:11;grid-column:3"><div class="st g" style="--r:0.7deg;">Результат скрининга — бесплатная карта рисков выбора</div></div>
+<div class="cell" style="grid-row:11;grid-column:4"><div class="st r" style="--r:-0.4deg;">Публичной главной у платформы нет: корень адреса ведёт на экран входа</div></div>
+<div class="cell first" style="grid-row:11;grid-column:5"><div class="st g" style="--r:-1.1deg;">Первый визит предлагает выбрать страну, язык и валюту</div><div class="st r" style="--r:1.0deg;">Языки только русский и английский</div></div>
+<div class="cell" style="grid-row:11;grid-column:6"><div class="st r" style="--r:0.7deg;">Портал не выложен: в поисковой выдаче его нет</div></div>
+<div class="cell" style="grid-row:11;grid-column:7"><div class="st r" style="--r:-0.4deg;">Незнакомый человек видит экран входа, а не описание</div></div>
+<div class="cell first" style="grid-row:11;grid-column:8"><div class="st g" style="--r:-1.1deg;">Если ничего не нашлось — до трёх подсказок «ослабь условие»</div><div class="st r" style="--r:0.2deg;">У части вузов нет английского названия; у 162 флагманов потеряно 62% программ</div></div>
+<div class="cell" style="grid-row:11;grid-column:9"><div class="st g" style="--r:0.7deg;">Цена в своей валюте, сравнение до 4 позиций</div><div class="st r" style="--r:-0.8deg;">Гость очистил браузер — список потерян</div></div>
+<div class="cell" style="grid-row:11;grid-column:10"><div class="st g" style="--r:-0.4deg;">Календарь приёма и напоминание за 7 дней</div><div class="st r" style="--r:0.5deg;">Ошибка 429 без текста; квиз без JavaScript не работает</div></div>
+<div class="cell" style="grid-row:11;grid-column:11"><div class="st r" style="--r:1.0deg;">Нет проходных баллов ЕГЭ для бакалавриата России</div></div>
+<div class="cell first" style="grid-row:11;grid-column:12"><div class="st g" style="--r:-1.1deg;">Один клик из подборки в тест</div><div class="st r" style="--r:1.0deg;">Результат теста не возвращается на портал</div></div>
+<div class="cell" style="grid-row:11;grid-column:13"><div class="st r" style="--r:0.7deg;">Подборка и закладки не передаются: всё заново</div><div class="st r" style="--r:0.2deg;">Ссылки без меток: вклад портала не измерить</div></div>
+<div class="cell" style="grid-row:11;grid-column:14"><div class="st r" style="--r:-0.4deg;">Аккаунты портала и MainExperts не связаны</div></div>
+<div class="cell first" style="grid-row:11;grid-column:15"><div class="st r" style="--r:-1.1deg;">Кнопка «Эксперт» ведёт на экран без записи</div></div>
+<div class="cell" style="grid-row:11;grid-column:16"><div class="st r" style="--r:0.7deg;">Эксперта и время назначает менеджер вручную, срока нет</div></div>
+<div class="cell" style="grid-row:11;grid-column:17"><div class="st r" style="--r:-0.4deg;">Поддержка только для вошедших</div></div>
+<div class="cell first" style="grid-row:11;grid-column:18"><div class="st g" style="--r:-1.1deg;">E-mail последним шагом: на экране «отчёт готов» больше не отваливаются</div><div class="st r" style="--r:-0.8deg;">Самостоятельная покупка подписки Профиль 360 выключена</div></div>
+<div class="cell" style="grid-row:11;grid-column:19"><div class="st g" style="--r:0.7deg;">Письма возвращают к оплате</div></div>
+<div class="cell" style="grid-row:11;grid-column:20"><div class="st r" style="--r:-0.4deg;">Нет напоминания «завершите оплату»; заказ молча отменяется через 7 дней</div></div>
+<div class="cell" style="grid-row:11;grid-column:21"><div class="st r" style="--r:1.0deg;">Цена из ссылки теряется при регистрации по телефону</div></div>
+<div class="cell" style="grid-row:11;grid-column:22"><div class="st r" style="--r:0.2deg;">Перевод через менеджера ждёт подтверждения</div></div>
+<div class="cell first" style="grid-row:11;grid-column:23"><div class="st g" style="--r:-1.1deg;">Родитель ведёт до 10 профилей детей</div></div>
+<div class="cell" style="grid-row:11;grid-column:24"><div class="st r" style="--r:0.7deg;">Приглашение ребёнка действует 7 дней без напоминаний</div></div>
+<div class="cell" style="grid-row:11;grid-column:25"><div class="st r" style="--r:-0.4deg;">При сбое списания подписка истекает без письма</div></div>
+<div class="cell" style="grid-row:11;grid-column:26"><div class="st r" style="--r:1.0deg;">Каталог услуг из меню не найти</div></div>
+<div class="lab" style="grid-row:12">Эмоции клиента</div>
+<div class="cell emocell first" style="grid-row:12;grid-column:2"><div class="st g emo" data-emo="1" style="--r:0.7deg;top:47px">Любопытство</div></div>
+<div class="cell emocell" style="grid-row:12;grid-column:3"><div class="st o emo" data-emo="1" style="--r:-0.4deg;top:104px">Тревога за выбор ребёнка</div></div>
+<div class="cell emocell" style="grid-row:12;grid-column:4"><div class="st o emo" data-emo="1" style="--r:1.0deg;top:122px">Страх упустить время</div></div>
+<div class="cell emocell first" style="grid-row:12;grid-column:5"><div class="st g emo" data-emo="1" style="--r:-0.4deg;top:56px">Интерес</div></div>
+<div class="cell emocell" style="grid-row:12;grid-column:6"><div class="st o emo" data-emo="1" style="--r:1.0deg;top:92px">Осторожность к незнакомому сайту</div></div>
+<div class="cell emocell" style="grid-row:12;grid-column:7"><div class="st o emo" data-emo="1" style="--r:0.2deg;top:116px">Доверие падает на экране входа</div></div>
+<div class="cell emocell first" style="grid-row:12;grid-column:8"><div class="st g emo" data-emo="1" style="--r:1.0deg;top:25px">Азарт сравнения</div></div>
+<div class="cell emocell" style="grid-row:12;grid-column:9"><div class="st o emo" data-emo="1" style="--r:0.2deg;top:110px">Разочарование: нет проходных баллов</div></div>
+<div class="cell emocell" style="grid-row:12;grid-column:10"><div class="st g emo" data-emo="1" style="--r:-0.8deg;top:44px">Спокойствие: выбор сохранён</div></div>
+<div class="cell emocell" style="grid-row:12;grid-column:11"><div class="st o emo" data-emo="1" style="--r:0.5deg;top:122px">Раздражение при потере списка</div></div>
+<div class="cell emocell first" style="grid-row:12;grid-column:12"><div class="st g emo" data-emo="1" style="--r:0.2deg;top:62px">Ожидание продолжения</div></div>
+<div class="cell emocell" style="grid-row:12;grid-column:13"></div>
+<div class="cell emocell" style="grid-row:12;grid-column:14"><div class="st o emo" data-emo="1" style="--r:0.5deg;top:116px">Разочарование: рассказывать всё заново</div></div>
+<div class="cell emocell first" style="grid-row:12;grid-column:15"><div class="st o emo" data-emo="1" style="--r:-0.8deg;top:104px">Неуверенность: что дальше?</div></div>
+<div class="cell emocell" style="grid-row:12;grid-column:16"><div class="st g emo" data-emo="1" style="--r:0.5deg;top:38px">Облегчение от живого человека</div></div>
+<div class="cell emocell" style="grid-row:12;grid-column:17"><div class="st o emo" data-emo="1" style="--r:-1.1deg;top:122px">Ожидание без срока</div></div>
+<div class="cell emocell first" style="grid-row:12;grid-column:18"><div class="st o emo" data-emo="1" style="--r:0.5deg;top:110px">Настороженность к цене</div></div>
+<div class="cell emocell" style="grid-row:12;grid-column:19"></div>
+<div class="cell emocell" style="grid-row:12;grid-column:20"><div class="st o emo" data-emo="1" style="--r:0.7deg;top:116px">Тревога при уходе на страницу провайдера</div></div>
+<div class="cell emocell" style="grid-row:12;grid-column:21"></div>
+<div class="cell emocell" style="grid-row:12;grid-column:22"><div class="st g emo" data-emo="1" style="--r:1.0deg;top:44px">Облегчение при письме об оплате</div></div>
+<div class="cell emocell first" style="grid-row:12;grid-column:23"></div>
+<div class="cell emocell" style="grid-row:12;grid-column:24"><div class="st g emo" data-emo="1" style="--r:0.7deg;top:44px">Спокойствие за данные ребёнка</div></div>
+<div class="cell emocell" style="grid-row:12;grid-column:25"></div>
+<div class="cell emocell" style="grid-row:12;grid-column:26"><div class="st o emo" data-emo="1" style="--r:1.0deg;top:122px">Неприятное удивление: подписка истекла без предупреждения</div></div>
+<div class="lab" style="grid-row:13">Идеи по улучшению клиентского опыта</div>
+<div class="cell first" style="grid-row:13;grid-column:2"><div class="st w" style="--r:0.7deg;">Добавить в метки входа тип повода (экзамен, приёмная кампания) и сравнить регистрации по поводам</div></div>
+<div class="cell" style="grid-row:13;grid-column:3"><div class="st w" style="--r:-0.4deg;">Проверить лид-магниты: «7 ошибок при поступлении», «какие профессии исчезнут»</div></div>
+<div class="cell" style="grid-row:13;grid-column:4"></div>
+<div class="cell first" style="grid-row:13;grid-column:5"><div class="st w" style="--r:0.7deg;">Решить, где живёт портал, и выложить его; измерить долю входов из поиска</div></div>
+<div class="cell" style="grid-row:13;grid-column:6"><div class="st w" style="--r:-0.4deg;">Заменить экран входа на корне короткой страницей «что это»; измерить уходы с корня</div></div>
+<div class="cell" style="grid-row:13;grid-column:7"></div>
+<div class="cell first" style="grid-row:13;grid-column:8"><div class="st w" style="--r:0.7deg;">Писать «Информация отсутствует» вместо пустых полей, ставить источник и дату</div></div>
+<div class="cell" style="grid-row:13;grid-column:9"><div class="st w" style="--r:-0.4deg;">Страница ошибки со строкой поиска; у ошибки 429 — текст и срок</div></div>
+<div class="cell" style="grid-row:13;grid-column:10"><div class="st w" style="--r:1.0deg;">Подключить события: поиск, фильтры, сравнение, закладки</div></div>
+<div class="cell" style="grid-row:13;grid-column:11"></div>
+<div class="cell first" style="grid-row:13;grid-column:12"><div class="st w" style="--r:0.7deg;">Единый набор меток на всех призывах портала; считать скрининги, пришедшие с портала</div></div>
+<div class="cell" style="grid-row:13;grid-column:13"><div class="st w" style="--r:-0.4deg;">Передавать параметры подборки в ссылке без персональных данных</div></div>
+<div class="cell" style="grid-row:13;grid-column:14"><div class="st w" style="--r:1.0deg;">Разметить клики на сайт вуза и на тест раздельно и сравнить</div></div>
+<div class="cell first" style="grid-row:13;grid-column:15"><div class="st w" style="--r:0.7deg;">Сначала определить продукт; спрос проверить по нажатиям «Эксперт»</div></div>
+<div class="cell" style="grid-row:13;grid-column:16"><div class="st w" style="--r:-0.4deg;">Сравнить: автоматика против автоматики плюс живой звонок</div></div>
+<div class="cell" style="grid-row:13;grid-column:17"><div class="st w" style="--r:1.0deg;">Скрыть заглушку выбора времени, пока запись не работает</div></div>
+<div class="cell first" style="grid-row:13;grid-column:18"><div class="st w" style="--r:0.7deg;">Письмо «завершите оплату» через сутки; измерить возврат</div></div>
+<div class="cell" style="grid-row:13;grid-column:19"><div class="st w" style="--r:-0.4deg;">Закрепить цену и партнёра на всех путях регистрации и проверить сквозным тестом</div></div>
+<div class="cell" style="grid-row:13;grid-column:20"><div class="st w" style="--r:1.0deg;">Тест холодного трафика на диагностику от $400, чтобы понять, почему «дошла до цены — ушла»</div></div>
+<div class="cell" style="grid-row:13;grid-column:21"></div>
+<div class="cell" style="grid-row:13;grid-column:22"></div>
+<div class="cell first" style="grid-row:13;grid-column:23"><div class="st w" style="--r:0.7deg;">Напоминание приглашённому за 2 дня до истечения</div></div>
+<div class="cell" style="grid-row:13;grid-column:24"><div class="st w" style="--r:-0.4deg;">Собрать реестр пакетов и цену семейного пакета, затем проверить письмо про второго ребёнка</div></div>
+<div class="cell" style="grid-row:13;grid-column:25"><div class="st w" style="--r:1.0deg;">Проверить спрос на услуги агентства на одном канале до разработки каталога</div></div>
+<div class="cell" style="grid-row:13;grid-column:26"></div>
+<svg id="over"></svg></div>
+<script>
+const LINKS=[["s1a1","s1a2",{}],["s1a2","s1a3",{}],["s1a2","s1a4",{}],["s2a1","s2a2",{}],["s2a1","s2a3",{}],["s2a3","s2a4",{}],["s3a1","s3q",{}],["s3a1","s3a2",{}],["s3a2","s3calc",{}],["s3a2","s3a3",{}],["s3a3","s3a4",{}],["s4a1","s4a2",{}],["s4a2","s4a3",{}],["s4a3","s4a4",{}],["s4a1","s4g",{dash:true}],["s5a1","s5a2",{dash:true}],["s5a1","s5a3",{}],["s5a3","s5a4",{}],["s6a1","s6a2",{}],["s6a2","s6a3",{}],["s6a3","s6a4",{}],["s6a4","s6a5",{}],["s6a4","s6out",{red:true}],["s6a5","s6a6",{}],["s7a1","s7a2",{}],["s7a2","s7a3",{}],["s7a3","s7a4",{}],["s7a4","s7a5",{}],["s7a3","s7g",{dash:true}],["s1a3","s2a1",{}],["s2a2","s3a1",{}],["s3a4","s4a1",{}],["s4a4","s5a1",{dash:true}],["s5a4","s6a1",{}],["s6a6","s7a1",{}]];
+const board=document.getElementById('board'),svg=document.getElementById('over');
+function P(el){const r=el.getBoundingClientRect(),b=board.getBoundingClientRect();
+ return{l:r.left-b.left,t:r.top-b.top,r:r.right-b.left,b:r.bottom-b.top,cx:(r.left+r.right)/2-b.left,cy:(r.top+r.bottom)/2-b.top}}
+function draw(){
+ const W=board.scrollWidth,H=board.scrollHeight;svg.setAttribute('width',W);svg.setAttribute('height',H);
+ let h='<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#444"/></marker>'+
+ '<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#d33"/></marker></defs>';
+ // граница пунктира перед этапом 5
+ const s5=P(document.getElementById('st5')),hd=P(document.getElementById('st1'));
+ h+='<line x1="'+(s5.l-3)+'" x2="'+(s5.l-3)+'" y1="'+(hd.t-8)+'" y2="'+(H-20)+'" stroke="#0f7de6" stroke-width="2.5" stroke-dasharray="9 7"/>';
+ LINKS.forEach(([a,b,o])=>{
+  const A=document.getElementById(a),B=document.getElementById(b);if(!A||!B)return;
+  const p=P(A),q=P(B);let sx,sy,ex,ey,d,mx,my;
+  const col=o.red?'#d33':'#444',mk=o.red?'ar':'a',dash=o.dash?' stroke-dasharray="6 5"':'';
+  if(o.arc){const up=o.arc==='up';sx=p.cx;ex=q.cx;sy=up?p.t:p.b;ey=up?q.t:q.b;
+   const lift=(up?-1:1)*(o.label&&o.label.length>30?170:95);const top=(up?Math.min(sy,ey):Math.max(sy,ey))+lift;
+   d='M'+sx+' '+sy+' C'+sx+' '+top+','+ex+' '+top+','+ex+' '+ey;mx=(sx+ex)/2;my=top*0.75+(sy+ey)/2*0.25}
+  else if(Math.abs(p.cx-q.cx)<30){sx=p.cx;ex=q.cx;if(q.t>p.b){sy=p.b;ey=q.t}else{sy=p.t;ey=q.b}
+   d='M'+sx+' '+sy+' L'+ex+' '+ey;mx=sx+6;my=(sy+ey)/2}
+  else if(q.l>p.r){sx=p.r;sy=p.cy;ex=q.l;ey=q.cy;const dx=Math.max(30,(ex-sx)/2);
+   d='M'+sx+' '+sy+' C'+(sx+dx)+' '+sy+','+(ex-dx)+' '+ey+','+ex+' '+ey;mx=(sx+ex)/2;my=(sy+ey)/2-6}
+  else{sx=p.cx;sy=p.b;ex=q.cx;ey=q.t;d='M'+sx+' '+sy+' C'+sx+' '+(sy+40)+','+ex+' '+(ey-40)+','+ex+' '+ey;mx=(sx+ex)/2;my=(sy+ey)/2}
+  h+='<path d="'+d+'" fill="none" stroke="'+col+'" stroke-width="1.6"'+dash+' marker-end="url(#'+mk+')"/>';
+  if(o.label)h+='<text x="'+mx+'" y="'+my+'" text-anchor="middle" font-size="11" fill="#333" stroke="#f3f3f3" stroke-width="4" paint-order="stroke">'+o.label+'</text>';
+ });
+ // кривая эмоций
+ const pts=[...document.querySelectorAll('[data-emo]')].map(el=>P(el)).map(r=>[r.cx,r.cy]).sort((x,y)=>x[0]-y[0]);
+ if(pts.length>1){let d='M'+pts[0][0]+' '+pts[0][1];for(let i=1;i<pts.length;i++){const mx=(pts[i-1][0]+pts[i][0])/2;d+=' C'+mx+' '+pts[i-1][1]+','+mx+' '+pts[i][1]+','+pts[i][0]+' '+pts[i][1]}
+  h+='<path d="'+d+'" fill="none" stroke="#8a8a8a" stroke-width="2" stroke-dasharray="2 5" stroke-linecap="round"/>'}
+ svg.innerHTML=h;
+ if(!document.getElementById('bnote')){const n=document.createElement('div');n.id='bnote';n.className='note';
+  n.textContent='Граница по сетке. По карте клиентского пути граница портал/платформа (смена приложения и аккаунта) проходит между этапами 3 и 4.';
+  board.appendChild(n);n.style.left=(s5.l-3-n.offsetWidth-14)+'px';n.style.top=(hd.t-8-0)+'px';n.style.display='none'}
+ const nn=document.getElementById('bnote');
+}
+window.addEventListener('load',draw);window.addEventListener('resize',draw);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(draw);
+</script></body></html>
