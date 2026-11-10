@@ -29,8 +29,21 @@ interface Props {
   target?: string;                      // селектор фильтруемых карточек
   itemNoun?: [string, string, string];  // склонения для счётчика
   persistKey?: string;                  // ключ sessionStorage: состояние наследуется на др. страницы
+  // Контекст самой страницы, который надо передать дальше вместе с выбором:
+  // например страница направления передаёт свою укрупнённую группу, чтобы на
+  // карточке вуза открылись программы той же группы. В адрес и в панель этой
+  // страницы НЕ попадает — только в наследуемое состояние.
+  persistExtra?: Record<string, string>;
 }
-const { facets, target = '[data-filter-item]', itemNoun = ['результат', 'результата', 'результатов'], persistKey } = Astro.props;
+const {
+  facets, target = '[data-filter-item]',
+  itemNoun = ['результат', 'результата', 'результатов'],
+  persistKey, persistExtra,
+} = Astro.props;
+// Пустые значения не передаём, иначе на принимающей стороне появится фильтр ни по чему.
+const persistExtraClean = Object.fromEntries(
+  Object.entries(persistExtra ?? {}).filter(([, v]) => v),
+);
 
 // Метаданные для клиента: подписи значений (для активных чипов) + типы.
 const meta: Record<string, { label: string; type: string; toggleLabel?: string; unit?: string; values: Record<string, string> }> = {};
@@ -97,7 +110,7 @@ for (const f of facets) {
   </div>
 </div>
 
-<script define:vars={{ target, itemNoun, meta, persistKey }}>
+<script define:vars={{ target, itemNoun, meta, persistKey, persistExtra: persistExtraClean }}>
   // define:vars — классический инлайн-скрипт: выполняется в точке вставки (выше списка
   // карточек), поэтому запускаем движок после готовности DOM, иначе items пуст.
   function initFilters() {
@@ -190,8 +203,16 @@ for (const f of facets) {
       history.replaceState(null, '', qs ? '?' + qs + location.hash : location.pathname + location.hash);
       // Зеркалим в sessionStorage — состояние наследуется на другие страницы (карточка вуза),
       // «пока не сброшу»; очистка фильтра очищает и наследование.
+      //
+      // К состоянию добавляется контекст страницы (persistExtra): страница направления
+      // передаёт свою укрупнённую группу, и карточка вуза открывается на ней. В адрес
+      // он не идёт — там только то, что человек выбрал сам. Явный выбор перебивает
+      // контекст: ключ из состояния не затирается.
       if (persistKey) {
-        try { qs ? sessionStorage.setItem(persistKey, qs) : sessionStorage.removeItem(persistKey); } catch {}
+        const out = new URLSearchParams(qs);
+        for (const k in persistExtra) if (!out.has(k)) out.set(k, persistExtra[k]);
+        const stored = out.toString();
+        try { stored ? sessionStorage.setItem(persistKey, stored) : sessionStorage.removeItem(persistKey); } catch {}
       }
     }
 

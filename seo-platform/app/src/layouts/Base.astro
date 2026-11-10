@@ -9,8 +9,12 @@ interface Props {
   description: string;
   noindex?: boolean;
   jsonLd?: object[];
+  // Страница сама размещает остров поиска (главная — в герое). У острова
+  // фиксированные id, два экземпляра на странице не работают, поэтому из шапки
+  // он в этом случае убирается.
+  searchInPage?: boolean;
 }
-const { title, description, noindex = false, jsonLd = [] } = Astro.props;
+const { title, description, noindex = false, jsonLd = [], searchInPage = false } = Astro.props;
 const { meta } = db();
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
@@ -84,7 +88,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
         <a href="/regiony/">Регионы</a>
         <a href="/o-dannyh/">О данных</a>
       </nav>
-      <Search />
+      {!searchInPage && <Search />}
     </div>
     <script>
       // Мобильное меню: тумблер класса .nav-open + синхронизация aria-expanded.

@@ -10,7 +10,7 @@ import { costPhrase, ldBreadcrumbs, ldFaq, placeDirectionFaq, plural } from '../
 import type { CostRange } from '../../../lib/data.ts';
 import {
   dirCardFacetData, dirOfferFacetData,
-  FACET_KIND, FACET_FORM, FACET_BUDGET, FACET_COST, FACET_DORM, FACET_MIL,
+  FACET_KIND, FACET_FORMS, FACET_BUDGET, FACET_COST, FACET_DORM, FACET_MIL,
 } from '../../../lib/facets.ts';
 
 export function getStaticPaths() {
@@ -57,7 +57,7 @@ const cost = costPhrase(range);
 // Направление и город фиксированы — гео-фасета нет. Форма/бюджет/стоимость —
 // честно по офферам этого ОКСО (dirOfferFacetData); тип/общежитие/военная — по вузу.
 const showFilters = rows.length >= 6;
-const comboFacets: Facet[] = [FACET_KIND, FACET_FORM, FACET_BUDGET, FACET_COST, FACET_DORM, FACET_MIL];
+const comboFacets: Facet[] = [FACET_KIND, FACET_FORMS, FACET_BUDGET, FACET_COST, FACET_DORM, FACET_MIL];
 const orgFacet = (row: typeof rows[number]) => ({
   ...dirCardFacetData(row),
   ...dirOfferFacetData(cardById.get(row.id), okso),
@@ -112,7 +112,8 @@ const jsonLd = [
 
   {showFilters && (
     <>
-      <Filters facets={comboFacets} target="[data-filter-item]" itemNoun={['вуз', 'вуза', 'вузов']} />
+      <Filters facets={comboFacets} target="[data-filter-item]" itemNoun={['вуз', 'вуза', 'вузов']}
+        persistKey="vuzFilters" persistExtra={{ ugs: dir.ugsCode ?? '' }} />
       <p class="filters-empty" data-filters-empty hidden>По заданным фильтрам вузов не найдено. Снимите часть условий.</p>
     </>
   )}

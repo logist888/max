@@ -89,7 +89,7 @@ const jsonLd = [ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
 
   {showFilters && (
     <>
-      <Filters facets={facets} target="[data-filter-item]" itemNoun={['вуз', 'вуза', 'вузов']} />
+      <Filters facets={facets} target="[data-filter-item]" itemNoun={['вуз', 'вуза', 'вузов']} persistKey="vuzFilters" />
       <p class="filters-empty" data-filters-empty hidden>По заданным фильтрам вузов в городе не найдено. Снимите часть условий.</p>
     </>
   )}

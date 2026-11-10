@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import ChoiceMapPreview from '../components/ChoiceMapPreview.astro';
+import Search from '../components/Search.astro';
 import { db } from '../lib/data.ts';
 import { plural } from '../lib/text.ts';
 import { SCREENING_URL } from '../lib/links.ts';
@@ -22,14 +22,23 @@ const jsonLd = [{
   inLanguage: 'ru-RU',
 }];
 ---
-<Base title={title} description={description} jsonLd={jsonLd}>
+<Base title={title} description={description} jsonLd={jsonLd} searchInPage={true}>
   <section class="hero">
     <div class="hero-inner">
       <div class="hero-copy">
-        <h1>Сначала — понять себя.<br />Потом — выбирать вуз.</h1>
-        <p>Бесплатная «Карта выбора» покажет, где решение — опора, а где зона риска.
-          А дальше — {catalogRows.length} {plural(catalogRows.length, 'вуз', 'вуза', 'вузов')} и программы
-          из официальных данных, без выдуманных рейтингов.</p>
+        {/* Вторая строка печатается и стирается по кругу. Без JS и при
+            prefers-reduced-motion остаётся первое слово — заголовок читается
+            целиком: «Выбери онлайн вуз». Ширину и высоту строки держит
+            невидимый образец с самым длинным словом, чтобы геро не прыгало. */}
+        <h1>Выбери онлайн{' '}<br /><span class="type-line" data-sizer="направление обучения"
+          ><span class="type-word" data-type-words="вуз|специальность|профессию|город обучения|направление обучения">вуз</span
+        ></span></h1>
+        <p>{catalogRows.length} {plural(catalogRows.length, 'вуз', 'вуза', 'вузов')},
+          {' '}{directions.length} направлений и {cities.length} {plural(cities.length, 'город', 'города', 'городов')}
+          {' '}— из официальных данных, без выдуманных рейтингов. Начните с поиска.</p>
+
+        <div class="hero-search"><Search /></div>
+
         <div class="actions">
           <a class="btn btn-primary" href={SCREENING_URL} target="_blank" rel="noopener">Узнать риск своего выбора →</a>
           <a class="btn btn-secondary" href="/vuzy/">Смотреть каталог вузов</a>
@@ -45,7 +54,6 @@ const jsonLd = [{
           <span class="chip">Без выдуманных рейтингов</span>
         </div>
       </div>
-      <div class="hero-aside"><ChoiceMapPreview /></div>
     </div>
   </section>
 
@@ -59,6 +67,47 @@ const jsonLd = [{
       document.documentElement.classList.add('js-motion');
       var nums = document.querySelectorAll('[data-count]');
       for (var i = 0; i < nums.length; i++) nums[i].textContent = '0';
+    })();
+  </script>
+
+  {/* Печатающаяся строка заголовка. Работает только при активном гейте .js-motion,
+      поэтому без JS и при prefers-reduced-motion слово остаётся на месте. Курсор
+      рисуется в CSS псевдоэлементом под тем же гейтом — лишней чёрточки не будет. */}
+  <script is:inline>
+    (function () {
+      if (!document.documentElement.classList.contains('js-motion')) return;
+      var el = document.querySelector('[data-type-words]');
+      if (!el) return;
+      var words = (el.getAttribute('data-type-words') || '').split('|').filter(Boolean);
+      if (words.length < 2) return;
+
+      var i = 0, pos = words[0].length, deleting = true;
+      var HOLD = 1700, GAP = 350, TYPE = 85, ERASE = 45;
+
+      function tick() {
+        var w = words[i];
+        if (deleting) {
+          pos--;
+          if (pos <= 0) {
+            pos = 0; deleting = false; i = (i + 1) % words.length;
+            el.textContent = '';
+            setTimeout(tick, GAP);
+            return;
+          }
+          el.textContent = w.slice(0, pos);
+          setTimeout(tick, ERASE);
+        } else {
+          pos++;
+          el.textContent = w.slice(0, pos);
+          if (pos >= w.length) {
+            deleting = true;
+            setTimeout(tick, HOLD);
+            return;
+          }
+          setTimeout(tick, TYPE);
+        }
+      }
+      setTimeout(tick, HOLD);
     })();
   </script>
 

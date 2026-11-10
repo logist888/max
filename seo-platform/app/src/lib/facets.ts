@@ -51,8 +51,14 @@ export function dirCardFacetData(row: CatalogRow): Record<string, string> {
 }
 
 /** Фасеты формы/бюджета/цены ИМЕННО этого направления (okso) в конкретном вузе —
- *  join card→programsByLevel→directions(okso)→offers. Ключи form/budget/cost
- *  отличны от «пофузовских» forms/... , чтобы семантика не смешивалась. */
+ *  join card→programsByLevel→directions(okso)→offers.
+ *
+ *  Ключи те же, что у пофузовских фасетов (forms/budget/cost): семантика фасета
+ *  одна и та же — «форма обучения», «есть бюджет», «стоимость». Отличается не имя
+ *  ключа, а ИСТОЧНИК значения: здесь — только офферы этого ОКСО, там — весь вуз.
+ *  Совпадение ключей нужно, чтобы выбор переносился между страницами
+ *  (sessionStorage['vuzFilters']): форма, выбранная на странице направления,
+ *  остаётся выбранной на карточке вуза. */
 export function dirOfferFacetData(card: OrgCard | undefined, okso: string): Record<string, string> {
   const forms = new Set<string>();
   let budget = false;
@@ -70,7 +76,7 @@ export function dirOfferFacetData(card: OrgCard | undefined, okso: string): Reco
     }
   }
   return {
-    'data-form': [...forms].join(','),
+    'data-forms': [...forms].join(','),
     'data-budget': budget ? '1' : '0',
     'data-cost-min': costs.length ? String(Math.min(...costs)) : '',
     'data-cost-max': costs.length ? String(Math.max(...costs)) : '',
@@ -95,7 +101,6 @@ export const KIND_CHIPS = [
 export const FACET_KIND: Facet = { key: 'kind', label: 'Тип', type: 'chip', chips: KIND_CHIPS };
 export const FACET_LEVELS: Facet = { key: 'levels', label: 'Уровень', type: 'chip', chips: LEVEL_CHIPS };
 export const FACET_FORMS: Facet = { key: 'forms', label: 'Форма обучения', type: 'chip', chips: FORM_CHIPS };
-export const FACET_FORM: Facet = { key: 'form', label: 'Форма обучения', type: 'chip', chips: FORM_CHIPS };
 export const FACET_BUDGET: Facet = { key: 'budget', label: 'Бюджетные места', type: 'toggle', toggleLabel: 'Есть бюджетные места' };
 export const FACET_DORM: Facet = { key: 'dorm', label: 'Общежитие', type: 'toggle', toggleLabel: 'Есть общежитие' };
 export const FACET_MIL: Facet = { key: 'mil', label: 'Военная подготовка', type: 'toggle', toggleLabel: 'Военная кафедра / УВЦ' };

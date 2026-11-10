@@ -348,9 +348,43 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   line-height: 1.05; font-weight: 600; letter-spacing: -.03em;
 }
 .hero p {
-  margin: 0 0 var(--space-6); max-width: 48ch;
+  margin: 0 0 var(--space-6); max-width: 60ch;
   font-size: var(--t-lead); line-height: 1.5; color: var(--text-muted);
 }
+/* Печатающаяся строка заголовка. Невидимый образец держит ширину и высоту по
+   самому длинному варианту, слово рисуется поверх в той же ячейке сетки — при
+   смене слова ничего не прыгает и не переносится.
+   Образец — псевдоэлемент с attr(): его текста нет в DOM, поэтому в заголовке
+   страницы (и у поискового краулера) остаётся только «Выбери онлайн вуз»,
+   а visibility: hidden убирает его из дерева доступности. */
+.type-line { display: grid; }
+.type-line::before {
+  content: attr(data-sizer);
+  grid-area: 1 / 1;
+  visibility: hidden;
+}
+.type-word { grid-area: 1 / 1; color: var(--accent-dark); }
+/* Курсор — только когда движение разрешено (гейт .js-motion). */
+.js-motion .type-word::after {
+  content: ''; display: inline-block; vertical-align: -0.1em;
+  width: 3px; height: 0.9em; margin-left: 4px;
+  background: var(--accent); animation: type-caret 1s steps(1) infinite;
+}
+@keyframes type-caret { 50% { opacity: 0; } }
+
+/* Строка поиска в герое: широкая «пилюля» вместо узкого поля шапки. */
+.hero-search { margin: 0 0 var(--space-6); }
+.hero-search #site-search { max-width: 720px; width: 100%; }
+.hero-search #site-search input {
+  min-height: 60px; padding: 0 24px; font-size: var(--t-lead);
+  border-radius: 999px; border-color: var(--line-gold); box-shadow: var(--shadow-1);
+}
+.hero-search #site-search input:focus { border-color: var(--text); }
+.hero-search #search-results { border-radius: var(--radius); }
+@media (max-width: 600px) {
+  .hero-search #site-search input { min-height: 52px; padding: 0 18px; font-size: 1rem; }
+}
+
 .hero .actions { display: flex; gap: var(--space-3); flex-wrap: wrap; }
 .hero .chips { display: flex; gap: var(--space-2); flex-wrap: wrap; margin-top: var(--space-6); }
 .hero .chip {
@@ -358,14 +392,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   background: var(--surface); border: 1px solid var(--border); color: var(--text-muted);
 }
 .hero .chip .num { color: var(--text); font-weight: 700; font-variant-numeric: tabular-nums; }
-.hero-inner { display: grid; grid-template-columns: 1.08fr .92fr; gap: var(--space-12); align-items: center; }
-.hero-copy { min-width: 0; }
+/* Геро в одну колонку: правый блок с предпоказом «Карты выбора» убран,
+   его место занял поиск под заголовком. */
+.hero-inner { display: grid; grid-template-columns: 1fr; gap: var(--space-8); }
+.hero-copy { min-width: 0; max-width: 46rem; }
 .hero .prov { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: var(--space-6); font-size: var(--t-caption); color: var(--text-muted); }
 .hero .prov .src {
   display: inline-flex; padding: 4px 11px; border-radius: 999px;
   background: var(--accent-soft); border: 1px solid var(--line-gold); color: var(--accent-dark); font-weight: 600;
 }
-@media (max-width: 900px) { .hero-inner { grid-template-columns: 1fr; gap: var(--space-8); } }
 
 /* ---------- Хлебные крошки */
 .breadcrumbs { font-size: var(--t-caption); color: var(--text-muted); margin-top: var(--space-4); }

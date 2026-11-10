@@ -11,7 +11,7 @@ import { costPhrase, directionFaq, ldBreadcrumbs, ldFaq, plural } from '../../..
 import { ege, EGE_SUBJECTS } from '../../../lib/ege.ts';
 import {
   dirCardFacetData, dirOfferFacetData, regionFacet,
-  FACET_KIND, FACET_FORM, FACET_BUDGET, FACET_COST, FACET_DORM, FACET_MIL,
+  FACET_KIND, FACET_FORMS, FACET_BUDGET, FACET_COST, FACET_DORM, FACET_MIL,
 } from '../../../lib/facets.ts';
 
 export function getStaticPaths() {
@@ -36,7 +36,7 @@ const orgFacet = (row: typeof rows[number]) => ({
   ...dirOfferFacetData(cardById.get(row.id), dir.okso),
 });
 const dirFacets: Facet[] = [
-  regionFacet(presentRegions), FACET_KIND, FACET_FORM, FACET_BUDGET, FACET_COST, FACET_DORM, FACET_MIL,
+  regionFacet(presentRegions), FACET_KIND, FACET_FORMS, FACET_BUDGET, FACET_COST, FACET_DORM, FACET_MIL,
 ];
 
 // Города, где направление индексируемо (≥2 вузов) — спицы.
@@ -144,7 +144,8 @@ const egeSubs = (ege().bySlug.get(dir.slug) ?? []).filter((k) => k !== 'русс
   <h2>Все вузы направления</h2>
   {showFilters && (
     <>
-      <Filters facets={dirFacets} target="[data-filter-item]" itemNoun={['вуз', 'вуза', 'вузов']} />
+      <Filters facets={dirFacets} target="[data-filter-item]" itemNoun={['вуз', 'вуза', 'вузов']}
+        persistKey="vuzFilters" persistExtra={{ ugs: dir.ugsCode ?? '' }} />
       <p class="filters-empty" data-filters-empty hidden>По заданным фильтрам вузов с этим направлением не найдено. Снимите часть условий.</p>
     </>
   )}
