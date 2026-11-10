@@ -89,11 +89,13 @@ const jsonLd = [
     посмотреть, на какие направления он открывает путь:</p>
   <ul>
     <li><a href="/kuda-postupat-s-obshchestvoznaniem/">Куда поступить с обществознанием</a></li>
-    <li>с <a href="/kuda-postupat-s-biologiej/">биологией</a>,
-        <a href="/kuda-postupat-s-himiej/">химией</a>,
-        <a href="/kuda-postupat-s-fizikoj/">физикой</a>,
+    {/* Пробелы заданы явно: сборщик схлопывает перенос строки между тегами,
+        и ссылки слипались в «биологией,химией,физикой» — без пробела и без переноса. */}
+    <li>с <a href="/kuda-postupat-s-biologiej/">биологией</a>,{' '}
+        <a href="/kuda-postupat-s-himiej/">химией</a>,{' '}
+        <a href="/kuda-postupat-s-fizikoj/">физикой</a>,{' '}
         <a href="/kuda-postupat-s-informatikoj/">информатикой</a></li>
-    <li>с <a href="/kuda-postupat-s-istoriej/">историей</a>,
+    <li>с <a href="/kuda-postupat-s-istoriej/">историей</a>,{' '}
         <a href="/kuda-postupat-s-geografiej/">географией</a></li>
   </ul>
 

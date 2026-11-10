@@ -97,6 +97,7 @@ const jsonLd = [
     показывает не рейтинг, а сильные стороны. <a href={SCREENING_URL} target="_blank" rel="noopener">Пройдите тест →</a></p>
 
   {TOP.length > 0 ? (
+    <div class="table-wrap">
     <table class="rank">
       <thead>
         <tr><th>#</th><th>Профессия</th><th>По РФ, ₽/мес</th><th>Москва, ₽/мес</th></tr>
@@ -117,6 +118,7 @@ const jsonLd = [
         ))}
       </tbody>
     </table>
+    </div>
   ) : (
     <p class="missing">Данные о зарплатах пока не загружены.</p>
   )}

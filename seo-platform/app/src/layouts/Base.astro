@@ -19,10 +19,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#8a531f" />
+  <meta name="theme-color" content="#0f1d2d" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/png" href="/favicon.png" />
   <link rel="apple-touch-icon" href="/favicon.png" />
-  <link rel="preload" href="/fonts/inter-cyr.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/manrope-cyr.woff2" as="font" type="font/woff2" crossorigin />
   <title>{title}</title>
   <meta name="description" content={description} />
   {noindex && <meta name="robots" content="noindex, follow" />}
@@ -44,12 +45,29 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   </noscript>
 </head>
 <body>
+  <a class="skip-link" href="#content">Перейти к содержимому</a>
   <header class="site-header">
     <div class="container">
       <div class="header-top">
-        <a class="brand" href="/"><img class="brand-mark" src="/logo.png" alt="" width="41" height="30" />Куда поступать</a>
+        <a class="brand" href="/">
+          {/* Знак: золотой квадрат + Lucide graduation-cap (ISC, lucide.dev/license) */}
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" focusable="false">
+              <path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" />
+              <path d="M22 10v6" />
+              <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" />
+            </svg>
+          </span>
+          <span class="brand-text">
+            <span class="brand-name">Куда поступать</span>
+            <span class="brand-by">от Mainexperts</span>
+          </span>
+        </a>
         <div class="header-actions">
-          <a class="nav-cta" href={SCREENING_URL} target="_blank" rel="noopener">Пройти диагностику</a>
+          {/* На экранах уже 361px подпись укорачивается, иначе название бренда усекается. */}
+          <a class="nav-cta" href={SCREENING_URL} target="_blank" rel="noopener"
+            ><span class="cta-long">Пройти диагностику</span><span class="cta-short">Диагностика</span></a>
           <button class="nav-toggle" type="button" aria-label="Меню"
             aria-expanded="false" aria-controls="site-nav">
             <span class="nav-toggle-bars" aria-hidden="true"></span>
@@ -85,7 +103,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       }
     </script>
   </header>
-  <main class="container">
+  <main class="container" id="content">
     <slot />
   </main>
   <footer class="site-footer">

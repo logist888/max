@@ -110,8 +110,9 @@ const egeSubs = (ege().bySlug.get(dir.slug) ?? []).filter((k) => k !== 'русс
     )}
   </ul>
 
+  {/* Пробел {' '} задан явно: сборщик схлопывает перенос строки перед тегом. */}
   {professions.length > 0 && (
-    <p class="notice">Кем можно работать (сопоставление по профилю, не официальная связь):
+    <p class="notice">Кем можно работать (сопоставление по профилю, не официальная связь):{' '}
       {professions.map((pr, i) => (
         <>{i > 0 && ', '}<a href={`/professiya/${pr.slug}/`}>{pr.nameRu}</a></>
       ))}.
@@ -119,7 +120,7 @@ const egeSubs = (ege().bySlug.get(dir.slug) ?? []).filter((k) => k !== 'русс
   )}
 
   {related.length > 0 && (
-    <p>Эта же предметная линия на других уровнях:
+    <p>Эта же предметная линия на других уровнях:{' '}
       {related.map((r, i) => (
         <>{i > 0 && ', '}<a href={`/specialnost/${r.slug}/`}>{r.level.toLowerCase()}</a></>
       ))}.
