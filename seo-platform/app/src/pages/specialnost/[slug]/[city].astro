@@ -9,7 +9,7 @@ import { db } from '../../../lib/data.ts';
 import { costPhrase, ldBreadcrumbs, ldFaq, placeDirectionFaq, plural } from '../../../lib/text.ts';
 import type { CostRange } from '../../../lib/data.ts';
 import {
-  dirCardFacetData, dirOfferFacetData,
+  dirCardFacetData, dirOfferFacetData, dirOfferFacts,
   FACET_KIND, FACET_FORMS, FACET_BUDGET, FACET_COST, FACET_DORM, FACET_MIL,
 } from '../../../lib/facets.ts';
 
@@ -119,7 +119,9 @@ const jsonLd = [
   )}
   <ul class="card-list">
     {rows.map((row) => (
-      showFilters ? <OrgRow row={row} facet={orgFacet(row)} /> : <OrgRow row={row} />
+      showFilters
+        ? <OrgRow row={row} facet={orgFacet(row)} spec={dirOfferFacts(cardById.get(row.id), dir.okso)} />
+        : <OrgRow row={row} spec={dirOfferFacts(cardById.get(row.id), dir.okso)} />
     ))}
   </ul>
 

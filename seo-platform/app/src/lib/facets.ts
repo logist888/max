@@ -83,6 +83,44 @@ export function dirOfferFacetData(card: OrgCard | undefined, okso: string): Reco
   };
 }
 
+/** Те же офферы одного ОКСО, но значениями, а не строками-атрибутами — для текста
+ *  карточки в списке. На странице направления карточка обязана показывать цифры
+ *  ЭТОГО направления: иначе рядом со «Стоматологией» стоит стоимость и бюджет по
+ *  всему вузу (у РУДН это «от 120 000 ₽», тогда как стоматология — 890 000 ₽).
+ *
+ *  Числа мест сознательно НЕ считаются. В выгрузке 28,6% строк — точные повторы
+ *  без единого отличающего поля: у целевой детализированной квоты это отдельные
+ *  места разных заказчиков (встречается до 241 строки по 1 месту), а у платных и
+ *  КЦП причину повтора установить нечем. Сумма оказалась бы либо примерно вдвое
+ *  завышенной, либо заниженной; плюс конвейер приводит places: 0 к «нет данных»,
+ *  так что «ноль мест» и «неизвестно» неразличимы. */
+export function dirOfferFacts(card: OrgCard | undefined, okso: string): {
+  costRange: { min: number; max: number } | null;
+  forms: string[];
+  hasBudget: boolean;
+} {
+  const forms = new Set<string>();
+  let hasBudget = false;
+  const costs: number[] = [];
+  if (card) {
+    for (const g of card.programsByLevel) {
+      for (const d of g.directions) {
+        if (d.okso !== okso) continue;
+        for (const o of d.offers) {
+          if (o.form) forms.add(o.form);
+          if (o.placeType !== 'Платные места') hasBudget = true;
+          if (o.placeType === 'Платные места' && o.cost !== null) costs.push(o.cost);
+        }
+      }
+    }
+  }
+  return {
+    costRange: costs.length ? { min: Math.min(...costs), max: Math.max(...costs) } : null,
+    forms: [...forms].sort((a, b) => a.localeCompare(b, 'ru')),
+    hasBudget,
+  };
+}
+
 // ---------- готовые конфиги Facet ----------
 
 export const LEVEL_CHIPS = [

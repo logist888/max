@@ -10,7 +10,7 @@ import { graph } from '../../../lib/graph.ts';
 import { costPhrase, directionFaq, ldBreadcrumbs, ldFaq, plural } from '../../../lib/text.ts';
 import { ege, EGE_SUBJECTS } from '../../../lib/ege.ts';
 import {
-  dirCardFacetData, dirOfferFacetData, regionFacet,
+  dirCardFacetData, dirOfferFacetData, dirOfferFacts, regionFacet,
   FACET_KIND, FACET_FORMS, FACET_BUDGET, FACET_COST, FACET_DORM, FACET_MIL,
 } from '../../../lib/facets.ts';
 
@@ -151,7 +151,9 @@ const egeSubs = (ege().bySlug.get(dir.slug) ?? []).filter((k) => k !== 'русс
   )}
   <ul class="card-list">
     {rows.map((row) => (
-      showFilters ? <OrgRow row={row} facet={orgFacet(row)} /> : <OrgRow row={row} />
+      showFilters
+        ? <OrgRow row={row} facet={orgFacet(row)} spec={dirOfferFacts(cardById.get(row.id), dir.okso)} />
+        : <OrgRow row={row} spec={dirOfferFacts(cardById.get(row.id), dir.okso)} />
     ))}
   </ul>
 
