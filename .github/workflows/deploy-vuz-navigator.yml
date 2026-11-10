@@ -1,0 +1,213 @@
+name: Деплой vuz-navigator.ru
+
+# Автодеплой статики на FTP-хостинг.
+#
+# ВАЖНО про безопасность: репозиторий публичный, поэтому триггеры — только push
+# в рабочую ветку и ручной запуск. Триггера pull_request здесь нет намеренно:
+# на публичном репозитории PR из чужого форка не должен получать доступ к
+# секретам FTP. Значения секретов GitHub маскирует в логах.
+#
+# Что нужно один раз настроить в Settings репозитория:
+#   Secrets (Settings → Secrets and variables → Actions → Secrets):
+#     FTP_SERVER    — IP или хост FTP (например 31.31.197.39)
+#     FTP_USERNAME  — логин FTP
+#     FTP_PASSWORD  — пароль FTP
+#   Variables (там же, вкладка Variables):
+#     FTP_REMOTE_DIR    — каталог сайта на сервере (узнаётся режимом discover)
+#     SITE_URL          — необязательно, по умолчанию https://vuz-navigator.ru
+#     FTP_DELETE_STALE  — 'true', чтобы удалять на сервере файлы, которых больше
+#                         нет в сборке. Включать ТОЛЬКО после успешного dry-run.
+#
+# Порядок первого запуска (руками, Actions → этот workflow → Run workflow):
+#   1) mode = discover  — покажет структуру каталогов на FTP, ничего не меняет.
+#   2) записать найденный путь в переменную FTP_REMOTE_DIR.
+#   3) mode = dry-run   — покажет, что было бы залито, ничего не меняет.
+#   4) mode = deploy    — реальная заливка.
+
+on:
+  push:
+    branches:
+      - claude/education-seo-platform-p5k4i8
+    # Правка самого workflow деплой не запускает — только изменения сайта и данных.
+    paths:
+      - 'seo-platform/app/**'
+      - 'seo-platform/data/**'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'discover — только показать структуру FTP; dry-run — сборка + пробная синхронизация; deploy — реальная заливка'
+        type: choice
+        required: true
+        default: dry-run
+        options: [discover, dry-run, deploy]
+      force_full:
+        description: 'Залить все файлы заново, не пропуская совпадающие по размеру'
+        type: boolean
+        required: false
+        default: false
+
+# Два деплоя одновременно затирали бы друг друга на сервере.
+concurrency:
+  group: deploy-vuz-navigator
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      APP_DIR: seo-platform/app
+      MODE: ${{ github.event_name == 'push' && 'deploy' || inputs.mode }}
+
+    steps:
+      - name: Проверка настроек
+        env:
+          HAS_SERVER: ${{ secrets.FTP_SERVER != '' }}
+          HAS_USER: ${{ secrets.FTP_USERNAME != '' }}
+          HAS_PASS: ${{ secrets.FTP_PASSWORD != '' }}
+          REMOTE_DIR: ${{ vars.FTP_REMOTE_DIR }}
+        run: |
+          fail=0
+          for pair in "FTP_SERVER:$HAS_SERVER" "FTP_USERNAME:$HAS_USER" "FTP_PASSWORD:$HAS_PASS"; do
+            name=${pair%%:*}; val=${pair##*:}
+            if [ "$val" != "true" ]; then echo "::error::Не задан секрет $name"; fail=1; fi
+          done
+          if [ "$MODE" != "discover" ] && [ -z "$REMOTE_DIR" ]; then
+            echo "::error::Не задана переменная FTP_REMOTE_DIR. Запустите режим discover и впишите найденный путь."
+            fail=1
+          fi
+          [ "$fail" = 0 ] || exit 1
+          echo "Режим: $MODE"
+
+      - name: Установить lftp
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+
+      # Режим discover: только смотрим структуру сервера, чтобы узнать корень сайта.
+      - name: Показать структуру FTP (discover)
+        if: env.MODE == 'discover'
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          LFTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          lftp -u "$FTP_USERNAME" --env-password "$FTP_SERVER" <<'LFTP'
+            set ftp:passive-mode on
+            set ftp:ssl-allow true
+            set ssl:verify-certificate no
+            set net:timeout 20
+            echo "=== корень FTP ==="
+            ls
+            echo "=== www / public_html / data, если есть ==="
+            ls www
+            ls public_html
+            ls data
+            echo "=== каталог домена, если есть ==="
+            ls www/vuz-navigator.ru
+            ls data/www/vuz-navigator.ru
+            bye
+          LFTP
+          echo "Впишите найденный корень сайта в переменную FTP_REMOTE_DIR."
+
+      - uses: actions/checkout@v4
+        if: env.MODE != 'discover'
+
+      - uses: actions/setup-node@v4
+        if: env.MODE != 'discover'
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: seo-platform/app/package-lock.json
+
+      - name: Установить зависимости
+        if: env.MODE != 'discover'
+        working-directory: ${{ env.APP_DIR }}
+        run: npm ci
+
+      # build/ в .gitignore — витрины пересобираются из данных в git.
+      - name: Собрать витрины данных
+        if: env.MODE != 'discover'
+        working-directory: ${{ env.APP_DIR }}
+        run: npm run pipeline && npm run graph
+
+      - name: Собрать сайт
+        if: env.MODE != 'discover'
+        working-directory: ${{ env.APP_DIR }}
+        env:
+          SITE_URL: ${{ vars.SITE_URL || 'https://vuz-navigator.ru' }}
+        run: |
+          npm run build
+          echo "Страниц собрано: $(find dist -name '*.html' | wc -l)"
+          echo "Размер dist: $(du -sh dist | cut -f1)"
+
+      # Защита от заливки пустоты: если сборка сломалась, на прод ничего не уйдёт.
+      - name: Проверить сборку до заливки
+        if: env.MODE != 'discover'
+        working-directory: ${{ env.APP_DIR }}
+        env:
+          EXPECTED_URL: ${{ vars.SITE_URL || 'https://vuz-navigator.ru' }}
+        run: |
+          pages=$(find dist -name '*.html' | wc -l)
+          if [ "$pages" -lt 9000 ]; then
+            echo "::error::Собрано только $pages страниц (ожидалось >9000). Заливка отменена."
+            exit 1
+          fi
+          for f in dist/index.html dist/404.html dist/sitemap-index.xml; do
+            [ -s "$f" ] || { echo "::error::Нет или пуст $f. Заливка отменена."; exit 1; }
+          done
+          # canonical должен указывать на боевой домен, иначе уедет localhost в индекс.
+          if ! grep -q "canonical\" href=\"$EXPECTED_URL" dist/index.html; then
+            echo "::error::canonical не указывает на $EXPECTED_URL. Проверьте переменную SITE_URL."
+            exit 1
+          fi
+          echo "Проверки пройдены: $pages страниц."
+
+      - name: Синхронизация на FTP
+        if: env.MODE != 'discover'
+        working-directory: ${{ env.APP_DIR }}
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          LFTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          REMOTE_DIR: ${{ vars.FTP_REMOTE_DIR }}
+          DELETE_STALE: ${{ vars.FTP_DELETE_STALE }}
+          FORCE_FULL: ${{ inputs.force_full }}
+        run: |
+          FLAGS="--reverse --continue --parallel=5 --verbose=1"
+          # Свежий checkout выставляет всем файлам текущее время, поэтому сверка по
+          # времени бесполезна: --ignore-time сравнивает по размеру и пропускает
+          # неизменившиеся файлы. Оговорка: правка без изменения размера была бы
+          # пропущена — для такого случая есть force_full.
+          [ "$FORCE_FULL" = "true" ] || FLAGS="$FLAGS --ignore-time"
+          [ "$DELETE_STALE" = "true" ] && FLAGS="$FLAGS --delete"
+          [ "$MODE" = "dry-run" ] && FLAGS="$FLAGS --dry-run"
+          echo "Флаги mirror: $FLAGS"
+          echo "Цель: $REMOTE_DIR"
+          lftp -u "$FTP_USERNAME" --env-password "$FTP_SERVER" <<LFTP
+            set ftp:passive-mode on
+            set ftp:ssl-allow true
+            set ssl:verify-certificate no
+            set net:timeout 20
+            set net:max-retries 3
+            set net:reconnect-interval-base 5
+            set mirror:parallel-transfer-count 5
+            set xfer:log no
+            mirror $FLAGS dist/ "$REMOTE_DIR"
+            bye
+          LFTP
+
+      - name: Проверить прод после заливки
+        if: env.MODE == 'deploy'
+        env:
+          SITE: ${{ vars.SITE_URL || 'https://vuz-navigator.ru' }}
+        run: |
+          fail=0
+          for p in / /vuzy/ /gorod/moskva/ /professiya/ /specialnosti/ /sitemap-index.xml; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' -m 25 "$SITE$p" || echo 000)
+            echo "$code  $p"
+            [ "$code" = "200" ] || fail=1
+          done
+          [ "$fail" = 0 ] || { echo "::error::Часть страниц не отвечает 200 после заливки."; exit 1; }
+          echo "Прод отвечает."

@@ -1,0 +1,92 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Cta from '../../components/Cta.astro';
+import { SCREENING_URL } from '../../lib/links.ts';
+import Filters from '../../components/Filters.astro';
+import type { Facet } from '../../components/Filters.astro';
+import { db } from '../../lib/data.ts';
+import { ege, EGE_SUBJECTS } from '../../lib/ege.ts';
+import { plural } from '../../lib/text.ts';
+import { dirCatalogFacetData } from '../../lib/facets.ts';
+
+const { ugs, directions, meta } = db();
+const groups = [...ugs].sort((a, b) => a.code.localeCompare(b.code));
+const fgosCount = directions.filter((d) => !d.scientific).length;
+
+const ugsName = new Map(ugs.map((g) => [g.code, g.name ?? `Группа ${g.code}`]));
+const { bySlug } = ege();
+const egeKeys = new Set(EGE_SUBJECTS.map((s) => s.key));
+const okso6 = (okso: string) => okso.replace(/^\d+\./, '');
+
+const LEVEL_ORDER: Record<string, number> = {
+  'Бакалавриат': 0, 'Специалитет': 1, 'Магистратура': 2, 'Аспирантура': 3,
+  'Базовое высшее образование': 4, 'Специализированное высшее образование': 5,
+};
+const dirs = [...directions].sort((a, b) =>
+  (a.ugsCode || '￿').localeCompare(b.ugsCode || '￿')
+  || (LEVEL_ORDER[a.level] ?? 9) - (LEVEL_ORDER[b.level] ?? 9)
+  || a.name.localeCompare(b.name, 'ru'));
+
+function dirFacet(d: typeof directions[number]): Record<string, string> {
+  const subs = (bySlug.get(d.slug) ?? []).filter((s) => egeKeys.has(s));
+  return dirCatalogFacetData(d, subs);
+}
+
+const facets: Facet[] = [
+  { key: 'ugs', label: 'Укрупнённая группа', type: 'select', placeholder: '— любая группа —',
+    options: groups.map((g) => ({ value: g.code, label: `${g.code} — ${g.name ?? ''}` })) },
+  { key: 'level', label: 'Уровень', type: 'chip', chips: [
+    { value: 'Бакалавриат', label: 'Бакалавриат' }, { value: 'Специалитет', label: 'Специалитет' },
+    { value: 'Магистратура', label: 'Магистратура' }, { value: 'Аспирантура', label: 'Аспирантура (научные)' },
+  ] },
+  { key: 'ege', label: 'Предмет ЕГЭ (бакалавриат/специалитет)', type: 'chip',
+    chips: EGE_SUBJECTS.map((s) => ({ value: s.key, label: s.nom })) },
+  { key: 'budget', label: 'Бюджетные места', type: 'toggle', toggleLabel: 'Есть бюджетные места' },
+  { key: 'cost', label: 'Стоимость платного', type: 'range', unit: '₽/год', min: 0, step: 10000 },
+];
+
+const title = `Специальности и направления подготовки: ${fgosCount} направлений | ${meta.campaignYear}`;
+const description = `${fgosCount} направлений высшего образования в ${groups.length} укрупнённых группах Минобрнауки. Фильтры по группе, уровню, предмету ЕГЭ, бюджету и стоимости. Приём ${meta.campaignYear}.`;
+---
+<Base title={title} description={description}>
+  <Breadcrumbs items={[{ name: 'Главная', url: '/' }, { name: 'Специальности' }]} />
+  <h1>Специальности и направления</h1>
+  <p>Направления высшего образования из данных приёмной кампании. Отфильтруйте по{' '}
+    <strong>укрупнённой группе (УГСН)</strong>, уровню, предмету ЕГЭ, наличию бюджетных мест и
+    стоимости — или откройте обзор по группам. Всего {fgosCount}&nbsp;{plural(fgosCount, 'направление', 'направления', 'направлений')}
+    {' '}в {groups.length}&nbsp;{plural(groups.length, 'группе', 'группах', 'группах')} плюс научные специальности (аспирантура).</p>
+
+  <p class="invite">Группа — это ещё не выбор. Понять, какая область действительно ваша, помогает не
+    каталог, а понимание своих сильных сторон. <a href={SCREENING_URL} target="_blank" rel="noopener">Пройдите тест →</a></p>
+
+  <Filters facets={facets} target="[data-filter-item]" itemNoun={['направление', 'направления', 'направлений']} />
+  <p class="filters-empty" data-filters-empty hidden>По заданным фильтрам направлений не найдено. Снимите часть условий.</p>
+
+  <ul class="card-list grid-2">
+    {dirs.map((d) => (
+      <li class="card" data-filter-item {...dirFacet(d)}>
+        <h3><a href={`/specialnost/${d.slug}/`}>{okso6(d.okso)} {d.name}</a></h3>
+        <p class="meta">{d.level}{d.ugsCode && ` · ${ugsName.get(d.ugsCode)}`}
+          {d.orgCount > 0 && ` · ${d.orgCount} ${plural(d.orgCount, 'вуз', 'вуза', 'вузов')}`}
+          {d.hasBudget && ' · есть бюджет'}</p>
+      </li>
+    ))}
+  </ul>
+
+  <Cta pageType="catalog" zone="after-row-10" />
+
+  <details class="level-group">
+    <summary>Обзор по укрупнённым группам ({groups.length})</summary>
+    <ul class="card-list grid-2">
+      {groups.map((g) => (
+        <li class="card">
+          <h3><a href={`/specialnosti/${g.code}/`}>{g.name ?? `Группа ${g.code}`}</a></h3>
+          <p class="meta">{g.directionCount} {plural(g.directionCount, 'направление', 'направления', 'направлений')}
+            {g.orgCount > 0 && ` · ${g.orgCount} ${plural(g.orgCount, 'вуз', 'вуза', 'вузов')}`}</p>
+          <p class="meta">{g.sample.join(' · ')}</p>
+        </li>
+      ))}
+    </ul>
+  </details>
+</Base>

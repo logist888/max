@@ -1,0 +1,121 @@
+---
+import '../styles/main.css';
+import Search from '../components/Search.astro';
+import { db } from '../lib/data.ts';
+import { SCREENING_URL } from '../lib/links.ts';
+
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+  jsonLd?: object[];
+  // Страница сама размещает остров поиска (главная — в герое). У острова
+  // фиксированные id, два экземпляра на странице не работают, поэтому из шапки
+  // он в этом случае убирается.
+  searchInPage?: boolean;
+}
+const { title, description, noindex = false, jsonLd = [], searchInPage = false } = Astro.props;
+const { meta } = db();
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0f1d2d" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
+  <link rel="preload" href="/fonts/manrope-cyr.woff2" as="font" type="font/woff2" crossorigin />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  {noindex && <meta name="robots" content="noindex, follow" />}
+  <link rel="canonical" href={canonical} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+  {jsonLd.map((ld) => (
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+  ))}
+  <noscript>
+    <style>
+      @media (max-width: 1023px) {
+        .nav-toggle { display: none !important; }
+        .site-nav { display: flex !important; }
+      }
+    </style>
+  </noscript>
+</head>
+<body>
+  <a class="skip-link" href="#content">Перейти к содержимому</a>
+  <header class="site-header">
+    <div class="container">
+      <div class="header-top">
+        <a class="brand" href="/">
+          {/* Знак: золотой квадрат + Lucide graduation-cap (ISC, lucide.dev/license) */}
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" focusable="false">
+              <path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" />
+              <path d="M22 10v6" />
+              <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" />
+            </svg>
+          </span>
+          <span class="brand-text">
+            <span class="brand-name">Куда поступать</span>
+            <span class="brand-by">от Mainexperts</span>
+          </span>
+        </a>
+        <div class="header-actions">
+          {/* На экранах уже 361px подпись укорачивается, иначе название бренда усекается. */}
+          <a class="nav-cta" href={SCREENING_URL} target="_blank" rel="noopener"
+            ><span class="cta-long">Пройти диагностику</span><span class="cta-short">Диагностика</span></a>
+          <button class="nav-toggle" type="button" aria-label="Меню"
+            aria-expanded="false" aria-controls="site-nav">
+            <span class="nav-toggle-bars" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+      <nav id="site-nav" class="site-nav" aria-label="Основная навигация">
+        <a href="/" class="nav-home">Главная</a>
+        <a href="/kuda-postupat-posle-11-klassa/">Куда поступать</a>
+        <a href="/proforientaciya/">Профориентация</a>
+        <a href="/vuzy/">Вузы</a>
+        <a href="/specialnosti/">Специальности</a>
+        <a href="/professiya/">Профессии</a>
+        <a href="/regiony/">Регионы</a>
+        <a href="/o-dannyh/">О данных</a>
+      </nav>
+      {!searchInPage && <Search />}
+    </div>
+    <script>
+      // Мобильное меню: тумблер класса .nav-open + синхронизация aria-expanded.
+      // Прогрессивное улучшение — без JS меню раскрыто (см. <noscript> в <head>).
+      const hdr = document.querySelector('.site-header');
+      const btn = hdr?.querySelector('.nav-toggle');
+      if (hdr && btn) {
+        btn.addEventListener('click', () => {
+          const open = hdr.classList.toggle('nav-open');
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        hdr.querySelectorAll('.site-nav a').forEach((a) => a.addEventListener('click', () => {
+          hdr.classList.remove('nav-open');
+          btn.setAttribute('aria-expanded', 'false');
+        }));
+      }
+    </script>
+  </header>
+  <main class="container" id="content">
+    <slot />
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <p>Источник данных: «ВУЗ-навигатор» Госуслуг, выгрузка от {meta.snapshotDate}.
+        Приёмная кампания {meta.campaignYear}. Если сведения отсутствуют в источнике,
+        на странице явно указано «Информация отсутствует» — данные не достраиваются.</p>
+    </div>
+  </footer>
+</body>
+</html>

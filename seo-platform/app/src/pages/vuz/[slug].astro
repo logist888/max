@@ -1,0 +1,367 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Cta from '../../components/Cta.astro';
+import Filters from '../../components/Filters.astro';
+import type { Facet } from '../../components/Filters.astro';
+import { db } from '../../lib/data.ts';
+import { vuzScores, vuzScoresByGroup } from '../../lib/scores.ts';
+import { SCREENING_URL } from '../../lib/links.ts';
+import { ugsFacet, FACET_COST, LEVEL_CHIPS, FORM_CHIPS } from '../../lib/facets.ts';
+import {
+  costPhrase, ldBreadcrumbs, ldFaq, ldOrg, orgDescription, orgFaq, orgTitle, plural, rub,
+} from '../../lib/text.ts';
+
+export function getStaticPaths() {
+  return db().orgCards.map((card) => ({ params: { slug: card.slug }, props: { card } }));
+}
+
+const { card } = Astro.props;
+const { meta, orgCards, ugs } = db();
+
+const crumbs = [
+  { name: 'Главная', url: '/' },
+  { name: card.regionKey, url: `/region/${card.regionSlug}/` },
+  { name: card.cityName, url: `/gorod/${card.citySlug}/` },
+  { name: card.shortName },
+];
+const faq = orgFaq(card, meta.snapshotDate);
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const jsonLd = [
+  ldOrg(card, pageUrl),
+  ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
+    name: c.name, url: new URL(c.url!, Astro.site).href,
+  }))),
+  ldFaq(faq),
+];
+
+// «Рядом и похоже»: вузы того же города с пересечением по УГСН.
+const myUgs = new Set(card.programsByLevel.flatMap((l) => l.directions.map((d) => d.ugs)));
+const similar = orgCards
+  .filter((o) => o.cityKey === card.cityKey && o.id !== card.id)
+  .map((o) => ({
+    org: o,
+    overlap: o.programsByLevel.flatMap((l) => l.directions)
+      .filter((d) => myUgs.has(d.ugs)).length,
+  }))
+  .sort((a, b) => b.overlap - a.overlap)
+  .slice(0, 5)
+  .map((x) => x.org);
+
+const cost = costPhrase(card.costRange);
+
+// ---------- Фасеты таблицы программ (ключи совпадают с каталогом /vuzy/,
+// поэтому фильтр, выбранный в каталоге, наследуется сюда через sessionStorage
+// и подставляется в панель — его видно и можно менять, а не только сбросить).
+//
+// Региона здесь нет намеренно: вуз находится в одном городе. Нет и фасетов
+// «тип», «общежитие», «военная подготовка» — это признаки самого вуза, а не
+// программы: по ним совпали бы либо все строки, либо ни одной.
+//
+// Каждый фасет показывается, только если у вуза есть из чего выбирать
+// (больше одного значения) — иначе это кнопка, которая ничего не меняет.
+const progOffers = card.programsByLevel.flatMap((l) => l.directions.flatMap((d) => d.offers));
+
+// Порядок значений берём из каталога, чтобы один и тот же фасет выглядел одинаково
+// на обеих страницах. Фильтровать ПО списку каталога нельзя: в данных есть уровни,
+// которых в нём нет («Базовое высшее образование», «Специализированное высшее»), —
+// они бы молча выпали. Поэтому известное упорядочиваем, неизвестное дописываем.
+function ordered(values: string[], canon: { value: string }[]): string[] {
+  const rank = new Map(canon.map((c, i) => [c.value, i]));
+  return [...new Set(values)].sort((a, b) => {
+    const ra = rank.get(a), rb = rank.get(b);
+    if (ra != null && rb != null) return ra - rb;
+    if (ra != null) return -1;
+    if (rb != null) return 1;
+    return a.localeCompare(b, 'ru');
+  });
+}
+const progLevels = ordered(card.programsByLevel.map((g) => g.level), LEVEL_CHIPS);
+const progForms = ordered(progOffers.map((o) => o.form).filter(Boolean), FORM_CHIPS);
+const progUgs = ugs.filter((g) => myUgs.has(g.code));
+
+// Конкретное направление (ОКСО) этого вуза. Укрупнённой группы мало: человек,
+// пришедший с «Стоматология 31.05.03», в группе «31 — Клиническая медицина»
+// видит заодно лечебное дело и педиатрию. Список зависит от выбранной группы
+// (как город от региона), поэтому сам по себе он не длинный.
+const progDirsMap = new Map<string, { okso: string; name: string; ugs: string }>();
+for (const g of card.programsByLevel) {
+  for (const d of g.directions) {
+    if (!progDirsMap.has(d.okso)) progDirsMap.set(d.okso, { okso: d.okso, name: d.name, ugs: d.ugs });
+  }
+}
+const progDirs = [...progDirsMap.values()].sort((a, b) => a.okso.localeCompare(b.okso));
+const hasBudgetOffer = progOffers.some((o) => o.placeType !== 'Платные места');
+const hasPaidOffer = progOffers.some((o) => o.placeType === 'Платные места');
+const hasCost = progOffers.some((o) => o.placeType === 'Платные места' && o.cost !== null);
+
+const progFacets: Facet[] = [
+  ...(progLevels.length > 1
+    ? [{ key: 'levels', label: 'Уровень', type: 'chip',
+        chips: progLevels.map((l) => ({ value: l, label: l })) } as Facet]
+    : []),
+  ...(progUgs.length > 1 ? [ugsFacet(progUgs)] : []),
+  ...(progDirs.length > 1
+    ? [{ key: 'okso', label: 'Направление подготовки', type: 'select',
+        placeholder: '— любое направление —', dependsOn: 'ugs',
+        options: progDirs.map((d) => ({
+          value: d.okso,
+          label: `${d.okso.replace(/^\d+\./, '')} — ${d.name}`,
+          parent: d.ugs,
+        })) } as Facet]
+    : []),
+  ...(progForms.length > 1
+    ? [{ key: 'forms', label: 'Форма обучения', type: 'chip',
+        chips: progForms.map((f) => ({ value: f, label: f })) } as Facet]
+    : []),
+  ...(hasBudgetOffer && hasPaidOffer
+    ? [{ key: 'budget', label: 'Бюджетные места', type: 'toggle',
+        toggleLabel: 'Только бюджетные места' } as Facet]
+    : []),
+  ...(hasCost ? [FACET_COST] : []),
+];
+// Панель только там, где она разгружает: на короткой таблице фильтр лишний.
+const showProgFilters = progFacets.length > 0 && progOffers.length >= 6;
+// Средний балл ЕГЭ зачисленных (ВШЭ, 2025) — НЕ проходной; где нет матча, записи нет.
+const score = vuzScores()[card.slug];
+const groupScores = vuzScoresByGroup()[card.slug] ?? [];
+const LINK_LABELS: Record<string, string> = {
+  urlUniversityAdmissionRulesBase: 'Правила приёма (бакалавриат, специалитет)',
+  urlUniversityAdmissionRulesSpec: 'Правила приёма (магистратура)',
+  urlUniversityAdmissionRulesAsp: 'Правила приёма (аспирантура)',
+  urlProcedureAppealBase: 'Порядок апелляции (бакалавриат, специалитет)',
+  urlProcedureAppealSpec: 'Порядок апелляции (магистратура)',
+  urlProcedureAppealAsp: 'Порядок апелляции (аспирантура)',
+  urlListAchievementsBase: 'Индивидуальные достижения (бакалавриат)',
+  urlListAchievementsSpec: 'Индивидуальные достижения (магистратура)',
+  urlListAchievementsAsp: 'Индивидуальные достижения (аспирантура)',
+  urlOlympiadsSpecialtiesBase: 'Олимпиады: специальности',
+  urlOlympiadsSubjectsBase: 'Олимпиады: предметы',
+  urlGrantingSpecialRightsBase: 'Особые права при приёме',
+  urlRulesAdmissionMilitaryDepartment: 'Приём в военный учебный центр',
+  urlSpecialScholarShips: 'Специальные стипендии',
+};
+const links = Object.entries(LINK_LABELS)
+  .filter(([key]) => card.usefulLinks[key])
+  .map(([key, label]) => ({ label, url: card.usefulLinks[key]! }));
+---
+<Base title={orgTitle(card)} description={orgDescription(card, meta.campaignYear)} jsonLd={jsonLd}>
+  <Breadcrumbs items={crumbs} />
+  <h1>{card.shortName}</h1>
+  <p class="meta">{card.fullName}</p>
+
+  <div class="badges">
+    {card.hasBudget && <span class="badge badge--ok">Есть бюджетные места</span>}
+    {card.dormitory && <span class="badge">Общежитие</span>}
+    {card.militaryDept && <span class="badge">Военная кафедра</span>}
+    {card.kind === 'филиал' && <span class="badge">Филиал</span>}
+  </div>
+
+  <ul class="facts">
+    <li><span class="label">Направлений подготовки</span>
+      {card.directionsCount > 0 ? card.directionsCount : <span class="missing">Информация отсутствует</span>}
+    </li>
+    <li><span class="label">Стоимость платного обучения</span>
+      {cost ?? <span class="missing">Информация отсутствует</span>}
+    </li>
+    {score && (score.budget || score.paid) && (
+      <li><span class="label">Средний балл ЕГЭ зачисленных</span>
+        {score.budget != null && <>бюджет <strong>{score.budget}</strong></>}
+        {score.budget != null && score.paid != null && ' · '}
+        {score.paid != null && <>платно <strong>{score.paid}</strong></>}
+        {' '}<span class="meta" style="display:inline;color:var(--text-muted);font-size:0.8125rem">— средний балл, не проходной; источник: ВШЭ, Мониторинг качества приёма, {score.year}</span>
+      </li>
+    )}
+    <li><span class="label">Мест в общежитии</span>
+      {card.dormPlaces ?? <span class="missing">Информация отсутствует</span>}
+    </li>
+    <li><span class="label">Город</span>
+      <a href={`/gorod/${card.citySlug}/`}>{card.cityName}</a>, {card.regionKey}
+    </li>
+    {card.websites[0] && (
+      <li><span class="label">Официальный сайт</span>
+        <a href={card.websites[0]} rel="nofollow noopener">{card.websites[0]}</a>
+      </li>
+    )}
+    {card.address && <li><span class="label">Адрес</span> {card.address}</li>}
+  </ul>
+
+  {groupScores.length > 0 && (
+    <details class="scores-groups">
+      <summary>Средний балл ЕГЭ по группам направлений ({groupScores.length}) — ВШЭ, {score?.year ?? 2025}</summary>
+      <p class="meta">Средний балл ЕГЭ зачисленных по укрупнённым группам (классификация и данные
+        ВШЭ, Мониторинг качества приёма). Это средний балл, <strong>не проходной</strong>.</p>
+      <table class="scores-tbl">
+        <thead><tr><th>Группа направлений</th><th>Бюджет</th><th>Платно</th></tr></thead>
+        <tbody>
+          {groupScores.map((g) => (
+            <tr>
+              <td>{g.group}</td>
+              <td class="val">{g.budget ?? '—'}</td>
+              <td class="val">{g.paid ?? '—'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </details>
+  )}
+
+  {card.levelsNotExported.length > 0 && (
+    <p class="notice">Уровни «{card.levelsNotExported.join('», «')}» заявлены вузом,
+      но программы этих уровней источником не выгружаются — показать их состав
+      невозможно.</p>
+  )}
+
+  <h2>Программы {meta.campaignYear}</h2>
+  {showProgFilters && (
+    <>
+      <Filters facets={progFacets} target=".offer-row"
+        itemNoun={['программа', 'программы', 'программ']} persistKey="vuzFilters" />
+      <p class="filters-empty" data-filters-empty hidden>По заданным фильтрам программ
+        в этом вузе нет. Снимите часть условий.</p>
+    </>
+  )}
+  {card.programsByLevel.length === 0 ? (
+    <p class="missing">Программы источником не выгружены.</p>
+  ) : (
+    card.programsByLevel.map((group, i) => (
+      <details class="level-group" data-level={group.level} open={i === 0}>
+        <summary>{group.level} — {group.directions.length} {plural(group.directions.length,
+          'направление', 'направления', 'направлений')}</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Направление</th><th>Форма</th><th>Тип мест</th>
+                <th class="num">Мест</th><th class="num">Стоимость/год</th></tr>
+            </thead>
+            <tbody>
+              {group.directions.flatMap((dir) => [
+                <tr class="dir-head" data-ugs={dir.ugs}>
+                  <td colspan="5">{dir.okso.replace(/^\d+\./, '')} <a href={`/specialnost/${dir.slug}/`}>{dir.name}</a></td>
+                </tr>,
+                ...dir.offers.map((off) => (
+                  // Атрибуты-фасеты: ключи те же, что в каталоге (levels/ugs/forms/
+                  // budget/cost). Стоимость — min и max одного значения: движок
+                  // фильтра сравнивает диапазоны. У бюджетных мест стоимости нет,
+                  // поэтому фильтр «стоимость платного» их не показывает.
+                  <tr class="offer-row" data-levels={group.level} data-ugs={dir.ugs}
+                    data-okso={dir.okso} data-forms={off.form}
+                    data-budget={off.placeType === 'Платные места' ? '0' : '1'}
+                    data-cost-min={off.placeType === 'Платные места' && off.cost !== null ? String(off.cost) : ''}
+                    data-cost-max={off.placeType === 'Платные места' && off.cost !== null ? String(off.cost) : ''}>
+                    <td class="offer-indent"></td>
+                    <td>{off.form}</td>
+                    <td>{off.placeType}</td>
+                    <td class="num">{off.places ?? '—'}</td>
+                    <td class="num">{off.placeType === 'Платные места'
+                      ? (off.cost !== null ? rub(off.cost) : 'нет данных')
+                      : '—'}</td>
+                  </tr>
+                )),
+              ])}
+            </tbody>
+          </table>
+        </div>
+      </details>
+    ))
+  )}
+
+  {links.length > 0 && (
+    <>
+      <h2>Приёмная кампания: документы вуза</h2>
+      <ul>
+        {links.map((l) => <li><a href={l.url} rel="nofollow noopener">{l.label}</a></li>)}
+      </ul>
+    </>
+  )}
+
+  <Cta pageType="org-card" zone="after-programs" />
+
+  <h2>Вопросы и ответы</h2>
+  <dl class="faq">
+    {faq.map((f) => (<><dt>{f.q}</dt><dd>{f.a}</dd></>))}
+  </dl>
+
+  <div class="sticky-cta" id="sticky-cta" hidden>
+    <span class="sticky-text">Не уверены, что {card.shortName} — ваш вуз?</span>
+    <a class="btn btn-primary" href={SCREENING_URL} target="_blank" rel="noopener">Пройти диагностику</a>
+  </div>
+
+  {similar.length > 0 && (
+    <>
+      <h2>Вузы рядом</h2>
+      <ul class="card-list">
+        {similar.map((o) => (
+          <li class="card">
+            <h3><a href={`/vuz/${o.slug}/`}>{o.shortName}</a></h3>
+            <p class="meta">{o.cityName} · {o.directionsCount} {plural(o.directionsCount,
+              'направление', 'направления', 'направлений')}</p>
+          </li>
+        ))}
+      </ul>
+    </>
+  )}
+
+  <style>
+    .sticky-cta {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+      display: flex; align-items: center; justify-content: center;
+      gap: var(--space-4); flex-wrap: wrap;
+      padding: var(--space-3) var(--space-4);
+      background: color-mix(in srgb, var(--surface) 92%, transparent);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid var(--border); box-shadow: 0 -6px 24px rgba(16,24,40,.08);
+    }
+    .sticky-text { font-weight: 500; }
+    @media (max-width: 600px) { .sticky-text { display: none; } }
+    .scores-groups { margin: var(--space-4) 0; border: 1px solid var(--border); border-radius: 8px; padding: var(--space-3) var(--space-4); }
+    .scores-groups summary { cursor: pointer; font-weight: 600; color: var(--accent-strong); }
+    .scores-tbl { width: 100%; border-collapse: collapse; margin-top: var(--space-3); font-size: 0.9375rem; }
+    .scores-tbl th, .scores-tbl td { text-align: left; padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--border); }
+    .scores-tbl th:nth-child(2), .scores-tbl th:nth-child(3), .scores-tbl td.val { text-align: right; white-space: nowrap; }
+    /* Таблица программ: заголовок направления отдельной строкой + строки-офферы */
+    tr.dir-head td { border-top: 2px solid color-mix(in srgb, var(--accent) 22%, var(--border));
+      font-weight: 600; padding-top: 12px; }
+    td.offer-indent { width: 1.25rem; padding: 0; }
+    /* Скрытие строк-заголовков направления и пустых уровней при активном фильтре.
+       Сами строки-офферы прячет движок фильтра классом .filtered-out. */
+    .prog-hidden { display: none !important; }
+  </style>
+
+  <script>
+    const bar = document.getElementById('sticky-cta')!;
+    let shown = false;
+    window.addEventListener('scroll', () => {
+      const deep = window.scrollY > document.documentElement.scrollHeight * 0.35;
+      if (deep !== shown) { shown = deep; bar.hidden = !deep; }
+    }, { passive: true });
+
+    // Сворачивание таблицы программ под фильтр. Строки-офферы прячет сам движок
+    // (.filtered-out); здесь убираем то, что без них теряет смысл: строку-заголовок
+    // направления, у которой не осталось видимых офферов, и целиком уровень, где
+    // не осталось ничего. Уровни с попаданиями раскрываем, чтобы результат был виден.
+    (function syncProgramTables() {
+      const groups = [...document.querySelectorAll<HTMLDetailsElement>('.level-group')];
+      if (!groups.length) return;
+      // Исходное состояние «свёрнутости», чтобы вернуть его при сбросе фильтра.
+      const initiallyOpen = groups.map((g) => g.open);
+
+      document.addEventListener('filters:change', (event) => {
+        const active = ((event as CustomEvent).detail?.activeCount ?? 0) > 0;
+        groups.forEach((grp, i) => {
+          let groupVisible = 0, head: HTMLElement | null = null, headVisible = 0;
+          const closeHead = () => { if (head) head.classList.toggle('prog-hidden', active && headVisible === 0); };
+          grp.querySelectorAll<HTMLElement>('tbody tr').forEach((tr) => {
+            if (tr.classList.contains('dir-head')) { closeHead(); head = tr; headVisible = 0; }
+            else if (tr.classList.contains('offer-row') && !tr.classList.contains('filtered-out')) {
+              headVisible++; groupVisible++;
+            }
+          });
+          closeHead();
+          grp.classList.toggle('prog-hidden', active && groupVisible === 0);
+          grp.open = active ? groupVisible > 0 : initiallyOpen[i];
+        });
+      });
+    })();
+  </script>
+</Base>

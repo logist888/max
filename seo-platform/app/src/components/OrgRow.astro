@@ -1,0 +1,56 @@
+---
+import type { CatalogRow } from '../lib/data.ts';
+import { costPhrase, plural } from '../lib/text.ts';
+
+// facet — необязательные data-* атрибуты для клиентского фильтра (см. Filters.astro).
+// Передаётся страницей каталога; при наличии карточка становится [data-filter-item].
+// spec — факты ИМЕННО того направления, в списке которого стоит карточка
+// (страницы направления и комбо). Когда он передан, карточка показывает
+// стоимость, формы и бюджет по этому направлению, а не агрегаты по всему вузу:
+// иначе рядом со «Стоматологией» стояла бы стоимость самой дешёвой программы
+// вуза. Без него — прежнее поведение (каталог, город, регион).
+interface SpecFacts {
+  costRange: { min: number; max: number } | null;
+  forms: string[];
+  hasBudget: boolean;
+  dirName?: string;
+}
+interface Props { row: CatalogRow; facet?: Record<string, string>; spec?: SpecFacts }
+const { row, facet, spec } = Astro.props;
+const cost = costPhrase(spec ? spec.costRange : row.costRange);
+const hasBudget = spec ? spec.hasBudget : row.hasBudget;
+const attrs = facet ? { 'data-filter-item': '', ...facet } : {};
+---
+<li class="card" {...attrs}>
+  <h3><a href={`/vuz/${row.slug}/`}>{row.shortName}</a></h3>
+  <p class="meta">
+    {row.cityName}, {row.regionKey}
+    {row.kind === 'филиал' && ' · филиал'}
+  </p>
+  {spec ? (
+    /* Строка про это направление: формы и стоимость — из офферов этого ОКСО. */
+    <p class="meta">
+      {spec.forms.length > 0 ? spec.forms.join(' · ') : 'форма обучения не указана'}
+      {cost ? ` · платно ${cost}` : ' · платных мест нет в выгрузке'}
+    </p>
+  ) : (
+    <p class="meta">
+      {row.directionsCount > 0
+        ? `${row.directionsCount} ${plural(row.directionsCount, 'направление', 'направления', 'направлений')}`
+        : 'программы источником не выгружены'}
+      {cost ? ` · платно ${cost}` : ''}
+    </p>
+  )}
+  {/* Реальные признаки-флаги — семантическими бейджами (язык дизайн-системы:
+     бюджет = «опора»/зелёный, военная = info/карамель). Отсутствие флага —
+     молчание, а не красное «нет». Ничего не выдумываем: только то, что в данных. */}
+  {(hasBudget || row.dormitory || row.militaryDept) && (
+    <div class="badges">
+      {hasBudget && (
+        <span class="badge badge--ok">{spec ? 'Есть бюджет по направлению' : 'Есть бюджет'}</span>
+      )}
+      {row.dormitory && <span class="badge">Общежитие</span>}
+      {row.militaryDept && <span class="badge badge--info">Военная кафедра</span>}
+    </div>
+  )}
+</li>

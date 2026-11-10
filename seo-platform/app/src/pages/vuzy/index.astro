@@ -1,0 +1,138 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import OrgRow from '../../components/OrgRow.astro';
+import Cta from '../../components/Cta.astro';
+import Filters from '../../components/Filters.astro';
+import type { Facet } from '../../components/Filters.astro';
+import { db } from '../../lib/data.ts';
+import type { CatalogRow } from '../../lib/data.ts';
+import {
+  orgFacetData, regionFacet, ugsFacet,
+  FACET_LEVELS, FACET_FORMS, FACET_KIND, FACET_BUDGET, FACET_DORM, FACET_MIL, FACET_COST,
+} from '../../lib/facets.ts';
+
+const { catalogRows, cardById, regions, ugs, meta } = db();
+
+// Правовая форма / статус / «филиал» — не различительная часть имени вуза.
+// В shortName у 38% вузов имя начинается с «ФГБОУ ВО…», «АНОО ВО…», «Филиал…» —
+// по такому первому символу алфавит бесполезен (680 вузов под «Ф»). Срезаем
+// ведущие форменные и статус-токены (включая статус-акронимы НИУ/НИЯУ/НИТУ и пару
+// «Национальный исследовательский …»), и по нему берём букву.
+const FORM = new Set([
+  'фгбоу', 'фгаоу', 'фгкоу', 'фгбну', 'фгау', 'фгбу', 'фгку', 'фкоу', 'фгбвоу', 'фгквоу',
+  'фау', 'фбу', 'фгуп', 'фано', 'гоу', 'гбоу', 'гаоу', 'ноу', 'аноо', 'аноово', 'ано',
+  'оано', 'чоу', 'очу', 'чу', 'поу', 'пооу', 'во', 'впо', 'филиал', 'предст',
+  'представительство', 'ниу', 'нияу', 'ниту', 'иу',
+]);
+const GENERIC = new Set(['университет', 'институт', 'академия']);
+const TRIM = /^[.,()«»"“”\-\s]+|[.,()«»"“”\-\s]+$/g;
+const normTok = (t: string) => (t ?? '').toLowerCase().replace(TRIM, '');
+
+function sortName(name: string): string {
+  const toks = name.replace(/[«»"“”]/g, ' ').trim().split(/\s+/);
+  let i = 0;
+  while (i < toks.length && (normTok(toks[i]) === '' || FORM.has(normTok(toks[i])))) i += 1;
+  if (normTok(toks[i]) === 'национальный' && normTok(toks[i + 1]) === 'исследовательский') {
+    i += 2;
+    if (GENERIC.has(normTok(toks[i]))) i += 1;
+  }
+  return (i < toks.length ? toks[i] : (toks[0] ?? '')).replace(TRIM, '');
+}
+
+function firstLetter(name: string): string {
+  let ch = sortName(name).slice(0, 1).toUpperCase() || '#';
+  if (ch === 'Ё') ch = 'Е';
+  return /[А-ЯЁ]/.test(ch) ? ch : '#';
+}
+
+// catalogRows уже отсортированы db() по числу направлений (desc) — это порядок DOM
+// и вид «По количеству направлений» (дефолт). Вид «По алфавиту» — через CSS order,
+// без пере-рендера: считаем алфавитный ранг каждого вуза.
+const ORDER = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ';
+const letterRank = (l: string) => (l === '#' ? 999 : ORDER.indexOf(l));
+const alphaSorted = [...catalogRows].sort((a, b) => {
+  const d = letterRank(firstLetter(a.shortName)) - letterRank(firstLetter(b.shortName));
+  return d || sortName(a.shortName).localeCompare(sortName(b.shortName), 'ru', { sensitivity: 'base' });
+});
+const alphaRank = new Map<string, number>();
+const letterFirstRank = new Map<string, number>();
+alphaSorted.forEach((r, i) => {
+  alphaRank.set(r.id, i);
+  const l = firstLetter(r.shortName);
+  if (!letterFirstRank.has(l)) letterFirstRank.set(l, i);
+});
+const letters = [...letterFirstRank.keys()].sort((a, b) => letterRank(a) - letterRank(b));
+
+// data-* фасеты берём из общего orgFacetData (один источник правды с /gorod/, /region/),
+// добавляя позицию/букву для алфавитного вида — они специфичны для /vuzy/.
+function vuzFacet(row: CatalogRow): Record<string, string> {
+  return {
+    ...orgFacetData(row, cardById.get(row.id)),
+    'data-letter': firstLetter(row.shortName),
+    style: `--o:${2 * alphaRank.get(row.id)! + 1}`,
+  };
+}
+
+// Город убран: нативный select-пикер iOS игнорирует option.hidden, зависимый список
+// город←регион там не сужался. Оставлен регион; вернём город позже (пере-создавая опции).
+const facets: Facet[] = [
+  regionFacet(regions), ugsFacet(ugs),
+  FACET_LEVELS, FACET_FORMS, FACET_KIND, FACET_BUDGET, FACET_DORM, FACET_MIL, FACET_COST,
+];
+
+const title = `Каталог вузов России: ${catalogRows.length} организаций с фильтрами | ${meta.campaignYear}`;
+const description = `Все вузы России из данных «ВУЗ-навигатора» Госуслуг: ${catalogRows.length} организаций. Фильтры по региону, направлению, уровню, форме обучения, бюджету, общежитию и стоимости; сортировка по числу направлений или алфавиту. Приём ${meta.campaignYear}.`;
+---
+<Base title={title} description={description}>
+  <Breadcrumbs items={[{ name: 'Главная', url: '/' }, { name: 'Вузы' }]} />
+  <h1>Каталог вузов России</h1>
+  <p class="meta">{catalogRows.length} организаций. Отфильтруйте по региону, направлению, уровню,
+    форме обучения, наличию бюджета и другим параметрам, либо найдите вуз через поиск.</p>
+
+  <Filters facets={facets} target="[data-filter-item]" itemNoun={['вуз', 'вуза', 'вузов']} persistKey="vuzFilters" />
+  <p class="filters-empty" data-filters-empty hidden>По заданным фильтрам вузов не найдено. Снимите часть условий.</p>
+
+  <div class="tabs" role="tablist" aria-label="Вид списка">
+    <button class="tab is-active" data-view="count" role="tab" aria-selected="true">По количеству направлений</button>
+    <button class="tab" data-view="alpha" role="tab" aria-selected="false">По алфавиту</button>
+  </div>
+
+  <ul class="card-list vuz-list">
+    {catalogRows.map((row) => <OrgRow row={row} facet={vuzFacet(row)} />)}
+    {letters.map((l) => (
+      <li class="az-head" data-letter={l} style={`--o:${2 * letterFirstRank.get(l)!}`}>{l === '#' ? 'Прочие' : l}</li>
+    ))}
+  </ul>
+
+  <Cta pageType="catalog" zone="after-row-10" />
+
+  <script>
+    // Два вида: «По количеству направлений» (DOM-порядок, дефолт) и «По алфавиту»
+    // (CSS order + буквы-разделители). Фильтр прячет карточки в обоих видах.
+    const list = document.querySelector<HTMLElement>('.vuz-list');
+    const tabs = [...document.querySelectorAll<HTMLButtonElement>('.tab')];
+    if (list && tabs.length) {
+      const heads = [...list.querySelectorAll<HTMLElement>('.az-head')];
+      const syncHeads = () => {
+        const alpha = list.classList.contains('alpha');
+        const seen = new Set<string>();
+        if (alpha) list.querySelectorAll<HTMLElement>('.card[data-letter]:not(.filtered-out)')
+          .forEach((c) => seen.add(c.dataset.letter!));
+        heads.forEach((h) => h.classList.toggle('head-empty', alpha && !seen.has(h.dataset.letter!)));
+      };
+      tabs.forEach((t) => t.addEventListener('click', () => {
+        const alpha = t.dataset.view === 'alpha';
+        tabs.forEach((x) => {
+          const on = x === t;
+          x.classList.toggle('is-active', on);
+          x.setAttribute('aria-selected', String(on));
+        });
+        list.classList.toggle('alpha', alpha);
+        syncHeads();
+      }));
+      document.addEventListener('filters:change', syncHeads);
+      setTimeout(syncHeads, 0);
+    }
+  </script>
+</Base>
