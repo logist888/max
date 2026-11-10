@@ -79,6 +79,18 @@ function ordered(values: string[], canon: { value: string }[]): string[] {
 const progLevels = ordered(card.programsByLevel.map((g) => g.level), LEVEL_CHIPS);
 const progForms = ordered(progOffers.map((o) => o.form).filter(Boolean), FORM_CHIPS);
 const progUgs = ugs.filter((g) => myUgs.has(g.code));
+
+// Конкретное направление (ОКСО) этого вуза. Укрупнённой группы мало: человек,
+// пришедший с «Стоматология 31.05.03», в группе «31 — Клиническая медицина»
+// видит заодно лечебное дело и педиатрию. Список зависит от выбранной группы
+// (как город от региона), поэтому сам по себе он не длинный.
+const progDirsMap = new Map<string, { okso: string; name: string; ugs: string }>();
+for (const g of card.programsByLevel) {
+  for (const d of g.directions) {
+    if (!progDirsMap.has(d.okso)) progDirsMap.set(d.okso, { okso: d.okso, name: d.name, ugs: d.ugs });
+  }
+}
+const progDirs = [...progDirsMap.values()].sort((a, b) => a.okso.localeCompare(b.okso));
 const hasBudgetOffer = progOffers.some((o) => o.placeType !== 'Платные места');
 const hasPaidOffer = progOffers.some((o) => o.placeType === 'Платные места');
 const hasCost = progOffers.some((o) => o.placeType === 'Платные места' && o.cost !== null);
@@ -89,6 +101,15 @@ const progFacets: Facet[] = [
         chips: progLevels.map((l) => ({ value: l, label: l })) } as Facet]
     : []),
   ...(progUgs.length > 1 ? [ugsFacet(progUgs)] : []),
+  ...(progDirs.length > 1
+    ? [{ key: 'okso', label: 'Направление подготовки', type: 'select',
+        placeholder: '— любое направление —', dependsOn: 'ugs',
+        options: progDirs.map((d) => ({
+          value: d.okso,
+          label: `${d.okso.replace(/^\d+\./, '')} — ${d.name}`,
+          parent: d.ugs,
+        })) } as Facet]
+    : []),
   ...(progForms.length > 1
     ? [{ key: 'forms', label: 'Форма обучения', type: 'chip',
         chips: progForms.map((f) => ({ value: f, label: f })) } as Facet]
@@ -224,7 +245,7 @@ const links = Object.entries(LINK_LABELS)
                   // фильтра сравнивает диапазоны. У бюджетных мест стоимости нет,
                   // поэтому фильтр «стоимость платного» их не показывает.
                   <tr class="offer-row" data-levels={group.level} data-ugs={dir.ugs}
-                    data-forms={off.form}
+                    data-okso={dir.okso} data-forms={off.form}
                     data-budget={off.placeType === 'Платные места' ? '0' : '1'}
                     data-cost-min={off.placeType === 'Платные места' && off.cost !== null ? String(off.cost) : ''}
                     data-cost-max={off.placeType === 'Платные места' && off.cost !== null ? String(off.cost) : ''}>

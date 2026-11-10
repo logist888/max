@@ -119,7 +119,7 @@ const jsonLd = [
   {showFilters && (
     <>
       <Filters facets={comboFacets} target="[data-filter-item]" itemNoun={['вуз', 'вуза', 'вузов']}
-        persistKey="vuzFilters" persistExtra={{ ugs: dir.ugsCode ?? '' }} />
+        persistKey="vuzFilters" persistExtra={{ ugs: dir.ugsCode ?? '', okso: dir.okso }} />
       <p class="filters-empty" data-filters-empty hidden>По заданным фильтрам вузов не найдено. Снимите часть условий.</p>
     </>
   )}
