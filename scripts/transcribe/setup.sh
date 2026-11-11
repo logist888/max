@@ -22,6 +22,16 @@ python3 -m pip install $PIP_FLAGS --break-system-packages \
 python3 -m pip install $PIP_FLAGS \
   -r "$(cd "$(dirname "$0")" && pwd)/requirements.txt"
 
+# В образе лежит системный PIL, собранный под другую версию Python: pip считает
+# требование выполненным и ничего не ставит, а импорт падает на _imaging.
+# Проверяем работоспособность, а не факт установки.
+if ! python3 -c "from PIL import Image" >/dev/null 2>&1; then
+  echo "[setup] системный PIL не импортируется — ставлю Pillow заново"
+  python3 -m pip install $PIP_FLAGS --break-system-packages --ignore-installed pillow 2>/dev/null ||
+  python3 -m pip install $PIP_FLAGS --ignore-installed pillow
+  python3 -c "from PIL import Image" || { echo "[setup] PIL не чинится" >&2; exit 1; }
+fi
+
 mkdir -p "$MODELS_DIR"
 cd "$MODELS_DIR"
 
