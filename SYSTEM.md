@@ -44,8 +44,10 @@ vault/               РАБОЧИЕ заметки из новых ингест�
   30-entities/       сущности: персонажи ЦА, концепции, профессии, команда
   40-reports/        черновики отчётов до экспорта в Drive
 raw/                 архив сырья — не индексируется, грузится по нужде
+transcripts/         транскрипты записей (звук и кеш .work/ — вне git)
 scripts/             extract.py, pdf_ru.py, setup.sh, requirements.txt
-.claude/skills/      boot, ingest, report
+  transcribe/        расшифровка записей по голосам: diarize_asr.py, setup.sh
+.claude/skills/      boot, ingest, report, publish, transcribe
 ```
 
 ## Модель заметки (frontmatter)

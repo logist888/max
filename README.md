@@ -18,10 +18,12 @@
 - `vault/` — **рабочие заметки** из новых ингестов: `00-index` (карта, метки),
   `10-sources`, `20-notes`, `30-entities`, `40-reports`, `_templates`.
 - `scripts/` — `extract.py` (файл → текст), `pdf_ru.py` (отчёт → кириллический PDF),
-  `setup.sh`, `requirements.txt`.
-- `.claude/skills/` — `boot`, `ingest`, `report`.
+  `setup.sh`, `requirements.txt`; `transcribe/` — расшифровка записей по голосам.
+- `transcripts/` — готовые транскрипты встреч (звук и кеш — вне git).
+- `.claude/skills/` — `boot`, `ingest`, `report`, `publish`, `transcribe`.
 
-## Два рабочих действия
+## Три рабочих действия
+- **transcribe** — расшифровать запись созвона по голосам с таймкодами.
 - **ingest** — принять файл и разложить в `vault/`.
 - **report** — собрать отчёт из `vault/` и выгрузить PDF в Drive.
 

@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Выжимка встречи — шаблон</title>
+<style>
+  :root{
+    --bg:#faf9f7; --card:#ffffff; --ink:#1c1b19; --muted:#6b6862; --line:#e4e1db;
+    --accent:#7a4f2b; --accent-soft:#f3ece4; --warn:#8a3b2e; --warn-soft:#faece9;
+    --ok:#2f5d3f; --ok-soft:#eaf1ea;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#161513; --card:#1e1d1a; --ink:#eceae5; --muted:#a09b92; --line:#332f2a;
+      --accent:#d9a878; --accent-soft:#2a2420; --warn:#e0907f; --warn-soft:#2e211e;
+      --ok:#8fc09c; --ok-soft:#1e2620;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#161513; --card:#1e1d1a; --ink:#eceae5; --muted:#a09b92; --line:#332f2a;
+    --accent:#d9a878; --accent-soft:#2a2420; --warn:#e0907f; --warn-soft:#2e211e;
+    --ok:#8fc09c; --ok-soft:#1e2620;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.55 ui-serif,"Georgia","Times New Roman",serif;}
+  .wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px}
+  header{border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:8px}
+  h1{font-size:29px;line-height:1.2;margin:0 0 10px;letter-spacing:-.01em}
+  .meta{color:var(--muted);font-size:14.5px;
+    font-family:ui-sans-serif,system-ui,"Segoe UI",sans-serif}
+  .meta b{color:var(--ink);font-weight:600}
+  h2{font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);
+    font-family:ui-sans-serif,system-ui,sans-serif;font-weight:700;
+    margin:38px 0 14px;padding-bottom:7px;border-bottom:1px solid var(--line)}
+  h2 .n{color:var(--muted);font-weight:400;margin-left:6px;text-transform:none;letter-spacing:0}
+  .lead{background:var(--accent-soft);border-left:3px solid var(--accent);
+    padding:14px 18px;margin:22px 0 0;border-radius:0 5px 5px 0}
+  .caveat{background:var(--warn-soft);border-left:3px solid var(--warn);
+    padding:12px 18px;margin:14px 0 0;border-radius:0 5px 5px 0;font-size:14.5px}
+  ol,ul{margin:0;padding-left:22px}
+  li{margin-bottom:11px}
+  li:last-child{margin-bottom:0}
+  .tc{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12.5px;
+    color:var(--muted);white-space:nowrap}
+  .who{font-family:ui-sans-serif,system-ui,sans-serif;font-size:12px;font-weight:700;
+    letter-spacing:.03em;text-transform:uppercase;color:var(--accent)}
+  .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{border-collapse:collapse;width:100%;font-size:15px;min-width:480px}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-family:ui-sans-serif,system-ui,sans-serif;font-size:12px;text-transform:uppercase;
+    letter-spacing:.05em;color:var(--muted);font-weight:600;border-bottom:1.5px solid var(--line)}
+  td.num{font-family:ui-monospace,Menlo,monospace;white-space:nowrap;font-size:14px}
+  .task{border:1px solid var(--line);background:var(--card);border-radius:6px;
+    padding:14px 16px;margin-bottom:10px}
+  .task .who{display:block;margin-bottom:5px}
+  .task p{margin:0 0 6px}
+  .task p:last-child{margin-bottom:0}
+  .q{border-left:3px solid var(--warn);background:var(--warn-soft);
+    padding:12px 16px;margin-bottom:10px;border-radius:0 5px 5px 0}
+  .q b{display:block;margin-bottom:3px}
+  .q span{color:var(--muted);font-size:14.5px}
+  .fixed{border-left:3px solid var(--ok);background:var(--ok-soft);
+    padding:12px 16px;border-radius:0 5px 5px 0;margin-bottom:10px}
+  blockquote{margin:0 0 10px;padding:10px 16px;border-left:3px solid var(--line);
+    background:var(--card);border-radius:0 5px 5px 0;font-style:italic}
+  blockquote .tc{font-style:normal;display:block;margin-top:5px}
+  footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);
+    color:var(--muted);font-size:13.5px;
+    font-family:ui-sans-serif,system-ui,sans-serif}
+  @media print{body{background:#fff}.wrap{max-width:none;padding:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ШАБЛОН. Заменить всё между метками, лишние блоки удалить.
+     Правило: каждый пункт с таймкодом; ничего от себя; чего на встрече
+     не было, того в выжимке нет. -->
+
+<header>
+  <h1>ЗАГОЛОВОК: суть встречи одной фразой, не «Транскрипт от такого-то числа»</h1>
+  <div class="meta">
+    Встреча <b>ДД.ММ.ГГГГ</b>, ДЛИТЕЛЬНОСТЬ · УЧАСТНИКИ<br>
+    О чём и в каком порядке шёл разговор. Здесь же — кто сколько говорил,
+    если перекос заметный: это само по себе факт о встрече.
+  </div>
+</header>
+
+<div class="lead">
+  <b>Главное.</b> То, ради чего читают выжимку: что выяснилось, что сломалось,
+  что решено. Три-четыре фразы, без разгона.
+</div>
+
+<h2>Числа <span class="n">— что названо на встрече</span></h2>
+
+<div class="tablewrap">
+<table>
+  <tr><th>Показатель</th><th>Значение</th><th>Таймкод</th></tr>
+  <tr><td>Что измеряется</td><td class="num">Сколько</td><td class="num">00:00</td></tr>
+</table>
+</div>
+
+<h2>Закреплено <span class="n">— решения встречи</span></h2>
+
+<div class="fixed">
+  <b>Решение.</b> Формулировка и условия, при которых оно принято.
+  <span class="tc">00:00–00:00</span>
+</div>
+
+<h2>РАЗДЕЛ ПО СУЩЕСТВУ <span class="n">— возражение, сбой, предложение</span></h2>
+
+<blockquote>
+  Дословная цитата, когда важна формулировка говорящего.
+  <span class="tc">00:00–00:00</span>
+</blockquote>
+
+<div class="q">
+  <b>Что ответили.</b>
+  <span>Реакция другой стороны. <span class="tc">00:00</span></span>
+</div>
+
+<div class="caveat">
+  <b>Оговорка или сбой.</b> То, что ставит под сомнение остальное.
+  <span class="tc">00:00</span>
+</div>
+
+<h2>Задачи</h2>
+
+<div class="task">
+  <span class="who">Исполнитель</span>
+  <p>Что сделать и зачем. <span class="tc">00:00</span></p>
+</div>
+
+<h2>Не решено</h2>
+<ul>
+  <li><b>Развилка.</b> Какие варианты прозвучали и что закроет вопрос.
+  <span class="tc">00:00</span></li>
+</ul>
+
+<h2>Риски</h2>
+<ul>
+  <li><b>Риск.</b> Только названные участниками или прямо следующие из фактов
+  встречи — не додуманные.</li>
+</ul>
+
+<footer>
+  Источник: <code>transcripts/ИМЯ.md</code> — ДЛИТЕЛЬНОСТЬ, N слов, N реплик.
+  ЕСЛИ СКЛЕЙКА: из скольких частей собрана запись, где разрывы и насколько
+  таймкоды расходятся с реальным временем встречи.
+  Имена расставлены ОТКУДА: доля слов по подсветке, чем размечено остальное.
+  Цитаты и суммы перед внешним использованием сверять с записью.
+</footer>
+
+</div>
+</body>
+</html>
