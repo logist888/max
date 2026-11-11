@@ -114,10 +114,15 @@ def stable_key(crop: np.ndarray, box: tuple[int, int]) -> str:
     """
     g = crop.mean(axis=2)
     h, w = g.shape
-    gh, gw = max(1, h // 4), max(1, w // 32)
-    grid = g[:gh * 4, :gw * 32].reshape(4, gh, 32, gw).mean(axis=(1, 3))
+    if h == 0 or w == 0:
+        return f"{box[0] // 8}:{box[1] // 8}:-"
+    # На записи экрана плитки сжаты, и подпись бывает уже 32 пикселей: сетку
+    # кроим по тому, что есть, иначе срез не сходится с формой reshape.
+    rows, cols = min(4, h), min(32, w)
+    gh, gw = h // rows, w // cols
+    grid = g[:gh * rows, :gw * cols].reshape(rows, gh, cols, gw).mean(axis=(1, 3))
     bits = (grid > np.median(grid)).astype(np.uint8).flatten()
-    return f"{box[0] // 8}:{box[1] // 8}:" + "".join(map(str, bits))
+    return f"{box[0] // 8}:{box[1] // 8}:{rows}x{cols}:" + "".join(map(str, bits))
 
 
 def box_bounds(band: np.ndarray, box: tuple[int, int]) -> tuple[int, int] | None:

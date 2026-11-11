@@ -631,8 +631,12 @@ def main() -> None:
     wav = to_wav16k(args.input, workdir)
     _, duration = read_wav(wav)
 
+    # Модель эмбеддингов — часть имени кеша: иначе повторный прогон с другим -e
+    # молча берёт чужую разметку, а в шапку транскрипта уходит имя той модели,
+    # которая на самом деле не считала.
     segs = [] if args.no_diarize else diarize(
-        wav, args.speakers, args.threshold, args.threads, workdir / f"{stem}.diar.json",
+        wav, args.speakers, args.threshold, args.threads,
+        workdir / f"{stem}.diar.{args.embedding}.json",
         MODELS_DIR / EMBEDDINGS[args.embedding])
     words = transcribe(wav, args.model, args.language, args.threads, args.beam,
                        workdir / f"{stem}.words.json")
