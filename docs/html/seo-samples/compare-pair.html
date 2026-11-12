@@ -1,0 +1,56 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Нордхайм или Рейнбург: сравнение — образец</title><meta name="description" content="Образец страницы сравнения двух вузов."><meta name="robots" content="noindex, follow"><style>
+:root{--bg:#fff;--surface:#fff;--s2:#f5f5f7;--text:#1d1d1f;--muted:#6e6e73;--accent:#0066cc;--btn:#0071e3;--soft:#ebf3ff;--ok:#248a3d;--oks:#e6f6ea;--warn:#8a6d00;--warns:#fbf1cf;--risk:#d70015;--border:#d2d2d7;--r:18px;--rs:12px;
+--sans:-apple-system,BlinkMacSystemFont,'SF Pro Text','Inter','Helvetica Neue',Helvetica,Arial,sans-serif}
+@media(prefers-color-scheme:dark){:root{--bg:#000;--surface:#1c1c1e;--s2:#161617;--text:#f5f5f7;--muted:#a1a1a6;--accent:#2997ff;--btn:#2997ff;--soft:#10233a;--oks:#0f2a17;--ok:#30d158;--warns:#2c2410;--warn:#ffd60a;--border:#38383a}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 var(--sans)}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+.c{max-width:1120px;margin:0 auto;padding:0 16px}
+header.site{border-bottom:1px solid var(--border);background:var(--surface)}
+header.site .c{display:flex;justify-content:space-between;align-items:center;height:56px;gap:12px}
+.brand{font-weight:700;color:var(--text)}.nav{display:flex;gap:18px;font-size:14px;flex-wrap:wrap}
+.cta{background:var(--btn);color:#fff;padding:8px 16px;border-radius:980px;font-size:14px}
+.crumbs{font-size:13px;color:var(--muted);padding:14px 0}.crumbs a{color:var(--muted)}
+h1{font-size:clamp(26px,4vw,40px);line-height:1.15;margin:4px 0 10px;letter-spacing:-.01em}
+h2{font-size:22px;margin:36px 0 12px}h3{font-size:17px;margin:0 0 6px}
+.lead{color:var(--muted);max-width:720px;margin:0 0 20px}
+.widget{display:grid;grid-template-columns:repeat(5,1fr) auto;gap:8px;background:var(--s2);border-radius:var(--r);padding:10px;margin:18px 0}
+.fld{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:8px 12px;font-size:14px}.fld small{display:block;color:var(--muted);font-size:11px}
+.btn{background:var(--btn);color:#fff;border:0;border-radius:var(--rs);padding:0 22px;font:inherit;font-weight:600;min-height:48px}
+@media(max-width:900px){.widget{grid-template-columns:1fr 1fr}.btn{grid-column:1/-1}}
+.strip{border-radius:var(--rs);padding:12px 16px;margin:12px 0;font-size:14px}.strip.dark{background:#1d1d1f;color:#f5f5f7}.strip.light{background:var(--s2);color:var(--muted)}
+.empty{background:var(--warns);color:var(--warn);border-radius:var(--r);padding:18px;margin:16px 0}.empty b{color:var(--text)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.chip{background:var(--soft);color:var(--accent);padding:6px 14px;border-radius:980px;font-size:14px;border:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.card .meta{color:var(--muted);font-size:13px}.badge{display:inline-block;background:var(--oks);color:var(--ok);border-radius:980px;font-size:12px;padding:2px 10px;margin:6px 4px 0 0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0}
+.fact{background:var(--s2);border-radius:var(--rs);padding:12px}.fact b{display:block;font-size:22px}.fact span{font-size:12px;color:var(--muted)}
+.layout{display:grid;grid-template-columns:240px 1fr;gap:24px}@media(max-width:860px){.layout{grid-template-columns:1fr}}
+.side{background:var(--s2);border-radius:var(--r);padding:16px;font-size:14px;align-self:start}.side h3{font-size:14px;margin-top:12px}.side label{display:block;margin:4px 0}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.tab{padding:6px 14px;border-radius:980px;background:var(--s2);font-size:14px}.tab.on{background:var(--text);color:var(--bg)}
+table{width:100%;border-collapse:collapse;font-size:15px}th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}th{background:var(--s2);font-size:13px;color:var(--muted)}
+td.diff{background:var(--soft)}td.na{color:var(--muted);font-style:italic}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:700px){.twocol{grid-template-columns:1fr}}
+.quiz{background:linear-gradient(135deg,#0a84ff,#0066cc);color:#fff;border-radius:var(--r);padding:22px;margin:28px 0}.quiz a{color:#fff;font-weight:600;text-decoration:underline}
+details.faq{border-bottom:1px solid var(--border);padding:10px 0}details.faq summary{cursor:pointer;font-weight:600}
+.src{font-size:12px;color:var(--muted);margin-top:8px}
+footer{margin-top:48px;padding:24px 0;background:var(--s2);font-size:13px;color:var(--muted)}
+.spec{background:#1d1d1f;color:#f5f5f7;font-size:13px}.spec .c{padding:10px 16px}.spec summary{cursor:pointer;font-weight:600}
+.spec table{color:#f5f5f7;font-size:12.5px;margin-top:8px}.spec th{background:#2c2c2e;color:#a1a1a6}.spec td,.spec th{border-color:#3a3a3c;padding:6px 10px}
+.pill{display:inline-block;border-radius:980px;padding:1px 10px;font-size:12px;font-weight:600}.p-shell{background:#fbf1cf;color:#8a6d00}.p-idx{background:#e6f6ea;color:#248a3d}.p-no{background:#eee;color:#555}
+.demo{background:repeating-linear-gradient(45deg,#fff3,#fff3 6px,#0001 6px,#0001 12px);border:1px dashed var(--border);border-radius:var(--rs);padding:6px 10px;font-size:12px;color:var(--muted);margin:8px 0}
+.tw{overflow-x:auto}.map{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);min-height:220px;position:relative;overflow:hidden}
+</style></head><body>
+<div class="spec"><div class="c"><details><summary>Служебная панель по ТЗ (docs/22): состояние страницы <span class="pill p-no">noindex (до белого списка)</span></summary><table><tr><th>Тип</th><td>T40 Пара «A или B»</td></tr><tr><th>Адрес</th><td>/compare/university/nordheim-17-vs-reinburg-42 (П): порядок по возрастанию id, неверный порядок или слаг → 301</td></tr><tr><th>Состояние</th><td>материализована, класс B, noindex, пока пары нет в белом списке</td></tr><tr><th>Условие индекса</th><td>оба индексируемы, ≥ 80 % ячеек заполнено, кураторский список или внутренний спрос; потолок C_pair; пробный допуск 5 % на 60 дней</td></tr><tr><th>Отбор пары</th><td>только из k_pair = 5 ближайших по профилю; не полный перебор</td></tr><tr><th>Блоки</th><td>таблица различий (только отличающиеся строки), «что общего», «кому подходит» по фактам; без рейтингов (R-7.7); пустая ячейка = «информации нет»</td></tr><tr><th>Приватность</th><td>страница не содержит выбора конкретного человека</td></tr></table></details></div></div>
+<header class="site"><div class="c"><a class="brand" href="index.html">Куда поступать</a><nav class="nav"><a href="index.html">Все образцы</a><a href="#">Страны</a><a href="#">Вузы</a><a href="#">Профессии</a></nav><a class="cta" href="#">Пройти диагностику</a></div></header>
+<main class="c"><div class="crumbs"><a href="#">Главная</a> → <a href="#">Сравнение вузов</a> → Нордхайм или Рейнбург</div>
+<h1>Технический университет Нордхайм или Университет Рейнбург: сравнение</h1>
+<p class="lead">Сравнение по данным портала. Показаны строки, в которых вузы различаются; общее вынесено отдельно. Оценок и рейтингов нет, только факты.</p>
+<div class="demo">Названия и цифры демонстрационные.</div>
+<div class="tw"><table style="min-width:560px"><thead><tr><th></th><th>Нордхайм</th><th>Рейнбург</th></tr></thead><tbody><tr><th>Страна, город</th><td class="">Германия, Нордхайм</td><td class="">Германия, Рейнбург</td></tr><tr><th>Стоимость в год</th><td class="diff">0 € (демо)</td><td class="diff">3 000 € (демо)</td></tr><tr><th>Язык обучения</th><td class="diff">английский</td><td class="diff">английский, немецкий</td></tr><tr><th>Срок бакалавриата</th><td class="">6 семестров</td><td class="">6 семестров</td></tr><tr><th>Ближайший срок подачи</th><td class="diff">демо-дата</td><td class="diff">Сроки уточнит эксперт</td></tr><tr><th>Места для иностранцев</th><td class="diff"><span class="na">информации нет</span></td><td class="diff">есть</td></tr><tr><th>Число IT-программ</th><td class="diff">демо 5</td><td class="diff">демо 9</td></tr></tbody></table></div>
+<h2>Что общего</h2><p>Оба вуза предлагают бакалавриат по IT на английском; пересечение направлений: демо 4.</p>
+<h2>Кому что подходит (по фактам)</h2><div class="twocol"><div class="card"><h3>Нордхайм</h3><p>Если важна нулевая плата за обучение и язык обучения английский.</p></div><div class="card"><h3>Рейнбург</h3><p>Если нужен выбор между английским и немецким и больше программ внутри направления.</p></div></div>
+<h2>Похожие сравнения</h2><div class="chips"><a class="chip" href="#">Нордхайм или Остмарк</a><a class="chip" href="#">Рейнбург или Вестхафен</a><a class="chip" href="#">IT в Германии</a></div>
+<div class="quiz"><h3>Не знаешь, какое направление выбрать?</h3><p style="margin:4px 0 10px">Бесплатный скрининг покажет, что тебе ближе. Займёт несколько минут.</p><a href="#">Пройти скрининг →</a></div></main>
+<footer><div class="c">Образец страницы для ТЗ docs/22. Все названия учреждений и цифры на странице демонстрационные, это не данные портала. Дизайн: минимализм портала (seo-platform/app/src/styles/main.css), не из архива на Диске.</div></footer></body></html>
