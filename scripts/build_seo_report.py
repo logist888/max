@@ -239,30 +239,25 @@ def build(style):
     check_b = tb[1] + tb[2] + tb[3] + tb[4] + tb[5]
 
     # --- 0. обложка
+    # обложка в стиле «волны»; цвета берутся из палитры выбранного стиля
     if style == 'wave':
-        cover = f"""<section class="page" style="padding:0">
+        wa, wb, wc, wt, wy = '#e6f4a8', '#9ad8c1', '#1fb5c9', '#46525d', '#1fb5c9'
+    else:
+        wa, wb, wc, wt, wy = '#c3e48a', '#7ea6dd', '#2b5ea7', '#22314a', '#2b5ea7'
+    cover = f"""<section class="page" style="padding:0">
 <svg style="position:absolute;left:0;bottom:0" width="210mm" height="150mm" viewBox="0 0 210 150" preserveAspectRatio="none">
-<defs><linearGradient id="c1" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#e6f4a8"/><stop offset=".55" stop-color="#9ad8c1"/><stop offset="1" stop-color="#1fb5c9"/></linearGradient>
-<linearGradient id="c2" x1="1" x2="0"><stop offset="0" stop-color="#1fb5c9"/><stop offset="1" stop-color="#d2f0ef"/></linearGradient></defs>
+<defs><linearGradient id="c1" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="{wa}"/><stop offset=".55" stop-color="{wb}"/><stop offset="1" stop-color="{wc}"/></linearGradient>
+<linearGradient id="c2" x1="1" x2="0"><stop offset="0" stop-color="{wc}"/><stop offset="1" stop-color="#d7e3f4" stop-opacity=".85"/></linearGradient></defs>
 <path d="M0 55 C45 20 120 20 210 62 L210 150 L0 150 Z" fill="url(#c1)"/>
 <path d="M0 78 C50 45 130 45 210 88 L210 150 L0 150 Z" fill="url(#c2)" opacity=".75"/>
 <path d="M0 110 C60 85 140 85 210 118 L210 150 L0 150 Z" fill="#ffffff" opacity=".55"/>
 <circle cx="22" cy="140" r="34" fill="#ffffff"/></svg>
 <div style="position:absolute;right:22mm;top:36mm;text-align:right">
-<div style="font-size:12pt;letter-spacing:.22em;color:#46525d;font-weight:600">ОТЧЁТ</div>
-<div style="font-size:36pt;font-weight:700;color:#46525d;line-height:1.05;margin-top:2mm">Объём<br>SEO-страниц</div>
-<div style="font-size:54pt;font-weight:700;color:#1fb5c9;line-height:1.1;margin-top:3mm">2026</div></div>
-<div style="position:absolute;left:18mm;bottom:20mm;color:#46525d"><div style="font-size:11pt;font-weight:700;letter-spacing:.08em">MAINEXPERTS</div>
+<div style="font-size:12pt;letter-spacing:.22em;color:{wt};font-weight:600">ОТЧЁТ</div>
+<div style="font-size:36pt;font-weight:700;color:{wt};line-height:1.05;margin-top:2mm">Объём<br>SEO-страниц</div>
+<div style="font-size:54pt;font-weight:700;color:{wy};line-height:1.1;margin-top:3mm">2026</div></div>
+<div style="position:absolute;left:18mm;bottom:20mm;color:{wt}"><div style="font-size:11pt;font-weight:700;letter-spacing:.08em">MAINEXPERTS</div>
 <div style="font-size:9pt;margin-top:1mm">Счёт по базе портала<br>данные на 13.11.2026</div></div></section>"""
-    else:
-        cover = f"""<section class="page" style="padding:0;background:#fff">
-<div style="position:absolute;left:0;top:0;width:210mm;height:112mm;background:linear-gradient(160deg,#2b5ea7,#1f4a8a)"></div>
-<div style="position:absolute;left:18mm;top:20mm;color:#cfe0f5;font-size:9pt;letter-spacing:.2em;font-weight:600">MAINEXPERTS · ОТЧЁТ</div>
-<div style="position:absolute;left:18mm;top:52mm;color:#fff;font-size:34pt;font-weight:300;line-height:1.15">Объём<br>SEO-страниц</div>
-<div style="position:absolute;right:16mm;top:16mm;font-size:96pt;font-weight:300;color:rgba(255,255,255,.14);line-height:1">2026</div>
-<div style="position:absolute;left:18mm;top:128mm;width:130mm;color:#22314a"><div style="font-size:14pt;color:#2b5ea7;line-height:1.35">Сколько страниц портала можно отдать в индекс уже сейчас и чего для этого не хватает</div>
-<div style="font-size:9.5pt;color:#6f7f96;margin-top:6mm;line-height:1.6">Счёт по базе портала<br>Данные на 13.11.2026<br>Основа: отчёт разработки по заданию «Объём SEO-страниц»</div></div>
-<div style="position:absolute;left:0;right:0;bottom:0;height:9mm;background:#8cc63f"></div></section>"""
     pages.append(cover)
 
     # --- 1. как читать
