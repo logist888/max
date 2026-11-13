@@ -4,7 +4,7 @@
 Поддержка: заголовки # ## ###, абзацы, списки «- » и «1. », таблицы GFM (| a | b |),
 **жирный**, *курсив*, `код`, горизонтальная линия ---. Тёмная титульная страница,
 светлые страницы содержания, золотые акценты, колонтитулы с номером страницы.
-Запуск: python3 scripts/build_doc_pdf.py <вход.md> <выход.pdf> ["Надзаголовок"]
+Запуск: python3 scripts/build_doc_pdf.py <вход.md> <выход.pdf> ["Надзаголовок"] ["Текст колонтитула"]
 """
 import os, re, sys, io
 from reportlab.lib import colors
@@ -33,6 +33,7 @@ GREY_L = colors.HexColor("#c8c8c8"); GREY_T = colors.HexColor("#5f5f5f"); LINE =
 PW, PH = landscape(A4)
 ML = MR = 36; MT = 44; MB = 34; W = PW - ML - MR
 TOTAL = [0]; LABEL = ["MAINEXPERTS"]
+FOOTER = ["Внутренний документ · значения для России — рабочие значения пилота · правовые пункты — вопросы к юристу, не заключения"]
 
 def st(name, **kw):
     base = dict(fontName="DV", fontSize=9, leading=12.4, textColor=INK, alignment=TA_LEFT, spaceAfter=5)
@@ -53,9 +54,13 @@ S = {
 
 def inline(t):
     t = t.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    codes = []
+    def _stash(m):
+        codes.append(m.group(1)); return "\x00%d\x00" % (len(codes) - 1)
+    t = re.sub(r"`([^`]+)`", _stash, t)  # код прячем, чтобы * внутри не считалось курсивом
     t = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", t)
     t = re.sub(r"(?<![\w*])\*(?!\s)(.+?)(?<!\s)\*(?![\w*])", r"<i>\1</i>", t)
-    t = re.sub(r"`([^`]+)`", r"<font face='DV' color='#8f7640'>\1</font>", t)
+    t = re.sub(r"\x00(\d+)\x00", lambda m: "<font face='DV' color='#8f7640'>%s</font>" % codes[int(m.group(1))], t)
     t = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", t)
     return t
 
@@ -77,7 +82,7 @@ def col_widths(rows, ncol):
     total = sum(weights)
     widths = [W * w / total for w in weights]
     # минимальная ширина: самое длинное слово колонки в 7,4 pt плюс отступы
-    mins = [min(W * 0.3, longest[i] * 4.3 + 12) for i in range(ncol)]
+    mins = [min(W * 0.3, longest[i] * 5.2 + 12) for i in range(ncol)]
     for i in range(ncol):
         if widths[i] < mins[i]:
             deficit = mins[i] - widths[i]; widths[i] = mins[i]
@@ -156,7 +161,7 @@ def _chrome(c, doc, bg, fg, mut):
     c.setFont("DV", 6.8); c.setFillColor(mut); c.drawRightString(PW - MR, PH - 24, LABEL[0])
     c.setStrokeColor(GOLD if bg == INK else LINE); c.setLineWidth(0.5); c.line(ML, PH - 30, PW - MR, PH - 30)
     c.setFont("DV", 6.6); c.setFillColor(mut)
-    c.drawString(ML, 14, "Внутренний документ · значения для России — рабочие значения пилота · правовые пункты — вопросы к юристу, не заключения")
+    c.drawString(ML, 14, FOOTER[0])
     c.drawRightString(PW - MR, 14, f"{doc.page:02d} / {TOTAL[0]:02d}")
     c.restoreState()
 def on_light(c, doc): _chrome(c, doc, LIGHT, INK, GREY_T)
@@ -191,5 +196,6 @@ def build(md_path, out, label):
 if __name__ == "__main__":
     if len(sys.argv) < 3:
         print(__doc__); sys.exit(1)
+    if len(sys.argv) > 4: FOOTER[0] = sys.argv[4]  # необязательный 4-й аргумент: текст колонтитула
     n = build(sys.argv[1], sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else "MainExperts · документ")
     print("PDF:", sys.argv[2], "pages:", n, "bytes:", os.path.getsize(sys.argv[2]))
