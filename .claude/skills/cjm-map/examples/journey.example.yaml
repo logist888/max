@@ -1,0 +1,2708 @@
+# Образцовая карта: поиск и подбор на портале Mainexperts (поток 2). Данные выгружены из рабочих скриптов 06.11.2026.
+# Образец результата: vault/40-reports/2026-11-03-cjm-poisk-vse-napravleniya-shema-i-stikery.svg
+# Разделы: meta, header, lanes, stages, flow (nodes, edges), rows, stickies, sticky_links, screens. Описание полей: README.md.
+meta:
+  title: 'Поиск и подбор на портале Mainexperts: вузы, колледжи, профессии и короткие программы'
+  subtitle: Единый поток слева направо. Портал разделён на дорожки по направлениям; клиент выбирает направление в переключателе и может сменить его в любой момент. Блоки 6, 7, 8 показываются плашками и баннерами; в конце каждого блока возврат в основной путь.
+  date: '2026-11-06'
+  version: '1.0'
+  source: docs/26, docs/27, docs/28; образец результата — vault/40-reports/2026-11-03-cjm-poisk-vse-napravleniya-shema-i-stikery.svg
+  flow_title: 'Блок-схема пути клиента: поиск и подбор на портале — вузы, колледжи, профессии, короткие программы'
+header:
+  job: 'Найти для ребёнка подходящую учёбу или профессию в любой стране: выбрать направление, сравнить варианты, дойти до заявки или услуги'
+  assumption: 'Допущение карты: в базе есть все вузы, колледжи, профессии и короткие программы мира, на всех языках, с ценами, сроками, требованиями, спросом и зарплатными вилками; всё проиндексировано. Клиент из любой страны ищет для ребёнка учёбу или профессию в любой стране, как билеты: вверху переключатель «Вузы · Колледжи · Профессии · Короткие программы», направление можно сменить в любой момент. Внутри портала у каждого направления своя выдача и своя дорожка; сердечко и «Сохранённое», консультации и пакеты общие.'
+  drivers:
+  - 'Всё в одном месте: вузы, колледжи, профессии, короткие программы'
+  - 'Переключатель направлений: поиск не нужно начинать заново'
+  - Цены, спрос и сроки в своей валюте и на своём языке
+  - Из профессии — к вузам, из вуза — к профессиям
+  - Шансы по баллам, сроки подачи, зарплатные вилки — в карточке
+  - Слежение за сроками, ценой и спросом
+  - Видеозвонок до покупки (его просит большинство опрошенных родителей)
+  barriers:
+  - 'Перегруз выбором: четыре направления и тысячи вариантов'
+  - Доверие к незнакомому бренду
+  - 'Данные устаревают: нужны свежие цены, сроки и зарплаты'
+  - Плашки и баннеры, показанные рано, ломают доверие
+  - Возможна низкая конверсия в оплату
+  - «Зачем ребёнку профориентация, ему же в вуз?» — слово «профориентация» клиент не ищет
+  - Клиент уходит на сайт учреждения и может не вернуться
+  - Состав и цены дополнительных пакетов не заданы
+  - Открытые спрос и зарплаты по профессиям спорят с платным модулем Профиля 360
+lanes:
+- id: L0
+  label: Клиент
+  style: 0
+- id: L1
+  label: 'Портал: общая часть'
+  style: 1
+- id: L2
+  label: 'Портал: вузы'
+  style: 2
+- id: L3
+  label: 'Портал: колледжи'
+  style: 3
+- id: L4
+  label: 'Портал: профессии'
+  style: 4
+- id: L5
+  label: 'Портал: короткие программы'
+  style: 5
+- id: L6
+  label: Внешние сервисы, консультант, агентство
+  style: 6
+stages:
+- id: s1
+  from: 0
+  to: 3
+  label: 1. Осознание проблемы
+  board_label: 1. Осознание проблемы
+  color: cyan
+- id: s2
+  from: 4
+  to: 8
+  label: 2. Поиск сайта сервиса
+  board_label: 2. Поиск сайта сервиса
+  color: cyan
+- id: s3
+  from: 9
+  to: 14
+  label: 3. Выбор направления и ввод условий
+  board_label: 3. Выбор направления и ввод условий
+  color: cyan
+- id: s4
+  from: 15
+  to: 23
+  label: 4. Подбор и выдача (блоки 6 и 7 появляются плашками и баннерами)
+  board_label: 4. Подбор и выдача
+  color: cyan
+- id: s5
+  from: 24
+  to: 34
+  label: '5. Выбор варианта: переход между направлениями или «большая кнопка»'
+  board_label: '5. Выбор варианта: переход между направлениями или «большая кнопка»'
+  color: blue
+- id: s6
+  from: 35
+  to: 44
+  label: 6. 15-минутная консультация
+  board_label: 6. 15-минутная консультация
+  color: blue
+- id: s7
+  from: 45
+  to: 57
+  label: 7. Профориентация
+  board_label: 7. Профориентация
+  color: blue
+- id: s8
+  from: 58
+  to: 69
+  label: 8. Дополнительные пакеты и услуги агентства
+  board_label: 8. Дополнительные пакеты и услуги агентства
+  color: blue
+- id: s9
+  from: 70
+  to: 81
+  label: 9. Сохранение и аккаунт
+  board_label: 9. Сохранение и аккаунт
+  color: blue
+- id: s10
+  from: 82
+  to: 90
+  label: 10. «Сохранённое» и сравнение
+  board_label: 10. «Сохранённое» и сравнение
+  color: blue
+flow:
+  lane_height: 240
+  nodes:
+  - id: n0
+    shape: term
+    col: 0
+    lane: L0
+    text: 'Начало: родитель живёт обычной жизнью, выбор ещё не ощущается'
+  - id: n1
+    shape: proc
+    col: 1
+    lane: L0
+    text: 'Встречает материалы: пост, видео, статья, реклама, рассказ другого родителя'
+  - id: d1
+    shape: dec
+    col: 2
+    lane: L0
+    text: Понял, что пора разбираться?
+  - id: n3
+    shape: proc
+    col: 3
+    lane: L0
+    text: Решает пойти в поисковую систему
+  - id: n4
+    shape: data
+    col: 4
+    lane: L0
+    text: Открывает поисковую систему или нейросеть, вводит запрос
+  - id: n5
+    shape: proc
+    col: 5
+    lane: L6
+    text: 'Поисковая система показывает выдачу: ссылки на портал и другие сайты'
+  - id: d2
+    shape: dec
+    col: 6
+    lane: L0
+    text: Выбирает ссылку на портал?
+  - id: e1
+    shape: term
+    col: 7
+    lane: L6
+    text: 'Конец: клиент уходит к другому сервису'
+  - id: n7
+    shape: proc
+    col: 7
+    lane: L1
+    text: 'Главная страница: страна, язык и валюта подставлены (меняются одним окном «Региональные настройки» в шапке); над поиском переключатель «Вузы · Колледжи · Профессии · Короткие программы»; сменяющийся баннер с рекомендацией бесплатного теста'
+  - id: d3
+    shape: dec
+    col: 8
+    lane: L0
+    text: Доверяет сервису?
+  - id: e2
+    shape: term
+    col: 8
+    lane: L6
+    text: 'Конец: клиент уходит с портала'
+  - id: n_sw
+    shape: proc
+    col: 9
+    lane: L0
+    text: 'Выбирает, что искать; переключатель остаётся над поиском в любой момент; свободного текстового запроса нет: типы поиска показаны подсказкой над формой'
+  - id: f2
+    shape: proc
+    col: 10
+    lane: L2
+    text: 'Форма вузов: откуда, где учиться (список регионов и стран, можно несколько), когда, что изучать, куда поступаете (бакалавриат, магистратура, специалитет)'
+  - id: f3
+    shape: proc
+    col: 10
+    lane: L3
+    text: 'Форма колледжей: откуда, где учиться или онлайн, год поступления, специальность'
+  - id: f4
+    shape: proc
+    col: 10
+    lane: L4
+    text: 'Форма профессий: откуда, где учиться, где хочет работать, интересы и навыки; профессия известна — вход напрямую'
+  - id: f5
+    shape: proc
+    col: 10
+    lane: L5
+    text: 'Форма коротких программ: откуда, где учиться (список регионов и стран), онлайн или очно, период (сезон, месяц, даты), тема, длительность, возраст на старте'
+  - id: n9
+    shape: data
+    col: 11
+    lane: L0
+    text: 'Вводит основные условия: откуда (страна), где учиться или онлайн, когда, что изучать, куда поступаете; или выбирает «где угодно»'
+  - id: n_chk
+    shape: proc
+    col: 12
+    lane: L1
+    text: 'Проверяет, чего не хватает: известное из запроса, квиза и прошлых выборов не спрашивает; если хватает — шаг пропускается'
+  - id: q2
+    shape: proc
+    col: 13
+    lane: L2
+    text: 'Спрашивает недостающее: бакалавриат — где, год, направление; магистратура — страна, год, направление; специалитет — по общей логике'
+  - id: q3
+    shape: proc
+    col: 13
+    lane: L3
+    text: 'Спрашивает недостающее: где или онлайн, год поступления; специальность и предыдущий класс — не утверждено'
+  - id: q4
+    shape: proc
+    col: 13
+    lane: L4
+    text: 'Спрашивает недостающее: интересы и навыки, страна работы (где учиться — по желанию); если профессия названа, вопросы о направлении пропускает'
+  - id: q5
+    shape: proc
+    col: 13
+    lane: L5
+    text: 'Спрашивает недостающее: онлайн или очно; если очно — страна; сезон и год, месяц или даты; тему, если не указана; длительность и возраст — по желанию'
+  - id: n_fill
+    shape: data
+    col: 14
+    lane: L0
+    text: Отвечает на недостающие вопросы; по желанию уточняет возраст и языки учащегося, срок, бюджет, город, навыки
+  - id: n_help
+    shape: note
+    col: 14
+    lane: L1
+    text: Вопрос «Нужна помощь с выбором направления?» ведёт в профориентацию и не скрывает выдачу
+    dy: 40
+  - id: r2
+    shape: proc
+    col: 15
+    lane: L2
+    text: 'Ищет по базе вузов и показывает выдачу: цены в выбранной валюте, сроки подачи с годом, шансы по баллам'
+  - id: r3
+    shape: proc
+    col: 15
+    lane: L3
+    text: 'Ищет по базе колледжей и показывает выдачу: цены, сроки, требования'
+  - id: r4
+    shape: proc
+    col: 15
+    lane: L4
+    text: 'Ищет по базе профессий и показывает выдачу: спрос, зарплатные вилки, тренды'
+  - id: r5
+    shape: proc
+    col: 15
+    lane: L5
+    text: 'Ищет по базе коротких программ и показывает выдачу: даты (при выбранных датах — только подходящие), формат, цена в выбранной валюте'
+  - id: d4
+    shape: dec
+    col: 16
+    lane: L0
+    text: Есть подходящие варианты?
+  - id: n14
+    shape: proc
+    col: 17
+    lane: L0
+    text: 'Фильтрует, сортирует (в том числе по цене «дороже» и по сроку подачи), сохраняет сердечком (звёздочки и отметки «сравнить» нет: сердечко одно); из сохранённого собирает короткий список до 4 и сравнивает'
+  - id: n_save
+    shape: proc
+    col: 18
+    lane: L0
+    text: 'Нажимает «Сохранить», «Поделиться» или сердечко: вариант сохраняется сразу, затем окно аккаунта (момент 2: email, код из письма, «Позже»); можно отправить ссылкой ребёнку и семье'
+  - id: d_fit
+    shape: dec
+    col: 19
+    lane: L0
+    text: Подборка подошла? «Да» — предложить аккаунт (момент 1)
+  - id: stat
+    shape: proc
+    col: 19
+    lane: L1
+    text: Записывает ответ «да» или «нет» в статистику подборок
+    dy: 40
+  - id: d_x
+    shape: dec
+    col: 20
+    lane: L0
+    text: Хочет посмотреть другое направление?
+  - id: n_cross
+    shape: note
+    col: 20
+    lane: L1
+    text: В карточке вуза видны профессии, к которым он ведёт; в карточке профессии — вузы и программы; соседнее направление — в один клик
+    dy: 40
+  - id: d6
+    shape: dec
+    col: 21
+    lane: L1
+    text: Широкий поиск, направление не выбрано?
+    dy: -20
+  - id: b6
+    shape: pre
+    col: 21
+    lane: L1
+    text: 'Блок 7: Профориентация (подпроцесс правее)'
+    dy: 70
+  - id: d7
+    shape: dec
+    col: 22
+    lane: L1
+    text: Сравнивает 3 и более вариантов или вернулся повторно?
+    dy: -20
+  - id: b5
+    shape: pre
+    col: 22
+    lane: L1
+    text: 'Блок 6: 15-минутная консультация (подпроцесс правее)'
+    dy: 70
+  - id: d5
+    shape: dec
+    col: 23
+    lane: L0
+    text: Определился с вариантом?
+  - id: b7
+    shape: pre
+    col: 24
+    lane: L1
+    text: 'Блок 8: пакеты и услуги агентства (подпроцесс правее)'
+    dy: 70
+  - id: n_pick
+    shape: proc
+    col: 24
+    lane: L0
+    text: 'Нажимает на вариант: «Где учиться» у профессии, «большая кнопка» у вуза, колледжа или программы'
+  - id: d_kind
+    shape: dec
+    col: 25
+    lane: L0
+    text: Что выбрал?
+  - id: n_toedu
+    shape: proc
+    col: 25
+    lane: L4
+    text: 'Передаёт профессию в подбор вуза, колледжа или короткой программы: направление переключено, фильтры подставлены'
+    dy: 70
+  - id: n_go
+    shape: proc
+    col: 26
+    lane: L0
+    text: Нажимает «большую кнопку» у карточки
+    dy: 60
+  - id: n_pop
+    shape: proc
+    col: 27
+    lane: L1
+    text: 'Открывает окно с вариантами: сайт учреждения, заявка через портал, услуги и пакеты; чего ещё нет — лист ожидания'
+  - id: d_bk
+    shape: dec
+    col: 28
+    lane: L0
+    text: Что выбирает?
+    dy: 60
+  - id: n_b8
+    shape: pre
+    col: 28
+    lane: L0
+    text: 'Блок 8: услуги и пакеты (подпроцесс правее)'
+    dy: -85
+  - id: n_app
+    shape: proc
+    col: 28
+    lane: L1
+    text: 'Готовит заявку на портале: цифровая копия анкеты; небольшая оплата (гипотеза)'
+    hypothesis: true
+  - id: n_mail
+    shape: data
+    col: 29
+    lane: L0
+    text: Создаёт аккаунт по email и коду из письма перед переходом на сайт учреждения (момент 3); можно пропустить
+    dy: 60
+  - id: n_site
+    shape: proc
+    col: 30
+    lane: L6
+    text: 'Новая вкладка: сайт учреждения; вкладка портала остаётся открытой'
+  - id: d11
+    shape: dec
+    col: 31
+    lane: L0
+    text: Вернулся на портал?
+  - id: n_ret
+    shape: proc
+    col: 31
+    lane: L1
+    text: 'Через время пишет на email: что дальше (виза, курсы, следующая услуга)'
+    dy: 20
+  - id: n17
+    shape: proc
+    col: 32
+    lane: L0
+    text: 'Возвращается на портал и отмечает статус: подал, записался, пока думает'
+  - id: n18
+    shape: doc
+    col: 33
+    lane: L1
+    text: 'Сердечко и «Сохранённое» по категориям (образец — «Favourites» в UCAS): короткий список до 4 и сравнение; вузы, колледжи, профессии, программы, подборки, статьи, заявки; напоминания о сроках'
+  - id: e4
+    shape: term
+    col: 34
+    lane: L1
+    text: 'Конец: путь выбран, статус отслеживается в «Сохранённом»'
+  - id: b9
+    shape: pre
+    col: 18
+    lane: L1
+    text: 'Блок 9: сохранение и аккаунт (подпроцесс правее)'
+    dy: 70
+  - id: b10
+    shape: pre
+    col: 17
+    lane: L1
+    text: 'Блок 10: «Сохранённое» и сравнение (подпроцесс правее)'
+    dy: 70
+  - id: a5_s
+    shape: term
+    col: 35
+    lane: L1
+    text: 'Начало блока 6: клиент сравнивает 3 и более вариантов или возвращается в поиск повторно'
+  - id: a5_p1
+    shape: proc
+    col: 36
+    lane: L1
+    text: Показывает плашку «Не уверены? 15 минут с консультантом»
+  - id: a5_d1
+    shape: dec
+    col: 37
+    lane: L0
+    text: Откликается на плашку?
+  - id: a5_in
+    shape: data
+    col: 38
+    lane: L0
+    text: Выбирает время в своём часовом поясе, оставляет вопросы
+  - id: a5_p2
+    shape: proc
+    col: 39
+    lane: L1
+    text: Записывает на консультацию и передаёт подборку и вопросы консультанту
+  - id: a5_note
+    shape: note
+    col: 38
+    lane: L6
+    text: 'Лимит слотов в день и очередь ожидания; консультацию ведёт специалист с нужными компетенциями. Статус под вопросом: бесплатные консультации могут заменить анкетой, контактом и листом ожидания'
+  - id: a5_m
+    shape: manual
+    col: 40
+    lane: L6
+    text: Консультант изучает подборку и проводит видеоконсультацию
+  - id: a5_doc
+    shape: doc
+    col: 41
+    lane: L6
+    text: Резюме и сохранённые варианты
+  - id: a5_p3
+    shape: proc
+    col: 42
+    lane: L1
+    text: Сохраняет резюме в «Сохранённом» клиента
+  - id: a5_p4
+    shape: proc
+    col: 43
+    lane: L0
+    text: Возвращается в поиск с суженным выбором
+  - id: a5_end
+    shape: term
+    col: 44
+    lane: L0
+    text: 'Конец блока 6: возврат к шагу «Фильтрует, сортирует, сравнивает»'
+  - id: a6_s
+    shape: term
+    col: 45
+    lane: L1
+    text: 'Начало блока 7: широкий поиск, направление не выбрано'
+  - id: a6_p1
+    shape: proc
+    col: 46
+    lane: L1
+    text: Показывает сменяющийся баннер «Не знаете, с чего начать? Начните с бесплатного теста» (главная и после первой выдачи)
+  - id: a6_d1
+    shape: dec
+    col: 47
+    lane: L0
+    text: Откликается на баннер?
+  - id: a6_in1
+    shape: data
+    col: 48
+    lane: L0
+    text: Проходит бесплатный скрининг; перед началом портал предлагает создать аккаунт (момент 4)
+  - id: a6_doc1
+    shape: doc
+    col: 49
+    lane: L1
+    text: Бесплатная карта рисков выбора
+  - id: a6_d2
+    shape: dec
+    col: 50
+    lane: L0
+    text: Хочет полный разбор?
+  - id: a6_p2
+    shape: proc
+    col: 51
+    lane: L1
+    text: 'Показывает предложение: цена зависит от канала и страны'
+  - id: a6_d3
+    shape: dec
+    col: 52
+    lane: L0
+    text: Оплачивает?
+  - id: a6_pay
+    shape: proc
+    col: 53
+    lane: L6
+    text: Оплата на странице платёжного провайдера
+  - id: a6_in2
+    shape: data
+    col: 54
+    lane: L0
+    text: Проходит диагностику
+  - id: a6_doc2
+    shape: doc
+    col: 55
+    lane: L1
+    text: 'Подробный отчёт: ориентир, а не диагностика'
+  - id: a6_p3
+    shape: proc
+    col: 56
+    lane: L1
+    text: Подставляет направление в фильтры поиска и в индекс соответствия вариантов
+  - id: a6_end
+    shape: term
+    col: 57
+    lane: L0
+    text: 'Конец блока 7: возврат к вводу условий поиска'
+  - id: a7_s
+    shape: term
+    col: 58
+    lane: L1
+    text: 'Начало блока 8: выбран вариант или нажата «большая кнопка» и выбраны услуги'
+  - id: a7_p1
+    shape: proc
+    col: 59
+    lane: L1
+    text: Показывает плашку «Поможем подать документы» у выбранного варианта
+  - id: a7_d1
+    shape: dec
+    col: 60
+    lane: L0
+    text: Откликается на плашку?
+  - id: a7_p2
+    shape: proc
+    col: 61
+    lane: L0
+    text: 'Смотрит состав пакета и цену: цена зависит от канала и страны'
+  - id: a7_d2
+    shape: dec
+    col: 62
+    lane: L0
+    text: Берёт пакет?
+  - id: a7_p3
+    shape: proc
+    col: 63
+    lane: L1
+    text: Оформляет заявку или оплату
+  - id: a7_note
+    shape: note
+    col: 63
+    lane: L6
+    text: Состав и цены пакетов не заданы; возможны подписки (пока не проработаны)
+  - id: a7_ag
+    shape: proc
+    col: 64
+    lane: L6
+    text: 'Услуга: поступление, подбор «под ключ», поступление плюс виза (как отель плюс билет); исполняют партнёры-провайдеры (гипотеза)'
+    hypothesis: true
+  - id: a7_doc
+    shape: doc
+    col: 65
+    lane: L1
+    text: 'Страница «Сохранённое»: заявки: статусы и сроки'
+  - id: a7_p4
+    shape: proc
+    col: 66
+    lane: L1
+    text: Присылает письмо с просьбой об отзыве
+  - id: a7_d3
+    shape: dec
+    col: 67
+    lane: L1
+    text: Есть второй ребёнок в семье?
+  - id: a7_p5
+    shape: proc
+    col: 68
+    lane: L1
+    text: Предлагает профориентацию для второго ребёнка
+  - id: a7_end
+    shape: term
+    col: 69
+    lane: L1
+    text: 'Конец блока 8: возврат к шагу «Нажимает «Перейти на сайт»»'
+  - id: a9_s
+    shape: term
+    col: 70
+    lane: L1
+    text: 'Начало блока 9: клиент нажимает сердечко у карточки, в сравнении или у статьи'
+  - id: a9_p1
+    shape: proc
+    col: 71
+    lane: L1
+    text: Закрашивает сердечко и сохраняет вариант сразу; регистрации не требует
+  - id: a9_d1
+    shape: dec
+    col: 72
+    lane: L1
+    text: Аккаунт уже создан?
+  - id: a9_d2
+    shape: dec
+    col: 73
+    lane: L1
+    text: Окно аккаунта уже показывали?
+  - id: a9_m1
+    shape: data
+    col: 74
+    lane: L0
+    text: 'Видит окно «Не потеряйте сохранённое»: «Создать аккаунт» или «Позже»'
+  - id: a9_t2
+    shape: proc
+    col: 74
+    lane: L1
+    text: Показывает тост «Создайте аккаунт, чтобы не потерять выбор» со ссылкой
+  - id: a9_d3
+    shape: dec
+    col: 75
+    lane: L0
+    text: Создаёт аккаунт?
+  - id: a9_in1
+    shape: data
+    col: 76
+    lane: L0
+    text: Вводит email или выбирает Google, Apple, Facebook
+  - id: a9_mail
+    shape: proc
+    col: 77
+    lane: L6
+    text: Отправляет код на email (внешняя почта); пароль не нужен
+  - id: a9_in2
+    shape: data
+    col: 78
+    lane: L0
+    text: Вводит код из письма (в демо подходит любой код из 4–6 цифр)
+  - id: a9_p3
+    shape: proc
+    col: 79
+    lane: L1
+    text: Создаёт аккаунт, привязывает сохранённое, включает напоминания о сроках
+  - id: a9_t1
+    shape: proc
+    col: 80
+    lane: L1
+    text: Показывает тост «Сохранено. Напомним о сроках подачи» со ссылкой «Посмотреть»
+  - id: a9_end
+    shape: term
+    col: 81
+    lane: L0
+    text: 'Конец блока 9: возврат в выдачу или к странице, откуда нажато сердечко'
+  - id: a10_s
+    shape: term
+    col: 82
+    lane: L1
+    text: 'Начало блока 10: клиент открывает «Сохранённое» (сердечко в шапке) или нажимает «Сравнить» в выдаче'
+  - id: a10_p1
+    shape: doc
+    col: 83
+    lane: L1
+    text: 'Страница «Сохранённое»: два счётчика, короткий список до 4, коллекции по категориям'
+  - id: a10_in1
+    shape: data
+    col: 84
+    lane: L0
+    text: Открывает коллекцию, добавляет варианты в короткий список, включает «Напоминать о сроке»
+  - id: a10_d1
+    shape: dec
+    col: 85
+    lane: L0
+    text: В коротком списке 2 варианта и больше?
+  - id: a10_p2
+    shape: proc
+    col: 86
+    lane: L1
+    text: 'Открывает сравнение: до 4 колонок, лучшее значение в строке подсвечено, итоговые фразы'
+  - id: a10_in2
+    shape: data
+    col: 87
+    lane: L0
+    text: Включает «Только различия», убирает лишнюю колонку
+  - id: a10_d2
+    shape: dec
+    col: 88
+    lane: L0
+    text: Выбрал вариант?
+  - id: a10_p3
+    shape: proc
+    col: 89
+    lane: L0
+    text: Нажимает «большую кнопку» у выбранного варианта
+  - id: a10_end
+    shape: term
+    col: 90
+    lane: L0
+    text: 'Конец блока 10: переход к «большой кнопке» или возврат в поиск'
+  edges:
+  - {from: n0, to: n1, ports: rl}
+  - {from: n1, to: d1, ports: rl}
+  - from: d1
+    to: n3
+    ports: rl
+    label: Да
+  - from: d1
+    to: n1
+    ports: tt
+    label: 'Нет: проходит мимо'
+    label_at: mid
+    corridor: {lane: L0, dy: -92.0}
+  - {from: n3, to: n4, ports: rl}
+  - {from: n4, to: n5, ports: rt}
+  - {from: n5, to: d2, ports: rl}
+  - from: d2
+    to: n7
+    ports: rt
+    label: Да
+  - from: d2
+    to: e1
+    ports: bl
+    label: Нет
+  - {from: n7, to: d3, ports: rl}
+  - from: d3
+    to: e2
+    ports: bt
+    label: Нет
+  - from: d3
+    to: n_sw
+    ports: rl
+    label: Да
+  - {from: n_sw, to: f2, ports: rl}
+  - {from: n_sw, to: f3, ports: rl}
+  - {from: n_sw, to: f4, ports: rl}
+  - {from: n_sw, to: f5, ports: rl}
+  - {from: f2, to: n9, ports: rl}
+  - {from: f3, to: n9, ports: rl}
+  - {from: f4, to: n9, ports: rl}
+  - {from: f5, to: n9, ports: rl}
+  - {from: n9, to: n_chk, ports: rt}
+  - {from: n_chk, to: q2, ports: rl}
+  - {from: n_chk, to: q3, ports: rl}
+  - {from: n_chk, to: q4, ports: rl}
+  - {from: n_chk, to: q5, ports: rl}
+  - {from: q2, to: n_fill, ports: rl}
+  - {from: q3, to: n_fill, ports: rl}
+  - {from: q4, to: n_fill, ports: rl}
+  - {from: q5, to: n_fill, ports: rl}
+  - {from: n_fill, to: r2, ports: rl}
+  - {from: n_fill, to: r3, ports: rl}
+  - {from: n_fill, to: r4, ports: rl}
+  - {from: n_fill, to: r5, ports: rl}
+  - {from: n_help, to: n_fill, ports: tb, dash: true, arrow: false}
+  - {from: r2, to: d4, ports: rl}
+  - {from: r3, to: d4, ports: rl}
+  - {from: r4, to: d4, ports: rl}
+  - {from: r5, to: d4, ports: rl}
+  - from: d4
+    to: n_sw
+    ports: tt
+    label: 'Нет: меняет условия или направление'
+    label_at: mid
+    corridor: {lane: L0, dy: -108.0}
+  - from: d4
+    to: n14
+    ports: rl
+    label: Да
+  - {from: n14, to: n_save, ports: rl}
+  - {from: n_save, to: d_fit, ports: rl}
+  - from: d_fit
+    to: d_x
+    ports: rl
+    label: Да
+  - from: d_fit
+    to: n14
+    ports: tt
+    label: 'Нет: меняет условия'
+    label_at: mid
+    corridor: {lane: L0, dy: -70.0}
+  - {from: d_fit, to: stat, ports: bt, dash: true, arrow: false}
+  - from: d_x
+    to: n_sw
+    ports: tt
+    label: 'Да: переключает направление, подборка и избранное сохраняются'
+    label_at: mid
+    corridor: {lane: L0, dy: -92.0}
+  - {from: d_x, to: n_cross, ports: bt, dash: true, arrow: false}
+  - from: d_x
+    to: d6
+    ports: rt
+    label: Нет
+  - from: d6
+    to: b6
+    ports: bt
+    label: Да
+  - from: d6
+    to: d7
+    ports: rl
+    label: Нет
+  - from: d7
+    to: b5
+    ports: bt
+    label: Да
+  - from: d7
+    to: d5
+    ports: rb
+    label: Нет
+  - from: d5
+    to: n14
+    ports: tt
+    label: 'Нет: продолжает сравнивать или меняет условия'
+    label_at: mid
+    corridor: {lane: L0, dy: -80.0}
+  - from: d5
+    to: n_pick
+    ports: rl
+    label: Да
+  - from: d5
+    to: b7
+    ports: rl
+    label: плашка пакета
+    label_at: mid
+    dash: true
+  - from: b7
+    to: n_pick
+    ports: tb
+    label: после блока 8
+    label_at: mid
+    dash: true
+  - {from: n_pick, to: d_kind, ports: rl}
+  - from: d_kind
+    to: n_go
+    ports: rl
+    label: Вуз, колледж, программа
+  - from: d_kind
+    to: n_toedu
+    ports: bt
+    label: Профессия
+  - from: n_toedu
+    to: n9
+    ports: lb
+    label: возврат в поиск с готовыми фильтрами
+    label_at: mid
+    dash: true
+  - {from: n_go, to: n_pop, ports: rt}
+  - {from: n_pop, to: d_bk, ports: rl}
+  - from: d_bk
+    to: n_b8
+    ports: tb
+    label: Услуги и пакеты
+  - from: d_bk
+    to: n_app
+    ports: bt
+    label: Заявка через портал
+  - from: d_bk
+    to: n_mail
+    ports: rl
+    label: На сайт
+  - {from: n_app, to: n_site, ports: rt}
+  - {from: n_mail, to: n_site, ports: rt}
+  - {from: n_site, to: d11, ports: rl}
+  - from: d11
+    to: n_ret
+    ports: bt
+    label: Нет
+  - from: d11
+    to: n17
+    ports: rl
+    label: Да
+  - from: n_ret
+    to: n17
+    ports: rb
+    label: по письму
+    label_at: mid
+  - {from: n17, to: n18, ports: rt}
+  - {from: n18, to: e4, ports: rl}
+  - from: n_save
+    to: b9
+    ports: bt
+    label: сердечко
+    label_at: mid
+    dash: true
+  - from: n14
+    to: b10
+    ports: bt
+    label: сравнить
+    label_at: mid
+    dash: true
+  - {from: a5_s, to: a5_p1, ports: rl}
+  - {from: a5_p1, to: a5_d1, ports: rb}
+  - from: a5_d1
+    to: a5_in
+    ports: rl
+    label: Да
+  - from: a5_d1
+    to: a5_end
+    ports: tt
+    label: 'Нет: закрывает плашку, в этой сессии она не возвращается'
+    label_at: mid
+    corridor: {lane: L0, dy: -94.0}
+  - {from: a5_in, to: a5_p2, ports: rt}
+  - {from: a5_p2, to: a5_m, ports: rt}
+  - {from: a5_note, to: a5_m, ports: rl, dash: true, arrow: false}
+  - {from: a5_m, to: a5_doc, ports: rl}
+  - {from: a5_doc, to: a5_p3, ports: rb}
+  - {from: a5_p3, to: a5_p4, ports: rb}
+  - {from: a5_p4, to: a5_end, ports: rl}
+  - {from: a6_s, to: a6_p1, ports: rl}
+  - {from: a6_p1, to: a6_d1, ports: rb}
+  - from: a6_d1
+    to: a6_in1
+    ports: rl
+    label: Да
+  - from: a6_d1
+    to: a6_end
+    ports: tt
+    label: 'Нет: закрывает баннер'
+    corridor: {lane: L0, dy: -94.0}
+  - {from: a6_in1, to: a6_doc1, ports: rt}
+  - {from: a6_doc1, to: a6_d2, ports: rb}
+  - from: a6_d2
+    to: a6_p2
+    ports: rt
+    label: Да
+  - from: a6_d2
+    to: a6_end
+    ports: tt
+    label: 'Нет: карта сохранена'
+    corridor: {lane: L0, dy: -94.0}
+  - {from: a6_p2, to: a6_d3, ports: rb}
+  - from: a6_d3
+    to: a6_pay
+    ports: rt
+    label: Да
+  - from: a6_d3
+    to: a6_end
+    ports: tt
+    label: 'Нет: часть клиентов уходит на цене'
+    corridor: {lane: L0, dy: -94.0}
+  - {from: a6_pay, to: a6_in2, ports: rl}
+  - {from: a6_in2, to: a6_doc2, ports: rt}
+  - {from: a6_doc2, to: a6_p3, ports: rl}
+  - {from: a6_p3, to: a6_end, ports: rb}
+  - {from: a7_s, to: a7_p1, ports: rl}
+  - {from: a7_p1, to: a7_d1, ports: rb}
+  - from: a7_d1
+    to: a7_p2
+    ports: rl
+    label: Да
+  - from: a7_d1
+    to: a7_end
+    ports: tt
+    label: 'Нет: плашка закрыта'
+    corridor: {lane: L0, dy: -94.0}
+  - {from: a7_p2, to: a7_d2, ports: rl}
+  - from: a7_d2
+    to: a7_p3
+    ports: rt
+    label: Да
+  - from: a7_d2
+    to: a7_end
+    ports: tt
+    label: 'Нет: возможна заявка позже'
+    corridor: {lane: L0, dy: -94.0}
+  - {from: a7_note, to: a7_p3, ports: tb, dash: true, arrow: false}
+  - {from: a7_p3, to: a7_ag, ports: rt}
+  - {from: a7_ag, to: a7_doc, ports: rb}
+  - {from: a7_doc, to: a7_p4, ports: rl}
+  - {from: a7_p4, to: a7_d3, ports: rl}
+  - from: a7_d3
+    to: a7_p5
+    ports: rl
+    label: Да
+  - from: a7_d3
+    to: a7_end
+    ports: bb
+    label: Нет
+    corridor: {lane: L1, dy: 92.0}
+  - {from: a7_p5, to: a7_end, ports: rl}
+  - {from: a9_s, to: a9_p1, ports: rl}
+  - {from: a9_p1, to: a9_d1, ports: rl}
+  - from: a9_d1
+    to: a9_d2
+    ports: rl
+    label: Нет
+  - from: a9_d1
+    to: a9_t1
+    ports: tt
+    label: 'Да: тост «Сохранено», ссылка «Посмотреть»'
+    label_at: mid
+    corridor: {lane: L0, dy: -94.0}
+  - from: a9_d2
+    to: a9_m1
+    ports: tb
+    label: Нет
+  - from: a9_d2
+    to: a9_t2
+    ports: rl
+    label: Да
+  - from: a9_t2
+    to: a9_end
+    ports: bb
+    label: окно не повторяется
+    label_at: mid
+    corridor: {lane: L1, dy: 92.0}
+  - {from: a9_m1, to: a9_d3, ports: rl}
+  - from: a9_d3
+    to: a9_in1
+    ports: rl
+    label: Создать
+  - from: a9_d3
+    to: a9_end
+    ports: tt
+    label: 'Позже: окно не повторяется, выбор живёт в браузере'
+    label_at: mid
+    corridor: {lane: L0, dy: -80.0}
+  - {from: a9_in1, to: a9_mail, ports: rt}
+  - {from: a9_mail, to: a9_in2, ports: rb}
+  - {from: a9_in2, to: a9_p3, ports: rt}
+  - {from: a9_p3, to: a9_t1, ports: rl}
+  - {from: a9_t1, to: a9_end, ports: rb}
+  - {from: a10_s, to: a10_p1, ports: rl}
+  - {from: a10_p1, to: a10_in1, ports: rb}
+  - {from: a10_in1, to: a10_d1, ports: rl}
+  - from: a10_d1
+    to: a10_p2
+    ports: rt
+    label: Да
+  - from: a10_d1
+    to: a10_end
+    ports: tt
+    label: 'Нет: возвращается в поиск и сохраняет ещё'
+    label_at: mid
+    corridor: {lane: L0, dy: -94.0}
+  - {from: a10_p2, to: a10_in2, ports: rb}
+  - {from: a10_in2, to: a10_d2, ports: rl}
+  - from: a10_d2
+    to: a10_p3
+    ports: rl
+    label: Да
+  - from: a10_d2
+    to: a10_end
+    ports: tt
+    label: 'Нет: консультация или возврат в поиск'
+    label_at: mid
+    corridor: {lane: L0, dy: -70.0}
+  - {from: a10_p3, to: a10_end, ports: rl}
+  - from: b6
+    to: a6_s
+    ports: bb
+    label: блок 7 правее; после него снова вводит условия
+    label_at: mid
+    dash: true
+    corridor: {lane: L6, dy: 50.0}
+  - from: b5
+    to: a5_s
+    ports: bb
+    label: блок 6 правее; после него снова сравнивает
+    label_at: mid
+    dash: true
+    corridor: {lane: L6, dy: 72.0}
+  - from: b7
+    to: a7_s
+    ports: bb
+    label: блок 8 правее; после него переходит к выбору варианта
+    label_at: mid
+    dash: true
+    corridor: {lane: L6, dy: 94.0}
+  - from: b9
+    to: a9_s
+    ports: bb
+    label: блок 9 правее; после него снова в выдачу
+    label_at: mid
+    dash: true
+    corridor: {lane: L6, dy: 108.0}
+  - from: b10
+    to: a10_s
+    ports: bb
+    label: блок 10 правее; после него к выбору варианта
+    label_at: mid
+    dash: true
+    corridor: {lane: L6, dy: 124.0}
+  - from: n_b8
+    to: a7_s
+    ports: tt
+    label: блок 8 правее; после него возвращается к «большой кнопке»
+    label_at: mid
+    dash: true
+    corridor: {lane: L0, dy: -116.0}
+rows:
+- id: goal
+  label: Цель этапа
+  type: goal
+- id: actions
+  label: Действия клиента
+- id: expect
+  label: Ожидания и мысли клиента
+- id: touch
+  label: Точки взаимодействия
+- id: experience
+  label: Опыт клиента
+- id: emotion
+  label: Эмоции клиента
+  type: emotion
+- id: ideas
+  label: Идеи по улучшению клиентского опыта
+- id: inserts
+  label: 'Вставки и вариации в поиске: где и когда показываются (блоки 6–10)'
+- id: screens
+  label: Экраны концепта портала
+  type: screens
+stickies:
+- row: goal
+  stage: s1
+  kind: y
+  text: Понять, что выбор страны и учебного заведения для ребёнка пора начинать, и решить найти варианты
+- row: goal
+  stage: s2
+  kind: y
+  text: Найти сервис, который покажет все варианты, и убедиться, что ему можно доверять
+- row: goal
+  stage: s3
+  kind: y
+  text: 'Выбрать, что искать, и описать задачу: вузы, колледжи, профессии или короткие программы; сменить направление можно в любой момент'
+- row: goal
+  stage: s3
+  kind: gr
+  text: Обязательность полей по категориям не утверждена; карта показывает рабочую логику созвонов 26–27 октября
+- row: goal
+  stage: s4
+  kind: y
+  text: Получить выдачу выбранного направления, сравнить варианты, сохранить подборку и при желании переключиться на соседнее направление
+- row: goal
+  stage: s4
+  kind: y
+  text: 'Выбрать из понравившихся: вуз, колледж, профессию или короткую программу'
+- row: goal
+  stage: s5
+  kind: y
+  text: 'Довести выбор до действия: из профессии перейти к подбору обучения, из вуза, колледжа или короткой программы — к сайту, заявке через портал или услуге; на любом пути взять email и вернуть клиента'
+- row: goal
+  stage: s6
+  kind: y
+  text: Снять сомнение и сузить выбор до 2–3 вариантов за 15 минут с живым человеком
+- row: goal
+  stage: s7
+  kind: y
+  text: 'Определить направление, под которое искать образование: диагностика, подробный отчёт, ИИ-консультант, повторное прохождение для сравнения'
+- row: goal
+  stage: s7
+  kind: gr
+  text: Отчёт — ориентир, а не диагностика; поступление не гарантируется
+- row: goal
+  stage: s8
+  kind: y
+  text: 'Довести выбор до поступления: сопровождение подачи, документов и визы; пакет для второго ребёнка; возможны подписки (пока не проработаны)'
+- row: goal
+  stage: s8
+  kind: ghost
+  text: Услуги агентства как каталог пока не определены
+- row: goal
+  stage: s9
+  kind: y
+  text: 'Сохранить выбор без трения и только потом попросить аккаунт: клиент не теряет действие'
+- row: goal
+  stage: s9
+  kind: gr
+  text: 'Аккаунт без пароля: email и код из письма; образцы — Skyscanner, Авиасейлс, UCAS (docs/29)'
+- row: goal
+  stage: s10
+  kind: y
+  text: Сузить сохранённое до короткого списка и сравнить варианты на одном экране, затем перейти к «большой кнопке»
+- row: actions
+  col: 0
+  kind: y
+  id: s1a1
+  text: 'Живёт обычной жизнью: школа, экзамены, разговоры о том, что будет после класса'
+- row: actions
+  col: 1
+  kind: y
+  id: s1a2
+  text: 'Встречает материалы: пост или видео об учёбе за границей, статью «что делать после 9 класса», рекламу, рассказ другого родителя'
+- row: actions
+  col: 2
+  kind: y
+  id: s1a3
+  text: 'Замечает: пора разобраться, времени мало, а вариантов он не знает'
+- row: actions
+  col: 3
+  kind: b
+  id: s1a4
+  text: Решает пойти в поисковую систему и найти, где смотреть варианты
+- row: actions
+  col: 4
+  kind: y
+  id: s2a1
+  text: Открывает поисковую систему или спрашивает нейросеть; или вводит название портала, которое запомнил
+- row: actions
+  col: 4
+  kind: y
+  id: s2a2
+  text: 'Вводит запрос своими словами: «хорошие вузы для сына, который любит физику», «кем может стать ребёнок, который любит рисовать», «куда поступать с такими баллами»'
+- row: actions
+  col: 6
+  kind: y
+  id: s2a3
+  text: Смотрит выдачу, сравнивает сайты и выбирает ссылку на портал
+- row: actions
+  col: 7
+  kind: b
+  id: s2a4
+  text: 'Попадает на главную страницу портала: страна, язык и валюта подставлены, над поиском переключатель направлений'
+- row: actions
+  col: 8
+  kind: y
+  id: s2a5
+  text: Видит переключатель «Вузы · Колледжи · Профессии · Короткие программы» и форму поиска; язык, страна и валюта меняются одним окном «Региональные настройки»
+- row: actions
+  col: 9
+  kind: b
+  id: s3a1
+  text: 'Выбирает, что искать: вузы, колледжи, профессии или короткие программы; переключатель остаётся над поиском'
+- row: actions
+  col: 10
+  kind: y
+  id: s3a2
+  text: 'Видит форму выбранного направления: вузы — откуда, где учиться, когда, что изучать, куда поступаете; колледжи — где, год, специальность; профессии — откуда, где учиться, где работать, интересы и навыки; короткие программы — откуда, где учиться, онлайн или очно, период, тема, длительность, возраст на старте'
+- row: actions
+  col: 11
+  kind: y
+  id: s3a3
+  text: 'Вводит основные условия: откуда (страна), где учиться или онлайн, когда начать, что изучать, куда поступаете'
+- row: actions
+  col: 12
+  kind: y
+  id: s3a4
+  text: 'Видит, что портал не переспрашивает известное: ответы квиза и запроса уже подставлены и редактируются'
+- row: actions
+  col: 13
+  kind: b
+  id: s3a5
+  text: Отвечает на недостающие вопросы своей категории
+- row: actions
+  col: 14
+  kind: y
+  id: s3a6
+  text: 'По желанию уточняет: для кого ищет, возраст, языки учащегося, срок, бюджет, город, навыки; «пока не определился» и «без ограничения» — разные ответы'
+- row: actions
+  col: 15
+  kind: y
+  id: s4a1
+  text: 'Смотрит выдачу своего направления: цены в выбранной валюте и шансы по баллам, спрос и зарплаты, даты (срок подачи с годом) и формат'
+- row: actions
+  col: 16
+  kind: y
+  id: s4a2
+  text: Не нашёл — меняет условия или переключает направление
+- row: actions
+  col: 17
+  kind: y
+  id: s4a3
+  text: Фильтрует, сортирует (в том числе «дороже» и по сроку подачи), сохраняет сердечком, из сохранённого собирает короткий список до 4 и сравнивает, включает напоминания о сроках
+- row: actions
+  col: 18
+  kind: y
+  id: s4a4
+  text: 'Нажимает «Сохранить», «Поделиться» или сердечко: вариант сохраняется сразу, затем окно аккаунта (момент 2: email, код из письма, «Позже»); или отправляет ссылкой ребёнку и семье'
+- row: actions
+  col: 19
+  kind: b
+  id: s4a5
+  text: 'Отвечает, подошла ли подборка: «да» — портал предлагает создать аккаунт и сохранить (момент 1); «нет» — меняет условия'
+- row: actions
+  col: 20
+  kind: y
+  id: s4a6
+  text: 'Переключается на соседнее направление: из вуза смотрит профессии, из профессии — вузы и программы'
+- row: actions
+  col: 23
+  kind: b
+  id: s4a7
+  text: Решает, какой вариант выбрать
+- row: actions
+  col: 24
+  kind: b
+  id: s5a0
+  text: 'Нажимает на вариант: «Где учиться» у профессии, «большая кнопка» у вуза, колледжа или программы'
+- row: actions
+  col: 25
+  kind: y
+  id: s5a0b
+  text: 'Профессия: переходит к подбору вуза, колледжа или короткой программы, фильтры уже подставлены'
+- row: actions
+  col: 26
+  kind: b
+  id: s5a1
+  text: Нажимает «большую кнопку» у карточки
+- row: actions
+  col: 27
+  kind: y
+  id: s5p
+  text: 'Видит окно с вариантами: перейти на сайт, подать заявку через портал, взять услугу или пакет'
+- row: actions
+  col: 28
+  kind: b
+  id: s5c
+  text: 'Выбирает: сам на сайт, заявка через портал или услуга'
+- row: actions
+  col: 28
+  kind: ghost
+  id: s5app
+  text: Готовит заявку через портал и вносит небольшую оплату (гипотеза)
+- row: actions
+  col: 28
+  kind: y
+  id: s5svc
+  text: 'Или выбирает услугу: поступление, подбор «под ключ», поступление плюс виза'
+- row: actions
+  col: 29
+  kind: y
+  id: s5m
+  text: Создаёт аккаунт по email и коду из письма перед переходом на сайт, чтобы сохранить подборку и получать напоминания (момент 3); можно пропустить
+- row: actions
+  col: 30
+  kind: y
+  id: s5a2
+  text: Изучает требования и подаёт заявку на сайте учреждения; вкладка портала остаётся открытой
+- row: actions
+  col: 31
+  kind: y
+  id: s5r
+  text: 'Если не вернулся сам — получает письмо: что дальше (виза, курсы, следующая услуга)'
+- row: actions
+  col: 32
+  kind: y
+  id: s5a3
+  text: 'Возвращается на портал и отмечает статус: подал, записался, пока думает'
+- row: actions
+  col: 33
+  kind: y
+  id: s5a4
+  text: Получает напоминания о сроках подачи и начале обучения
+- row: actions
+  col: 36
+  kind: y
+  id: m5a1
+  text: Видит плашку «Не уверены? 15 минут с консультантом»
+- row: actions
+  col: 38
+  kind: y
+  id: m5a2
+  text: Выбирает время в своём часовом поясе
+- row: actions
+  col: 39
+  kind: y
+  id: m5a3
+  text: Оставляет вопросы; подборка передаётся консультанту
+- row: actions
+  col: 40
+  kind: b
+  id: m5a4
+  text: Проводит видеозвонок
+- row: actions
+  col: 42
+  kind: y
+  id: m5a5
+  text: Получает резюме и сохранённые варианты в «Сохранённом»
+- row: actions
+  col: 43
+  kind: y
+  id: m5a6
+  text: Возвращается в поиск с суженным выбором
+- row: actions
+  col: 46
+  kind: y
+  id: m6a1
+  text: Видит сменяющийся баннер «Не знаете, с чего начать? Начните с бесплатного теста»
+- row: actions
+  col: 48
+  kind: y
+  id: m6a2
+  text: Проходит бесплатный скрининг; перед началом портал предлагает создать аккаунт (момент 4)
+- row: actions
+  col: 49
+  kind: y
+  id: m6a3
+  text: Получает бесплатную карту рисков выбора
+- row: actions
+  col: 52
+  kind: r
+  id: m6out
+  text: Часть клиентов уходит на цене
+- row: actions
+  col: 53
+  kind: b
+  id: m6a4
+  text: Нажимает «пройти профориентацию» и оплачивает
+- row: actions
+  col: 54
+  kind: y
+  id: m6a5
+  text: Проходит диагностику 25–35 минут
+- row: actions
+  col: 56
+  kind: b
+  id: m6a6
+  text: Получает отчёт; направление подставлено в фильтры поиска
+- row: actions
+  col: 59
+  kind: y
+  id: m7a1
+  text: Видит плашку у выбранного варианта
+- row: actions
+  col: 61
+  kind: y
+  id: m7a2
+  text: Смотрит состав пакета и цену
+- row: actions
+  col: 63
+  kind: b
+  id: m7a3
+  text: Оставляет заявку или оплачивает
+- row: actions
+  col: 64
+  kind: y
+  id: m7a4
+  text: Агентство ведёт подачу, клиент следит в «Сохранённом»
+- row: actions
+  col: 64
+  kind: ghost
+  id: m7g
+  text: Услуги агентства через платформу (гипотеза)
+- row: actions
+  col: 66
+  kind: y
+  id: m7a5
+  text: Получает письмо с просьбой об отзыве
+- row: actions
+  col: 68
+  kind: y
+  id: m7a6
+  text: 'Получает предложение: профориентация для второго ребёнка'
+- row: actions
+  col: 70
+  kind: y
+  id: n9a1
+  text: Нажимает сердечко у карточки вуза, колледжа, программы или профессии (или у статьи)
+- row: actions
+  col: 71
+  kind: y
+  id: n9a2
+  text: 'Видит, что сердечко закрасилось: вариант сохранён сразу, без регистрации'
+- row: actions
+  col: 74
+  kind: y
+  id: n9a3
+  text: 'Видит окно «Не потеряйте сохранённое»: напомним о сроках подачи и сохраним выбор на любом устройстве'
+- row: actions
+  col: 75
+  kind: b
+  id: n9a4
+  text: 'Выбирает: «Создать аккаунт» или «Позже»'
+- row: actions
+  col: 75
+  kind: r
+  id: n9out
+  text: 'Часть клиентов нажимает «Позже»: выбор живёт только в браузере, окно не повторяется'
+- row: actions
+  col: 76
+  kind: y
+  id: n9a5
+  text: Вводит email или выбирает вход через Google, Apple, Facebook
+- row: actions
+  col: 78
+  kind: y
+  id: n9a6
+  text: Вводит код из письма; пароль не нужен
+- row: actions
+  col: 79
+  kind: y
+  id: n9a7
+  text: 'Получает аккаунт: сохранённое привязано, напоминания о сроках включены'
+- row: actions
+  col: 80
+  kind: y
+  id: n9a8
+  text: Видит тост «Сохранено. Напомним о сроках подачи» со ссылкой «Посмотреть»
+- row: actions
+  col: 83
+  kind: y
+  id: n10a1
+  text: Открывает «Сохранённое» по сердечку в шапке
+- row: actions
+  col: 84
+  kind: y
+  id: n10a2
+  text: 'Видит два счётчика и коллекции по категориям: вузы, колледжи, программы, профессии, подборки, статьи, заявки'
+- row: actions
+  col: 85
+  kind: y
+  id: n10a3
+  text: Добавляет варианты в короткий список (до 4) и включает «Напоминать о сроке»
+- row: actions
+  col: 85
+  kind: r
+  id: n10out
+  text: 'Если вариантов меньше двух, сравнивать нечего: возвращается в поиск сохранять ещё'
+- row: actions
+  col: 86
+  kind: b
+  id: n10a4
+  text: 'Нажимает «Сравнить»: видит до 4 колонок, лучшее значение подсвечено'
+- row: actions
+  col: 87
+  kind: y
+  id: n10a5
+  text: Включает «Только различия», убирает лишнюю колонку
+- row: actions
+  col: 88
+  kind: b
+  id: n10a6
+  text: Решает, какой вариант выбрать
+- row: actions
+  col: 89
+  kind: y
+  id: n10a7
+  text: Нажимает «большую кнопку» у выбранного варианта
+- row: expect
+  col: 0
+  kind: y
+  text: «Какие крутые вузы вообще есть, где моему ребёнку будет хорошо учиться?»
+- row: expect
+  col: 0
+  kind: y
+  text: «Хватит ли баллов и поступит ли он туда, куда мы хотим?»
+- row: expect
+  col: 1
+  kind: y
+  text: «Кем будет работать мой ребёнок и будет ли он востребован?»
+- row: expect
+  col: 1
+  kind: y
+  text: «С чего начать, чтобы ничего не упустить?»
+- row: expect
+  col: 2
+  kind: y
+  text: «Не окажется ли его образование ненужным, когда он закончит?»
+- row: expect
+  col: 2
+  kind: y
+  text: '«Всё меняется так быстро: как успеть и не потерять годы?»'
+- row: expect
+  col: 3
+  kind: y
+  text: «В чём он по-настоящему силён и не ошибаемся ли мы?»
+- row: expect
+  col: 3
+  kind: y
+  text: '«Я вижу его одним, супруг — другим: как нам договориться?»'
+- row: expect
+  col: 4
+  kind: y
+  text: Независимый справочник, а не реклама вуза
+- row: expect
+  col: 6
+  kind: y
+  text: Понять за секунды, подойдёт ли сервис
+- row: expect
+  col: 8
+  kind: y
+  text: «А можно ли этому сайту верить?»
+- row: expect
+  col: 9
+  kind: y
+  text: 'Понять, с чего начать: с профессии, с вуза, с колледжа или с короткой программы'
+- row: expect
+  col: 10
+  kind: y
+  text: 'Не вводить то, что уже известно: из запроса, квиза и прошлых выборов'
+- row: expect
+  col: 12
+  kind: y
+  text: Страна нужна всем; город необязателен
+- row: expect
+  col: 13
+  kind: y
+  text: Возраст и языки учащегося — значимые фильтры; язык интерфейса, язык обучения и изучаемый язык — разные вещи
+- row: expect
+  col: 14
+  kind: y
+  text: «Пока не определился» и «без ограничения» по бюджету — разные ответы
+- row: expect
+  col: 15
+  kind: y
+  text: 'Вузы и колледжи: цена за весь срок, шансы по баллам, визы, сроки подачи'
+- row: expect
+  col: 17
+  kind: y
+  text: 'Профессии: спрос, зарплатная вилка в своей валюте, тренды, риск автоматизации'
+- row: expect
+  col: 19
+  kind: y
+  text: 'Короткие программы: даты, формат, цена, место'
+- row: expect
+  col: 21
+  kind: y
+  text: 'Данные свежие: цены, сроки и зарплаты не устарели'
+- row: expect
+  col: 23
+  kind: y
+  text: Подборка сохраняется; её можно показать ребёнку и семье
+- row: expect
+  col: 25
+  kind: y
+  text: Понять, чем заявка через портал и услуга отличаются от простого перехода на сайт
+- row: expect
+  col: 28
+  kind: y
+  text: Из профессии быстро увидеть, где ей учиться
+- row: expect
+  col: 30
+  kind: y
+  text: Ссылка ведёт на нужную программу; вкладка портала остаётся открытой
+- row: expect
+  col: 33
+  kind: y
+  text: Понимать, что делать после подачи
+- row: expect
+  col: 36
+  kind: y
+  text: Человек, который знает нужную страну и возраст ребёнка
+- row: expect
+  col: 38
+  kind: y
+  text: Помощь выбрать, а не продажа
+- row: expect
+  col: 41
+  kind: y
+  text: Большинство опрошенных родителей хотят видеозвонок до покупки
+- row: expect
+  col: 43
+  kind: y
+  text: Поверит ли автоотчёту без человека?
+- row: expect
+  col: 46
+  kind: y
+  text: «Зачем ребёнку профориентация, ему же в вуз?»
+- row: expect
+  col: 49
+  kind: y
+  text: «Куда поступать» — вот что нужно
+- row: expect
+  col: 53
+  kind: y
+  text: «Отчёт получен, а что делать дальше?»
+- row: expect
+  col: 56
+  kind: y
+  text: 'Сомнение: стоит ли платить за полный разбор'
+- row: expect
+  col: 60
+  kind: y
+  text: Что делать дальше после выбора вуза
+- row: expect
+  col: 64
+  kind: y
+  text: Кто отвечает, если откажут
+- row: expect
+  col: 68
+  kind: y
+  text: Контроль над данными ребёнка
+- row: expect
+  col: 71
+  kind: y
+  text: Сохранить, не отвлекаясь на регистрацию
+- row: expect
+  col: 74
+  kind: y
+  text: Не потерять выбор, если закрою вкладку
+- row: expect
+  col: 77
+  kind: y
+  text: Не придумывать пароль
+- row: expect
+  col: 80
+  kind: y
+  text: Понять, зачем нужен аккаунт
+- row: expect
+  col: 83
+  kind: y
+  text: Видеть всё сохранённое по категориям
+- row: expect
+  col: 85
+  kind: y
+  text: Сравнить 2–4 варианта и понять, какой лучше
+- row: expect
+  col: 87
+  kind: y
+  text: Получить напоминание о сроке подачи
+- row: expect
+  col: 89
+  kind: y
+  text: Не вводить условия заново
+- row: touch
+  col: 0
+  kind: w
+  text: Соцсети и видео
+- row: touch
+  col: 0
+  kind: w
+  text: Родительский чат и школа
+- row: touch
+  col: 1
+  kind: w
+  text: Новости и статьи
+- row: touch
+  col: 1
+  kind: w
+  text: Вебинар
+- row: touch
+  col: 2
+  kind: w
+  text: Реклама ВК и других площадок
+- row: touch
+  col: 3
+  kind: w
+  text: Рассказ другого родителя
+- row: touch
+  col: 4
+  kind: w
+  text: Яндекс и Google
+- row: touch
+  col: 5
+  kind: w
+  text: Нейросети с цитатой и ссылкой
+- row: touch
+  col: 6
+  kind: w
+  text: Главная страница с переключателем направлений
+- row: touch
+  col: 7
+  kind: w
+  text: Страницы вузов, колледжей, программ
+- row: touch
+  col: 8
+  kind: gr
+  text: 'Заменители: сайты вузов, агрегаторы, ВУЗ-навигатор, ChatGPT'
+- row: touch
+  col: 9
+  kind: w
+  text: Переключатель «Вузы · Колледжи · Профессии · Короткие программы»
+- row: touch
+  col: 10
+  kind: w
+  text: 'Форма выбранного направления: откуда, какое образование, где или онлайн, когда, что изучать'
+- row: touch
+  col: 11
+  kind: w
+  text: Подсказки и режимы «куда угодно», «кем угодно»
+- row: touch
+  col: 12
+  kind: w
+  text: 'Квиз: ответы становятся редактируемыми фильтрами'
+- row: touch
+  col: 13
+  kind: w
+  text: 'Дополнительные фильтры: для кого, возраст, языки, срок, бюджет, город, навыки'
+- row: touch
+  col: 14
+  kind: gr
+  text: 'Дорожки портала по направлениям: у каждого своя форма и свои вопросы'
+- row: touch
+  col: 15
+  kind: w
+  text: Выдача и карточки выбранного направления
+- row: touch
+  col: 16
+  kind: w
+  text: Календарь цен и сроков; спрос и зарплаты по странам
+- row: touch
+  col: 17
+  kind: w
+  text: Сравнение и избранное
+- row: touch
+  col: 18
+  kind: w
+  text: Кнопки «Сохранить подборку», «Поделиться» и вопрос «Подборка подошла?»
+- row: touch
+  col: 20
+  kind: w
+  text: 'Слежение: письмо за 30 дней до дедлайна; за спросом и новыми профессиями'
+- row: touch
+  col: 21
+  kind: w
+  text: Сердечко и «Сохранённое»
+- row: touch
+  col: 22
+  kind: w
+  text: Чат-ассистент
+- row: touch
+  col: 23
+  kind: gr
+  text: 'Плашки и баннеры в выдаче: подпроцессы блоков 6–8 — правее'
+- row: touch
+  col: 24
+  kind: w
+  text: «Где учиться» в карточке профессии; «большая кнопка» в карточке вуза, колледжа, программы
+- row: touch
+  col: 26
+  kind: w
+  text: Окно с вариантами
+- row: touch
+  col: 27
+  kind: w
+  text: 'Страница услуг и провайдеров: поступление, виза, пакеты'
+- row: touch
+  col: 29
+  kind: w
+  text: Лист ожидания для услуг и программ, которых ещё нет
+- row: touch
+  col: 31
+  kind: w
+  text: Сайт учреждения в новой вкладке
+- row: touch
+  col: 32
+  kind: w
+  text: 'Письмо: что дальше и напоминание о сроках'
+- row: touch
+  col: 34
+  kind: w
+  text: Сердечко и «Сохранённое»
+- row: touch
+  col: 35
+  kind: w
+  text: Плашка в выдаче
+- row: touch
+  col: 37
+  kind: w
+  text: Календарь записи
+- row: touch
+  col: 39
+  kind: w
+  text: Письмо с календарём
+- row: touch
+  col: 40
+  kind: w
+  text: Видеозвонок
+- row: touch
+  col: 42
+  kind: w
+  text: Резюме в «Сохранённом»
+- row: touch
+  col: 44
+  kind: gr
+  text: Консультацию ведёт специалист с нужными компетенциями
+- row: touch
+  col: 45
+  kind: w
+  text: Баннер в поиске
+- row: touch
+  col: 47
+  kind: w
+  text: Скрининг
+- row: touch
+  col: 49
+  kind: w
+  text: Страница предложения
+- row: touch
+  col: 51
+  kind: w
+  text: Оплата
+- row: touch
+  col: 53
+  kind: w
+  text: 'Письма: не нажал купить, заказ не оплачен, отчёт готов'
+- row: touch
+  col: 55
+  kind: w
+  text: Сердечко и «Сохранённое»
+- row: touch
+  col: 57
+  kind: gr
+  text: 'Цены разные: зависят от канала и страны; по уникальной ссылке партнёра возможна дополнительная скидка'
+- row: touch
+  col: 59
+  kind: w
+  text: Плашка у избранного
+- row: touch
+  col: 61
+  kind: w
+  text: Страница пакета
+- row: touch
+  col: 63
+  kind: w
+  text: Оплата
+- row: touch
+  col: 65
+  kind: w
+  text: 'Страница «Сохранённое»: заявки'
+- row: touch
+  col: 67
+  kind: w
+  text: 'Письма: отзыв, второй ребёнок'
+- row: touch
+  col: 69
+  kind: w
+  text: Возможны подписки; состав и условия пока не определены
+- row: touch
+  col: 71
+  kind: w
+  text: Сердечко у карточки
+- row: touch
+  col: 73
+  kind: w
+  text: 'Окно «Не потеряйте сохранённое» (образец — Skyscanner: «Sign up / Maybe later»)'
+- row: touch
+  col: 76
+  kind: w
+  text: Письмо с кодом
+- row: touch
+  col: 78
+  kind: w
+  text: Тост со ссылкой «Посмотреть»
+- row: touch
+  col: 80
+  kind: gr
+  text: 'Внешний вход: Google, Apple, Facebook'
+- row: touch
+  col: 82
+  kind: w
+  text: Страница «Сохранённое» (образец — «Favourites» в UCAS)
+- row: touch
+  col: 84
+  kind: w
+  text: Короткий список до 4
+- row: touch
+  col: 86
+  kind: w
+  text: 'Экран сравнения: лучшее подсвечено, «Только различия»'
+- row: touch
+  col: 88
+  kind: w
+  text: Переключатель «Напоминать о сроке»
+- row: touch
+  col: 90
+  kind: gr
+  text: 'Данные ребёнка в аккаунте родителя: юридическая проверка (docs/05)'
+- row: experience
+  col: 0
+  kind: g
+  text: Материал называет конкретную проблему и показывает, что выход есть
+- row: experience
+  col: 1
+  kind: g
+  text: Рассказ знакомого убеждает сильнее рекламы
+- row: experience
+  col: 2
+  kind: r
+  text: 'Материалов много, они противоречат друг другу: непонятно, с чего начать'
+- row: experience
+  col: 3
+  kind: r
+  text: 'Реклама обещает слишком много: ей не верят'
+- row: experience
+  col: 4
+  kind: g
+  text: Язык, страна «откуда» и валюта подставлены сами
+- row: experience
+  col: 5
+  kind: g
+  text: Первый экран — переключатель направлений и форма поиска, а не описание компании
+- row: experience
+  col: 7
+  kind: g
+  text: Вузы, колледжи, профессии и короткие программы — в одном месте
+- row: experience
+  col: 8
+  kind: r
+  text: 'Незнакомый бренд: нужен сигнал доверия — источник и дата данных'
+- row: experience
+  col: 9
+  kind: g
+  text: Одно место для четырёх видов поиска
+- row: experience
+  col: 9
+  kind: r
+  text: Текущая локация и гражданство — разные вещи; путаница меняет цену и требования
+- row: experience
+  col: 10
+  kind: g
+  text: Условия (страна, возраст ребёнка) переносятся между направлениями
+- row: experience
+  col: 10
+  kind: r
+  text: Часть полей в прототипе предложена ИИ и не согласована на созвоне
+- row: experience
+  col: 11
+  kind: g
+  text: Портал спрашивает только недостающее
+- row: experience
+  col: 12
+  kind: g
+  text: Ответы квиза редактируются, а не вводятся заново
+- row: experience
+  col: 13
+  kind: r
+  text: Клиент не понимает, чем направления отличаются, и выбирает наугад
+- row: experience
+  col: 14
+  kind: r
+  text: 'Слишком много вопросов до первой выдачи: набор обязательных полей по категориям не утверждён'
+- row: experience
+  col: 15
+  kind: g
+  text: Один экран вместо десятков сайтов
+- row: experience
+  col: 16
+  kind: g
+  text: 'Всё на языке клиента: названия, программы, требования'
+- row: experience
+  col: 17
+  kind: g
+  text: В карточке вуза видны профессии, в карточке профессии — вузы
+- row: experience
+  col: 18
+  kind: g
+  text: 'Сохранить и поделиться: можно показать жене или сыну'
+- row: experience
+  col: 20
+  kind: r
+  text: 'Слишком много вариантов: клиент теряется'
+- row: experience
+  col: 21
+  kind: r
+  text: 'Цены, сроки и зарплаты меняются: данные нужно держать свежими'
+- row: experience
+  col: 22
+  kind: r
+  text: Перевод программ и названий профессий может исказить смысл
+- row: experience
+  col: 23
+  kind: r
+  text: Баннеры в выдаче раздражают, если показаны до первой пользы
+- row: experience
+  col: 24
+  kind: g
+  text: Профессия переходит в подбор обучения с готовыми фильтрами
+- row: experience
+  col: 26
+  kind: g
+  text: 'Три понятных пути на выбор: сам, через портал или с услугой'
+- row: experience
+  col: 27
+  kind: g
+  text: Подборки, варианты и статус хранятся в «Сохранённом»
+- row: experience
+  col: 29
+  kind: r
+  text: Клиент уходит с портала и может не вернуться
+- row: experience
+  col: 31
+  kind: r
+  text: Портал не видит, подал ли клиент заявку, пока тот не отметит
+- row: experience
+  col: 32
+  kind: r
+  text: Топовые вузы принимают заявки вручную и за лиды платить не станут
+- row: experience
+  col: 34
+  kind: r
+  text: Набор вариантов в окне ещё не утверждён; часть услуг — только лист ожидания
+- row: experience
+  col: 36
+  kind: g
+  text: Консультант видит подборку клиента до звонка
+- row: experience
+  col: 38
+  kind: g
+  text: Запись за минуту, время в часовом поясе клиента
+- row: experience
+  col: 41
+  kind: r
+  text: 'Консультантов не хватит при росте: нужен лимит слотов'
+- row: experience
+  col: 43
+  kind: r
+  text: Если звонок превратится в продажу, доверие упадёт
+- row: experience
+  col: 46
+  kind: g
+  text: Бесплатный первый шаг; оплата только за полный разбор
+- row: experience
+  col: 48
+  kind: g
+  text: 'Результат сразу становится фильтрами: направление уже выбрано'
+- row: experience
+  col: 51
+  kind: r
+  text: 'Возможна низкая конверсия в оплату: часть клиентов доходит до цены и уходит'
+- row: experience
+  col: 54
+  kind: r
+  text: 'Скрининг длинный: содержит много вопросов'
+- row: experience
+  col: 56
+  kind: r
+  text: Баннер до первой пользы раздражает
+- row: experience
+  col: 59
+  kind: g
+  text: 'Вариант и сроки уже в «Сохранённом»: клиенту не нужно пересказывать'
+- row: experience
+  col: 61
+  kind: g
+  text: Родитель ведёт несколько профилей детей
+- row: experience
+  col: 64
+  kind: r
+  text: Состав и цена пакетов не заданы
+- row: experience
+  col: 66
+  kind: r
+  text: Плашку могут воспринять как навязывание
+- row: experience
+  col: 68
+  kind: r
+  text: Агентство отвечает за подачу, а не за решение приёмной комиссии
+- row: experience
+  col: 71
+  kind: g
+  text: Сердечко срабатывает сразу, действие не теряется
+- row: experience
+  col: 74
+  kind: g
+  text: 'Без пароля: полей меньше, чем у UCAS'
+- row: experience
+  col: 77
+  kind: r
+  text: 'Часть клиентов нажмёт «Позже» и не вернётся: выбор живёт только в браузере'
+- row: experience
+  col: 80
+  kind: r
+  text: 'Письмо с кодом может попасть в спам: вход встанет'
+- row: experience
+  col: 83
+  kind: g
+  text: 'Сравнение отвечает одной строкой: «Дешевле всего», «Выше совпадение»'
+- row: experience
+  col: 85
+  kind: g
+  text: Короткий список снижает перегруз выбором
+- row: experience
+  col: 87
+  kind: r
+  text: 'Сердечко одно: чтобы сравнить, варианты нужно сохранить'
+- row: experience
+  col: 89
+  kind: r
+  text: 'Напоминания пока не отправляются: тексты писем — docs/21'
+- row: emotion
+  col: 0
+  level: 0
+  kind: ey
+  text: 'Спокойствие: жизнь идёт своим порядком, выбор ещё не ощущается'
+- row: emotion
+  col: 2
+  level: -1
+  kind: r
+  text: 'Беспокойство: «время идёт, а я не знаю, с чего начать»'
+- row: emotion
+  col: 3
+  level: 1
+  kind: g
+  text: 'Решимость: «надо разобраться и найти варианты»'
+- row: emotion
+  col: 4
+  level: 0
+  kind: ey
+  text: 'Деловой интерес: «посмотрим, что здесь есть»'
+- row: emotion
+  col: 6
+  level: -1
+  kind: r
+  text: 'Недоверие: «ещё один агрегатор, кто за ним стоит?»'
+- row: emotion
+  col: 8
+  level: 1
+  kind: g
+  text: 'Облегчение: «нашёл сразу, и всё на моём языке»'
+- row: emotion
+  col: 9
+  level: 0
+  kind: ey
+  text: 'Любопытство: «что именно здесь можно искать»'
+- row: emotion
+  col: 10
+  level: 0
+  kind: ey
+  text: 'Сосредоточенность: «заполняю форму»'
+- row: emotion
+  col: 11
+  level: 1
+  kind: g
+  text: 'Облегчение: «страна и язык уже подставлены»'
+- row: emotion
+  col: 12
+  level: 1
+  kind: g
+  text: 'Спокойствие: «ничего не спрашивают дважды»'
+- row: emotion
+  col: 13
+  level: -1
+  kind: r
+  text: 'Лёгкое раздражение: «ещё вопросы до результата»'
+- row: emotion
+  col: 14
+  level: 0
+  kind: ey
+  text: 'Нейтрально: «уточню, если захочу»'
+- row: emotion
+  col: 15
+  level: 1
+  kind: g
+  text: 'Азарт: «вижу всё сразу, как в билетах»'
+- row: emotion
+  col: 17
+  level: -1
+  kind: r
+  text: 'Растерянность: «вариантов слишком много, как выбрать»'
+- row: emotion
+  col: 18
+  level: 0
+  kind: ey
+  text: 'Сосредоточенность: сравнивает варианты рядом'
+- row: emotion
+  col: 20
+  level: -1
+  kind: r
+  text: 'Тревога: «хватит ли баллов, успеем ли подать»'
+- row: emotion
+  col: 21
+  level: 1
+  kind: g
+  text: 'Уверенность: «вот эти варианты нам подходят»'
+- row: emotion
+  col: 23
+  level: 0
+  kind: ey
+  text: 'Нейтрально: «посмотрю соседнее направление»'
+- row: emotion
+  col: 25
+  level: 0
+  kind: ey
+  text: 'Решимость: «выбор сделан, осталось понять, как подавать»'
+- row: emotion
+  col: 29
+  level: 1
+  kind: g
+  text: 'Уверенность: «понятно, что делать самому, а где помочь»'
+- row: emotion
+  col: 33
+  level: -1
+  kind: r
+  text: 'Опасение: «не упустить бы что-то в заявке»'
+- row: emotion
+  col: 37
+  level: -1
+  kind: r
+  text: 'Неуверенность: «не знаю, правильно ли выбираю»'
+- row: emotion
+  col: 42
+  level: 1
+  kind: g
+  text: 'Облегчение: «живой человек помог сузить выбор»'
+- row: emotion
+  col: 48
+  level: 0
+  kind: ey
+  text: 'Любопытство: «что покажет тест про моего ребёнка»'
+- row: emotion
+  col: 54
+  level: -1
+  kind: r
+  text: 'Настороженность: «за что платить и поможет ли это»'
+- row: emotion
+  col: 61
+  level: -1
+  kind: r
+  text: 'Опасение: «опять будут продавать»'
+- row: emotion
+  col: 67
+  level: 1
+  kind: g
+  text: 'Спокойствие: «подачу ведут, я вижу статус»'
+- row: emotion
+  col: 72
+  level: 1
+  kind: g
+  text: 'Лёгкость: «нажал, и сохранилось»'
+- row: emotion
+  col: 76
+  level: 0
+  kind: ey
+  text: 'Нейтрально: «зачем мне аккаунт?»'
+- row: emotion
+  col: 80
+  level: -1
+  kind: r
+  text: 'Раздражение: «опять просят почту»'
+- row: emotion
+  col: 83
+  level: 1
+  kind: g
+  text: 'Порядок: «всё собрано в одном месте»'
+- row: emotion
+  col: 86
+  level: 1
+  kind: g
+  text: 'Ясность: «видно, какой дешевле и ближе по сроку»'
+- row: emotion
+  col: 89
+  level: -1
+  kind: r
+  text: 'Тревога: «а если выбрал не тот?»'
+- row: ideas
+  col: 0
+  kind: w
+  text: 'Материалы-подсказки: статьи, видео, посты «с чего начать выбор страны для ребёнка»; в конце — название портала и запрос для поиска; измерить долю входов с таких материалов'
+- row: ideas
+  col: 2
+  kind: w
+  text: Метка повода (экзамен, переезд, лето) в ссылках материалов; сравнить регистрации по поводам
+- row: ideas
+  col: 3
+  kind: w
+  text: Писать материалы языком вопросов клиента («кем будет работать мой ребёнок», «где ему будет хорошо учиться»), а не словом «профориентация»; запросов с этим словом, по словам команды, нет
+- row: ideas
+  col: 4
+  kind: w
+  text: Страницы для каждой пары «страна — направление» на всех языках; измерить долю входов из поиска
+- row: ideas
+  col: 6
+  kind: w
+  text: Подпись источника и даты обновления на каждой карточке
+- row: ideas
+  col: 8
+  kind: w
+  text: Определять «откуда» по геолокации, но дать сменить в один клик; измерить долю смен
+- row: ideas
+  col: 9
+  kind: w
+  text: Переключатель направлений на каждой странице; запоминать последнее направление клиента
+- row: ideas
+  col: 9
+  kind: w
+  text: Вопрос «Нужна помощь с выбором направления?» ведёт в профориентацию, выдачу не скрывает
+- row: ideas
+  col: 10
+  kind: w
+  text: 'Не спрашивать известное: страну, язык, ответы квиза и запроса подставлять сами'
+- row: ideas
+  col: 11
+  kind: w
+  text: Разделить текущую локацию и гражданство; страна обязательна, город — по желанию
+- row: ideas
+  col: 12
+  kind: w
+  text: Развести «пока не определился» и «без ограничения» в бюджете; валюту и единицу периода определить отдельно
+- row: ideas
+  col: 13
+  kind: w
+  text: Для коротких программ спрашивать период (сезон, месяц, даты), для длинных — год; точные даты не требовать
+- row: ideas
+  col: 14
+  kind: w
+  text: 'Квиз в 3–5 шагов: решение о достаточности данных принимается до компоновки шагов'
+- row: ideas
+  col: 15
+  kind: w
+  text: Календарь цен и сроков, как в авиабилетах; спрос и зарплаты по месяцам
+- row: ideas
+  col: 17
+  kind: w
+  text: 'Под подборкой: «Сохранить», «Поделиться» и вопрос «Подошла?»; ответы да и нет копить в статистику'
+- row: ideas
+  col: 18
+  kind: w
+  text: 'Две двери в одну услугу: войти через вуз или через профессию; соседнее направление — в один клик'
+- row: ideas
+  col: 20
+  kind: w
+  text: 'Профориентация даёт индекс соответствия: варианты ранжируются под ребёнка'
+- row: ideas
+  col: 21
+  kind: w
+  text: 'Правило вставок: ни одной плашки до первой полезной выдачи, не больше одной на экран'
+- row: ideas
+  col: 23
+  kind: w
+  text: 'Вузы, профессии и курсы — отдельные страницы выдачи; курсы пока в проработке: контакт и лист ожидания'
+- row: ideas
+  col: 25
+  kind: w
+  text: Из профессии одна кнопка ведёт к вузам, колледжам и коротким программам; фильтры уже подставлены
+- row: ideas
+  col: 27
+  kind: w
+  text: 'Первый запуск без усложнения: циклы «подборка — профориентация — переход на сайт»; главное — взять email и вернуться письмом'
+- row: ideas
+  col: 29
+  kind: w
+  text: 'Окно у большой кнопки: переход на сайт (оплата за клик), заявка через портал, услуги и пакеты («поступление плюс виза»)'
+- row: ideas
+  col: 31
+  kind: w
+  text: 'Монетизация гибридная: клики, затем лиды и заявки, затем услуги'
+- row: ideas
+  col: 33
+  kind: w
+  text: 'Лист ожидания на услуги и программы: проверить спрос, не строя продукт'
+- row: ideas
+  col: 36
+  kind: w
+  text: 'Запустить вручную: считать плашки → записи → состоявшиеся звонки'
+- row: ideas
+  col: 40
+  kind: w
+  text: Сравнить автоматику и автоматику плюс звонок по оплатам
+- row: ideas
+  col: 43
+  kind: w
+  text: Лимит слотов в день и очередь ожидания
+- row: ideas
+  col: 47
+  kind: w
+  text: 'Подставлять результат диагностики в фильтры «что изучать»: мост между отчётом и поиском'
+- row: ideas
+  col: 51
+  kind: w
+  text: Показывать баннер только после первой выдачи; считать баннер → скрининг → оплата
+- row: ideas
+  col: 55
+  kind: w
+  text: Проверить разные цены и каналы и выяснить, почему часть клиентов не доходит до оплаты
+- row: ideas
+  col: 60
+  kind: w
+  text: Собрать реестр пакетов и цены до запуска плашки
+- row: ideas
+  col: 64
+  kind: w
+  text: Показывать плашку только у выбранного варианта; считать плашка → заявка → оплата
+- row: ideas
+  col: 68
+  kind: w
+  text: Проверить спрос на одном направлении до каталога
+- row: ideas
+  col: 72
+  kind: w
+  text: Проверить окно после первого и после третьего сердечка
+- row: ideas
+  col: 76
+  kind: w
+  text: Измерить долю «Позже» и возвратов по ссылке из тоста
+- row: ideas
+  col: 80
+  kind: w
+  text: Следить за временем доставки и спамом у письма с кодом
+- row: ideas
+  col: 83
+  kind: w
+  text: Измерить долю дошедших от сохранения до сравнения
+- row: ideas
+  col: 86
+  kind: w
+  text: Пометка «лучшее» не должна выглядеть рекомендацией платных карточек
+- row: ideas
+  col: 89
+  kind: w
+  text: Для профессий добавить в сравнение зарплаты по странам
+- row: inserts
+  col: 0
+  kind: gr
+  text: 'Вставок нет: человек ещё не на портале'
+- row: inserts
+  col: 5
+  kind: gr
+  text: 'Вставок нет: сначала польза'
+- row: inserts
+  col: 9
+  kind: gr
+  text: Переключатель направлений — на каждой странице; это не плашка, а часть поиска
+- row: inserts
+  col: 17
+  kind: b
+  id: i10
+  dy: 640
+  min_h: 150
+  text: 'Сравнение и «Сохранённое»: при сохранённых вариантах — панель «Сравнить» и сердечко в шапке → блок 10, подпроцесс правее'
+- row: inserts
+  col: 18
+  kind: b
+  id: i9
+  dy: 480
+  min_h: 150
+  text: 'Сердечко у карточки: сохранение без блокировки, затем окно аккаунта → блок 9, подпроцесс правее'
+- row: inserts
+  col: 21
+  kind: b
+  id: i6
+  dy: 160
+  min_h: 150
+  text: Сменяющийся баннер «Не знаете, с чего начать? Начните с бесплатного теста» — на главной и после первой выдачи → блок 7, подпроцесс правее
+- row: inserts
+  col: 22
+  kind: b
+  id: i5
+  min_h: 150
+  text: Плашка «Не уверены? 15 минут с консультантом» — при сравнении 3 и более вариантов и при повторном возвращении → блок 6, подпроцесс правее (статус под вопросом)
+- row: inserts
+  col: 24
+  kind: b
+  id: i7
+  dy: 320
+  min_h: 150
+  text: Плашка «Поможем построить путь» — у избранного и после выбора варианта → блок 8, подпроцесс правее
+- row: inserts
+  col: 36
+  kind: y
+  id: w5
+  min_h: 150
+  text: 'Плашка в выдаче и в сравнении: при сравнении 3 и более вариантов, при повторном возвращении в поиск, при выборе страны с другим языком или визой'
+- row: inserts
+  col: 37
+  kind: gr
+  min_h: 150
+  text: 'Правило: не до первой полезной выдачи; закрытая плашка не возвращается в этой сессии'
+- row: inserts
+  col: 46
+  kind: y
+  id: w6
+  dy: 160
+  min_h: 150
+  text: 'Сменяющийся баннер «Не знаете, с чего начать?»: при широком поиске без направления, после первой выдачи; плашка в избранном «подберём направление под ребёнка»'
+- row: inserts
+  col: 47
+  kind: gr
+  dy: 160
+  min_h: 150
+  text: 'Правило: не до первой полезной выдачи; закрытый баннер не возвращается в этой сессии'
+- row: inserts
+  col: 59
+  kind: y
+  id: w7
+  dy: 320
+  min_h: 150
+  text: 'Плашка у избранного и после перехода на сайт учреждения: «Поможем подать документы»; письмо с дедлайном и предложением помощи'
+- row: inserts
+  col: 60
+  kind: gr
+  dy: 320
+  min_h: 150
+  text: 'Правило: только после выбора конкретного варианта'
+- row: inserts
+  col: 71
+  kind: y
+  id: w9
+  dy: 480
+  min_h: 150
+  text: Сердечко у каждой карточки в выдаче, в сравнении и у статьи; окно аккаунта показывается при первом сохранении
+- row: inserts
+  col: 72
+  kind: gr
+  dy: 480
+  min_h: 150
+  text: 'Правило: окно показывается один раз за сессию; после «Позже» — только тост со ссылкой'
+- row: inserts
+  col: 83
+  kind: y
+  id: w10
+  dy: 640
+  min_h: 150
+  text: Сердечко в шапке со счётчиком; панель «Сравнить» в выдаче, когда в направлении сохранены варианты
+- row: inserts
+  col: 84
+  kind: gr
+  dy: 640
+  min_h: 150
+  text: 'Короткий список до 4: предел сравнения'
+sticky_links:
+- {from: s1a1, to: s1a2}
+- {from: s1a2, to: s1a3}
+- {from: s1a3, to: s1a4}
+- {from: s1a4, to: s2a1}
+- {from: s2a1, to: s2a2}
+- {from: s2a2, to: s2a3}
+- {from: s2a3, to: s2a4}
+- {from: s2a4, to: s2a5}
+- {from: s2a5, to: s3a1}
+- {from: s3a1, to: s3a2}
+- {from: s3a2, to: s3a3}
+- {from: s3a3, to: s3a4}
+- {from: s3a4, to: s3a5}
+- {from: s3a5, to: s3a6}
+- {from: s3a6, to: s4a1}
+- {from: s4a1, to: s4a2, dash: true}
+- {from: s4a1, to: s4a3}
+- {from: s4a3, to: s4a4}
+- {from: s4a4, to: s4a5}
+- {from: s4a5, to: s4a6, dash: true}
+- {from: s4a5, to: s4a7}
+- {from: s4a7, to: s5a0}
+- {from: s5a0, to: s5a0b, dash: true}
+- {from: s5a0, to: s5a1}
+- {from: s5a1, to: s5p}
+- {from: s5p, to: s5c}
+- {from: s5c, to: s5app, dash: true}
+- {from: s5app, to: s5svc, dash: true}
+- {from: s5c, to: s5m}
+- {from: s5m, to: s5a2}
+- {from: s5a2, to: s5r, dash: true}
+- {from: s5a2, to: s5a3}
+- {from: s5a3, to: s5a4}
+- {from: m5a1, to: m5a2}
+- {from: m5a2, to: m5a3}
+- {from: m5a3, to: m5a4}
+- {from: m5a4, to: m5a5}
+- {from: m5a5, to: m5a6}
+- {from: m6a1, to: m6a2}
+- {from: m6a2, to: m6a3}
+- {from: m6a3, to: m6a4}
+- {from: m6a4, to: m6a5}
+- {from: m6a5, to: m6a6}
+- {from: m6a4, to: m6out, loss: true}
+- {from: m7a1, to: m7a2}
+- {from: m7a2, to: m7a3}
+- {from: m7a3, to: m7a4}
+- {from: m7a4, to: m7a5}
+- {from: m7a5, to: m7a6}
+- {from: m7a4, to: m7g, dash: true}
+- {from: n9a1, to: n9a2}
+- {from: n9a2, to: n9a3}
+- {from: n9a3, to: n9a4}
+- {from: n9a4, to: n9a5}
+- {from: n9a5, to: n9a6}
+- {from: n9a6, to: n9a7}
+- {from: n9a7, to: n9a8}
+- {from: n9a4, to: n9out, loss: true}
+- {from: n10a1, to: n10a2}
+- {from: n10a2, to: n10a3}
+- {from: n10a3, to: n10a4}
+- {from: n10a4, to: n10a5}
+- {from: n10a5, to: n10a6}
+- {from: n10a6, to: n10a7}
+- {from: n10a3, to: n10out, loss: true}
+- {from: i5, to: w5, dash: true}
+- {from: i6, to: w6, dash: true}
+- {from: i7, to: w7, dash: true}
+- {from: i9, to: w9, dash: true}
+- {from: i10, to: w10, dash: true}
+screens:
+- {col: 5, span: 2, image: screens/home_cookie.jpg, caption: 'Первый вход: заставка, затем уведомление о cookies'}
+- {col: 7, span: 2, image: screens/home.jpg, caption: 'Главная: слоган, вкладки направлений, поиск, баннер'}
+- {col: 9, span: 2, image: screens/form_vuz.jpg, caption: 'Форма «Вузы»: откуда, где учиться, когда, что изучать, куда поступаете'}
+- {col: 11, span: 2, image: screens/where.jpg, caption: 'Окно «Где учиться»: регионы, страны, «Где угодно», «Онлайн»'}
+- {col: 13, span: 2, image: screens/miss.jpg, caption: Незаполненные обязательные поля подсвечены}
+- {col: 15, span: 3, image: screens/results_vuz.jpg, caption: 'Выдача вузов: цены в валюте, совпадение с профилем, сердечко'}
+- {col: 18, span: 2, image: screens/auth_fav.jpg, caption: 'После сердечка: окно «Не потеряйте сохранённое»'}
+- {col: 20, span: 2, image: screens/results_pro.jpg, caption: 'Другое направление: профессии (спрос, зарплата, риск)'}
+- {col: 22, span: 2, image: screens/results_kp.jpg, caption: 'Короткие программы: даты, формат, цена'}
+- {col: 26, span: 2, image: screens/big.jpg, caption: '«Большая кнопка»: сайт, заявка через портал, услуги'}
+- {col: 28, span: 2, image: screens/auth_site.jpg, caption: 'Перед переходом на сайт: email (можно пропустить)'}
+- {col: 30, span: 2, image: screens/outbound.jpg, caption: Переход на сайт учреждения; вкладка портала остаётся}
+- {col: 32, span: 2, image: screens/returned.jpg, caption: 'Возврат на портал: статус «подал, записался, думает»'}
+- {col: 36, span: 2, image: screens/plashka.jpg, caption: 'Блок 6. Плашка «Не уверены? Поможем сузить выбор»'}
+- {col: 39, span: 2, image: screens/consult.jpg, caption: Блок 6. Анкета на консультацию}
+- {col: 46, span: 2, image: screens/banner_test.jpg, caption: 'Блок 7. Баннер «Не знаете, с чего начать?»'}
+- {col: 49, span: 2, image: screens/orient.jpg, caption: Блок 7. Бесплатный скрининг}
+- {col: 52, span: 2, image: screens/orient_result.jpg, caption: 'Блок 7. Карта: первые направления'}
+- {col: 60, span: 2, image: screens/services.jpg, caption: Блок 8. Услуги и пакеты}
+- {col: 73, span: 2, image: screens/auth_fav.jpg, caption: Блок 9. Окно «Не потеряйте сохранённое»}
+- {col: 77, span: 2, image: screens/auth_code.jpg, caption: Блок 9. Код из письма}
+- {col: 80, span: 2, image: screens/toast.jpg, caption: Блок 9. Тост «Сохранено» со ссылкой «Посмотреть»}
+- {col: 82, span: 3, image: screens/cabinet.jpg, caption: 'Блок 10. «Сохранённое»: короткий список, коллекции'}
+- {col: 85, span: 2, image: screens/coll.jpg, caption: 'Блок 10. Коллекция: список, напоминание о сроке'}
+- {col: 87, span: 3, image: screens/compare.jpg, caption: 'Блок 10. Сравнение: лучшее подсвечено'}
