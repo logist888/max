@@ -1,5 +1,5 @@
-/* ВУЗ-навигатор — дизайн-система «Куда поступать» (перенос с dev.mainexperts.online,
-   10.11.2026). Эталон собран на Tailwind v4 утилитами; здесь те же токены и тот же
+/* ВУЗ-навигатор — дизайн-система, перенесённая с dev.mainexperts.online
+   10.11.2026. Эталон собран на Tailwind v4 утилитами; здесь те же токены и тот же
    визуальный язык выражены семантическими классами, чтобы не переписывать разметку
    22 шаблонов. Прежние версии: main.apple.css (минимализм Apple), main.caramel.css.
 
@@ -228,7 +228,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 .nav-cta:hover { color: var(--text); background: color-mix(in srgb, var(--accent) 88%, var(--text)); text-decoration: none; }
 
-/* Логотип: золотой скруглённый квадрат с белой «шапочкой» + подпись «от Mainexperts» */
+/* Логотип: золотой скруглённый квадрат с белой «шапочкой» и название. */
 .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--text); min-width: 0; flex: 0 1 auto; }
 .brand:hover { color: var(--text); text-decoration: none; }
 .brand-mark {
@@ -238,15 +238,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .brand-mark svg { width: 20px; height: 20px; }
 .brand-text { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
 .brand-name { font-weight: 700; font-size: 17px; }
-.brand-by { font-size: 13px; color: var(--text-muted); }
-.brand-name, .brand-by { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.brand-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 /* На узких экранах шапка должна уместиться в строку: знак и подписи мельче,
    призыв компактнее (как у эталона: size-32 на мобильном, 36 — от md). */
 @media (max-width: 480px) {
   .brand-mark { width: 32px; height: 32px; border-radius: 9px; }
   .brand-mark svg { width: 18px; height: 18px; }
   .brand-name { font-size: 15px; }
-  .brand-by { font-size: 12px; }
   .nav-cta { padding: 9px 13px; font-size: .8125rem; }
   .header-top { gap: var(--space-2); }
   .header-actions { gap: 6px; }
@@ -267,7 +265,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 @media (max-width: 345px) {
   .brand-name { font-size: 14px; }
-  .brand-by { font-size: 11px; }
   .nav-cta { padding: 8px 9px; font-size: .6875rem; }
   .site-header .nav-toggle { width: 38px; height: 38px; }
   .brand { gap: 7px; }
