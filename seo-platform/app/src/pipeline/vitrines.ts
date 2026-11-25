@@ -182,7 +182,7 @@ export function buildVitrines(model: Model, ugsNames: Record<string, string> = {
     })),
     ...directionAgg.map((d) => ({
       type: 'direction', id: d.okso, title: d.name, subtitle: `${d.level} · вузов: ${d.orgCount}`,
-      aliases: [d.name, d.okso.replace(/^\d+\./, '')],
+      aliases: [d.name, d.okso.split('.').length === 4 ? d.okso.replace(/^\d+\./, '') : d.okso],
       popularity: d.orgCount, url: `/specialnost/${d.slug}/`,
     })),
     ...cityAgg.filter((c) => c.orgCount > 0).map((c) => ({

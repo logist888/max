@@ -6,7 +6,7 @@ import Cta from '../../../components/Cta.astro';
 import Filters from '../../../components/Filters.astro';
 import type { Facet } from '../../../components/Filters.astro';
 import { db } from '../../../lib/data.ts';
-import { costPhrase, ldBreadcrumbs, ldFaq, placeDirectionFaq, plural } from '../../../lib/text.ts';
+import { costPhrase, ldBreadcrumbs, ldFaq, oksoCode, placeDirectionFaq, plural } from '../../../lib/text.ts';
 import type { CostRange } from '../../../lib/data.ts';
 import {
   dirCardFacetData, dirOfferFacetData, dirOfferFacts,
@@ -33,7 +33,7 @@ const dir = directionByOkso.get(okso)!;
 const city = cityByKey.get(cityKey)!;
 const rows = orgIds.map((id) => rowById.get(id)!)
   .sort((a, b) => b.directionsCount - a.directionsCount);
-const code = dir.okso.replace(/^\d+\./, '');
+const code = oksoCode(dir.okso);
 
 // Вилка стоимости именно этого направления в этом городе.
 const costs: number[] = [];

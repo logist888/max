@@ -6,7 +6,7 @@ import Filters from '../../components/Filters.astro';
 import type { Facet } from '../../components/Filters.astro';
 import { db } from '../../lib/data.ts';
 import { ege, EGE_SUBJECTS } from '../../lib/ege.ts';
-import { ldBreadcrumbs, plural } from '../../lib/text.ts';
+import { ldBreadcrumbs, oksoCode, plural } from '../../lib/text.ts';
 import { dirCatalogFacetData, egeFacet, FACET_BUDGET, FACET_COST } from '../../lib/facets.ts';
 
 export function getStaticPaths() {
@@ -74,7 +74,7 @@ const jsonLd = [ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
         {list.map((d) => (
           <li class="card" {...(showFilters ? { 'data-filter-item': '', ...facetOf(d) } : {})}>
             <h3><a href={`/specialnost/${d.slug}/`}>{d.name}</a></h3>
-            <p class="meta">{d.okso.replace(/^\d+\./, '')} · {d.orgCount} {plural(d.orgCount,
+            <p class="meta">{oksoCode(d.okso)} · {d.orgCount} {plural(d.orgCount,
               'вуз', 'вуза', 'вузов')} · {d.cityCount} {plural(d.cityCount,
               'город', 'города', 'городов')}</p>
           </li>

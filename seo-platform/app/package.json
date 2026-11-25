@@ -7,7 +7,8 @@
     "graph": "tsx src/graph/build.ts",
     "build": "astro build",
     "dev": "astro dev",
-    "site": "npm run pipeline && npm run graph && astro build"
+    "site": "npm run pipeline && npm run graph && astro build && npm run feed",
+    "feed": "tsx src/feed/yandex-education.ts"
   },
   "devDependencies": {
     "@astrojs/sitemap": "^3.7.3",

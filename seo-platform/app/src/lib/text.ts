@@ -151,3 +151,69 @@ export function ldFaq(faq: FaqItem[]): object {
     })),
   };
 }
+
+/** Программа обучения как schema.org EducationalOccupationalProgram — для страницы
+ *  направления. Это точный тип для программы высшего образования: уровень, формы,
+ *  стоимость, код ОКСО. Яндексу и Google разметка видна сразу, фид и модерация
+ *  для неё не нужны.
+ *
+ *  Выдаём только то, что есть в выгрузке. Провайдера нет намеренно: на странице
+ *  направления вузов много, а свойство provider одно — указывать один вуз из
+ *  сотни было бы выдумкой. Длительность обучения и профессии после выпуска тоже
+ *  не выдаём: длительности в данных нет, а связь с профессиями у нас экспертная,
+ *  не официальная, и в разметке выглядела бы как факт.
+ *
+ *  Стоимость — за учебный год, а не за программу целиком, поэтому цена идёт через
+ *  UnitPriceSpecification с явной единицей: иначе робот прочитает годовую цену как
+ *  полную стоимость обучения. */
+export function ldProgram(opts: {
+  name: string; okso: string; level: string; url: string;
+  costRange: CostRange | null; forms: string[]; orgCount: number; hasBudget: boolean;
+}): object {
+  const ld: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'EducationalOccupationalProgram',
+    name: opts.name,
+    identifier: oksoCode(opts.okso),
+    programType: opts.level,
+    educationalLevel: opts.level,
+    url: opts.url,
+    inLanguage: 'ru',
+  };
+  if (opts.forms.length) ld['educationalProgramMode'] = opts.forms;
+  if (opts.costRange) {
+    ld['offers'] = {
+      '@type': 'AggregateOffer',
+      priceCurrency: 'RUB',
+      lowPrice: opts.costRange.min,
+      highPrice: opts.costRange.max,
+      offerCount: opts.orgCount,
+      category: 'Платное обучение',
+      priceSpecification: {
+        '@type': 'UnitPriceSpecification',
+        priceCurrency: 'RUB',
+        minPrice: opts.costRange.min,
+        maxPrice: opts.costRange.max,
+        unitText: 'учебный год',
+        referenceQuantity: { '@type': 'QuantitativeValue', value: 1, unitText: 'учебный год' },
+      },
+    };
+  }
+  if (opts.hasBudget) ld['financialAidEligible'] = 'Бюджетные места (КЦП и квоты)';
+  return ld;
+}
+
+/** Код специальности для показа человеку.
+ *
+ *  В выгрузке код записан как «<область образования>.<код>»: у ФГОС это
+ *  6.44.03.05 → 44.03.05, где первая цифра — служебная область (по 56 УГСН из 57
+ *  она однозначна и ничего не теряет). Но у научных специальностей код сам по себе
+ *  трёхчастный: 3.1.7 «Стоматология» — это отрасль 3 (медицинские науки), группа
+ *  3.1 (клиническая медицина), специальность 3.1.7. Срез первой цифры превращал его
+ *  в «1.7» — такого кода в номенклатуре нет (в группе 1 только 1.1–1.6).
+ *
+ *  Поэтому режем только четырёхчастные коды ФГОС, трёхчастные научные оставляем
+ *  целиком. */
+export function oksoCode(okso: string): string {
+  return okso.split('.').length === 4 ? okso.replace(/^\d+\./, '') : okso;
+}

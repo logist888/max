@@ -7,7 +7,7 @@ import Filters from '../../components/Filters.astro';
 import type { Facet } from '../../components/Filters.astro';
 import { db } from '../../lib/data.ts';
 import { ege, EGE_SUBJECTS } from '../../lib/ege.ts';
-import { plural } from '../../lib/text.ts';
+import { oksoCode, plural } from '../../lib/text.ts';
 import { dirCatalogFacetData } from '../../lib/facets.ts';
 
 const { ugs, directions, meta } = db();
@@ -17,7 +17,7 @@ const fgosCount = directions.filter((d) => !d.scientific).length;
 const ugsName = new Map(ugs.map((g) => [g.code, g.name ?? `Группа ${g.code}`]));
 const { bySlug } = ege();
 const egeKeys = new Set(EGE_SUBJECTS.map((s) => s.key));
-const okso6 = (okso: string) => okso.replace(/^\d+\./, '');
+const okso6 = (okso: string) => oksoCode(okso);
 
 const LEVEL_ORDER: Record<string, number> = {
   'Бакалавриат': 0, 'Специалитет': 1, 'Магистратура': 2, 'Аспирантура': 3,

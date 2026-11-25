@@ -8,9 +8,7 @@ import { db } from '../../lib/data.ts';
 import { vuzScores, vuzScoresByGroup } from '../../lib/scores.ts';
 import { SCREENING_URL } from '../../lib/links.ts';
 import { ugsFacet, FACET_COST, LEVEL_CHIPS, FORM_CHIPS } from '../../lib/facets.ts';
-import {
-  costPhrase, ldBreadcrumbs, ldFaq, ldOrg, orgDescription, orgFaq, orgTitle, plural, rub,
-} from '../../lib/text.ts';
+import { costPhrase, ldBreadcrumbs, ldFaq, ldOrg, oksoCode, orgDescription, orgFaq, orgTitle, plural, rub } from '../../lib/text.ts';
 
 export function getStaticPaths() {
   return db().orgCards.map((card) => ({ params: { slug: card.slug }, props: { card } }));
@@ -106,7 +104,7 @@ const progFacets: Facet[] = [
         placeholder: '— любое направление —', dependsOn: 'ugs',
         options: progDirs.map((d) => ({
           value: d.okso,
-          label: `${d.okso.replace(/^\d+\./, '')} — ${d.name}`,
+          label: `${oksoCode(d.okso)} — ${d.name}`,
           parent: d.ugs,
         })) } as Facet]
     : []),
@@ -237,7 +235,7 @@ const links = Object.entries(LINK_LABELS)
             <tbody>
               {group.directions.flatMap((dir) => [
                 <tr class="dir-head" data-ugs={dir.ugs}>
-                  <td colspan="5">{dir.okso.replace(/^\d+\./, '')} <a href={`/specialnost/${dir.slug}/`}>{dir.name}</a></td>
+                  <td colspan="5">{oksoCode(dir.okso)} <a href={`/specialnost/${dir.slug}/`}>{dir.name}</a></td>
                 </tr>,
                 ...dir.offers.map((off) => (
                   // Атрибуты-фасеты: ключи те же, что в каталоге (levels/ugs/forms/

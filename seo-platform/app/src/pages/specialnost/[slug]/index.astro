@@ -7,7 +7,7 @@ import Filters from '../../../components/Filters.astro';
 import type { Facet } from '../../../components/Filters.astro';
 import { db } from '../../../lib/data.ts';
 import { graph } from '../../../lib/graph.ts';
-import { costPhrase, directionFaq, ldBreadcrumbs, ldFaq, plural } from '../../../lib/text.ts';
+import { costPhrase, directionFaq, ldBreadcrumbs, ldFaq, ldProgram, oksoCode, plural } from '../../../lib/text.ts';
 import { ege, EGE_SUBJECTS } from '../../../lib/ege.ts';
 import {
   dirCardFacetData, dirOfferFacetData, dirOfferFacts, regionFacet,
@@ -21,7 +21,7 @@ export function getStaticPaths() {
 const { dir } = Astro.props;
 const { rowsByOkso, cardById, regions, combosCity, cityByKey, directions, meta } = db();
 const rows = rowsByOkso.get(dir.okso) ?? [];
-const code = dir.okso.replace(/^\d+\./, '');
+const code = oksoCode(dir.okso);
 const cost = costPhrase(dir.costRange);
 
 // Фасеты списка вузов направления. Направление/уровень/группа фиксированы (не фасеты).
@@ -73,7 +73,19 @@ const crumbs = [
   { name: dir.name },
 ];
 const faq = directionFaq(dir, meta.snapshotDate);
+// Формы обучения по направлению — объединение форм из офферов ИМЕННО этого ОКСО
+// по всем вузам списка; из агрегатов вуза их брать нельзя (там формы всего вуза).
+const dirForms = [...new Set(
+  rows.flatMap((r) => dirOfferFacts(cardById.get(r.id), dir.okso).forms),
+)].sort((a, b) => a.localeCompare(b, 'ru'));
+
 const jsonLd = [
+  ldProgram({
+    name: dir.name, okso: dir.okso, level: dir.level,
+    url: new URL(Astro.url.pathname, Astro.site).href,
+    costRange: dir.costRange, forms: dirForms,
+    orgCount: dir.orgCount, hasBudget: dir.hasBudget,
+  }),
   ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
     name: c.name, url: new URL(c.url!, Astro.site).href,
   }))),
