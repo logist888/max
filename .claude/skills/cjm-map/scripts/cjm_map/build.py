@@ -7,7 +7,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
 
-from cjm_map import export, model, render  # noqa: E402
+from cjm_map import export, fonts, model, render  # noqa: E402
 
 
 def main(argv=None):
@@ -37,6 +37,9 @@ def main(argv=None):
     os.makedirs(a.out, exist_ok=True)
     svg = render.build_svg(doc, "outline")
     txt = render.build_svg(doc, "text")
+    if fonts.missing:
+        print("Предупреждение: в шрифте Inter нет символов %s; в map.svg они пропадут, в map-text.svg подставит браузер. "
+              "Замените их в данных (например, транслитерацией)." % " ".join("«%s» (U+%04X)" % (c, ord(c)) for c in sorted(fonts.missing)), file=sys.stderr)
     p1, p2 = os.path.join(a.out, "map.svg"), os.path.join(a.out, "map-text.svg")
     with open(p1, "w", encoding="utf-8", newline="\n") as fh:
         fh.write(svg)

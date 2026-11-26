@@ -157,7 +157,7 @@ def rounded(pts, r=9):
     return d + " L%s %s" % (fmt(pts[-1][0]), fmt(pts[-1][1]))
 
 
-def route(a, sp, b, dp, corridor_y=None):
+def route(a, sp, b, dp, corridor_y=None, near=False):
     p1, p2 = a.port(sp), b.port(dp)
     if corridor_y is not None:
         return [p1, (p1[0], corridor_y), (p2[0], corridor_y), p2]
@@ -166,7 +166,7 @@ def route(a, sp, b, dp, corridor_y=None):
     if k == "rl":
         if abs(y1 - y2) < 1:
             return [p1, p2]
-        xm = (x1 + x2) / 2
+        xm = (x2 - 25) if (near and x2 - x1 > 100) else (x1 + x2) / 2
         return [p1, (xm, y1), (xm, y2), p2]
     if k in ("rt", "rb"):
         return [p1, (x2, y1), p2]
@@ -274,10 +274,10 @@ class Flow:
             c.rect(0, y, self.W, self.lane_h, "#fafafa" if i % 2 == 0 else "#f0f0f0")
             c.rect(0, y, LAB, self.lane_h, "#7b7b7b")
             c.raw('<line x1="0" y1="%s" x2="%s" y2="%s" stroke="#cfcfcf"/>' % (fmt(y), fmt(self.W), fmt(y)))
-            lines = fonts.wrap(ln["label"], 13, 400, LAB - 16)
+            lines = fonts.wrap(ln["label"], 12.5, 400, LAB - 12)
             y0 = y + self.lane_h / 2 - (len(lines) - 1) * 8 + 4
             for j, t in enumerate(lines):
-                c.text(LAB / 2, y0 + j * 16, t, 13, 400, "#ffffff", "middle")
+                c.text(LAB / 2, y0 + j * 16, t, 12.5, 400, "#ffffff", "middle")
         yb = self.body_top + len(self.lanes) * self.lane_h
         c.raw('<line x1="0" y1="%s" x2="%s" y2="%s" stroke="#cfcfcf"/>' % (fmt(yb), fmt(self.W), fmt(yb)))
         for s in doc["stages"]:
@@ -299,7 +299,7 @@ class Flow:
             cy = None
             if ed.get("corridor"):
                 cy = self.lane_y(self.lane_idx[ed["corridor"]["lane"]]) + float(ed["corridor"]["dy"])
-            pts = route(a, ports[0], b, ports[1], cy)
+            pts = route(a, ports[0], b, ports[1], cy, ed.get("elbow") == "near")
             loss = ed.get("loss")
             col = "#d33333" if loss else ("#7a7a7a" if ed.get("dash") else "#333333")
             dash = ' stroke-dasharray="6 5"' if ed.get("dash") else ""
@@ -474,13 +474,15 @@ def build_svg(doc, mode):
     chips = []
     cx, cy_, line_h = 0.0, 0.0, 26 + 14
     placed = []
-    for i, (k, t) in enumerate(LEGEND_CHIPS):
+    legend = [(l["kind"], l["text"]) for l in header["legend"]] if header.get("legend") else LEGEND_CHIPS
+    how_text = header.get("how_to_read") or HOW_TO_READ
+    for i, (k, t) in enumerate(legend):
         wch = fonts.width(t, 12, 400) + 24
         if cx + wch > inner and cx > 0:
             cx, cy_ = 0.0, cy_ + line_h
         placed.append((k, t, cx, cy_, wch, i))
         cx += wch + 14
-    how = fonts.wrap(HOW_TO_READ, 12, 400, inner)
+    how = fonts.wrap(how_text, 12, 400, inner)
     cy_ += line_h
     h = 28 + cy_ + len(how) * 16 + GAP
     head_row("Условные обозначения", h)
@@ -586,9 +588,10 @@ def build_svg(doc, mode):
         rid, rtype = r["id"], r.get("type", "stack")
         items = by_row.get(rid, [])
         row_y = y
+        rh_min = len(fonts.wrap(r["label"], 12.5, 400, LAB - GAP - 12)) * 17.2 + 24   # подпись ряда должна поместиться
         c.use("bg")
         if rtype == "emotion":
-            rh = 230.0
+            rh = max(230.0, rh_min + GAP)
             third = (rh - GAP) / 3
             for i, colr in enumerate(("#eaf5e4", "#fdf3cf", "#f9e3e3")):
                 c.rect(LAB, row_y + i * third, ncols * DX, third + 0.5, colr)
@@ -611,7 +614,7 @@ def build_svg(doc, mode):
                 pos, gh = flow_layout(its, avail)
                 blocks.append((st, pos))
                 heights.append(gh + 24)
-            rh = max(heights + [56]) + GAP
+            rh = max(heights + [56, rh_min]) + GAP
             c.rect(LAB, row_y, ncols * DX, rh - GAP, "#e9e9e9")
             for st in stages:
                 c.rect(colx(st["from"]), row_y, GAP, rh - GAP, "#f3f3f3")
@@ -633,7 +636,7 @@ def build_svg(doc, mode):
                 hfig = 1 + ih + 7 + len(cap) * 15.6 + 9 + 1
                 figs.append((sc, wfig, ih, cap, hfig, path if size else None))
                 fh = max(fh, hfig)
-            rh = (fh + 24 if figs else 56) + GAP
+            rh = max(fh + 24 if figs else 56, rh_min) + GAP
             c.rect(LAB, row_y, ncols * DX, rh - GAP, "#e9e9e9")
             c.use("screens")
             for (sc, wfig, ih, cap, hfig, path) in figs:
@@ -666,7 +669,7 @@ def build_svg(doc, mode):
                     if it.get("id"):
                         mats[it["id"]] = s
                 maxh = max(maxh, cur - 10 + 12)
-            rh = max(maxh, 56) + GAP
+            rh = max(maxh, 56, rh_min) + GAP
             c.rect(LAB, row_y, ncols * DX, rh - GAP, "#e9e9e9")
         labels.append((row_y, rh - GAP, r["label"]))
         y += rh

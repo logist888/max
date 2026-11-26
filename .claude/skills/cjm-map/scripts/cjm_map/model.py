@@ -8,7 +8,7 @@ SHAPES = ("term", "proc", "dec", "data", "doc", "db", "manual", "pre", "note")
 STICKY_KINDS = ("y", "b", "r", "g", "o", "w", "gr", "ghost", "ey")
 ROW_TYPES = ("stack", "goal", "emotion", "screens")
 MAX_NODE_TEXT = 260
-MAX_STICKY_TEXT = 320
+MAX_STICKY_TEXT = 520
 MAX_COLS = 400
 
 
@@ -112,6 +112,15 @@ def validate(doc, ck, base):
     meta = doc.get("meta")
     if _need(ck, doc, "верхний уровень", "meta", (dict,)) is not None:
         _need(ck, meta, "meta", "title")
+    hdr = doc.get("header")
+    if isinstance(hdr, dict) and hdr.get("legend") is not None:
+        if not isinstance(hdr["legend"], list):
+            ck.err(hdr, "header.legend", "ожидался список {kind, text}")
+        else:
+            for i, lg in enumerate(hdr["legend"]):
+                w = "header.legend[%d]" % i
+                if _need(ck, lg, w, "text") and lg.get("kind") not in STICKY_KINDS:
+                    ck.err(lg, w, "неизвестный цвет «%s» (допустимы: %s)" % (lg.get("kind"), ", ".join(STICKY_KINDS)))
     # дорожки
     lane_ids = {}
     lanes = _need(ck, doc, "верхний уровень", "lanes", (list,))
@@ -181,6 +190,8 @@ def validate(doc, ck, base):
                 ck.err(e, w, "ports: две буквы из l, r, t, b (откуда и куда), например «rl»")
             if isinstance(e, dict) and e.get("label_at") not in (None, "start", "mid"):
                 ck.err(e, w, "label_at: start или mid")
+            if isinstance(e, dict) and e.get("elbow") not in (None, "near", "mid"):
+                ck.err(e, w, "elbow: near (излом у конца стрелки, для связей через несколько колонок) или mid")
             c = e.get("corridor") if isinstance(e, dict) else None
             if c is not None:
                 if not isinstance(c, dict) or c.get("lane") not in lane_ids or not isinstance(c.get("dy"), (int, float)):

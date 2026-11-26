@@ -10,6 +10,7 @@ from fontTools.ttLib import TTFont
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _FILES = {"400": "Inter-Regular.otf", "600": "Inter-SemiBold.otf", "700": "Inter-Bold.otf"}
 _cache = {}
+missing = set()   # символы, которых нет в шрифте: в контурном SVG они пропадут
 
 
 def _font_dirs():
@@ -50,6 +51,8 @@ def width(text, size, weight=400):
     total = 0
     for ch in text:
         n = cmap.get(ord(ch))
+        if not n and not ch.isspace():
+            missing.add(ch)
         total += hmtx[n][0] if n else upm * 0.3
     return total * size / upm
 
