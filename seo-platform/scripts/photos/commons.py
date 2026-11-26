@@ -42,6 +42,7 @@ SELECT ?u ?uLabel ?site ?img ?cat ?ruwiki ?placeLabel WHERE {
   SERVICE wikibase:label { bd:serviceParam wikibase:language "ru,en" }
 }'''
 STEPS = [20, 40, 60, 120, 250, 330, 500, 960, 1280, 1920, 3840]
+WEB_IMG = ('.jpg', '.jpeg', '.png', '.webp')
 OK_LICENCE = re.compile(r'^(cc[\s-]|cc0|public domain|pd|gfdl|fal)', re.I)
 LOGO = re.compile(r'(?<![а-яёa-z])(логотип\w*|лого(?![а-яё])|герб\w*|эмблем\w*|emblem\w*|'
                   r'coat.of.arms|значок)|(?<![a-z])logo|LOGO', re.I)
@@ -64,10 +65,10 @@ def registrable(h):
     return '.'.join(p[-2:])
 
 
-def api(host, params):
+def api(host, params, tries=5):
     params = dict(params, format='json')
     body = urllib.parse.urlencode(params).encode()
-    return json.loads(fetch(f'https://{host}/w/api.php', data=body, pause=20))
+    return json.loads(fetch(f'https://{host}/w/api.php', data=body, pause=8, tries=tries))
 
 
 def wikidata():
@@ -112,34 +113,55 @@ def link(orgs, items):
 
 
 def pick_file(it):
-    """Имя файла на Викискладе или None."""
+    """(имя файла на Викискладе | None, источник или причина отказа).
+
+    Источник, который не ответил (Википедия охотно отдаёт 429 с общего
+    адреса), пропускается, а не роняет прогон: следующий заход его доберёт.
+    """
     if it['img']:
         f = 'File:' + urllib.parse.unquote(it['img'].rsplit('/', 1)[-1]).replace('_', ' ')
-        if not LOGO.search(f) and not f.lower().endswith('.svg'):
-            return f
+        # Только растровые веб-форматы: у TIFF и PDF превью лежит по другому
+        # адресу (lossy-page1-…), а SVG — почти всегда логотип или схема.
+        if not LOGO.search(f) and f.lower().endswith(WEB_IMG):
+            return f, 'P18'
+    failed = []
     if it['ru']:
         title = urllib.parse.unquote(it['ru'].rsplit('/', 1)[-1]).replace('_', ' ')
-        d = api('ru.wikipedia.org', {'action': 'query', 'prop': 'pageimages', 'piprop': 'name', 'titles': title})
-        for p in (d.get('query', {}).get('pages') or {}).values():
-            nm = p.get('pageimage')
-            if nm and not LOGO.search(nm) and not nm.lower().endswith('.svg'):
-                return 'File:' + nm.replace('_', ' ')
+        try:
+            d = api('ru.wikipedia.org', {'action': 'query', 'prop': 'pageimages', 'piprop': 'name',
+                                         'titles': title}, tries=3)
+        except Exception:
+            failed.append('Википедия не ответила')
+        else:
+            for p in (d.get('query', {}).get('pages') or {}).values():
+                nm = p.get('pageimage')
+                if nm and not LOGO.search(nm) and nm.lower().endswith(WEB_IMG):
+                    return 'File:' + nm.replace('_', ' '), 'статья Википедии'
     if it['cat']:
-        d = api('commons.wikimedia.org', {'action': 'query', 'list': 'categorymembers', 'cmtype': 'file',
-                                          'cmtitle': 'Category:' + it['cat'], 'cmlimit': '30'})
-        for c in d.get('query', {}).get('categorymembers', []):
-            t = c['title']
-            if t.lower().endswith(('.jpg', '.jpeg')) and not LOGO.search(t):
-                return t
-    return None
+        try:
+            d = api('commons.wikimedia.org', {'action': 'query', 'list': 'categorymembers', 'cmtype': 'file',
+                                              'cmtitle': 'Category:' + it['cat'], 'cmlimit': '30'}, tries=3)
+        except Exception:
+            failed.append('Викисклад не ответил')
+        else:
+            for c in d.get('query', {}).get('categorymembers', []):
+                t = c['title']
+                if t.lower().endswith(WEB_IMG) and not LOGO.search(t):
+                    return t, 'категория Викисклада'
+    return None, ', '.join(failed) or 'подходящего файла нет'
 
 
 def rights(files):
     out = {}
     names = sorted(set(files))
     for i in range(0, len(names), 20):
-        d = api('commons.wikimedia.org', {'action': 'query', 'prop': 'imageinfo',
-                                          'iiprop': 'extmetadata|size', 'titles': '|'.join(names[i:i + 20])})
+        try:
+            d = api('commons.wikimedia.org', {'action': 'query', 'prop': 'imageinfo',
+                                              'iiprop': 'extmetadata|size', 'titles': '|'.join(names[i:i + 20])})
+        except Exception as e:
+            # Без сведений о правах файл не ставится — пачка просто пропускается.
+            print(f'  сведения о правах для пачки {i // 20 + 1} не получены: {e}', flush=True)
+            continue
         for p in (d.get('query', {}).get('pages') or {}).values():
             ii = (p.get('imageinfo') or [{}])[0]
             out[p.get('title', '')] = {'meta': {k: v.get('value') for k, v in (ii.get('extmetadata') or {}).items()},
@@ -172,13 +194,16 @@ def main():
     linked = link(need, items)
     print('привязано к Викиданным:', len(linked), flush=True)
 
-    picks = {}
+    picks, why = {}, {}
     for slug, it in list(linked.items())[: a.limit or None]:
-        f = pick_file(it)
+        f, how = pick_file(it)
         if f:
             picks[slug] = (f, it['q'])
+        why[how] = why.get(how, 0) + 1
         time.sleep(1)
     print('найден файл:', len(picks), flush=True)
+    for k, v in sorted(why.items(), key=lambda kv: -kv[1]):
+        print(f'   {v:4}  {k}')
     if a.dry_run:
         for s, (f, q) in list(picks.items())[:20]:
             print(f'   {s} → {f}')
