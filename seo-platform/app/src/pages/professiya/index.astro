@@ -1,0 +1,188 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Cta from '../../components/Cta.astro';
+import Filters from '../../components/Filters.astro';
+import type { Facet } from '../../components/Filters.astro';
+import { graph } from '../../lib/graph.ts';
+import { ldBreadcrumbs, plural } from '../../lib/text.ts';
+import { SCREENING_URL } from '../../lib/links.ts';
+
+const { professions } = graph();
+const withSalary = professions.filter((p) => p.salary?.avgRF != null).length;
+const MAJOR: Record<string, string> = {
+  '1': 'Руководители',
+  '2': 'Специалисты высшего уровня квалификации',
+  '3': 'Специалисты среднего уровня квалификации',
+  '4': 'Служащие, занятые подготовкой информации',
+  '5': 'Работники сферы обслуживания и торговли',
+  '6': 'Квалифицированные работники сельского и лесного хозяйства',
+  '7': 'Квалифицированные рабочие промышленности и строительства',
+  '8': 'Операторы установок и машин, сборщики',
+  '9': 'Неквалифицированные рабочие',
+  '0': 'Военнослужащие',
+};
+// Вид 1 — по укрупнённым группам ISCO-08 (первая цифра кода).
+const groups = Object.keys(MAJOR).sort().map((d) => ({
+  digit: d, name: MAJOR[d],
+  items: professions.filter((p) => p.isco[0] === d),
+})).filter((g) => g.items.length);
+
+// Вид 2 — по алфавиту (professions уже отсортированы по nameRu).
+const byLetter = new Map<string, typeof professions>();
+for (const p of professions) {
+  const L = (p.nameRu[0] || '#').toUpperCase();
+  const arr = byLetter.get(L) ?? [];
+  arr.push(p);
+  byLetter.set(L, arr);
+}
+const letters = [...byLetter.entries()].sort((a, b) => a[0].localeCompare(b[0], 'ru'));
+
+const withRoutes = professions.filter((p) => p.routes.length).length;
+
+// Фасеты каталога профессий. Применяются к списку «по алфавиту» (плоскому);
+// вид «по группам» — это по сути та же группировка по ОКЗ, что и фасет «группа».
+// Честно: группа занятий (ОКЗ), есть ли сопоставленные направления, есть ли зарплата.
+const majorOptions = groups.map((g) => ({ value: g.digit, label: g.name }));
+const profFacets: Facet[] = [
+  { key: 'major', label: 'Группа занятий (ОКЗ)', type: 'select', placeholder: '— любая группа —', options: majorOptions },
+  { key: 'routes', label: 'Направления подготовки', type: 'toggle', toggleLabel: 'Есть сопоставленные направления' },
+  { key: 'salary', label: 'Зарплата', type: 'toggle', toggleLabel: 'Есть данные о зарплате (Росстат)' },
+];
+const profFacet = (p: typeof professions[number]) => ({
+  'data-filter-item': '',
+  'data-major': p.isco[0],
+  'data-routes': p.routes.length ? '1' : '0',
+  'data-salary': (p.salary && (p.salary.avgRF != null || p.salary.avgMoscow != null)) ? '1' : '0',
+});
+
+const crumbs = [{ name: 'Главная', url: '/' }, { name: 'Профессии' }];
+const title = `Список профессий: ${professions.length} профессий (ISCO-08 / ОКЗ) — зарплаты, компетенции | Профориентация`;
+const description = `Полный список из ${professions.length} профессий по международной классификации ISCO-08 с русскими названиями (ОКЗ): средняя зарплата по данным Росстата, ключевые компетенции (ESCO), направления подготовки. Какие есть профессии и кем можно работать.`;
+// ItemList для AI-поиска и rich-результатов: полный каталог профессий.
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Список профессий (ISCO-08 / ОКЗ)',
+  numberOfItems: professions.length,
+  itemListElement: professions.map((p, i) => ({
+    '@type': 'ListItem', position: i + 1,
+    url: new URL(`/professiya/${p.slug}/`, Astro.site).href, name: p.nameRu,
+  })),
+};
+const jsonLd = [
+  ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({ name: c.name, url: new URL(c.url!, Astro.site).href }))),
+  itemList,
+];
+---
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <Breadcrumbs items={crumbs} />
+  <h1>Список профессий</h1>
+  {/* Краткое определение для AI-поиска и быстрого ответа. */}
+  <p><strong>Профессия</strong> — вид трудовой деятельности, требующий определённых знаний
+    и навыков. Ниже — полный список из {professions.length}&nbsp;{plural(professions.length, 'профессии', 'профессий', 'профессий')}{' '}
+    по международной классификации занятий <strong>ISCO-08</strong> с русскими названиями из ОКЗ.
+    По каждой профессии — средняя зарплата (Росстат), ключевые компетенции (ESCO) и, где
+    сопоставлено, направления подготовки. Связь с образованием — экспертное сопоставление, не
+    официальная связь.</p>
+
+  <p><a href="/professii-vysokooplachivaemye/">→ Рейтинг: самые высокооплачиваемые профессии</a>
+    {withSalary > 0 && ` (зарплаты по ${withSalary} из ${professions.length} групп занятий)`}</p>
+
+  <Cta pageType="profession-catalog" zone="after-intro" />
+
+  <p class="invite">Профессия — ещё не выбор. Понять, что подходит именно вам,
+    помогает не список, а сильные стороны. <a href={SCREENING_URL} target="_blank" rel="noopener">Пройдите тест →</a>
+    {' '}Не знаете, с чего начать — <a href="/kak-vybrat-professiyu/">как выбрать профессию</a>.</p>
+
+  <Filters facets={profFacets} target="#view-alpha [data-filter-item]" itemNoun={['профессия', 'профессии', 'профессий']} />
+  <p class="filters-empty" data-filters-empty hidden>По заданным фильтрам профессий не найдено. Снимите часть условий.</p>
+
+  <div class="tabs" role="tablist" aria-label="Способ группировки">
+    <button class="tab is-active" data-view="alpha" role="tab" aria-selected="true">По алфавиту</button>
+    <button class="tab" data-view="groups" role="tab" aria-selected="false">По группам</button>
+  </div>
+
+  <div id="view-groups" hidden>
+    {groups.map((g) => (
+      <>
+        <h2>{g.name}</h2>
+        <div class="columns">
+          <ul>
+            {g.items.map((p) => (
+              <li><a href={`/professiya/${p.slug}/`}>{p.nameRu}</a>
+                {p.routes.length > 0 && <span class="sub-note"> · есть направления</span>}</li>
+            ))}
+          </ul>
+        </div>
+      </>
+    ))}
+  </div>
+
+  <div id="view-alpha">
+    {letters.map(([letter, items]) => (
+      <section class="alpha-sec">
+        <h2 class="alpha-letter">{letter}</h2>
+        <div class="columns">
+          <ul>
+            {items.map((p) => (
+              <li {...profFacet(p)}><a href={`/professiya/${p.slug}/`}>{p.nameRu}</a>
+                {p.routes.length > 0 && <span class="sub-note"> · есть направления</span>}</li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    ))}
+  </div>
+
+  <p class="meta">Классификация — ISCO-08 (МОТ) и ОКЗ ОК 010-2014.
+    Профессий с сопоставленными направлениями: {withRoutes} из {professions.length}
+    (посев по УГСН, расширяется).</p>
+
+  <style>
+    .sub-note { color: var(--text-muted); font-size: 0.8125rem; }
+    .tabs {
+      display: flex; gap: var(--space-2);
+      margin: var(--space-6) 0 var(--space-4);
+      border-bottom: 1px solid var(--border);
+    }
+    .tab {
+      appearance: none; background: none; border: 0; font: inherit; cursor: pointer;
+      padding: var(--space-3) var(--space-4); color: var(--text-muted);
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+      transition: color .15s ease, border-color .15s ease;
+    }
+    .tab:hover { color: var(--text); }
+    .tab.is-active { color: var(--accent-strong); border-bottom-color: var(--accent); font-weight: 600; }
+    .alpha-letter { color: var(--accent-strong); }
+  </style>
+
+  <script>
+    const tabs = [...document.querySelectorAll<HTMLButtonElement>('.tab')];
+    const views: Record<string, HTMLElement | null> = {
+      groups: document.getElementById('view-groups'),
+      alpha: document.getElementById('view-alpha'),
+    };
+    const groupsTab = tabs.find((t) => t.dataset.view === 'groups');
+    const setView = (view: string) => {
+      tabs.forEach((x) => {
+        const on = x.dataset.view === view;
+        x.classList.toggle('is-active', on);
+        x.setAttribute('aria-selected', String(on));
+      });
+      for (const [k, el] of Object.entries(views)) if (el) el.hidden = k !== view;
+    };
+    tabs.forEach((t) => t.addEventListener('click', () => setView(t.dataset.view!)));
+
+    // Фильтр применяется к плоскому списку «по алфавиту». При активном фильтре —
+    // принудительно алфавитный вид, а вкладка «по группам» скрыта (там фильтр не
+    // отражается). Пустые буквы-секции прячем.
+    const secs = [...document.querySelectorAll<HTMLElement>('.alpha-sec')];
+    document.addEventListener('filters:change', (e) => {
+      const active = ((e as CustomEvent).detail?.activeCount ?? 0) > 0;
+      if (groupsTab) groupsTab.hidden = active;
+      if (active) setView('alpha');
+      secs.forEach((s) => { s.hidden = !s.querySelector('li:not(.filtered-out)'); });
+    });
+  </script>
+</Base>

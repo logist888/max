@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mainexperts/graph/edge.schema.json",
+  "title": "GraphEdge",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "from", "to", "direction", "weight", "probability", "confidence", "method", "status", "provenance", "explanation", "validAsOf", "createdAt"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^me:edge:" },
+    "type": {
+      "type": "string",
+      "enum": ["IN_DIRECTION", "IN_UGS", "OFFERED_AT", "IN_CITY", "IN_REGION", "HAS_QUALIFICATION", "REQUIRES", "GOVERNED_BY", "REQUIRES_LICENSE", "EMPLOYED_BY", "HAS_SALARY", "IN_LABOURMARKET", "ISCO_MAPS", "CROSSWALK_EQUIV", "ANALOG_OF", "LEADS_TO", "DEVELOPS", "TRANSITIONS_TO", "INDICATES", "AGGREGATES", "TAUGHT_BY", "CERTIFIED_BY", "RELATED_TO"]
+    },
+    "from": { "type": "string", "pattern": "^me:" },
+    "to": { "type": "string", "pattern": "^me:" },
+    "direction": { "type": "string", "enum": ["directed", "undirected"] },
+    "weight": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+    "probability": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "method": { "type": "string", "enum": ["authoritative", "crosswalk", "inferred", "curated"] },
+    "status": { "type": "string", "enum": ["факт", "гипотеза", "требует-проверки"] },
+    "provenance": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source", "license", "method"],
+        "properties": {
+          "source": { "type": "string" },
+          "sourceId": { "type": "string" },
+          "sourceUrl": { "type": "string" },
+          "sourceDate": { "type": "string" },
+          "license": { "type": "string" },
+          "method": { "type": "string", "enum": ["authoritative", "crosswalk", "inferred", "curated"] },
+          "retrievedAt": { "type": "string" }
+        }
+      }
+    },
+    "explanation": { "type": "string" },
+    "validAsOf": { "type": "string" },
+    "createdAt": { "type": "string" }
+  }
+}

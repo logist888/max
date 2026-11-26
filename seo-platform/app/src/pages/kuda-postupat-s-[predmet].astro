@@ -1,0 +1,112 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Cta from '../components/Cta.astro';
+import { ege, EGE_SUBJECTS } from '../lib/ege.ts';
+import { ldBreadcrumbs, ldFaq, plural } from '../lib/text.ts';
+
+export function getStaticPaths() {
+  return EGE_SUBJECTS.map((s) => ({ params: { predmet: s.slug }, props: { s } }));
+}
+const { s } = Astro.props;
+const data = ege();
+const dirs = data.bySubject.get(s.key) ?? [];
+
+// Группировка по УГСН для читаемости.
+const byUgs = new Map<string, { name: string; items: typeof dirs }>();
+for (const d of dirs) {
+  const g = byUgs.get(d.ugsCode) ?? { name: d.ugsName, items: [] };
+  g.items.push(d);
+  byUgs.set(d.ugsCode, g);
+}
+const groups = [...byUgs.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+
+const crumbs = [
+  { name: 'Главная', url: '/' },
+  { name: 'Куда поступать после 11 класса', url: '/kuda-postupat-posle-11-klassa/' },
+  { name: `С ${s.instr}` },
+];
+const n = dirs.length;
+const title = `Куда поступать с ${s.instr} (ЕГЭ): ${n} направлений после 11 класса | Профориентация`;
+const description = `С ${s.instr} на ЕГЭ доступно ${n} ${plural(n, 'направление', 'направления', 'направлений')} подготовки. Полный список специальностей, куда можно поступить с ${s.instr}, по группам, со ссылками на вузы.`;
+
+const faq = [
+  {
+    q: `Куда можно поступить с ${s.instr}?`,
+    a: `С ${s.instr} на ЕГЭ доступно ${n} ${plural(n, 'направление', 'направления', 'направлений')} подготовки — от ${groups.slice(0, 3).map((g) => `«${g[1].name.toLowerCase()}»`).join(', ')} и других. Полный список с вузами — на этой странице.`,
+  },
+  {
+    q: `Какие ещё предметы нужны кроме ${s.instr}?`,
+    a: `Русский язык сдают на все направления. Кроме него вуз назначает профильный предмет и один-два по выбору из допустимого перечня — набор зависит от направления и конкретного вуза. Точные предметы и минимальные баллы смотрите в правилах приёма вуза.`,
+  },
+  {
+    q: `Откуда взят список направлений?`,
+    a: `Из перечня вступительных испытаний Минобрнауки (приказ № 820): для каждого направления там задан набор допустимых предметов ЕГЭ. Это уровень направления — конкретные испытания вуз выбирает из этого набора сам.`,
+  },
+];
+
+const itemList = {
+  '@context': 'https://schema.org', '@type': 'ItemList',
+  name: `Направления, куда можно поступить с ${s.instr}`,
+  numberOfItems: n,
+  itemListElement: dirs.slice(0, 100).map((d, i) => ({
+    '@type': 'ListItem', position: i + 1,
+    url: new URL(`/specialnost/${d.slug}/`, Astro.site).href, name: d.name,
+  })),
+};
+const jsonLd = [
+  ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({ name: c.name, url: new URL(c.url!, Astro.site).href }))),
+  ldFaq(faq), itemList,
+];
+---
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <Breadcrumbs items={crumbs} />
+  <h1>Куда поступать с {s.instr}</h1>
+
+  <p><strong>С {s.instr} на ЕГЭ можно поступить на {n}&nbsp;{plural(n, 'направление', 'направления', 'направлений')}
+    подготовки</strong> (по перечню вступительных испытаний Минобрнауки). Русский язык обязателен для
+    всех, {s.nom} — профильный или один из предметов по выбору. Ниже — направления по группам, со
+    ссылками на специальности и вузы.</p>
+
+  <nav class="subj-nav" aria-label="Другие предметы">
+    <span>С другим предметом:</span>
+    {EGE_SUBJECTS.filter((x) => x.key !== s.key).map((x) => (
+      <a href={`/kuda-postupat-s-${x.slug}/`}>{x.nom}</a>
+    ))}
+  </nav>
+
+  <Cta pageType="guide" zone="after-intro" />
+
+  {groups.length ? groups.map(([code, g]) => (
+    <>
+      <h2>{g.name}</h2>
+      <div class="columns">
+        <ul>
+          {g.items.map((d) => (
+            <li><a href={`/specialnost/${d.slug}/`}>{d.name}</a>
+              {d.level === 'Специалитет' && <span class="sub-note"> · специалитет</span>}</li>
+          ))}
+        </ul>
+      </div>
+    </>
+  )) : <p class="missing">Данные по этому предмету уточняются.</p>}
+
+  <Cta pageType="guide" zone="after-content" />
+
+  <p class="meta">Источник: перечень вступительных испытаний Минобрнауки России (приказ № 820 от
+    27.11.2024, ред. № 904 от 26.11.2025). Список — на уровне направления; конкретный набор ЕГЭ и
+    минимальные баллы определяют правила приёма конкретного вуза. Творческие направления, где вместо
+    ЕГЭ проводятся творческие испытания, в список не входят.</p>
+
+  <h2>Вопросы и ответы</h2>
+  <dl class="faq">
+    {faq.map((f) => (<><dt>{f.q}</dt><dd>{f.a}</dd></>))}
+  </dl>
+
+  <style>
+    .subj-nav { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-3);
+      align-items: baseline; margin: var(--space-3) 0; font-size: 0.9375rem; }
+    .subj-nav span { color: var(--text-muted); }
+    .sub-note { color: var(--text-muted); font-size: 0.8125rem; }
+  </style>
+</Base>
