@@ -8,6 +8,7 @@ import { db } from '../../lib/data.ts';
 import { vuzScores, vuzScoresByGroup } from '../../lib/scores.ts';
 import { SCREENING_URL } from '../../lib/links.ts';
 import { ugsFacet, FACET_COST, LEVEL_CHIPS, FORM_CHIPS } from '../../lib/facets.ts';
+import { vuzPhoto } from '../../lib/photos.ts';
 import { costPhrase, ldBreadcrumbs, ldFaq, ldOrg, oksoCode, orgDescription, orgFaq, orgTitle, plural, rub } from '../../lib/text.ts';
 
 export function getStaticPaths() {
@@ -25,8 +26,14 @@ const crumbs = [
 ];
 const faq = orgFaq(card, meta.snapshotDate);
 const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+// Фотография вуза (Викисклад, свободная лицензия). Есть не у всех — это нормально,
+// блок просто не рисуется. Альт описывает предмет съёмки без домыслов: что именно
+// в кадре (главный корпус, памятник, вид кампуса), источник не гарантирует.
+const photo = vuzPhoto(card.slug);
+const photoAlt = photo ? `${card.shortName}, ${card.cityName}` : '';
+
 const jsonLd = [
-  ldOrg(card, pageUrl),
+  ldOrg(card, pageUrl, photo ? new URL(photo.file, Astro.site).href : undefined),
   ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
     name: c.name, url: new URL(c.url!, Astro.site).href,
   }))),
@@ -147,6 +154,25 @@ const links = Object.entries(LINK_LABELS)
   <Breadcrumbs items={crumbs} />
   <h1>{card.shortName}</h1>
   <p class="meta">{card.fullName}</p>
+
+  {photo && (
+    <figure class="vuz-photo">
+      <img src={photo.file} srcset={`${photo.file360} 360w, ${photo.file} 800w`}
+        sizes="(max-width: 700px) 100vw, 700px"
+        width={photo.width} height={photo.height} alt={photoAlt}
+        decoding="async" fetchpriority="high" />
+      {/* Указание автора и лицензии — условие CC BY / CC BY-SA / FAL. */}
+      <figcaption>
+        Фото: <a href={photo.source} rel="nofollow noopener">Викисклад</a>
+        {photo.author && <>, {photo.author}</>}
+        {photo.licence && (
+          <>, {photo.licenceUrl
+            ? <a href={photo.licenceUrl} rel="license nofollow noopener">{photo.licence}</a>
+            : photo.licence}</>
+        )}
+      </figcaption>
+    </figure>
+  )}
 
   <div class="badges">
     {card.hasBudget && <span class="badge badge--ok">Есть бюджетные места</span>}

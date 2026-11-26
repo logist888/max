@@ -125,7 +125,7 @@ export function ldBreadcrumbs(items: { name: string; url: string }[]): object {
   };
 }
 
-export function ldOrg(card: OrgCard, url: string): object {
+export function ldOrg(card: OrgCard, url: string, image?: string): object {
   const ld: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'CollegeOrUniversity',
@@ -133,6 +133,8 @@ export function ldOrg(card: OrgCard, url: string): object {
     alternateName: card.fullName,
     url,
   };
+  // Фотография — абсолютный адрес: поисковику относительный путь бесполезен.
+  if (image) ld['image'] = image;
   if (card.websites[0]) ld['sameAs'] = card.websites;
   if (card.address) {
     ld['address'] = { '@type': 'PostalAddress', streetAddress: card.address };

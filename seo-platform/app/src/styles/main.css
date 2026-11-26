@@ -665,3 +665,19 @@ details.level-group > div { padding: 0 var(--space-5) var(--space-4); }
   * { animation: none !important; transition: none !important; }
   html { scroll-behavior: auto; }
 }
+
+/* ---------- Фотография вуза (Викисклад).
+   Подпись с автором и лицензией — обязательное условие CC BY / CC BY-SA / FAL,
+   поэтому figcaption не декоративный и прятать его нельзя. */
+.vuz-photo { margin: var(--space-4) 0 var(--space-6); max-width: 700px; }
+.vuz-photo img {
+  display: block; width: 100%; height: auto;
+  border-radius: var(--radius); border: 1px solid var(--border);
+  background: var(--surface-2);
+}
+.vuz-photo figcaption {
+  margin-top: var(--space-2);
+  font-size: var(--t-caption); color: var(--text-muted);
+}
+.vuz-photo figcaption a { color: var(--text-muted); text-decoration: underline; }
+.vuz-photo figcaption a:hover { color: var(--accent-dark); }
