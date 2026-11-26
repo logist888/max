@@ -58,9 +58,28 @@ export function vuzPhoto(slug: string): VuzPhoto | undefined {
   return vuzPhotos()[slug];
 }
 
-/** Снимок с Викисклада — у него есть автор и лицензия, их надо показать. */
+/** Снимок с Викисклада — у него есть автор и лицензия. */
 export function isCommons(photo: VuzPhoto): boolean {
   return (photo.src ?? 'commons') === 'commons';
+}
+
+/** Показывать ли на сайте источник снимка: подпись «Фото: Викисклад, автор,
+ *  лицензия» и поля license, acquireLicensePage, creditText, copyrightNotice
+ *  в разметке schema.org.
+ *
+ *  Выключено решением владельца проекта от 26.11.2026, юридическая сторона —
+ *  на нём. Для справки при пересмотре: у 345 из 412 снимков с Викисклада
+ *  лицензия CC BY / CC BY-SA / GFDL / FAL, и её условие — указать автора и
+ *  лицензию; у 67 (Public domain, CC0) такого условия нет.
+ *
+ *  Сведения об авторах и лицензиях остаются в карте соответствий
+ *  (data/photos/vuz-photos.json) — на сайт она не попадает. Чтобы вернуть
+ *  подписи и разметку, достаточно поставить здесь true. */
+export const SHOW_PHOTO_CREDITS = false;
+
+/** Рисовать ли подпись и поля прав у этого снимка. */
+export function showCredit(photo: VuzPhoto): boolean {
+  return SHOW_PHOTO_CREDITS && isCommons(photo);
 }
 
 // Мусор, которым Викисклад помечает кадры в серии: «СибУПК 03», «(04)»,
