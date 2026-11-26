@@ -125,7 +125,40 @@ export function ldBreadcrumbs(items: { name: string; url: string }[]): object {
   };
 }
 
-export function ldOrg(card: OrgCard, url: string, image?: string): object {
+/** Фотография как schema.org ImageObject.
+ *
+ *  Не просто адрес файла: у снимков с Викисклада есть автор и лицензия, и
+ *  разметка — то место, где робот их видит. Свойства license и
+ *  acquireLicensePage поисковики читают как сведения о правах на изображение;
+ *  creditText — подпись, которую можно показать рядом со снимком. Указание
+ *  автора и лицензии и так обязательно по CC BY / CC BY-SA, разметка его
+ *  дублирует машинно. */
+export function ldImage(opts: {
+  url: string; url360?: string; width: number; height: number;
+  alt: string; author?: string; licenceUrl?: string; source?: string;
+}): object {
+  const ld: Record<string, unknown> = {
+    '@type': 'ImageObject',
+    contentUrl: opts.url,
+    url: opts.url,
+    width: opts.width,
+    height: opts.height,
+    caption: opts.alt,
+  };
+  if (opts.url360) ld['thumbnailUrl'] = opts.url360;
+  // Автора отдаём текстом. Типизировать его как Person нельзя: в поле Artist на
+  // Викискладе бывает и организация, и несколько человек, и ник — тип был бы
+  // домыслом.
+  if (opts.author) {
+    ld['creditText'] = opts.author;
+    ld['copyrightNotice'] = opts.author;
+  }
+  if (opts.licenceUrl) ld['license'] = opts.licenceUrl;
+  if (opts.source) ld['acquireLicensePage'] = opts.source;
+  return ld;
+}
+
+export function ldOrg(card: OrgCard, url: string, image?: string | object): object {
   const ld: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'CollegeOrUniversity',

@@ -47,3 +47,67 @@ export function vuzPhotos(): Record<string, VuzPhoto> {
 export function vuzPhoto(slug: string): VuzPhoto | undefined {
   return vuzPhotos()[slug];
 }
+
+// Мусор, которым Викисклад помечает кадры в серии: «СибУПК 03», «(04)»,
+// «Корпус № 5», «РосНОУ 20220810 102124», дата съёмки, имя файла с камеры.
+// Для альта это шум, и его срезаем по кругу, пока строка не перестанет меняться.
+const TRIM: RegExp[] = [
+  /[\s.,;:·—–_«»"'-]+$/,
+  /[\s(]*№\s*\)?$/,
+  /[\s·—–-]*\(?\d[\d\s.:-]*\)?$/,
+  /[.,;\s]*\(?(?:\d{1,2}\s+)?[а-яё]+\s+\d{4}(?:\s+года)?\)?$/i,
+  /[,\s]*фото$/i,
+  /\s+[a-zа-яё]$/,
+];
+const CAM_FILE = /^(?:DSC|DSCN|IMG|IMGP|P|PICT)[\s_]*\d+[\s_]*(?:\d{4}[\s_]*)?/i;
+// Подпись годится в альт, только если она называет снятый объект, а не просто
+// повторяет название вуза и не рассказывает сюжет («Осмотр центра искусств»).
+const OBJECT = /корпус|здание|кампус|фасад|\bвид\b/i;
+// Организационно-правовая шелуха в названии: в подписи её никогда нет, и для
+// проверки «назван ли вуз» она бесполезна.
+const LEGAL_NOISE = new Set([
+  'фгбоу', 'фгаоу', 'фгкоу', 'фгбну', 'гбоу', 'гаоу', 'гкоу', 'ано', 'чоу', 'ноу',
+  'оу', 'бу', 'во', 'имени', 'россии', 'российской', 'федерации', 'минздрава',
+]);
+
+/** Альтернативный текст фотографии.
+ *
+ *  Подпись Викисклада берём, только если выполнено всё: она по-русски, говорит,
+ *  что в кадре («главный корпус», «вид», «здание»), и сама называет вуз.
+ *  Половина подписей там латиницей или вида «Sibup hull», часть описывает сюжет
+ *  («Осмотр центра искусств»), часть — безымянный «Учебно-лабораторный корпус»:
+ *  такой альт хуже отсутствия. Во всех остальных случаях — название вуза и
+ *  город; для фотографии объекта это обычная практика. Слова «фотография» и
+ *  «изображение» в альт не пишем, их читает сам скринридер.
+ *
+ *  Вуз считается названным, если подпись содержит аббревиатуру или начало
+ *  значимого слова из названия: по-русски слова склоняются («Московского
+ *  политехнического»), поэтому сверяем по первым пяти буквам, а не целиком. */
+export function photoAltText(
+  photo: VuzPhoto, shortName: string, cityName: string, acronyms: string[] = [],
+): string {
+  const title = (shortName.split(',')[0] ?? '').trim() || shortName;
+  const plain = `${title}, ${cityName}`;
+
+  let c = (photo.caption || '').trim().replace(CAM_FILE, '').trim();
+  for (let i = 0; i < 6; i++) {
+    const before = c;
+    for (const re of TRIM) c = c.replace(re, '').trim();
+    if (c === before) break;
+  }
+  const usable = /[А-Яа-яЁё]/.test(c) && c.length >= 12 && c.length <= 140
+    && c.includes(' ') && OBJECT.test(c);
+  if (!usable) return plain;
+
+  const low = c.toLowerCase();
+  const stems = title
+    .split(/[\s,.]+/)
+    .map((w) => w.replace(/[«»"'()]/g, '').toLowerCase())
+    .filter((w) => w.length >= 5 && !LEGAL_NOISE.has(w))
+    .map((w) => w.slice(0, 5));
+  const short = acronyms.filter((a) => a.length >= 3).map((a) => a.toLowerCase());
+  const named = stems.some((s) => low.includes(s)) || short.some((a) => low.includes(a));
+  if (!named) return plain;
+
+  return low.includes(cityName.toLowerCase().slice(0, 6)) ? c : `${c}, ${cityName}`;
+}

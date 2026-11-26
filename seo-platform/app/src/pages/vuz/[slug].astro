@@ -8,8 +8,8 @@ import { db } from '../../lib/data.ts';
 import { vuzScores, vuzScoresByGroup } from '../../lib/scores.ts';
 import { SCREENING_URL } from '../../lib/links.ts';
 import { ugsFacet, FACET_COST, LEVEL_CHIPS, FORM_CHIPS } from '../../lib/facets.ts';
-import { vuzPhoto } from '../../lib/photos.ts';
-import { costPhrase, ldBreadcrumbs, ldFaq, ldOrg, oksoCode, orgDescription, orgFaq, orgTitle, plural, rub } from '../../lib/text.ts';
+import { vuzPhoto, photoAltText } from '../../lib/photos.ts';
+import { costPhrase, ldBreadcrumbs, ldFaq, ldImage, ldOrg, oksoCode, orgDescription, orgFaq, orgTitle, plural, rub } from '../../lib/text.ts';
 
 export function getStaticPaths() {
   return db().orgCards.map((card) => ({ params: { slug: card.slug }, props: { card } }));
@@ -27,13 +27,21 @@ const crumbs = [
 const faq = orgFaq(card, meta.snapshotDate);
 const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
 // Фотография вуза (Викисклад, свободная лицензия). Есть не у всех — это нормально,
-// блок просто не рисуется. Альт описывает предмет съёмки без домыслов: что именно
-// в кадре (главный корпус, памятник, вид кампуса), источник не гарантирует.
+// блок просто не рисуется. Альт берёт подпись Викисклада, когда она по-русски и
+// содержательна, иначе — название вуза и город: что именно в кадре (главный
+// корпус, памятник, вид кампуса), источник не гарантирует, и домысливать нельзя.
 const photo = vuzPhoto(card.slug);
-const photoAlt = photo ? `${card.shortName}, ${card.cityName}` : '';
+const photoAlt = photo ? photoAltText(photo, card.shortName, card.cityName, card.acronyms) : '';
 
 const jsonLd = [
-  ldOrg(card, pageUrl, photo ? new URL(photo.file, Astro.site).href : undefined),
+  ldOrg(card, pageUrl, photo ? ldImage({
+    url: new URL(photo.file, Astro.site).href,
+    url360: new URL(photo.file360, Astro.site).href,
+    width: photo.width, height: photo.height, alt: photoAlt,
+    author: photo.author || undefined,
+    licenceUrl: photo.licenceUrl || undefined,
+    source: photo.source || undefined,
+  }) : undefined),
   ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
     name: c.name, url: new URL(c.url!, Astro.site).href,
   }))),
