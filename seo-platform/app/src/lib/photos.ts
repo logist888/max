@@ -26,6 +26,8 @@ export interface VuzPhoto {
   /** Откуда снимок. Отсутствие поля означает Викисклад — так записаны первые. */
   src?: PhotoSource;
   file: string;
+  /** Превью для списков, 192×144. Делает scripts/photos/make_thumbs.py. */
+  thumb?: string;
   file360: string;
   width: number;
   height: number;

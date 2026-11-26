@@ -15,3 +15,9 @@ scratch/
 # Сырьё ингеста (большие бинарники); каталог держим через .gitkeep
 raw/*
 !raw/.gitkeep
+
+# Временная папка просмотра кандидатов в фото вузов (scripts/photos/vuzopedia.py match):
+# скачанные для просмотра картинки, в репозиторий не идут.
+seo-platform/data/photos/review/
+# Хвосты прерванной загрузки фотографий.
+seo-platform/app/public/photos/*.src

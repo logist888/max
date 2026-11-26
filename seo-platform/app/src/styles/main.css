@@ -459,6 +459,36 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .card h3 a:hover { color: var(--accent-dark); text-decoration: none; }
 .card .meta { color: var(--text-muted); font-size: var(--t-caption); margin: 2px 0; }
 
+/* Карточка вуза в списке: превью слева, текст справа. */
+.card--thumb { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: var(--space-4); align-items: start; }
+.card-body { min-width: 0; }
+/* В реестре встречаются названия без пробела после запятой
+   («…университет»,Сибирский…») — одно неразрывное слово во всю строку. Рядом
+   с превью колонка уже, и на 320 px такое слово вылезает за экран. */
+.card--thumb h3 { overflow-wrap: anywhere; hyphens: auto; }
+.thumb {
+  display: block; width: 96px; height: 72px; object-fit: cover;
+  border-radius: 10px; background: var(--surface-2);
+}
+/* Заглушка: плашка со знаком-шапочкой из логотипа. Знак — маской, цвет берётся
+   из токена, поэтому в тёмной теме заглушка перекрашивается сама. Своя,
+   а не заглушка Vuzopedia: та чужая. */
+.thumb--empty { position: relative; background: var(--accent-soft); }
+.thumb--empty::after {
+  content: ''; position: absolute; inset: 0; background: var(--accent);
+  opacity: .55;
+  -webkit-mask: var(--cap-icon) center / 30px no-repeat;
+          mask: var(--cap-icon) center / 30px no-repeat;
+}
+:root {
+  --cap-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z'/%3E%3Cpath d='M22 10v6'/%3E%3Cpath d='M6 12.5V16a6 3 0 0 0 12 0v-3.5'/%3E%3C/svg%3E");
+}
+@media (max-width: 480px) {
+  .card--thumb { grid-template-columns: 64px minmax(0, 1fr); gap: var(--space-3); }
+  .thumb { width: 64px; height: 48px; border-radius: 8px; }
+  .thumb--empty::after { -webkit-mask-size: 22px; mask-size: 22px; }
+}
+
 /* ---------- Таблицы */
 .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
 table { border-collapse: collapse; width: 100%; font-size: var(--t-body); }

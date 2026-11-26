@@ -1,6 +1,7 @@
 ---
 import type { CatalogRow } from '../lib/data.ts';
 import { costPhrase, plural } from '../lib/text.ts';
+import { vuzPhoto } from '../lib/photos.ts';
 
 // facet — необязательные data-* атрибуты для клиентского фильтра (см. Filters.astro).
 // Передаётся страницей каталога; при наличии карточка становится [data-filter-item].
@@ -20,8 +21,18 @@ const { row, facet, spec } = Astro.props;
 const cost = costPhrase(spec ? spec.costRange : row.costRange);
 const hasBudget = spec ? spec.hasBudget : row.hasBudget;
 const attrs = facet ? { 'data-filter-item': '', ...facet } : {};
+// Превью слева от названия. Где фотографии нет — заглушка: та же плашка без
+// картинки, рисуется стилями, без запроса к серверу. Когда снимок появится в
+// карте соответствий, заглушка сменится на фото при следующей сборке сама.
+// Альт пустой намеренно: рядом стоит название вуза ссылкой, и скринридер
+// прочёл бы его дважды.
+const thumb = vuzPhoto(row.slug)?.thumb;
 ---
-<li class="card" {...attrs}>
+<li class="card card--thumb" {...attrs}>
+  {thumb
+    ? <img class="thumb" src={thumb} alt="" width="96" height="72" loading="lazy" decoding="async" />
+    : <span class="thumb thumb--empty" aria-hidden="true"></span>}
+  <div class="card-body">
   <h3><a href={`/vuz/${row.slug}/`}>{row.shortName}</a></h3>
   <p class="meta">
     {row.cityName}, {row.regionKey}
@@ -53,4 +64,5 @@ const attrs = facet ? { 'data-filter-item': '', ...facet } : {};
       {row.militaryDept && <span class="badge badge--info">Военная кафедра</span>}
     </div>
   )}
+  </div>
 </li>
