@@ -8,7 +8,7 @@ import { db } from '../../lib/data.ts';
 import { vuzScores, vuzScoresByGroup } from '../../lib/scores.ts';
 import { SCREENING_URL } from '../../lib/links.ts';
 import { ugsFacet, FACET_COST, LEVEL_CHIPS, FORM_CHIPS } from '../../lib/facets.ts';
-import { vuzPhoto, photoAltText } from '../../lib/photos.ts';
+import { vuzPhoto, photoAltText, isCommons } from '../../lib/photos.ts';
 import { costPhrase, ldBreadcrumbs, ldFaq, ldImage, ldOrg, oksoCode, orgDescription, orgFaq, orgTitle, plural, rub } from '../../lib/text.ts';
 
 export function getStaticPaths() {
@@ -26,21 +26,25 @@ const crumbs = [
 ];
 const faq = orgFaq(card, meta.snapshotDate);
 const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
-// Фотография вуза (Викисклад, свободная лицензия). Есть не у всех — это нормально,
-// блок просто не рисуется. Альт берёт подпись Викисклада, когда она по-русски и
-// содержательна, иначе — название вуза и город: что именно в кадре (главный
-// корпус, памятник, вид кампуса), источник не гарантирует, и домысливать нельзя.
+// Фотография вуза. Есть не у всех — это нормально, блок просто не рисуется.
+// Источников два, и обращаться с ними надо по-разному (см. lib/photos.ts):
+// у снимков с Викисклада есть автор и свободная лицензия — их показываем
+// подписью и пишем в разметку; у снимков с Vuzopedia ни того, ни другого нет,
+// поэтому подписи нет, а license и acquireLicensePage в разметке не заполняются.
+// Альт берёт подпись Викисклада, когда она по-русски и содержательна, иначе —
+// название вуза и город: что именно в кадре, источник не гарантирует.
 const photo = vuzPhoto(card.slug);
 const photoAlt = photo ? photoAltText(photo, card.shortName, card.cityName, card.acronyms) : '';
+const photoFromCommons = photo ? isCommons(photo) : false;
 
 const jsonLd = [
   ldOrg(card, pageUrl, photo ? ldImage({
     url: new URL(photo.file, Astro.site).href,
     url360: new URL(photo.file360, Astro.site).href,
     width: photo.width, height: photo.height, alt: photoAlt,
-    author: photo.author || undefined,
-    licenceUrl: photo.licenceUrl || undefined,
-    source: photo.source || undefined,
+    author: photoFromCommons ? photo.author || undefined : undefined,
+    licenceUrl: photoFromCommons ? photo.licenceUrl || undefined : undefined,
+    source: photoFromCommons ? photo.source || undefined : undefined,
   }) : undefined),
   ldBreadcrumbs(crumbs.filter((c) => c.url).map((c) => ({
     name: c.name, url: new URL(c.url!, Astro.site).href,
@@ -164,21 +168,27 @@ const links = Object.entries(LINK_LABELS)
   <p class="meta">{card.fullName}</p>
 
   {photo && (
-    <figure class="vuz-photo">
-      <img src={photo.file} srcset={`${photo.file360} 360w, ${photo.file} 800w`}
-        sizes="(max-width: 700px) 100vw, 700px"
+    /* Блок не шире самого снимка: снимки с Vuzopedia — 520 px, растягивать
+       их до 700 нельзя, выйдет мутно. В srcset — настоящая ширина файла, а не
+       условные 800: по ней браузер выбирает, какой файл грузить. */
+    <figure class="vuz-photo" style={`max-width:${Math.min(photo.width, 700)}px`}>
+      <img src={photo.file} srcset={`${photo.file360} 360w, ${photo.file} ${photo.width}w`}
+        sizes={`(max-width: 700px) 100vw, ${Math.min(photo.width, 700)}px`}
         width={photo.width} height={photo.height} alt={photoAlt}
         decoding="async" fetchpriority="high" />
-      {/* Указание автора и лицензии — условие CC BY / CC BY-SA / FAL. */}
-      <figcaption>
-        Фото: <a href={photo.source} rel="nofollow noopener">Викисклад</a>
-        {photo.author && <>, {photo.author}</>}
-        {photo.licence && (
-          <>, {photo.licenceUrl
-            ? <a href={photo.licenceUrl} rel="license nofollow noopener">{photo.licence}</a>
-            : photo.licence}</>
-        )}
-      </figcaption>
+      {/* Указание автора и лицензии — условие CC BY / CC BY-SA / FAL.
+          Только для снимков с Викисклада: у остальных автора и лицензии нет. */}
+      {photoFromCommons && (
+        <figcaption>
+          Фото: <a href={photo.source} rel="nofollow noopener">Викисклад</a>
+          {photo.author && <>, {photo.author}</>}
+          {photo.licence && (
+            <>, {photo.licenceUrl
+              ? <a href={photo.licenceUrl} rel="license nofollow noopener">{photo.licence}</a>
+              : photo.licence}</>
+          )}
+        </figcaption>
+      )}
     </figure>
   )}
 
