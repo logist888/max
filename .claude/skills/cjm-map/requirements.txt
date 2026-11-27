@@ -1,0 +1,5 @@
+# Обязательное для сборки SVG
+PyYAML==6.0.3
+fonttools==4.68.0
+# Необязательное: PNG, PDF (флаги --png, --pdf)
+# playwright==1.58.0   (после установки: playwright install chromium)

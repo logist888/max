@@ -1,0 +1,3484 @@
+# Карта пути по глобальной онтологии образовательного выбора v2.0 (26.11.2026).
+# Собрана скриптом scripts/ontology_cjm/build_journey.py; формат — .claude/skills/cjm-map/README.md.
+# Дословно из онтологии: листья Q, сценарии, ловушки, проверки, состояния, задачи портала. Привязка к колонкам и дорожки — выбор сборки.
+meta:
+  title: 'Образовательный выбор человека: онтология v2.0 и коммерческий слой v4.0'
+  flow_title: 'Блок-схема пути: 22 ветви дерева вопросов в порядке прохождения образовательного маршрута'
+  subtitle: Колонка блок-схемы — группа листьев дерева вопросов (глава 5). Дорожка — кто является стороной или источником ответа. Пунктир — возврат или связанная задача, красная стрелка — выход.
+  date: '2026-11-27'
+  version: '2.0'
+  source: Глобальная онтология образовательного выбора v2.0 от 26.11.2026 (vault/10-sources/2026-11-26-mainexperts-global-ontology-v2.pdf); коммерческий слой — комплект MainExperts v4.0 от 26.11.2026 (vault/10-sources/2026-11-26-mainexperts-v4/, данные docs/cjm-ontology/v4/)
+header:
+  job: Выбрать образовательный маршрут, проверить его доступность, поступить, учиться и перейти к следующей ступени или работе (глава 1 онтологии)
+  assumption: 'Что здесь из онтологии, а что выбрано при сборке. Из онтологии дословно: 327 листьев дерева вопросов Q01–Q22 (глава 5), запросы, ожидаемые модели и ловушки по 14 системам, отрицательные и дополнительные проверки (глава 9), цепочки состояний (глава 6), задачи портала (глава 10). Выбрано при сборке и в онтологии не задано: дорожки, порядок этапов, привязка сценариев, состояний, типов T и задач портала к колонкам, связи между шагами. Порядок этапов условный: человек возвращается к любым ветвям. Эмоций клиента в онтологии нет, ряд не заполнен. Спрос и частота запросов в онтологии не измерены. Слой v4.0 (комплект от 26.11.2026) добавлен рядами с пометкой «v4» и нижней дорожкой. Дословно из него: 26 услуг P01–P26, уровни D0–D3 и счётчики запросов, сценарии конверсии (кнопка, элемент, событие), получатель платежа, внешние платежи, состояния J01–J09, 14 региональных маршрутов. Выбрано при сборке: колонка стикеров услуги (первая группа её ветки Q), цвет узла предложения, сжатие текстов. Ограничения данных: уровень D3 означает коммерческую формулировку запроса, а не покупку; уровней D5 и D6 (собственные оплаты, окупаемость) нет; цен услуг в комплекте нет; рынки СНГ, кроме России, и Казахстан, Узбекистан в 14 системах отсутствуют.'
+  legend:
+  - kind: b
+    text: Ветка Q; спрос в поиске по услуге (v4)
+  - kind: y
+    text: Лист дерева, запрос, цель этапа; решение, экран и кнопка (v4)
+  - kind: gr
+    text: Дополнительная задача, тип T, проверка; рынок (v4)
+  - kind: g
+    text: Что должен вернуть ответ; бесплатный результат (v4)
+  - kind: r
+    text: Ловушка; риск услуги (v4)
+  - kind: w
+    text: Состояние, задача портала; триггер, платёж, состояние J (v4)
+  how_to_read: 'Как читать: сверху блок-схема, колонка схемы — группа листьев дерева вопросов (онтология v2.0). Нижняя дорожка «Предложение v4» — коммерческий слой: что платно предлагается в ветке (пунктир, гипотеза). Под схемой стикеры в тех же колонках: ряды без пометки — онтология, ряды «v4» — спрос, бесплатный результат, кнопки, платёж и риск по 26 услугам. Ряда эмоций нет: в данных их нет. Уровни D0–D3 — наблюдения поиска, не продажи: покупок MainExperts в данных нет (D5–D6 без данных).'
+lanes:
+- id: L_person
+  label: Человек и представитель
+  style: 0
+- id: L_platform
+  label: 'Платформа: поиск и проверка по онтологии'
+  style: 1
+- id: L_org
+  label: Учебная организация и приёмная
+  style: 2
+- id: L_authority
+  label: Орган, реестр, регулятор
+  style: 3
+- id: L_assess
+  label: 'Оценивание: экзамен, олимпиада'
+  style: 4
+- id: L_funder
+  label: Финансирующая сторона
+  style: 5
+- id: L_offer
+  label: 'Предложение v4: MainExperts, партнёр, официальный переход'
+  style: 6
+stages:
+- id: p1
+  from: 1
+  to: 6
+  label: 1. Цель и маршрут
+  color: cyan
+- id: p2
+  from: 7
+  to: 24
+  label: 2. Поиск и выбор варианта
+  color: blue
+- id: p3
+  from: 25
+  to: 30
+  label: 3. Статус и допуск
+  color: cyan
+- id: p4
+  from: 31
+  to: 36
+  label: 4. Оценивание и подготовка
+  color: blue
+- id: p5
+  from: 37
+  to: 42
+  label: 5. Заявка и решение
+  color: cyan
+- id: p6
+  from: 43
+  to: 51
+  label: 6. Признание, цена, финансирование
+  color: blue
+- id: p7
+  from: 52
+  to: 57
+  label: 7. Переезд и условия жизни
+  color: cyan
+- id: p8
+  from: 58
+  to: 63
+  label: 8. Обучение и практика
+  color: blue
+- id: p9
+  from: 64
+  to: 67
+  label: 9. Перевод, смена, завершение
+  color: cyan
+flow:
+  lane_height: 200
+  nodes:
+  - id: start
+    shape: term
+    col: 0
+    lane: L_person
+    text: 'Начало: запрос обучающегося (Q01.01)'
+  - id: n_Q01_0
+    shape: proc
+    col: 1
+    lane: L_person
+    text: Понять исходную ситуацию (Q01.01–Q01.04)
+  - id: n_Q01_1
+    shape: proc
+    col: 2
+    lane: L_platform
+    text: Спроектировать маршрут (Q01.05–Q01.07)
+  - id: n_Q01_2
+    shape: note
+    col: 3
+    lane: L_platform
+    text: Дополнительные задачи ветки Q01 (Q01.08–Q01.13)
+    dy: 62
+  - id: n_Q02_0
+    shape: proc
+    col: 4
+    lane: L_platform
+    text: Прочитать систему (Q02.01–Q02.04b)
+  - id: n_Q02_1
+    shape: proc
+    col: 5
+    lane: L_platform
+    text: Понять переход (Q02.05–Q02.07)
+  - id: n_Q02_2
+    shape: note
+    col: 6
+    lane: L_platform
+    text: Дополнительные задачи ветки Q02 (Q02.08–Q02.13)
+    dy: 62
+  - id: n_Q03_0
+    shape: proc
+    col: 7
+    lane: L_platform
+    text: Идентифицировать объект (Q03.01–Q03.04)
+  - id: n_Q03_1
+    shape: proc
+    col: 8
+    lane: L_org
+    text: Установить компетенцию (Q03.05a–Q03.06)
+  - id: n_Q03_2
+    shape: note
+    col: 9
+    lane: L_org
+    text: Дополнительные задачи ветки Q03 (Q03.07–Q03.12)
+    dy: 62
+  - id: n_Q04_0
+    shape: proc
+    col: 10
+    lane: L_org
+    text: Определить содержание (Q04.01–Q04.05)
+  - id: n_Q04_1
+    shape: proc
+    col: 11
+    lane: L_org
+    text: Разобрать конструкцию программы (Q04.06–Q04.09)
+  - id: n_Q04_2
+    shape: note
+    col: 12
+    lane: L_org
+    text: Дополнительные задачи ветки Q04 (Q04.10–Q04.16)
+    dy: 62
+  - id: n_Q05_0
+    shape: proc
+    col: 13
+    lane: L_org
+    text: Установить формат исполнения (Q05.01–Q05.03b)
+  - id: n_Q05_1
+    shape: proc
+    col: 14
+    lane: L_org
+    text: Установить доступность по времени (Q05.04–Q05.08)
+  - id: n_Q05_2
+    shape: note
+    col: 15
+    lane: L_org
+    text: Дополнительные задачи ветки Q05 (Q05.09–Q05.15)
+    dy: 62
+  - id: n_Q06_0
+    shape: proc
+    col: 16
+    lane: L_platform
+    text: Подобрать (Q06.01–Q06.03)
+  - id: n_Q06_1
+    shape: proc
+    col: 17
+    lane: L_platform
+    text: Оценить варианты (Q06.04–Q06.06)
+  - id: n_Q06_2
+    shape: note
+    col: 18
+    lane: L_platform
+    text: Дополнительные задачи ветки Q06 (Q06.07–Q06.12)
+    dy: 62
+  - id: n_Q07_0
+    shape: proc
+    col: 19
+    lane: L_platform
+    text: Получить измерение (Q07.01–Q07.03b)
+  - id: n_Q07_1
+    shape: proc
+    col: 20
+    lane: L_platform
+    text: Проверить свидетельства (Q07.04–Q07.05)
+  - id: n_Q07_2
+    shape: note
+    col: 21
+    lane: L_platform
+    text: Дополнительные задачи ветки Q07 (Q07.06–Q07.11)
+    dy: 62
+  - id: n_Q21_0
+    shape: proc
+    col: 22
+    lane: L_org
+    text: Найти точку контакта (Q21.01–Q21.04)
+  - id: n_Q21_1
+    shape: proc
+    col: 23
+    lane: L_org
+    text: Оформить взаимодействие (Q21.05a–Q21.06)
+  - id: n_Q21_2
+    shape: note
+    col: 24
+    lane: L_org
+    text: Дополнительные задачи ветки Q21 (Q21.07–Q21.11)
+    dy: 62
+  - id: n_Q08_0
+    shape: proc
+    col: 25
+    lane: L_authority
+    text: Установить статус (Q08.01–Q08.04)
+  - id: n_Q08_1
+    shape: proc
+    col: 26
+    lane: L_authority
+    text: Найти и интерпретировать запись (Q08.05–Q08.06)
+  - id: n_Q08_2
+    shape: note
+    col: 27
+    lane: L_authority
+    text: Дополнительные задачи ветки Q08 (Q08.07–Q08.11)
+    dy: 62
+  - id: n_Q09_0
+    shape: proc
+    col: 28
+    lane: L_org
+    text: Проверить право участвовать (Q09.01–Q09.04b)
+  - id: n_Q09_1
+    shape: proc
+    col: 29
+    lane: L_org
+    text: Разобрать отбор (Q09.05a–Q09.09b)
+  - id: n_Q09_2
+    shape: note
+    col: 30
+    lane: L_org
+    text: Дополнительные задачи ветки Q09 (Q09.10–Q09.16)
+    dy: 62
+  - id: n_Q10_0
+    shape: proc
+    col: 31
+    lane: L_assess
+    text: Понять оценивание (Q10.01–Q10.04)
+  - id: n_Q10_1
+    shape: proc
+    col: 32
+    lane: L_assess
+    text: Работать с итогом (Q10.05a–Q10.09)
+  - id: n_Q10_2
+    shape: note
+    col: 33
+    lane: L_assess
+    text: Дополнительные задачи ветки Q10 (Q10.10–Q10.15)
+    dy: 62
+  - id: n_Q20_0
+    shape: proc
+    col: 34
+    lane: L_platform
+    text: Найти ресурс (Q20.01–Q20.03)
+  - id: n_Q20_1
+    shape: proc
+    col: 35
+    lane: L_person
+    text: Выстроить подготовку (Q20.04–Q20.06)
+  - id: n_Q20_2
+    shape: note
+    col: 36
+    lane: L_platform
+    text: Дополнительные задачи ветки Q20 (Q20.07–Q20.11)
+    dy: 62
+  - id: n_Q11_0
+    shape: proc
+    col: 37
+    lane: L_person
+    text: Подготовить отправку (Q11.01–Q11.05)
+  - id: n_Q11_1
+    shape: proc
+    col: 38
+    lane: L_person
+    text: Совершить операцию (Q11.06–Q11.09)
+  - id: n_Q11_2
+    shape: note
+    col: 39
+    lane: L_person
+    text: Дополнительные задачи ветки Q11 (Q11.10–Q11.16)
+    dy: 62
+  - id: n_Q12_0
+    shape: proc
+    col: 40
+    lane: L_org
+    text: Разобрать решение (Q12.01–Q12.04b)
+  - id: n_Q12_1
+    shape: proc
+    col: 41
+    lane: L_org
+    text: Оформить участие (Q12.05–Q12.07b)
+  - id: n_Q12_2
+    shape: note
+    col: 42
+    lane: L_org
+    text: Дополнительные задачи ветки Q12 (Q12.08–Q12.12)
+    dy: 62
+  - id: n_Q13_0
+    shape: proc
+    col: 43
+    lane: L_authority
+    text: Определить результат обучения (Q13.01–Q13.03)
+  - id: n_Q13_1
+    shape: proc
+    col: 44
+    lane: L_authority
+    text: Установить применимость результата (Q13.04–Q13.09)
+  - id: n_Q13_2
+    shape: note
+    col: 45
+    lane: L_authority
+    text: Дополнительные задачи ветки Q13 (Q13.10–Q13.16)
+    dy: 62
+  - id: n_Q14_0
+    shape: proc
+    col: 46
+    lane: L_org
+    text: Установить расходы (Q14.01–Q14.04)
+  - id: n_Q14_1
+    shape: proc
+    col: 47
+    lane: L_platform
+    text: Рассчитать бюджет (Q14.05–Q14.08b)
+  - id: n_Q14_2
+    shape: note
+    col: 48
+    lane: L_org
+    text: Дополнительные задачи ветки Q14 (Q14.09–Q14.15)
+    dy: 62
+  - id: n_Q15_0
+    shape: proc
+    col: 49
+    lane: L_funder
+    text: Найти источник покрытия (Q15.01–Q15.03)
+  - id: n_Q15_1
+    shape: proc
+    col: 50
+    lane: L_funder
+    text: Получить и удержать (Q15.04–Q15.07)
+  - id: n_Q15_2
+    shape: note
+    col: 51
+    lane: L_funder
+    text: Дополнительные задачи ветки Q15 (Q15.08–Q15.13)
+    dy: 62
+  - id: n_Q16_0
+    shape: proc
+    col: 52
+    lane: L_authority
+    text: Выбрать правовой маршрут (Q16.01a–Q16.04)
+  - id: n_Q16_1
+    shape: proc
+    col: 53
+    lane: L_authority
+    text: Оформить и поддерживать статус (Q16.05–Q16.09)
+  - id: n_Q16_2
+    shape: note
+    col: 54
+    lane: L_authority
+    text: Дополнительные задачи ветки Q16 (Q16.10–Q16.14)
+    dy: 62
+  - id: n_Q18_0
+    shape: proc
+    col: 55
+    lane: L_org
+    text: Обеспечить участие (Q18.01–Q18.04b)
+  - id: n_Q18_1
+    shape: proc
+    col: 56
+    lane: L_org
+    text: Получить поддержку (Q18.05–Q18.07)
+  - id: n_Q18_2
+    shape: note
+    col: 57
+    lane: L_org
+    text: Дополнительные задачи ветки Q18 (Q18.08–Q18.14)
+    dy: 62
+  - id: n_Q17_0
+    shape: proc
+    col: 58
+    lane: L_org
+    text: Установить ход обучения (Q17.01–Q17.04b)
+  - id: n_Q17_1
+    shape: proc
+    col: 59
+    lane: L_org
+    text: Изменить условия текущего участия (Q17.05–Q17.07)
+  - id: n_Q17_2
+    shape: note
+    col: 60
+    lane: L_org
+    text: Дополнительные задачи ветки Q17 (Q17.08–Q17.14)
+    dy: 62
+  - id: n_Q19_0
+    shape: proc
+    col: 61
+    lane: L_platform
+    text: Понять профессиональную цель (Q19.01–Q19.03)
+  - id: n_Q19_1
+    shape: proc
+    col: 62
+    lane: L_platform
+    text: Найти рабочий переход (Q19.04–Q19.06)
+  - id: n_Q19_2
+    shape: note
+    col: 63
+    lane: L_platform
+    text: Дополнительные задачи ветки Q19 (Q19.07–Q19.11)
+    dy: 62
+  - id: n_Q22_0
+    shape: proc
+    col: 64
+    lane: L_org
+    text: Изменить или приостановить участие (Q22.01a–Q22.04)
+  - id: n_Q22_1
+    shape: proc
+    col: 65
+    lane: L_org
+    text: Завершить маршрут (Q22.05a–Q22.08)
+  - id: n_Q22_2
+    shape: note
+    col: 66
+    lane: L_org
+    text: Дополнительные задачи ветки Q22 (Q22.11–Q22.17)
+    dy: 62
+  - id: done
+    shape: term
+    col: 67
+    lane: L_org
+    text: Завершение маршрута (Q22.06)
+  - id: exit
+    shape: term
+    col: 67
+    lane: L_person
+    text: Выход из маршрута (Q22.09)
+    hypothesis: true
+  - id: o_Q01
+    shape: doc
+    col: 1
+    lane: L_offer
+    style: L_platform
+    text: 'Предложения ветки Q01: P01'
+    hypothesis: true
+  - id: o_Q02
+    shape: doc
+    col: 4
+    lane: L_offer
+    style: L_platform
+    text: 'Предложения ветки Q02: P02'
+    hypothesis: true
+  - id: o_Q03
+    shape: doc
+    col: 7
+    lane: L_offer
+    style: L_platform
+    text: 'Предложения ветки Q03: P03'
+    hypothesis: true
+  - id: o_Q04
+    shape: doc
+    col: 10
+    lane: L_offer
+    style: L_platform
+    text: 'Предложения ветки Q04: P04'
+    hypothesis: true
+  - id: o_Q05
+    shape: doc
+    col: 13
+    lane: L_offer
+    style: L_platform
+    text: 'Предложения ветки Q05: P05'
+    hypothesis: true
+  - id: o_Q06
+    shape: doc
+    col: 16
+    lane: L_offer
+    style: L_platform
+    text: 'Предложения ветки Q06: P06'
+    hypothesis: true
+  - id: o_Q07
+    shape: doc
+    col: 19
+    lane: L_offer
+    style: L_platform
+    text: 'Предложения ветки Q07: P07'
+    hypothesis: true
+  - id: o_Q08
+    shape: doc
+    col: 25
+    lane: L_offer
+    style: L_platform
+    text: 'Предложения ветки Q08: P08'
+    hypothesis: true
+  - id: o_Q09
+    shape: doc
+    col: 28
+    lane: L_offer
+    style: L_platform
+    text: 'Предложения ветки Q09: P09'
+    hypothesis: true
+  - id: o_Q10
+    shape: doc
+    col: 31
+    lane: L_offer
+    style: L_authority
+    text: 'Предложения ветки Q10: P10'
+    hypothesis: true
+  - id: o_Q11
+    shape: doc
+    col: 37
+    lane: L_offer
+    style: L_platform
+    text: 'Предложения ветки Q11: P11, P23, P25, P26'
+    hypothesis: true
+  - id: o_Q12
+    shape: doc
+    col: 40
+    lane: L_offer
+    style: L_platform
+    text: 'Предложения ветки Q12: P12'
+    hypothesis: true
+  - id: o_Q13
+    shape: doc
+    col: 43
+    lane: L_offer
+    style: L_authority
+    text: 'Предложения ветки Q13: P13'
+    hypothesis: true
+  - id: o_Q14
+    shape: doc
+    col: 46
+    lane: L_offer
+    style: L_platform
+    text: 'Предложения ветки Q14: P14'
+    hypothesis: true
+  - id: o_Q15
+    shape: doc
+    col: 49
+    lane: L_offer
+    style: L_platform
+    text: 'Предложения ветки Q15: P15, P24'
+    hypothesis: true
+  - id: o_Q16
+    shape: doc
+    col: 52
+    lane: L_offer
+    style: L_funder
+    text: 'Предложения ветки Q16: P16'
+    hypothesis: true
+  - id: o_Q17
+    shape: doc
+    col: 58
+    lane: L_offer
+    style: L_person
+    text: 'Предложения ветки Q17: P17'
+    hypothesis: true
+  - id: o_Q18
+    shape: doc
+    col: 55
+    lane: L_offer
+    style: L_funder
+    text: 'Предложения ветки Q18: P18'
+    hypothesis: true
+  - id: o_Q19
+    shape: doc
+    col: 61
+    lane: L_offer
+    style: L_platform
+    text: 'Предложения ветки Q19: P19'
+    hypothesis: true
+  - id: o_Q20
+    shape: doc
+    col: 34
+    lane: L_offer
+    style: L_funder
+    text: 'Предложения ветки Q20: P20'
+    hypothesis: true
+  - id: o_Q21
+    shape: doc
+    col: 22
+    lane: L_offer
+    style: L_platform
+    text: 'Предложения ветки Q21: P21'
+    hypothesis: true
+  - id: o_Q22
+    shape: doc
+    col: 64
+    lane: L_offer
+    style: L_platform
+    text: 'Предложения ветки Q22: P22'
+    hypothesis: true
+  edges:
+  - {from: start, to: n_Q01_0, elbow: near}
+  - {from: n_Q01_0, to: n_Q01_1, elbow: near}
+  - {from: n_Q01_1, to: n_Q02_0, elbow: near}
+  - {from: n_Q02_0, to: n_Q02_1, elbow: near}
+  - {from: n_Q02_1, to: n_Q03_0, elbow: near}
+  - {from: n_Q03_0, to: n_Q03_1, elbow: near}
+  - {from: n_Q03_1, to: n_Q04_0, elbow: near}
+  - {from: n_Q04_0, to: n_Q04_1, elbow: near}
+  - {from: n_Q04_1, to: n_Q05_0, elbow: near}
+  - {from: n_Q05_0, to: n_Q05_1, elbow: near}
+  - {from: n_Q05_1, to: n_Q06_0, elbow: near}
+  - {from: n_Q06_0, to: n_Q06_1, elbow: near}
+  - {from: n_Q06_1, to: n_Q07_0, elbow: near}
+  - {from: n_Q07_0, to: n_Q07_1, elbow: near}
+  - {from: n_Q07_1, to: n_Q21_0, elbow: near}
+  - {from: n_Q21_0, to: n_Q21_1, elbow: near}
+  - {from: n_Q21_1, to: n_Q08_0, elbow: near}
+  - {from: n_Q08_0, to: n_Q08_1, elbow: near}
+  - {from: n_Q08_1, to: n_Q09_0, elbow: near}
+  - {from: n_Q09_0, to: n_Q09_1, elbow: near}
+  - {from: n_Q09_1, to: n_Q10_0, elbow: near}
+  - {from: n_Q10_0, to: n_Q10_1, elbow: near}
+  - {from: n_Q10_1, to: n_Q20_0, elbow: near}
+  - {from: n_Q20_0, to: n_Q20_1, elbow: near}
+  - {from: n_Q20_1, to: n_Q11_0, elbow: near}
+  - {from: n_Q11_0, to: n_Q11_1, elbow: near}
+  - {from: n_Q11_1, to: n_Q12_0, elbow: near}
+  - {from: n_Q12_0, to: n_Q12_1, elbow: near}
+  - {from: n_Q12_1, to: n_Q13_0, elbow: near}
+  - {from: n_Q13_0, to: n_Q13_1, elbow: near}
+  - {from: n_Q13_1, to: n_Q14_0, elbow: near}
+  - {from: n_Q14_0, to: n_Q14_1, elbow: near}
+  - {from: n_Q14_1, to: n_Q15_0, elbow: near}
+  - {from: n_Q15_0, to: n_Q15_1, elbow: near}
+  - {from: n_Q15_1, to: n_Q16_0, elbow: near}
+  - {from: n_Q16_0, to: n_Q16_1, elbow: near}
+  - {from: n_Q16_1, to: n_Q18_0, elbow: near}
+  - {from: n_Q18_0, to: n_Q18_1, elbow: near}
+  - {from: n_Q18_1, to: n_Q17_0, elbow: near}
+  - {from: n_Q17_0, to: n_Q17_1, elbow: near}
+  - {from: n_Q17_1, to: n_Q19_0, elbow: near}
+  - {from: n_Q19_0, to: n_Q19_1, elbow: near}
+  - {from: n_Q19_1, to: n_Q22_0, elbow: near}
+  - {from: n_Q22_0, to: n_Q22_1, elbow: near}
+  - {from: n_Q22_1, to: done, elbow: near}
+  - {from: n_Q01_1, to: n_Q01_2, dash: true, arrow: false}
+  - {from: n_Q02_1, to: n_Q02_2, dash: true, arrow: false}
+  - {from: n_Q03_1, to: n_Q03_2, dash: true, arrow: false}
+  - {from: n_Q04_1, to: n_Q04_2, dash: true, arrow: false}
+  - {from: n_Q05_1, to: n_Q05_2, dash: true, arrow: false}
+  - {from: n_Q06_1, to: n_Q06_2, dash: true, arrow: false}
+  - {from: n_Q07_1, to: n_Q07_2, dash: true, arrow: false}
+  - {from: n_Q08_1, to: n_Q08_2, dash: true, arrow: false}
+  - {from: n_Q09_1, to: n_Q09_2, dash: true, arrow: false}
+  - {from: n_Q10_1, to: n_Q10_2, dash: true, arrow: false}
+  - {from: n_Q11_1, to: n_Q11_2, dash: true, arrow: false}
+  - {from: n_Q12_1, to: n_Q12_2, dash: true, arrow: false}
+  - {from: n_Q13_1, to: n_Q13_2, dash: true, arrow: false}
+  - {from: n_Q14_1, to: n_Q14_2, dash: true, arrow: false}
+  - {from: n_Q15_1, to: n_Q15_2, dash: true, arrow: false}
+  - {from: n_Q16_1, to: n_Q16_2, dash: true, arrow: false}
+  - {from: n_Q17_1, to: n_Q17_2, dash: true, arrow: false}
+  - {from: n_Q18_1, to: n_Q18_2, dash: true, arrow: false}
+  - {from: n_Q19_1, to: n_Q19_2, dash: true, arrow: false}
+  - {from: n_Q20_1, to: n_Q20_2, dash: true, arrow: false}
+  - {from: n_Q21_1, to: n_Q21_2, dash: true, arrow: false}
+  - {from: n_Q22_1, to: n_Q22_2, dash: true, arrow: false}
+  - from: n_Q12_0
+    to: n_Q06_1
+    dash: true
+    ports: bb
+    label: 'отказ от места: запасной маршрут (Q12.04b, Q01.07)'
+    label_at: mid
+    corridor: {lane: L_funder, dy: 30}
+  - from: n_Q22_0
+    to: n_Q06_0
+    dash: true
+    ports: bb
+    label: 'перевод в другую реализацию (Q22.04): снова поиск'
+    label_at: mid
+    corridor: {lane: L_funder, dy: 52}
+  - from: n_Q17_0
+    to: n_Q01_2
+    dash: true
+    ports: bb
+    label: 'обстоятельства изменились: пересмотр маршрута (Q01.12)'
+    label_at: mid
+    corridor: {lane: L_funder, dy: 74}
+  - from: n_Q11_2
+    to: n_Q13_1
+    dash: true
+    label: 'заверение документа: Q11.13 → Q13.16 → Q13.09 → Q13.05a'
+  - from: n_Q11_1
+    to: exit
+    loss: true
+    ports: bb
+    label: отзыв заявки (Q11.09)
+    label_at: mid
+    corridor: {lane: L_person, dy: 64}
+  - from: n_Q12_1
+    to: exit
+    loss: true
+    ports: tb
+    label: отказ от предложенного места (Q12.04b)
+    label_at: mid
+    corridor: {lane: L_person, dy: 76}
+  - from: n_Q22_0
+    to: exit
+    loss: true
+    ports: tb
+    label: выход и заявление о прекращении участия (Q22.09, Q22.16)
+    label_at: mid
+    corridor: {lane: L_person, dy: 88}
+  - {from: n_Q01_0, to: o_Q01, dash: true, arrow: true}
+  - {from: n_Q02_0, to: o_Q02, dash: true, arrow: true}
+  - {from: n_Q03_0, to: o_Q03, dash: true, arrow: true}
+  - {from: n_Q04_0, to: o_Q04, dash: true, arrow: true}
+  - {from: n_Q05_0, to: o_Q05, dash: true, arrow: true}
+  - {from: n_Q06_0, to: o_Q06, dash: true, arrow: true}
+  - {from: n_Q07_0, to: o_Q07, dash: true, arrow: true}
+  - {from: n_Q08_0, to: o_Q08, dash: true, arrow: true}
+  - {from: n_Q09_0, to: o_Q09, dash: true, arrow: true}
+  - {from: n_Q10_0, to: o_Q10, dash: true, arrow: true}
+  - {from: n_Q11_0, to: o_Q11, dash: true, arrow: true}
+  - {from: n_Q12_0, to: o_Q12, dash: true, arrow: true}
+  - {from: n_Q13_0, to: o_Q13, dash: true, arrow: true}
+  - {from: n_Q14_0, to: o_Q14, dash: true, arrow: true}
+  - {from: n_Q15_0, to: o_Q15, dash: true, arrow: true}
+  - {from: n_Q16_0, to: o_Q16, dash: true, arrow: true}
+  - {from: n_Q17_0, to: o_Q17, dash: true, arrow: true}
+  - {from: n_Q18_0, to: o_Q18, dash: true, arrow: true}
+  - {from: n_Q19_0, to: o_Q19, dash: true, arrow: true}
+  - {from: n_Q20_0, to: o_Q20, dash: true, arrow: true}
+  - {from: n_Q21_0, to: o_Q21, dash: true, arrow: true}
+  - {from: n_Q22_0, to: o_Q22, dash: true, arrow: true}
+rows:
+- id: goal
+  label: Цель этапа
+  type: goal
+- id: branch
+  label: Ветка дерева вопросов
+- id: tasks
+  label: 'Задачи человека: лист → результат (гл. 5)'
+- id: thoughts
+  label: Запрос человека (гл. 9)
+- id: expect
+  label: Что должен вернуть ответ (гл. 9)
+- id: traps
+  label: 'Ловушка: типичная ошибка (гл. 9)'
+- id: states
+  label: Состояния и переходы (гл. 6)
+- id: portal
+  label: Задача портала, объект выдачи (гл. 10)
+- id: types
+  label: Типы T (привязка по смыслу)
+- id: checks
+  label: Доп. проверки модели (гл. 9)
+- id: v4_demand
+  label: 'v4 · Спрос в поиске: уровень D0–D3, запросы, рынки'
+- id: v4_decision
+  label: v4 · Решение по услуге (стратегия v4)
+- id: v4_free
+  label: v4 · Бесплатный результат до любой оплаты
+- id: v4_cta
+  label: v4 · Экран, элемент и текст кнопки по сценариям F · A · C · O
+- id: v4_trigger
+  label: v4 · Когда предлагать платный результат
+- id: v4_payer
+  label: v4 · Платный результат, кто принимает деньги, внешний платёж
+- id: v4_risk
+  label: v4 · Риск и бесплатная альтернатива
+- id: v4_region
+  label: 'v4 · Рынок: официальный маршрут и граница платного (14 систем)'
+- id: v4_jstate
+  label: v4 · Состояние маршрута J01–J09 и переходы
+- id: v4_events
+  label: v4 · Что измеряем на этапе (события)
+  type: goal
+stickies:
+- row: branch
+  col: 1
+  kind: b
+  text: 'Q01 · Цель и личный маршрут. Листьев: 13'
+- row: tasks
+  col: 1
+  kind: y
+  text: 'Q01.01 Определить запрос обучающегося. Результат: сформулированная образовательная цель с носителем.'
+- row: tasks
+  col: 1
+  kind: y
+  text: 'Q01.02 Интерпретировать диагностику. Результат: результат измерения интересов или способностей с методикой.'
+- row: tasks
+  col: 1
+  kind: y
+  text: 'Q01.03 Установить ограничения выбора. Результат: индивидуальный профиль обязательных требований.'
+- row: tasks
+  col: 1
+  kind: y
+  text: 'Q01.04 Зафиксировать личные предпочтения. Результат: профиль желательных параметров и приоритетов.'
+- row: tasks
+  col: 2
+  kind: y
+  text: 'Q01.05 Связать желаемую роль с обучением. Результат: маршрут от текущей подготовки к компетенциям и квалификации.'
+- row: tasks
+  col: 2
+  kind: y
+  text: 'Q01.06 Определить ближайший шаг. Результат: следующее действие с входным условием и результатом.'
+- row: tasks
+  col: 2
+  kind: y
+  text: 'Q01.07 Построить запасной маршрут. Результат: альтернативная последовательность действий для известного риска.'
+- row: tasks
+  col: 3
+  kind: gr
+  text: 'Q01.08 Выявить противоречие обязательных ограничений маршрута. Результат: перечень несовместимых требований с основанием.'
+- row: tasks
+  col: 3
+  kind: gr
+  text: 'Q01.09 Установить исходную точку маршрута. Результат: подтверждённое состояние образования человека на дату.'
+- row: tasks
+  col: 3
+  kind: gr
+  text: 'Q01.10 Согласовать цель обучающегося и законного представителя. Результат: зафиксированная общая цель либо остающееся разногласие.'
+- row: tasks
+  col: 3
+  kind: gr
+  text: 'Q01.11 Проверить достижимость последовательности шагов по срокам. Результат: расчётная временная осуществимость маршрута.'
+- row: tasks
+  col: 3
+  kind: gr
+  text: 'Q01.12 Пересмотреть маршрут после изменения обстоятельств. Результат: новая версия индивидуального плана с причиной изменения.'
+- row: tasks
+  col: 3
+  kind: gr
+  text: 'Q01.13 Определить ценность конкретного навыка для личной цели. Результат: связанный с целью ожидаемый образовательный результат.'
+- row: branch
+  col: 4
+  kind: b
+  text: 'Q02 · Устройство систем, ступени и формы. Листьев: 14'
+- row: tasks
+  col: 4
+  kind: y
+  text: 'Q02.01 Установить рамку образования. Результат: описание применимой системы и её границ.'
+- row: tasks
+  col: 4
+  kind: y
+  text: 'Q02.02 Определить положение ступени. Результат: место уровня в конкретной рамке.'
+- row: tasks
+  col: 4
+  kind: y
+  text: 'Q02.03 Расшифровать формальный режим обучения. Результат: значение режима с его нормативным контекстом.'
+- row: tasks
+  col: 4
+  kind: y
+  text: 'Q02.04a Определить нормативный возраст входа на ступень. Результат: правило возраста с датой отсчёта и исключениями.'
+- row: tasks
+  col: 4
+  kind: y
+  text: 'Q02.04b Определить типовую предшествующую ступень. Результат: позиция в указанной образовательной системе и правило перехода.'
+- row: tasks
+  col: 5
+  kind: y
+  text: 'Q02.05 Найти типовой переход между ступенями. Результат: схема перехода с условиями.'
+- row: tasks
+  col: 5
+  kind: y
+  text: 'Q02.06 Определить роль подготовительной ступени. Результат: положение подготовки относительно целевой ступени.'
+- row: tasks
+  col: 5
+  kind: y
+  text: 'Q02.07 Сопоставить системы. Результат: отображение уровней с основанием и пределом эквивалентности.'
+- row: tasks
+  col: 6
+  kind: gr
+  text: 'Q02.08 Установить обязательность обучения. Результат: применимое правило для возраста, статуса и юрисдикции.'
+- row: tasks
+  col: 6
+  kind: gr
+  text: 'Q02.09 Определить полномочный орган для образовательной ступени. Результат: ответственный орган в конкретной системе.'
+- row: tasks
+  col: 6
+  kind: gr
+  text: 'Q02.10 Установить способ организации семейного или домашнего обучения. Результат: определённый в системе режим и его основания.'
+- row: tasks
+  col: 6
+  kind: gr
+  text: 'Q02.11 Расшифровать единицу учебной нагрузки в системе. Результат: определение меры и её область применения.'
+- row: tasks
+  col: 6
+  kind: gr
+  text: 'Q02.12 Проверить место краткой квалификации в рамке. Результат: наличие или отсутствие положения результата в указанной рамке.'
+- row: tasks
+  col: 6
+  kind: gr
+  text: 'Q02.13 Найти общесистемное правило обучения взрослых. Результат: норма, действующая для указанной категории и ступени.'
+- row: goal
+  stage: p1
+  kind: y
+  text: Сформулировать цель обучающегося и маршрут (Q01), понять устройство систем, ступеней и переходов (Q02)
+- row: branch
+  col: 7
+  kind: b
+  text: 'Q03 · Организация, подразделение, кампус и люди. Листьев: 11'
+- row: tasks
+  col: 7
+  kind: y
+  text: 'Q03.01 Найти конкретную организацию. Результат: проверенная идентичность и варианты названия.'
+- row: tasks
+  col: 7
+  kind: y
+  text: 'Q03.02 Найти подразделение. Результат: карточка подразделения и его место в организации.'
+- row: tasks
+  col: 7
+  kind: y
+  text: 'Q03.03 Найти площадку. Результат: карточка места обучения с адресом и привязкой.'
+- row: tasks
+  col: 7
+  kind: y
+  text: 'Q03.04 Найти сотрудника или представителя. Результат: человек с подтверждённой ролью в нужном процессе.'
+- row: tasks
+  col: 8
+  kind: y
+  text: 'Q03.05a Установить участие организации как исполнителя. Результат: подтверждённая роль в конкретной реализации.'
+- row: tasks
+  col: 8
+  kind: y
+  text: 'Q03.05b Установить организацию, ответственную за присуждение. Результат: подтверждённый участник для конкретной квалификации. Проверка формального права остаётся Q08.04.'
+- row: tasks
+  col: 8
+  kind: y
+  text: 'Q03.06 Разрешить омонимию организаций. Результат: различение филиалов, брендов, групп и юридических участников.'
+- row: tasks
+  col: 9
+  kind: gr
+  text: 'Q03.07 Установить юридического участника за образовательным брендом. Результат: идентифицированное юридическое лицо для конкретной роли.'
+- row: tasks
+  col: 9
+  kind: gr
+  text: 'Q03.08 Установить текущий статус работы площадки. Результат: подтверждённое состояние площадки на заданную дату.'
+- row: tasks
+  col: 9
+  kind: gr
+  text: 'Q03.11 Найти профиль преподавателя конкретной реализации. Результат: подтверждённый участник и его роль.'
+- row: tasks
+  col: 9
+  kind: gr
+  text: 'Q03.12 Установить принадлежность организации к сети. Результат: подтверждённая связь организации с сетью в заданный период.'
+- row: branch
+  col: 10
+  kind: b
+  text: 'Q04 · Программа, специализация и учебный план. Листьев: 18'
+- row: tasks
+  col: 10
+  kind: y
+  text: 'Q04.01 Идентифицировать программу. Результат: карточка программы и ответственная организация.'
+- row: tasks
+  col: 10
+  kind: y
+  text: 'Q04.02a Идентифицировать квалификацию, направление или профессию по коду. Результат: объект, классификатор и версия.'
+- row: tasks
+  col: 10
+  kind: y
+  text: 'Q04.02b Получить определение записи классификатора. Результат: описание и границы кода в конкретной версии.'
+- row: tasks
+  col: 10
+  kind: y
+  text: 'Q04.03 Определить учебный план. Результат: состав обязательных и выборных компонентов для версии программы.'
+- row: tasks
+  col: 10
+  kind: y
+  text: 'Q04.04a Определить учебную нагрузку. Результат: величина с единицей и периодом расчёта.'
+- row: tasks
+  col: 10
+  kind: y
+  text: 'Q04.04b Определить предусмотренные зачётные единицы. Результат: число кредитов с системой и правилами присвоения.'
+- row: tasks
+  col: 10
+  kind: y
+  text: 'Q04.05 Определить результат освоения. Результат: заявленные знания и компетенции программы.'
+- row: tasks
+  col: 11
+  kind: y
+  text: 'Q04.06 Определить присуждаемый результат. Результат: вид квалификации и ответственный за присуждение.'
+- row: tasks
+  col: 11
+  kind: y
+  text: 'Q04.07 Проверить встроенный подготовительный компонент. Результат: положение компонента и его роль в ходе программы.'
+- row: tasks
+  col: 11
+  kind: y
+  text: 'Q04.08 Разобрать совмещённую программу. Результат: связи между компонентами, провайдерами и присуждаемыми квалификациями.'
+- row: tasks
+  col: 11
+  kind: y
+  text: 'Q04.09 Проверить встроенную практику. Результат: часть плана, условия и ответственная сторона.'
+- row: tasks
+  col: 12
+  kind: gr
+  text: 'Q04.10 Определить начальную подготовку, предполагаемую программой. Результат: заявленные входные знания, нужные для освоения содержания.'
+- row: tasks
+  col: 12
+  kind: gr
+  text: 'Q04.11 Установить обязательные компоненты версии плана. Результат: перечень компонентов, необходимых для завершения.'
+- row: tasks
+  col: 12
+  kind: gr
+  text: 'Q04.12 Определить правило выбора элективов. Результат: допустимый выбор компонентов и ограничение объёма.'
+- row: tasks
+  col: 12
+  kind: gr
+  text: 'Q04.13 Выяснить способ проверки освоения компонента. Результат: предусмотренный вид оценивания по компоненту.'
+- row: tasks
+  col: 12
+  kind: gr
+  text: 'Q04.14 Установить самостоятельность короткого курса. Результат: его статус как отдельной программы или компонента другой программы.'
+- row: tasks
+  col: 12
+  kind: gr
+  text: 'Q04.15 Проверить возможность накопить малые модули в более крупный результат. Результат: установленное правило объединения и его условия.'
+- row: tasks
+  col: 12
+  kind: gr
+  text: 'Q04.16 Установить условия получения итогового результата. Результат: применимые требования завершения версии программы.'
+- row: branch
+  col: 13
+  kind: b
+  text: 'Q05 · Реализация, набор и расписание. Листьев: 16'
+- row: tasks
+  col: 13
+  kind: y
+  text: 'Q05.01 Найти реализацию известной программы. Результат: подтверждённый вариант исполнения с провайдером и площадкой.'
+- row: tasks
+  col: 13
+  kind: y
+  text: 'Q05.02 Проверить язык преподавания. Результат: язык реализации или компонента по источнику.'
+- row: tasks
+  col: 13
+  kind: y
+  text: 'Q05.03a Проверить способ проведения обучения. Результат: подтверждённый режим конкретной реализации.'
+- row: tasks
+  col: 13
+  kind: y
+  text: 'Q05.03b Проверить интенсивность обучения. Результат: нагрузка за заданный период в принятой единице.'
+- row: tasks
+  col: 14
+  kind: y
+  text: 'Q05.04 Найти календарный набор. Результат: поток, аудитория и время начала.'
+- row: tasks
+  col: 14
+  kind: y
+  text: 'Q05.05 Проверить открытость набора. Результат: состояние входа для нужного раунда и аудитории.'
+- row: tasks
+  col: 14
+  kind: y
+  text: 'Q05.06 Выяснить продолжительность. Результат: предусмотренный срок прохождения реализации.'
+- row: tasks
+  col: 14
+  kind: y
+  text: 'Q05.07 Проверить учебное расписание. Результат: план занятий или учебных периодов.'
+- row: tasks
+  col: 14
+  kind: y
+  text: 'Q05.08 Проверить запись по требованию. Результат: условия доступа к реализации с непрерывным или индивидуальным стартом.'
+- row: tasks
+  col: 15
+  kind: gr
+  text: 'Q05.09 Установить часовой пояс онлайн-занятий. Результат: часовой пояс расписания конкретной реализации.'
+- row: tasks
+  col: 15
+  kind: gr
+  text: 'Q05.10 Проверить необходимость очного присутствия. Результат: обязательные очные события и место их проведения.'
+- row: tasks
+  col: 15
+  kind: gr
+  text: 'Q05.11 Проверить доступность записи занятия. Результат: установленный срок и условия доступа к записи.'
+- row: tasks
+  col: 15
+  kind: gr
+  text: 'Q05.12 Установить последнюю дату присоединения к текущей группе. Результат: разрешённый срок позднего входа.'
+- row: tasks
+  col: 15
+  kind: gr
+  text: 'Q05.13 Проверить наличие доступных мест на занятии. Результат: зафиксированное состояние мест на момент проверки.'
+- row: tasks
+  col: 15
+  kind: gr
+  text: 'Q05.14 Проверить отмену объявленного потока. Результат: подтверждённый статус отмены выбранного набора.'
+- row: tasks
+  col: 15
+  kind: gr
+  text: 'Q05.15 Определить размер учебной группы. Результат: значение для конкретной реализации и источник.'
+- row: branch
+  col: 16
+  kind: b
+  text: 'Q06 · Поиск и сравнение вариантов. Листьев: 13'
+- row: tasks
+  col: 16
+  kind: y
+  text: 'Q06.01 Подобрать организации по критериям. Результат: список организаций с установленными факторами.'
+- row: tasks
+  col: 16
+  kind: y
+  text: 'Q06.02a Подобрать реализации программ. Результат: список реализаций, удовлетворяющих условиям поиска.'
+- row: tasks
+  col: 16
+  kind: y
+  text: 'Q06.02b Подобрать наборы. Результат: список отдельных наборов, удовлетворяющих условиям поиска.'
+- row: tasks
+  col: 16
+  kind: y
+  text: 'Q06.03 Подобрать отдельные занятия или учебные сессии. Результат: список конкретных занятий с расписанием и доступностью.'
+- row: tasks
+  col: 17
+  kind: y
+  text: 'Q06.04 Сопоставить выбранные предложения. Результат: таблица по одинаковым критериям и периоду.'
+- row: tasks
+  col: 17
+  kind: y
+  text: 'Q06.05 Проверить пригодность варианта для человека. Результат: профиль проверок по обязательным критериям и неизвестным.'
+- row: tasks
+  col: 17
+  kind: y
+  text: 'Q06.06 Сформировать короткий список. Результат: упорядоченные варианты с причинами отбора и отсечения.'
+- row: tasks
+  col: 18
+  kind: gr
+  text: 'Q06.07 Установить причину отсутствия конкретного варианта в выдаче. Результат: сработавшее условие отбора или пробел данных.'
+- row: tasks
+  col: 18
+  kind: gr
+  text: 'Q06.08 Найти пересечение расписаний выбранных занятий. Результат: интервалы, в которых участие конфликтует по времени.'
+- row: tasks
+  col: 18
+  kind: gr
+  text: 'Q06.09 Проверить обеспеченность найденного варианта данными. Результат: перечень известных и отсутствующих параметров варианта.'
+- row: tasks
+  col: 18
+  kind: gr
+  text: 'Q06.10 Сохранить выбранный вариант. Результат: запись о конкретном предложении в пользовательском списке.'
+- row: tasks
+  col: 18
+  kind: gr
+  text: 'Q06.11 Подписаться на изменение выбранного параметра. Результат: зафиксированное условие уведомления для конкретного объекта.'
+- row: tasks
+  col: 18
+  kind: gr
+  text: 'Q06.12 Сравнить маршруты по числу необходимых переходов. Результат: сопоставимая последовательность шагов для каждого маршрута.'
+- row: branch
+  col: 19
+  kind: b
+  text: 'Q07 · Показатели, опыт и рейтинг. Листьев: 13'
+- row: tasks
+  col: 19
+  kind: y
+  text: 'Q07.01 Проверить позицию в конкретном рейтинге. Результат: значение по издателю, выпуску и сравниваемой группе.'
+- row: tasks
+  col: 19
+  kind: y
+  text: 'Q07.02 Проверить показатель качества. Результат: значение и методика для указанного объекта.'
+- row: tasks
+  col: 19
+  kind: y
+  text: 'Q07.03a Проверить образовательный исход выпускников. Результат: показатель, период, группа и методика.'
+- row: tasks
+  col: 19
+  kind: y
+  text: 'Q07.03b Проверить профессиональный исход выпускников. Результат: показатель, период, группа и методика.'
+- row: tasks
+  col: 20
+  kind: y
+  text: 'Q07.04 Найти отзывы. Результат: свидетельства опыта с объектом и происхождением.'
+- row: tasks
+  col: 20
+  kind: y
+  text: 'Q07.05 Оценить сопоставимость показателей. Результат: объяснение различий методик или состава сравнения.'
+- row: tasks
+  col: 21
+  kind: gr
+  text: 'Q07.06 Установить период опубликованного измерения. Результат: границы периода наблюдения.'
+- row: tasks
+  col: 21
+  kind: gr
+  text: 'Q07.12 Установить охват измерения. Результат: состав измеряемой совокупности и метод формирования выборки.'
+- row: tasks
+  col: 21
+  kind: gr
+  text: 'Q07.07 Установить источник показателя. Результат: автор измерения и идентификатор публикации.'
+- row: tasks
+  col: 21
+  kind: gr
+  text: 'Q07.08 Проверить применимость показателя организации к отдельной программе. Результат: подтверждённый или неизвестный уровень измерения.'
+- row: tasks
+  col: 21
+  kind: gr
+  text: 'Q07.09 Найти показатель завершения программы. Результат: доля завершивших в определённой когорте по указанной методике.'
+- row: tasks
+  col: 21
+  kind: gr
+  text: 'Q07.10 Найти показатель продолжения обучения выпускников. Результат: измерение последующего перехода конкретной когорты.'
+- row: tasks
+  col: 21
+  kind: gr
+  text: 'Q07.11 Проверить происхождение отзыва. Результат: известный способ подтверждения опыта автора.'
+- row: branch
+  col: 22
+  kind: b
+  text: 'Q21 · Контакты приёма, события, пробы и консультации. Листьев: 12'
+- row: tasks
+  col: 22
+  kind: y
+  text: 'Q21.01 Найти приёмный контакт. Результат: действующий канал связи с ответственным контуром.'
+- row: tasks
+  col: 22
+  kind: y
+  text: 'Q21.02 Найти день открытых дверей. Результат: датированное событие знакомства с организацией.'
+- row: tasks
+  col: 22
+  kind: y
+  text: 'Q21.03 Найти пробное занятие. Результат: отдельное место участия в пробе с программой и сроком.'
+- row: tasks
+  col: 22
+  kind: y
+  text: 'Q21.04 Найти консультацию до выбора. Результат: доступный консультационный формат и предмет обращения.'
+- row: tasks
+  col: 23
+  kind: y
+  text: 'Q21.05a Записаться на событие знакомства. Результат: подтверждённая регистрация и её параметры.'
+- row: tasks
+  col: 23
+  kind: y
+  text: 'Q21.05b Подтвердить посещение события. Результат: зафиксированный факт участия.'
+- row: tasks
+  col: 23
+  kind: y
+  text: 'Q21.06 Получить разъяснение от уполномоченной стороны. Результат: ответ по конкретному вопросу, источнику и времени.'
+- row: tasks
+  col: 24
+  kind: gr
+  text: 'Q21.07 Проверить изменение времени мероприятия знакомства. Результат: подтверждённое новое расписание конкретного события.'
+- row: tasks
+  col: 24
+  kind: gr
+  text: 'Q21.08 Отменить запись на консультацию. Результат: зарегистрированное событие отмены конкретной записи.'
+- row: tasks
+  col: 24
+  kind: gr
+  text: 'Q21.09 Проверить доступность места на пробном занятии. Результат: состояние свободных мест на момент запроса.'
+- row: tasks
+  col: 24
+  kind: gr
+  text: 'Q21.10 Установить возможность присутствия сопровождающего. Результат: правило участия представителя в конкретном событии.'
+- row: tasks
+  col: 24
+  kind: gr
+  text: 'Q21.11 Направить уточняющий вопрос приёмной стороне. Результат: подтверждённая отправка конкретного обращения.'
+- row: goal
+  stage: p2
+  kind: y
+  text: Найти организации, программы, реализации и наборы, сравнить, составить короткий список и связаться с приёмной стороной (Q03–Q07, Q21)
+- row: branch
+  col: 25
+  kind: b
+  text: 'Q08 · Статус, лицензия, аккредитация и реестр. Листьев: 12'
+- row: tasks
+  col: 25
+  kind: y
+  text: 'Q08.01 Проверить право организации вести обучение. Результат: регуляторная запись о провайдере.'
+- row: tasks
+  col: 25
+  kind: y
+  text: 'Q08.02a Проверить разрешение на проведение программы. Результат: статус конкретного объекта по схеме авторизации.'
+- row: tasks
+  col: 25
+  kind: y
+  text: 'Q08.02b Проверить аккредитацию программы. Результат: статус конкретного объекта по схеме аккредитации.'
+- row: tasks
+  col: 25
+  kind: y
+  text: 'Q08.03 Проверить формальный статус площадки. Результат: запись схемы, применимая к кампусу или подразделению.'
+- row: tasks
+  col: 25
+  kind: y
+  text: 'Q08.04 Проверить право присуждения. Результат: подтверждённые полномочия на заявленный вид квалификации.'
+- row: tasks
+  col: 26
+  kind: y
+  text: 'Q08.05 Найти запись в реестре. Результат: результат поиска в указанном перечне и версии.'
+- row: tasks
+  col: 26
+  kind: y
+  text: 'Q08.06 Установить, что подтверждает запись. Результат: юридический или справочный эффект включения в конкретную схему.'
+- row: tasks
+  col: 27
+  kind: gr
+  text: 'Q08.07 Проверить срок действия записи о статусе. Результат: период действия конкретной записи.'
+- row: tasks
+  col: 27
+  kind: gr
+  text: 'Q08.08 Проверить приостановление или отзыв статуса. Результат: подтверждённое изменение статуса с датой.'
+- row: tasks
+  col: 27
+  kind: gr
+  text: 'Q08.09 Установить компетенцию автора реестра. Результат: полномочие оператора вести указанный перечень.'
+- row: tasks
+  col: 27
+  kind: gr
+  text: 'Q08.10 Проверить охват статуса по площадке. Результат: применимость записи к конкретному месту реализации.'
+- row: tasks
+  col: 27
+  kind: gr
+  text: 'Q08.11 Сопоставить реестровый код с выбранным объектом. Результат: подтверждение принадлежности кода объекту в версии реестра.'
+- row: branch
+  col: 28
+  kind: b
+  text: 'Q09 · Правила допуска, квоты и конкурс. Листьев: 19'
+- row: tasks
+  col: 28
+  kind: y
+  text: 'Q09.01 Найти условия допуска. Результат: применимый набор критериев процедуры.'
+- row: tasks
+  col: 28
+  kind: y
+  text: 'Q09.02 Проверить конкретный критерий. Результат: результат проверки профиля человека.'
+- row: tasks
+  col: 28
+  kind: y
+  text: 'Q09.03 Проверить альтернативный путь допуска. Результат: выполнимая ветвь нормы с требованиями.'
+- row: tasks
+  col: 28
+  kind: y
+  text: 'Q09.04a Установить действующее основание льготы. Результат: правило и его область применения.'
+- row: tasks
+  col: 28
+  kind: y
+  text: 'Q09.04b Проверить льготу для кандидата. Результат: результат индивидуальной проверки по конкретному основанию и набору.'
+- row: tasks
+  col: 29
+  kind: y
+  text: 'Q09.05a Найти план мест набора. Результат: количество мест с категорией и периодом.'
+- row: tasks
+  col: 29
+  kind: y
+  text: 'Q09.05b Найти размер квоты. Результат: доля или число мест с правилом формирования и областью.'
+- row: tasks
+  col: 29
+  kind: y
+  text: 'Q09.06 Выяснить формулу отбора. Результат: правила ранжирования и разрешения равенства.'
+- row: tasks
+  col: 29
+  kind: y
+  text: 'Q09.07 Найти минимальный установленный порог. Результат: нормативное условие с мерой и периодом.'
+- row: tasks
+  col: 29
+  kind: y
+  text: 'Q09.08 Найти исторический результат отбора. Результат: наблюдавшийся минимум, последнее место или граница по раунду.'
+- row: tasks
+  col: 29
+  kind: y
+  text: 'Q09.09a Проверить опубликованное положение в конкурсе. Результат: позиция кандидата или варианта в датированном срезе.'
+- row: tasks
+  col: 29
+  kind: y
+  text: 'Q09.09b Оценить вероятность конкурсного исхода. Результат: прогноз с методом, данными, ограничениями и неопределённостью, если модель доступна.'
+- row: tasks
+  col: 30
+  kind: gr
+  text: 'Q09.10 Проверить допустимость представительства несовершеннолетнего в приёме. Результат: правило участия законного представителя.'
+- row: tasks
+  col: 30
+  kind: gr
+  text: 'Q09.11 Установить возраст, на который проверяется требование. Результат: контрольная дата конкретного возрастного условия.'
+- row: tasks
+  col: 30
+  kind: gr
+  text: 'Q09.12 Проверить территориальное право участия в школьном распределении. Результат: результат по применимому адресу и правилу.'
+- row: tasks
+  col: 30
+  kind: gr
+  text: 'Q09.13 Установить порядок разрешения равных конкурсных результатов. Результат: правило очередности при равенстве.'
+- row: tasks
+  col: 30
+  kind: gr
+  text: 'Q09.14 Проверить совместимость двух оснований допуска. Результат: допустимость их одновременного использования по норме конкурса.'
+- row: tasks
+  col: 30
+  kind: gr
+  text: 'Q09.15 Проверить ограничение на число попыток участия. Результат: установленный лимит для конкретной процедуры.'
+- row: tasks
+  col: 30
+  kind: gr
+  text: 'Q09.16 Установить обязательность собеседования для категории кандидата. Результат: применимое условие участия в отборе.'
+- row: goal
+  stage: p3
+  kind: y
+  text: Проверить статус организации и программы, условия допуска, квоты и отбор (Q08, Q09)
+- row: branch
+  col: 31
+  kind: b
+  text: 'Q10 · Оценивание, экзамены и результаты. Листьев: 18'
+- row: tasks
+  col: 31
+  kind: y
+  text: 'Q10.01 Идентифицировать экзамен или олимпиаду. Результат: карточка мероприятия, организатор и назначение.'
+- row: tasks
+  col: 31
+  kind: y
+  text: 'Q10.02a Определить состав испытания. Результат: части и содержание установленной спецификации.'
+- row: tasks
+  col: 31
+  kind: y
+  text: 'Q10.02b Определить шкалу оценивания. Результат: шкала, единицы, метод и применимый период.'
+- row: tasks
+  col: 31
+  kind: y
+  text: 'Q10.03 Найти сессию. Результат: календарь проведения для группы и площадки.'
+- row: tasks
+  col: 31
+  kind: y
+  text: 'Q10.04 Выяснить порядок регистрации на оценивание. Результат: требуемый процесс и окно записи.'
+- row: tasks
+  col: 32
+  kind: y
+  text: 'Q10.05a Получить результат конкретной попытки. Результат: балл или итог с идентификатором попытки и шкалой.'
+- row: tasks
+  col: 32
+  kind: y
+  text: 'Q10.05b Проверить достоверность результата. Результат: результат проверки записи компетентным источником.'
+- row: tasks
+  col: 32
+  kind: y
+  text: 'Q10.06a Пересчитать результат. Результат: вычисленное значение с формулой и применимой шкалой.'
+- row: tasks
+  col: 32
+  kind: y
+  text: 'Q10.06b Интерпретировать результат. Результат: значение показателя в указанной системе без установления допуска.'
+- row: tasks
+  col: 32
+  kind: y
+  text: 'Q10.07 Проверить срок годности результата. Результат: применимость результата для целевой процедуры.'
+- row: tasks
+  col: 32
+  kind: y
+  text: 'Q10.08 Проверить пересдачу. Результат: порядок новой попытки после предыдущего результата.'
+- row: tasks
+  col: 32
+  kind: y
+  text: 'Q10.09 Оспорить результат. Результат: применимая процедура пересмотра конкретной попытки.'
+- row: tasks
+  col: 33
+  kind: gr
+  text: 'Q10.10 Установить язык конкретной сессии оценивания. Результат: язык проведения выбранной сессии.'
+- row: tasks
+  col: 33
+  kind: gr
+  text: 'Q10.11 Проверить стоимость участия в оценивании. Результат: опубликованный тариф экзаменационной сессии.'
+- row: tasks
+  col: 33
+  kind: gr
+  text: 'Q10.12 Проверить право на адаптацию условий оценивания. Результат: применимые условия и порядок запроса адаптации.'
+- row: tasks
+  col: 33
+  kind: gr
+  text: 'Q10.13 Отменить регистрацию на оценивание. Результат: подтверждённое событие отмены записи.'
+- row: tasks
+  col: 33
+  kind: gr
+  text: 'Q10.14 Передать результат оценивания получателю. Результат: подтверждённая отправка конкретного результата.'
+- row: tasks
+  col: 33
+  kind: gr
+  text: 'Q10.15 Проверить получение результата образовательной организацией. Результат: подтверждение приёма отправленного результата.'
+- row: branch
+  col: 34
+  kind: b
+  text: 'Q20 · Учебные материалы и подготовка. Листьев: 12'
+- row: tasks
+  col: 34
+  kind: y
+  text: 'Q20.01 Найти учебный материал. Результат: актуальная версия ресурса с учебной целью и происхождением.'
+- row: tasks
+  col: 34
+  kind: y
+  text: 'Q20.02a Найти спецификацию испытания. Результат: актуальная версия документа с предметом и периодом.'
+- row: tasks
+  col: 34
+  kind: y
+  text: 'Q20.02b Найти демонстрационные задания. Результат: установленный комплект заданий с источником и версией.'
+- row: tasks
+  col: 34
+  kind: y
+  text: 'Q20.03 Найти учебный тренажёр. Результат: ресурс самостоятельной практики по измеряемому навыку.'
+- row: tasks
+  col: 35
+  kind: y
+  text: 'Q20.04 Выбрать учебное предложение для подготовки. Результат: подготовительная реализация, связанная с целевым входом.'
+- row: tasks
+  col: 35
+  kind: y
+  text: 'Q20.05 Составить план подготовки. Результат: набор шагов, сроков и контрольных результатов для цели.'
+- row: tasks
+  col: 35
+  kind: y
+  text: 'Q20.06 Определить пробел перед следующим шагом. Результат: конкретное умение и доказательство текущего уровня.'
+- row: tasks
+  col: 36
+  kind: gr
+  text: 'Q20.07 Проверить применимость материала к версии экзамена. Результат: соответствие ресурса спецификации заданного периода.'
+- row: tasks
+  col: 36
+  kind: gr
+  text: 'Q20.08 Установить условия использования учебного материала. Результат: права и ограничения для конкретного ресурса.'
+- row: tasks
+  col: 36
+  kind: gr
+  text: 'Q20.09 Проверить доступность материала на нужном языке. Результат: подтверждённая языковая версия ресурса.'
+- row: tasks
+  col: 36
+  kind: gr
+  text: 'Q20.10 Проверить доступность материала в требуемом формате. Результат: наличие конкретной доступной версии ресурса.'
+- row: tasks
+  col: 36
+  kind: gr
+  text: 'Q20.11 Проверить срок действия доступа к приобретённому материалу. Результат: установленный срок доступа пользователя.'
+- row: goal
+  stage: p4
+  kind: y
+  text: Понять оценивание, получить и истолковать результат, подготовиться к следующему шагу (Q10, Q20)
+- row: branch
+  col: 37
+  kind: b
+  text: 'Q11 · Заявка, документы и канал подачи. Листьев: 18'
+- row: tasks
+  col: 37
+  kind: y
+  text: 'Q11.01 Определить способ подачи. Результат: применимый канал, оператор и цель обращения.'
+- row: tasks
+  col: 37
+  kind: y
+  text: 'Q11.02 Найти срок подачи. Результат: окно для действия в заданном цикле и категории.'
+- row: tasks
+  col: 37
+  kind: y
+  text: 'Q11.03a Определить требуемый состав пакета. Результат: перечень доказательств по процедуре, категории и циклу.'
+- row: tasks
+  col: 37
+  kind: y
+  text: 'Q11.03b Собрать пакет подтверждений. Результат: версия пакета со связанными документами.'
+- row: tasks
+  col: 37
+  kind: y
+  text: 'Q11.04 Подготовить конкретное подтверждение. Результат: пригодный документ, перевод или формат, требуемый по процедуре.'
+- row: tasks
+  col: 37
+  kind: y
+  text: 'Q11.05 Выяснить порядок указания вариантов. Результат: правило количества и приоритетов по каналу.'
+- row: tasks
+  col: 38
+  kind: y
+  text: 'Q11.06 Отправить заявление. Результат: зарегистрированное событие подачи с подтверждением.'
+- row: tasks
+  col: 38
+  kind: y
+  text: 'Q11.07a Подтвердить получение заявки. Результат: зафиксированное событие получения адресатом.'
+- row: tasks
+  col: 38
+  kind: y
+  text: 'Q11.07b Проверить комплектность заявки. Результат: результат проверки полученного пакета с перечнем недостающих элементов.'
+- row: tasks
+  col: 38
+  kind: y
+  text: 'Q11.08 Исправить заявку. Результат: подтверждённая новая версия материалов или вариантов.'
+- row: tasks
+  col: 38
+  kind: y
+  text: 'Q11.09 Отозвать заявку. Результат: подтверждённое прекращение рассмотрения.'
+- row: tasks
+  col: 39
+  kind: gr
+  text: 'Q11.10 Проверить полномочие подписанта заявки. Результат: право конкретного лица подписать дело для указанного заявителя.'
+- row: tasks
+  col: 39
+  kind: gr
+  text: 'Q11.11 Проверить необходимость согласия представителя. Результат: условие согласия для данной процедуры и возраста.'
+- row: tasks
+  col: 39
+  kind: gr
+  text: 'Q11.12 Проверить требуемую форму документа. Результат: допустимый оригинал, копия или электронный формат по правилу.'
+- row: tasks
+  col: 39
+  kind: gr
+  text: 'Q11.13 Проверить требование к заверению документа. Результат: установленный вид удостоверения и применимая процедура.'
+- row: tasks
+  col: 39
+  kind: gr
+  text: 'Q11.14 Проверить требование к переводу документа. Результат: язык и требования к исполнителю перевода.'
+- row: tasks
+  col: 39
+  kind: gr
+  text: 'Q11.15 Проверить возможность дослать недостающий документ. Результат: правило дополнения переданной заявки и соответствующий срок.'
+- row: tasks
+  col: 39
+  kind: gr
+  text: 'Q11.16 Подтвердить получение конкретного документа. Результат: отметка получателя о приёме определённого файла или экземпляра.'
+- row: branch
+  col: 40
+  kind: b
+  text: 'Q12 · Решение, оффер и зачисление. Листьев: 15'
+- row: tasks
+  col: 40
+  kind: y
+  text: 'Q12.01 Проверить принятое решение. Результат: подтверждённый исход по заявке или варианту.'
+- row: tasks
+  col: 40
+  kind: y
+  text: 'Q12.02 Разобрать условия оффера. Результат: список невыполненных обязательств, сроков и доказательств.'
+- row: tasks
+  col: 40
+  kind: y
+  text: 'Q12.03a Проверить положение в списке ожидания. Результат: состояние варианта и датированный срез.'
+- row: tasks
+  col: 40
+  kind: y
+  text: 'Q12.03b Проверить отсроченное рассмотрение. Результат: состояние и следующее ожидаемое решение по процедуре.'
+- row: tasks
+  col: 40
+  kind: y
+  text: 'Q12.04a Принять предложенное место. Результат: подтверждённое событие принятия для конкретного предложения.'
+- row: tasks
+  col: 40
+  kind: y
+  text: 'Q12.04b Отклонить предложенное место. Результат: подтверждённое событие отказа от конкретного предложения.'
+- row: tasks
+  col: 41
+  kind: y
+  text: 'Q12.05 Проверить требования оформления. Результат: условия перехода от принятого предложения к зачислению.'
+- row: tasks
+  col: 41
+  kind: y
+  text: 'Q12.06 Подтвердить зачисление. Результат: доказательство совершённого оформления с целевой реализацией.'
+- row: tasks
+  col: 41
+  kind: y
+  text: 'Q12.07a Подать апелляцию по решению. Результат: подтверждённое обращение в компетентный орган по отдельному решению.'
+- row: tasks
+  col: 41
+  kind: y
+  text: 'Q12.07b Получить решение по апелляции. Результат: самостоятельный исход пересмотра и дата. Другие способы подачи рассматриваются в Q11.01.'
+- row: tasks
+  col: 42
+  kind: gr
+  text: 'Q12.08 Установить срок ответа на предложение места. Результат: окно принятия или отклонения конкретного предложения.'
+- row: tasks
+  col: 42
+  kind: gr
+  text: 'Q12.09 Проверить выполнение конкретного условия оффера. Результат: подтверждённый результат проверки условия.'
+- row: tasks
+  col: 42
+  kind: gr
+  text: 'Q12.10 Проверить место в очереди ожидания. Результат: опубликованное положение кандидата на определённую дату.'
+- row: tasks
+  col: 42
+  kind: gr
+  text: 'Q12.11 Подтвердить снятие условия с предложения. Результат: решение ответственной стороны об исполнении условия.'
+- row: tasks
+  col: 42
+  kind: gr
+  text: 'Q12.12 Перенести начало после предложения места. Результат: отдельное подтверждённое решение о переносе даты.'
+- row: goal
+  stage: p5
+  kind: y
+  text: Подготовить и подать заявку, разобрать решение и оформить участие (Q11, Q12)
+- row: branch
+  col: 43
+  kind: b
+  text: 'Q13 · Квалификация и признание. Листьев: 15'
+- row: tasks
+  col: 43
+  kind: y
+  text: 'Q13.01 Определить вид квалификации. Результат: место результата в именованной рамке и его эффект.'
+- row: tasks
+  col: 43
+  kind: y
+  text: 'Q13.02 Подтвердить индивидуальное присуждение. Результат: запись о достижении человека.'
+- row: tasks
+  col: 43
+  kind: y
+  text: 'Q13.03 Получить документ о достижении. Результат: подтверждённый экземпляр свидетельства с реквизитами выдачи.'
+- row: tasks
+  col: 44
+  kind: y
+  text: 'Q13.04 Выбрать процедуру признания. Результат: компетентный орган, цель, юрисдикция и тип дела.'
+- row: tasks
+  col: 44
+  kind: y
+  text: 'Q13.05a Получить решение об академическом признании. Результат: решение компетентной стороны с целью и областью.'
+- row: tasks
+  col: 44
+  kind: y
+  text: 'Q13.06 Проверить зачёт обучения. Результат: решение об учёте конкретных кредитов, модулей или периодов.'
+- row: tasks
+  col: 44
+  kind: y
+  text: 'Q13.07 Проверить сопоставимость квалификаций. Результат: заключение с указанной рамкой, целью и ограничениями.'
+- row: tasks
+  col: 44
+  kind: y
+  text: 'Q13.08 Собрать материалы для признания. Результат: пакет доказательств по отдельному делу о признании.'
+- row: tasks
+  col: 44
+  kind: y
+  text: 'Q13.09 Проверить подлинность документа. Результат: результат проверки в компетентном источнике.'
+- row: tasks
+  col: 45
+  kind: gr
+  text: 'Q13.10 Установить орган выдачи конкретного документа. Результат: подтверждённый выдавший участник.'
+- row: tasks
+  col: 45
+  kind: gr
+  text: 'Q13.11 Проверить способ подтверждения цифрового удостоверения. Результат: канал и метод верификации документа.'
+- row: tasks
+  col: 45
+  kind: gr
+  text: 'Q13.12 Восстановить утраченный документ об обучении. Результат: выданный повторный экземпляр либо подтверждение отказа.'
+- row: tasks
+  col: 45
+  kind: gr
+  text: 'Q13.13 Установить область действия решения о признании. Результат: указанная в решении цель и территория применения.'
+- row: tasks
+  col: 45
+  kind: gr
+  text: 'Q13.14 Оспорить решение о признании. Результат: зарегистрированное обращение о пересмотре конкретного решения.'
+- row: tasks
+  col: 45
+  kind: gr
+  text: 'Q13.16 Оформить заверение документа. Результат: удостоверенный документ или официальная отметка компетентной стороны по конкретной процедуре.'
+- row: branch
+  col: 46
+  kind: b
+  text: 'Q14 · Цена и бюджет. Листьев: 16'
+- row: tasks
+  col: 46
+  kind: y
+  text: 'Q14.01 Найти тариф обучения. Результат: сумма, валюта, единица, период и категория.'
+- row: tasks
+  col: 46
+  kind: y
+  text: 'Q14.02 Проверить дополнительные и разовые сборы. Результат: перечень обязательных начислений по этапу.'
+- row: tasks
+  col: 46
+  kind: y
+  text: 'Q14.03 Определить индивидуальное начисление. Результат: выставленная сумма с применёнными условиями.'
+- row: tasks
+  col: 46
+  kind: y
+  text: 'Q14.04 Проверить оплату. Результат: факт транзакции по обязательству.'
+- row: tasks
+  col: 47
+  kind: y
+  text: 'Q14.05 Оценить расходы на проживание и участие. Результат: расчётные статьи с территорией и допущениями.'
+- row: tasks
+  col: 47
+  kind: y
+  text: 'Q14.06 Рассчитать полный бюджет маршрута. Результат: сумма за сопоставимый период с перенесёнными неизвестными.'
+- row: tasks
+  col: 47
+  kind: y
+  text: 'Q14.07 Сопоставить стоимость альтернатив. Результат: расчёт на одной базе с отдельной стоимостью до и после покрытия.'
+- row: tasks
+  col: 47
+  kind: y
+  text: 'Q14.08a Проверить право на возврат. Результат: результат применения условий к платежу и основанию.'
+- row: tasks
+  col: 47
+  kind: y
+  text: 'Q14.08b Рассчитать сумму возврата. Результат: сумма с валютой и основанием расчёта. Факт выплаты — отдельное событие транзакции.'
+- row: tasks
+  col: 48
+  kind: gr
+  text: 'Q14.09 Установить срок платежа по начислению. Результат: дата исполнения конкретного обязательства.'
+- row: tasks
+  col: 48
+  kind: gr
+  text: 'Q14.10 Установить периодичность начисления. Результат: единица и расписание взимания тарифа.'
+- row: tasks
+  col: 48
+  kind: gr
+  text: 'Q14.11 Проверить обязательный залог при подтверждении места. Результат: размер, срок и условия зачёта залога.'
+- row: tasks
+  col: 48
+  kind: gr
+  text: 'Q14.12 Проверить последствия просрочки оплаты. Результат: применимые условия к конкретному обязательству.'
+- row: tasks
+  col: 48
+  kind: gr
+  text: 'Q14.13 Проверить сумму оставшейся задолженности. Результат: расчётный остаток конкретного обязательства с учётом подтверждённых платежей.'
+- row: tasks
+  col: 48
+  kind: gr
+  text: 'Q14.14 Запросить возврат оплаты. Результат: зарегистрированное требование по конкретной транзакции.'
+- row: tasks
+  col: 48
+  kind: gr
+  text: 'Q14.15 Проверить состояние возврата. Результат: подтверждённый этап рассмотрения или исполнения возврата.'
+- row: branch
+  col: 49
+  kind: b
+  text: 'Q15 · Финансирование. Листьев: 14'
+- row: tasks
+  col: 49
+  kind: y
+  text: 'Q15.01 Найти финансовый инструмент. Результат: условия, тип поддержки, источник и объём покрытия.'
+- row: tasks
+  col: 49
+  kind: y
+  text: 'Q15.02 Проверить право на поддержку. Результат: результат применимой проверки для кандидата.'
+- row: tasks
+  col: 49
+  kind: y
+  text: 'Q15.03 Уточнить правила конкурсов финансирования. Результат: календарь, документы и способ отбора.'
+- row: tasks
+  col: 50
+  kind: y
+  text: 'Q15.04 Подать заявку на финансирование. Результат: подтверждённое действие в отдельном деле.'
+- row: tasks
+  col: 50
+  kind: y
+  text: 'Q15.05 Проверить индивидуальное решение. Результат: присуждённая сумма или условия поддержки.'
+- row: tasks
+  col: 50
+  kind: y
+  text: 'Q15.06a Проверить сохранение предоставленной поддержки. Результат: применимость условий продолжения к конкретному решению.'
+- row: tasks
+  col: 50
+  kind: y
+  text: 'Q15.06b Изменить действующее финансирование. Результат: подтверждённое изменение или отдельное решение о новом инструменте.'
+- row: tasks
+  col: 50
+  kind: y
+  text: 'Q15.07 Проверить правила перевода на финансируемое место. Результат: изменение режима оплаты действующего участия.'
+- row: tasks
+  col: 51
+  kind: gr
+  text: 'Q15.08 Определить, какие статьи покрывает поддержка. Результат: установленный перечень допустимых затрат по инструменту.'
+- row: tasks
+  col: 51
+  kind: gr
+  text: 'Q15.09 Проверить совместимость нескольких источников финансирования. Результат: применимое правило их сочетания.'
+- row: tasks
+  col: 51
+  kind: gr
+  text: 'Q15.10 Установить обязанность возврата полученного финансирования. Результат: условие возврата и его основание.'
+- row: tasks
+  col: 51
+  kind: gr
+  text: 'Q15.11 Определить получателя выплаты. Результат: лицо или организация, которым направляется сумма по решению.'
+- row: tasks
+  col: 51
+  kind: gr
+  text: 'Q15.12 Проверить срок финансирования. Результат: период действия индивидуального решения.'
+- row: tasks
+  col: 51
+  kind: gr
+  text: 'Q15.13 Проверить поступление выплаты. Результат: подтверждённое исполнение конкретного перечисления.'
+- row: goal
+  stage: p6
+  kind: y
+  text: Подтвердить квалификацию и признание, узнать цену и бюджет, найти и сохранить финансирование (Q13–Q15)
+- row: branch
+  col: 52
+  kind: b
+  text: 'Q16 · Международная мобильность, въезд и пребывание. Листьев: 16'
+- row: tasks
+  col: 52
+  kind: y
+  text: 'Q16.01a Установить применимую процедуру разрешения. Результат: вид обращения по территории, сроку и учебной цели.'
+- row: tasks
+  col: 52
+  kind: y
+  text: 'Q16.01b Проверить применимость исключения из требования разрешения. Результат: результат по обстоятельствам человека и конкретной норме.'
+- row: tasks
+  col: 52
+  kind: y
+  text: 'Q16.02 Проверить миграционную пригодность предложения. Результат: результат применения конкретного требования к объекту и аудитории.'
+- row: tasks
+  col: 52
+  kind: y
+  text: 'Q16.03 Определить подтверждения для въезда. Результат: список личных, учебных и финансовых доказательств.'
+- row: tasks
+  col: 52
+  kind: y
+  text: 'Q16.04 Проверить зависимых участников. Результат: отдельные условия для родителя, опекуна или сопровождающего.'
+- row: tasks
+  col: 53
+  kind: y
+  text: 'Q16.05 Подать миграционное дело. Результат: подтверждённое событие передачи.'
+- row: tasks
+  col: 53
+  kind: y
+  text: 'Q16.06 Проверить границы разрешения. Результат: индивидуальный статус, срок и условия использования.'
+- row: tasks
+  col: 53
+  kind: y
+  text: 'Q16.07a Проверить порядок продления статуса. Результат: условия, компетентная сторона и окно продления.'
+- row: tasks
+  col: 53
+  kind: y
+  text: 'Q16.07b Проверить порядок смены статуса. Результат: условия, компетентная сторона и целевое основание.'
+- row: tasks
+  col: 53
+  kind: y
+  text: 'Q16.08 Проверить правовые условия работы. Результат: разрешённость работы в контексте статуса во время или после обучения.'
+- row: tasks
+  col: 53
+  kind: y
+  text: 'Q16.09 Проверить состояние миграционного дела. Результат: текущий этап или исход процедуры.'
+- row: tasks
+  col: 54
+  kind: gr
+  text: 'Q16.10 Проверить требование к опекуну несовершеннолетнего при учебной поездке. Результат: применимое условие для конкретного маршрута.'
+- row: tasks
+  col: 54
+  kind: gr
+  text: 'Q16.11 Установить обязанность регистрации после прибытия. Результат: процедура и срок для соответствующего статуса.'
+- row: tasks
+  col: 54
+  kind: gr
+  text: 'Q16.12 Проверить влияние смены провайдера на действующий статус. Результат: применимое последствие для индивидуального разрешения.'
+- row: tasks
+  col: 54
+  kind: gr
+  text: 'Q16.13 Проверить допустимость учебного обмена по действующему разрешению. Результат: результат проверки для конкретной принимающей стороны.'
+- row: tasks
+  col: 54
+  kind: gr
+  text: 'Q16.14 Проверить право въезда с уже выданным документом. Результат: применимые условия въезда на дату поездки.'
+- row: branch
+  col: 55
+  kind: b
+  text: 'Q18 · Условия жизни и поддержка. Листьев: 16'
+- row: tasks
+  col: 55
+  kind: y
+  text: 'Q18.01 Найти вариант проживания. Результат: доступный объект или схема размещения.'
+- row: tasks
+  col: 55
+  kind: y
+  text: 'Q18.02a Проверить условия предоставления жилья. Результат: применимые критерии и окно обращения.'
+- row: tasks
+  col: 55
+  kind: y
+  text: 'Q18.02b Подтвердить бронирование жилья. Результат: зафиксированная бронь конкретного объекта на заданный период.'
+- row: tasks
+  col: 55
+  kind: y
+  text: 'Q18.03 Проверить инфраструктуру участия. Результат: доступность транспорта, питания, связи или иной услуги по месту.'
+- row: tasks
+  col: 55
+  kind: y
+  text: 'Q18.04a Проверить требования к страховому покрытию. Результат: обязательное покрытие и применимая норма.'
+- row: tasks
+  col: 55
+  kind: y
+  text: 'Q18.04b Проверить требования к опеке. Результат: полномочия ответственного и применимая норма.'
+- row: tasks
+  col: 56
+  kind: y
+  text: 'Q18.05 Найти специальные условия обучения. Результат: доступная адаптация, услуга или специалист.'
+- row: tasks
+  col: 56
+  kind: y
+  text: 'Q18.06 Оформить поддержку. Результат: индивидуальное решение с объёмом и периодом.'
+- row: tasks
+  col: 56
+  kind: y
+  text: 'Q18.07 Найти консультацию для действующего участника. Результат: подходящий сервис внутри образовательного участия.'
+- row: tasks
+  col: 57
+  kind: gr
+  text: 'Q18.08 Проверить доступность кампуса для человека с ограниченной мобильностью. Результат: подтверждённые характеристики конкретного маршрута или помещения.'
+- row: tasks
+  col: 57
+  kind: gr
+  text: 'Q18.09 Проверить доступность учебной платформы для вспомогательных технологий. Результат: подтверждённая поддержка требуемого способа доступа.'
+- row: tasks
+  col: 57
+  kind: gr
+  text: 'Q18.10 Установить условия питания для несовершеннолетнего. Результат: действующий порядок питания в конкретной реализации.'
+- row: tasks
+  col: 57
+  kind: gr
+  text: 'Q18.11 Проверить организованный трансфер до места обучения. Результат: условия и расписание конкретной услуги.'
+- row: tasks
+  col: 57
+  kind: gr
+  text: 'Q18.12 Установить режим присмотра до или после занятий. Результат: доступная услуга с возрастом, периодом и ответственным участником.'
+- row: tasks
+  col: 57
+  kind: gr
+  text: 'Q18.13 Подать запрос на адаптацию обучения. Результат: зарегистрированное обращение по конкретной потребности.'
+- row: tasks
+  col: 57
+  kind: gr
+  text: 'Q18.14 Проверить доступность сопровождения ребёнка в поездке. Результат: предусмотренная услуга и категория участников.'
+- row: goal
+  stage: p7
+  kind: y
+  text: Выбрать правовой маршрут и оформить пребывание, обеспечить жильё и поддержку (Q16, Q18)
+- row: branch
+  col: 58
+  kind: b
+  text: 'Q17 · Участие и прогресс в обучении. Листьев: 16'
+- row: tasks
+  col: 58
+  kind: y
+  text: 'Q17.01 Подтвердить действующее участие. Результат: статус человека в текущей программе.'
+- row: tasks
+  col: 58
+  kind: y
+  text: 'Q17.02a Проверить условия записи на учебный компонент. Результат: действующее правило для компонента и участника.'
+- row: tasks
+  col: 58
+  kind: y
+  text: 'Q17.02b Подтвердить запись на учебный компонент. Результат: зафиксированное событие регистрации человека.'
+- row: tasks
+  col: 58
+  kind: y
+  text: 'Q17.03 Проследить учебный прогресс. Результат: выполненные компоненты и накопленные результаты.'
+- row: tasks
+  col: 58
+  kind: y
+  text: 'Q17.04a Установить правило перехода на следующий этап. Результат: критерии и их область действия.'
+- row: tasks
+  col: 58
+  kind: y
+  text: 'Q17.04b Получить решение о переходе. Результат: индивидуальное решение с датой и основанием.'
+- row: tasks
+  col: 59
+  kind: y
+  text: 'Q17.05 Проверить академическую задолженность. Результат: состояние обязательства и условия устранения.'
+- row: tasks
+  col: 59
+  kind: y
+  text: 'Q17.06 Установить правило повторного прохождения. Результат: основание и доступное окно исполнения.'
+- row: tasks
+  col: 59
+  kind: y
+  text: 'Q17.07 Получить справку об участии. Результат: индивидуальный документ, подтверждающий состояние.'
+- row: tasks
+  col: 60
+  kind: gr
+  text: 'Q17.08 Проверить установленное требование посещаемости. Результат: применимый минимум для конкретного участия.'
+- row: tasks
+  col: 60
+  kind: gr
+  text: 'Q17.09 Уточнить индивидуальную посещаемость. Результат: подтверждённая запись посещений за период.'
+- row: tasks
+  col: 60
+  kind: gr
+  text: 'Q17.10 Проверить доступ к цифровой учебной среде. Результат: статус доступа конкретного участника к нужному ресурсу.'
+- row: tasks
+  col: 60
+  kind: gr
+  text: 'Q17.11 Подать учебную работу. Результат: подтверждённая передача конкретного задания.'
+- row: tasks
+  col: 60
+  kind: gr
+  text: 'Q17.12 Получить результат проверки работы. Результат: опубликованный итог конкретной сдачи.'
+- row: tasks
+  col: 60
+  kind: gr
+  text: 'Q17.13 Выяснить причину блокировки следующего компонента. Результат: невыполненное предварительное условие учебного плана.'
+- row: tasks
+  col: 60
+  kind: gr
+  text: 'Q17.14 Проверить предоставление положенной адаптации. Результат: факт исполнения индивидуального решения в конкретном компоненте.'
+- row: branch
+  col: 61
+  kind: b
+  text: 'Q19 · Профессия, стажировка и труд. Листьев: 12'
+- row: tasks
+  col: 61
+  kind: y
+  text: 'Q19.01 Определить содержание профессии. Результат: вид работ и требуемые компетенции.'
+- row: tasks
+  col: 61
+  kind: y
+  text: 'Q19.02a Установить порядок профессионального допуска. Результат: орган, процедура и требования для конкретной роли.'
+- row: tasks
+  col: 61
+  kind: y
+  text: 'Q19.02b Проверить индивидуальное решение о допуске. Результат: подтверждённый статус человека в конкретной юрисдикции.'
+- row: tasks
+  col: 61
+  kind: y
+  text: 'Q19.03 Проверить показатель труда или дохода. Результат: статистика по роли, территории, периоду и выборке.'
+- row: tasks
+  col: 62
+  kind: y
+  text: 'Q19.04 Найти стажировку или учебно-трудовое место. Результат: конкретное предложение практики с отбором и условиями.'
+- row: tasks
+  col: 62
+  kind: y
+  text: 'Q19.05 Найти конкретную рабочую возможность, связанную с обучением. Результат: вакансия с работодателем и условиями.'
+- row: tasks
+  col: 62
+  kind: y
+  text: 'Q19.06 Определить маршрут от обучения к работе. Результат: последовательность завершения, подтверждения и перехода в профессиональную роль.'
+- row: tasks
+  col: 63
+  kind: gr
+  text: 'Q19.07 Проверить обязательность практики для завершения программы. Результат: условие учебного плана применимой версии.'
+- row: tasks
+  col: 63
+  kind: gr
+  text: 'Q19.08 Установить ответственного за поиск практического места. Результат: предусмотренная роль учебной организации или обучающегося.'
+- row: tasks
+  col: 63
+  kind: gr
+  text: 'Q19.09 Проверить обязательное вознаграждение за конкретную практику. Результат: применимые условия договора или нормы.'
+- row: tasks
+  col: 63
+  kind: gr
+  text: 'Q19.10 Проверить зачёт практического опыта в программу. Результат: решение организации по определённому периоду опыта.'
+- row: tasks
+  col: 63
+  kind: gr
+  text: 'Q19.11 Выяснить требования работодателя к учебной практике. Результат: опубликованные условия допуска к конкретному месту.'
+- row: goal
+  stage: p8
+  kind: y
+  text: Подтвердить участие и ход обучения, найти практику и рабочий переход (Q17, Q19)
+- row: branch
+  col: 64
+  kind: b
+  text: 'Q22 · Перевод, смена и завершение. Листьев: 18'
+- row: tasks
+  col: 64
+  kind: y
+  text: 'Q22.01a Установить порядок перевода. Результат: требования процедуры для исходного и целевого участия.'
+- row: tasks
+  col: 64
+  kind: y
+  text: 'Q22.02 Проверить смену режима обучения. Результат: правило изменения действующего участия.'
+- row: tasks
+  col: 64
+  kind: y
+  text: 'Q22.03 Проверить приостановление. Результат: правило временной паузы действующего участия.'
+- row: tasks
+  col: 64
+  kind: y
+  text: 'Q22.09 Проверить выход. Результат: правило прекращения участия и его последствия.'
+- row: tasks
+  col: 64
+  kind: y
+  text: 'Q22.10 Проверить восстановление. Результат: допустимость возобновления участия и условия.'
+- row: tasks
+  col: 64
+  kind: y
+  text: 'Q22.04 Подтвердить перевод. Результат: результат решения с новой реализацией или ступенью.'
+- row: tasks
+  col: 65
+  kind: y
+  text: 'Q22.05a Проверить выполнение требований завершения. Результат: состояние каждого критерия с основаниями. Результат о завершении оформляется по Q22.06.'
+- row: tasks
+  col: 65
+  kind: y
+  text: 'Q22.06 Подтвердить завершение обучения. Результат: состояние выполненной программы по дате и основанию.'
+- row: tasks
+  col: 65
+  kind: y
+  text: 'Q22.07a Установить правило перехода к следующему предложению. Результат: подтверждённая связь и условия между этапами.'
+- row: tasks
+  col: 65
+  kind: y
+  text: 'Q22.07b Проверить применение перехода к человеку. Результат: результат индивидуальной проверки по указанной связи.'
+- row: tasks
+  col: 65
+  kind: y
+  text: 'Q22.08 Оформить результаты на выходе. Результат: процедура получения подтверждений о пройденной части или завершении.'
+- row: tasks
+  col: 66
+  kind: gr
+  text: 'Q22.11 Проверить сроки перевода в другую организацию. Результат: применимое окно подачи на переход.'
+- row: tasks
+  col: 66
+  kind: gr
+  text: 'Q22.12 Установить ограничения на перенос результатов при переводе. Результат: правило принимающей стороны для конкретных компонентов.'
+- row: tasks
+  col: 66
+  kind: gr
+  text: 'Q22.13 Проверить последствия выхода для финансового обязательства. Результат: применимые расчёты по действующему договору.'
+- row: tasks
+  col: 66
+  kind: gr
+  text: 'Q22.14 Проверить последствия приостановления для учебного доступа. Результат: правило доступа к ресурсам на период паузы.'
+- row: tasks
+  col: 66
+  kind: gr
+  text: 'Q22.15 Установить условия допуска к итоговой аттестации. Результат: применимые требования перед итоговой процедурой.'
+- row: tasks
+  col: 66
+  kind: gr
+  text: 'Q22.16 Подать заявление о прекращении участия. Результат: подтверждённая передача обращения на выход.'
+- row: tasks
+  col: 66
+  kind: gr
+  text: 'Q22.17 Получить справку о незавершённом обучении. Результат: выданный документ о подтверждённой части программы.'
+- row: goal
+  stage: p9
+  kind: y
+  text: Изменить или приостановить участие, перейти в другое предложение, завершить маршрут и получить результаты (Q22)
+- row: thoughts
+  col: 28
+  kind: y
+  text: Россия. «Даст ли мой диплом олимпиады приём без вступительных испытаний на эту программу? Как он повлияет на конкурс?»
+- row: expect
+  col: 28
+  kind: g
+  text: 'Россия. Ожидаемая модель: Олимпиада, её цикл и профиль, результат участника, подтверждающий документ, условия права для конкретного набора и отдельное решение о применении льготы. Порог допуска и исторический проходной балл имеют разные носители и назначение.'
+- row: traps
+  col: 28
+  kind: r
+  text: 'Россия. Ловушка: Право на приём возникает автоматически из факта участия или наличия диплома.'
+- row: thoughts
+  col: 40
+  kind: y
+  text: Великобритания. «У меня условное предложение UCAS. Могу ли я выбрать резервное предложение и позже искать место через Clearing?»
+- row: expect
+  col: 40
+  kind: g
+  text: 'Великобритания. Ожидаемая модель: Заявка, предложения с условиями, события выбора firm и insurance, исполнение условий, отдельный канал Clearing, правила доступа к нему и наличие мест в конкретной кампании.'
+- row: traps
+  col: 40
+  kind: r
+  text: 'Великобритания. Ловушка: Условное предложение уже является зачислением, а любое свободное место проходит через Clearing.'
+- row: thoughts
+  col: 44
+  kind: y
+  text: США. «Зачтёт ли выбранный университет экзамен AP вместо вводного курса и сколько кредитов даст?»
+- row: expect
+  col: 44
+  kind: g
+  text: 'США. Ожидаемая модель: Школьный курс AP, экзамен, попытка и балл, конкретное правило вуза по предмету и периоду, решение о зачёте, объём кредитов и заменяемый курс. Размещение по уровню проверяется самостоятельным правилом.'
+- row: traps
+  col: 44
+  kind: r
+  text: 'США. Ловушка: Одинаковый результат AP даёт одинаковый зачёт в каждом вузе или по умолчанию равен dual enrollment.'
+- row: thoughts
+  col: 52
+  kind: y
+  text: Канада. «Хочу получить DEC в Квебеке. Достаточно ли записи о том, что мой Cégep входит в список DLI, чтобы рассчитывать на PGWP?»
+- row: expect
+  col: 52
+  kind: g
+  text: 'Канада. Ожидаемая модель: Cégep, программа и набор, квалификация DEC/DCS с двумя языковыми метками, запись DLI для учреждения, правила PGWP для применимого случая, включая проверку программы, документы и решения по отдельным процедурам, в том числе CAQ там, где он применим.'
+- row: traps
+  col: 52
+  kind: r
+  text: 'Канада. Ловушка: DLI автоматически подтверждает право на PGWP или аббревиатуры DEC/DCS обозначают две разные квалификации.'
+- row: thoughts
+  col: 5
+  kind: y
+  text: Швейцария. «Можно ли с EFZ и Berufsmaturität поступить в университет? Где в маршруте нужен Passerelle?»
+- row: expect
+  col: 5
+  kind: g
+  text: 'Швейцария. Ожидаемая модель: Квалификации EFZ и Berufsmaturität, применимый подготовительный маршрут и проверка Passerelle, целевой тип вуза (UH, FH или PH), условия конкретной программы и решение о приёме.'
+- row: traps
+  col: 5
+  kind: r
+  text: 'Швейцария. Ловушка: EFZ, Berufsmaturität и гимназический аттестат ведут по одной процедуре во все вузы.'
+- row: thoughts
+  col: 37
+  kind: y
+  text: Франция. «Подаю на M1 из-за рубежа. Какая из процедур применима и где подавать документы?»
+- row: expect
+  col: 37
+  kind: g
+  text: 'Франция. Ожидаемая модель: Целевой год M1 и предложение, профиль и место проживания кандидата, кампания, применимая процедура, цифровая платформа и оператор. В исходной модели Mon Master, PASTEL, процедура Études en France и Campus France имеют разные записи и роли.'
+- row: traps
+  col: 37
+  kind: r
+  text: 'Франция. Ловушка: Любой зарубежный кандидат использует один и тот же канал, а Campus France, PASTEL и Études en France считаются одним объектом.'
+- row: thoughts
+  col: 31
+  kind: y
+  text: Италия. «Нашёл запрос TOLC-MED. Как по нему понять, какой порядок отбора действует для выбранной медицинской программы?»
+- row: expect
+  col: 31
+  kind: g
+  text: 'Италия. Ожидаемая модель: Программа, язык, тип учреждения, кампания, версия процедуры, применимые экзамены, результаты, условия продолжения и решение. Для описанного в источнике semestre aperto отдельно фиксируются первый семестр, смежная программа и отбор на продолжение.'
+- row: traps
+  col: 31
+  kind: r
+  text: 'Италия. Ловушка: Историческое название экзамена одинаково описывает италоязычный и англоязычный набор любого года.'
+- row: thoughts
+  col: 25
+  kind: y
+  text: ОАЭ. «У зарубежного вуза есть кампус в Дубае. Как выяснить, разрешено ли обучение на конкретной программе и будет ли признан её диплом?»
+- row: expect
+  col: 25
+  kind: g
+  text: 'ОАЭ. Ожидаемая модель: Головной вуз, оператор кампуса, площадка, конкретное предложение, присуждающая организация, лицензия учреждения, разрешение площадки, статус программы и решение о признании для заданной цели. Заверение документа имеет самостоятельный результат.'
+- row: traps
+  col: 25
+  kind: r
+  text: 'ОАЭ. Ловушка: Любая запись о головном вузе, кампусе или заведении в реестре подтверждает каждый статус программы и диплома.'
+- row: thoughts
+  col: 44
+  kind: y
+  text: Испания. «Хочу продолжить обучение после иностранного вуза. Нужно признавать диплом или можно зачесть пройденные предметы?»
+- row: expect
+  col: 44
+  kind: g
+  text: 'Испания. Ожидаемая модель: Исходная квалификация, документ и отдельные компоненты обучения, цель заявителя, компетентный орган, процедура homologación, equivalencia или convalidación по применимости, решение о признании либо о зачёте, условия приёма в целевой набор.'
+- row: traps
+  col: 44
+  kind: r
+  text: 'Испания. Ловушка: Зачёт дисциплины имеет тот же юридический эффект, что и признание всей квалификации.'
+- row: thoughts
+  col: 37
+  kind: y
+  text: Сингапур. «У меня квалификация ITE. По какому каналу и в какой раунд можно подать документы в политехникум?»
+- row: expect
+  col: 37
+  kind: g
+  text: 'Сингапур. Ожидаемая модель: Конкретный тип Nitec или Higher Nitec, применимый канал по правилам, программа, раунд, окно подачи, требование, заявка и решение. Условие допуска проверяется по категории квалификации и конкретному предложению.'
+- row: traps
+  col: 37
+  kind: r
+  text: 'Сингапур. Ловушка: Календарь, подтверждение подачи или прошлый профиль принятых кандидатов сами по себе гарантируют зачисление.'
+- row: thoughts
+  col: 29
+  kind: y
+  text: Гонконг. «Если мой результат HKDSE выше прошлогоднего балла JUPAS, могу ли считать, что попадаю на программу?»
+- row: expect
+  col: 29
+  kind: g
+  text: 'Гонконг. Ожидаемая модель: Экзамен, попытка, оценки по предметам, действующее формальное требование, формула расчёта, опубликованный исторический ориентир с датой, допуск к каналу, версия списка предпочтений и индивидуальное решение.'
+- row: traps
+  col: 29
+  kind: r
+  text: 'Гонконг. Ловушка: Исторический конкурсный балл автоматически становится текущим порогом, а выполнение порога считается зачислением.'
+- row: thoughts
+  col: 29
+  kind: y
+  text: Материковый Китай. «Как использовать результат Gaokao, чтобы составить список предпочтений в своей провинции?»
+- row: expect
+  col: 29
+  kind: g
+  text: 'Материковый Китай. Ожидаемая модель: Провинция и кампания, инструмент и сессия оценивания, результат и ранг, опубликованная статистика по сопоставимой группе, правила распределения, целевые наборы, версия списка zhiyuan, его подача и решение.'
+- row: traps
+  col: 29
+  kind: r
+  text: 'Материковый Китай. Ловушка: Один прошлогодний балл можно перенести на другую провинцию или считать гарантией места.'
+- row: thoughts
+  col: 11
+  kind: y
+  text: Германия. «Выбранный вариант Duales Studium даст университетскую степень и отдельную профессиональную квалификацию? Потребуется ли VPD для заявки?»
+- row: expect
+  col: 11
+  kind: g
+  text: 'Германия. Ожидаемая модель: Вуз, работодатель, программа, её реализация и форма, практика или профессиональная подготовка, выдаваемые квалификации по каждому компоненту. VPD хранится как отдельный документ, а его необходимость проверяется по правилам приёма выбранного вуза.'
+- row: traps
+  col: 11
+  kind: r
+  text: 'Германия. Ловушка: Метка dual гарантирует две квалификации, а наличие VPD означает положительное решение вуза.'
+- row: thoughts
+  col: 53
+  kind: y
+  text: Австралия. «Как оценить шансы по ATAR и какие подтверждения потребуются после предложения учебного места?»
+- row: expect
+  col: 53
+  kind: g
+  text: 'Австралия. Ожидаемая модель: Школьная ступень Year 12, отдельный показатель ATAR, selection rank для конкретного курса с поправками, правила набора и предложение провайдера. Отдельно проверяются запись CRICOS курса, CoE, подтверждение покрытия OSHC по применимости и решение по визовой заявке.'
+- row: traps
+  col: 53
+  kind: r
+  text: 'Австралия. Ловушка: ATAR равен selection rank для любой программы, а offer или CoE автоматически означает выдачу визы.'
+- row: expect
+  col: 5
+  kind: g
+  text: 'Вход: В CA найдено слово Baccalauréat, в FR найдено такое же написание. Ожидается: Хранить самостоятельные понятия по системе и типу результата. До проверки устанавливать только совпадение меток. Допуск и признание рассчитываются отдельными правилами.'
+- row: traps
+  col: 5
+  kind: r
+  text: 'Ошибка, которую выявляет проверка: Автоматическое точное соответствие на основании строки. CA, §3, FR, §4.'
+- row: expect
+  col: 46
+  kind: g
+  text: 'Вход: Поисковая фраза «стоимость программы» имеет URL результата и дату обновления, сумма отсутствует. Ожидается: Записать наблюдение и классификацию вопроса. Цена имеет статус «неизвестно» до получения отдельного подтверждения суммы, валюты, периода и области действия.'
+- row: traps
+  col: 46
+  kind: r
+  text: 'Ошибка, которую выявляет проверка: Создание факта о цене из фразы, цифры трафика или даты выгрузки. HK, §3, AU, §3.'
+- row: expect
+  col: 29
+  kind: g
+  text: 'Вход: Для одной программы собраны разные пороги в двух последовательных циклах и два противоречащих источника об одном цикле. Ожидается: Сохранить обе версии с периодами и оба противоречащих свидетельства. Для указанного цикла вернуть применимую версию или конфликт с основанием. Исторический цикл остаётся доступным.'
+- row: traps
+  col: 29
+  kind: r
+  text: 'Ошибка, которую выявляет проверка: Перезапись порога последней загрузкой и смешение даты действия с датой наблюдения. IT, §8, HK, §8.'
+- row: expect
+  col: 41
+  kind: g
+  text: 'Вход: В цепочке есть учебное предложение, результат экзамена и квитанция о подаче на разрешение, итоговых решений нет. Ожидается: Вернуть раздельные состояния учебной заявки, принятия предложения и обращения за разрешением. Каждому переходу требуется событие или подтверждение на его собственном носителе.'
+- row: traps
+  col: 41
+  kind: r
+  text: 'Ошибка, которую выявляет проверка: Вывод о зачислении или разрешении из самого раннего документа. AU, §7, SG, §4 и §7.'
+- row: states
+  col: 14
+  kind: w
+  text: 'Набор. Объявлен → открыт → закрыт → завершён или отменён. Запускают: публикация, начало приёма, закрытие окна, завершение цикла или отмена.'
+- row: states
+  col: 32
+  kind: w
+  text: Попытка оценки. Запланирована → начата → сдана → результат опубликован. Апелляция меняет статус рассмотрения и при необходимости создаёт новую версию.
+- row: states
+  col: 50
+  kind: w
+  text: 'Финансирование. Инструмент найден → дело передано → поддержка утверждена → действует, приостановлена или прекращена. Запускают: подача, отдельное решение, исполнение условий и контроль сохранения.'
+- row: states
+  col: 53
+  kind: w
+  text: 'Разрешение. Дело передано → рассматривается → одобрено или отклонено → действует → истекло или прекращено. Запускают: решение органа, начало действия, отзыв, истечение или переход на новый статус.'
+- row: states
+  col: 25
+  kind: w
+  text: 'Регуляторный статус. Заявлен → подтверждён → действует → приостановлен, истёк или отозван. Запускают: решение или запись компетентной стороны и изменения в схеме.'
+- row: states
+  col: 43
+  kind: w
+  text: Квалификация и документ. Требования завершены → квалификация присуждена → документ выпущен. Три отдельных факта; документ может переиздаваться после выпуска.
+- row: states
+  col: 38
+  kind: w
+  text: Заявка. Отправка заявки, получение оператором и решение представлены отдельными событиями. Статус заявки хранится как состояние на дату (глава 4).
+- row: states
+  col: 40
+  kind: w
+  text: 'Предложение и зачисление. Из оффера нельзя вывести дату зачисления, факт оплаты или начало обучения: каждое утверждение строится по собственному событию и доказательству (глава 6).'
+- row: states
+  col: 28
+  kind: w
+  text: Допуск. Сначала находят действующее правило для области и категории, затем проверяют критерии на подтверждённых данных человека. Один отрицательный результат при «И» даёт «нет»; при отсутствии отрицаний и наличии неизвестного итог остаётся неизвестным. Допустимый путь означает право участвовать в процедуре, а не результат (глава 6).
+- row: portal
+  col: 16
+  kind: w
+  text: 'Поиск обучения. Основной объект выдачи: Реализация, набор или занятие. Данные для ответа: Нормализованные фасеты, календарь и статус доступности.'
+- row: portal
+  col: 10
+  kind: w
+  text: 'Карточка программы. Основной объект выдачи: Программа с реализациями. Данные для ответа: Учебный план, квалификация, ответственные участники и конкретные предложения.'
+- row: portal
+  col: 47
+  kind: w
+  text: 'Калькулятор бюджета. Основной объект выдачи: Статьи маршрута. Данные для ответа: Базис начислений, дата и валюта, покрытие, обязательные и оценочные расходы.'
+- row: portal
+  col: 28
+  kind: w
+  text: 'Проверка допуска. Основной объект выдачи: Результаты критериев для набора. Данные для ответа: Правила, категория, цикл, документы, экзамены и альтернативные пути.'
+- row: portal
+  col: 38
+  kind: w
+  text: 'Порядок поступления. Основной объект выдачи: Индивидуальное дело и варианты. Данные для ответа: Канал, документы, срок, событие передачи, решение и оформление.'
+- row: portal
+  col: 52
+  kind: w
+  text: 'Международный маршрут. Основной объект выдачи: Серия проверок по двум и более областям. Данные для ответа: Исходный документ, требуемое признание, целевое предложение и отдельное правовое основание.'
+- row: portal
+  col: 23
+  kind: w
+  text: 'Справка и навигация. Основной объект выдачи: Лист вопроса с локальным ответом. Данные для ответа: Глобальный контракт, локальный профиль и версия фактов.'
+- row: types
+  col: 1
+  kind: gr
+  text: 'Q01: T11 Человек; T81 Цель; T82 Маршрут; T83 Набор предпочтений'
+- row: types
+  col: 4
+  kind: gr
+  text: 'Q02: T31 Образовательная система; T35 Ступень или уровень системы; T38 Шаблон перехода'
+- row: types
+  col: 7
+  kind: gr
+  text: 'Q03: T12 Организация; T13 Организационная единица; T33 Физическая площадка'
+- row: types
+  col: 10
+  kind: gr
+  text: 'Q04: T21 Программа; T24 Компонент программы; T25 Учебный план; T36 Классификатор; T37 Классификационная единица'
+- row: types
+  col: 13
+  kind: gr
+  text: 'Q05: T22 Реализация; T23 Приёмный цикл; T44 Окно срока; T902 Учебный поток'
+- row: types
+  col: 16
+  kind: gr
+  text: 'Q06: T22 Реализация; T27 Занятие; T83 Набор предпочтений'
+- row: types
+  col: 19
+  kind: gr
+  text: 'Q07: T86 Измерение показателя; T87 Отзыв'
+- row: types
+  col: 25
+  kind: gr
+  text: 'Q08: T91 Регуляторная запись; T92 Реестр'
+- row: types
+  col: 28
+  kind: gr
+  text: 'Q09: T41 Правило; T42 Атомарный критерий; T43 Проверка условия; T45 План мест; T46 Конкурс; T47 Снимок конкурсного результата'
+- row: types
+  col: 31
+  kind: gr
+  text: 'Q10: T51 Спецификация оценивания; T52 Сессия оценивания; T53 Попытка; T54 Результат оценивания'
+- row: types
+  col: 37
+  kind: gr
+  text: 'Q11: T61 Заявка; T62 Вариант в заявке; T63 Пакет подтверждений; T64 Документ; T69 Канал операции'
+- row: types
+  col: 40
+  kind: gr
+  text: 'Q12: T65 Событие; T66 Решение по делу; T67 Зачисление'
+- row: types
+  col: 43
+  kind: gr
+  text: 'Q13: T55 Вид квалификации; T56 Индивидуальная квалификация; T57 Документ об образовательном результате; T58 Дело о признании; T59 Решение о признании'
+- row: types
+  col: 46
+  kind: gr
+  text: 'Q14: T71 Тариф; T72 Начисление; T73 Платёжная операция; T79 Компонент бюджета'
+- row: types
+  col: 49
+  kind: gr
+  text: 'Q15: T74 Финансовый инструмент; T75 Решение о финансировании'
+- row: types
+  col: 52
+  kind: gr
+  text: 'Q16: T76 Индивидуальный правовой статус; T908 Правовое основание'
+- row: types
+  col: 58
+  kind: gr
+  text: 'Q17: T68 Учебное участие'
+- row: types
+  col: 55
+  kind: gr
+  text: 'Q18: T77 Предложение поддержки; T78 Вариант проживания'
+- row: types
+  col: 61
+  kind: gr
+  text: 'Q19: T28 Маршрут практики; T84 Профессия; T85 Трудовое предложение'
+- row: types
+  col: 34
+  kind: gr
+  text: 'Q20: T88 Учебный ресурс'
+- row: types
+  col: 22
+  kind: gr
+  text: 'Q21: T89 Событие знакомства; T65 Событие'
+- row: types
+  col: 64
+  kind: gr
+  text: 'Q22: T38 Шаблон перехода; T67 Зачисление; T68 Учебное участие'
+- row: checks
+  col: 14
+  kind: gr
+  text: 'Два окна подачи в один учебный поток. Ожидается: Одно изменение срока не создаёт новый поток и не меняет другое окно.'
+- row: checks
+  col: 38
+  kind: gr
+  text: 'Родитель подаёт две заявки для разных детей. Ожидается: Участники, полномочие, бенефициары, документы и решения привязаны к своим делам.'
+- row: checks
+  col: 29
+  kind: gr
+  text: 'Задним числом исправлен порог. Ожидается: Запрос о знании на старую дату возвращает предыдущую системную версию, запрос о действовавшем правиле с учётом исправления — новую.'
+- row: checks
+  col: 26
+  kind: gr
+  text: 'Учреждение найдено в общем реестре, программа — нет. Ожидается: Статус организации подтверждён, статус программы неизвестен до проверки применимого источника.'
+- row: checks
+  col: 44
+  kind: gr
+  text: 'Подтверждена подлинность диплома. Ожидается: Признание для поступления и профессиональный допуск проверяются отдельно по цели и органу.'
+- row: checks
+  col: 46
+  kind: gr
+  text: 'Одним платежом покрыты два начисления. Ожидается: Сохраняются одна операция и два распределения с суммами, валютой и датой.'
+- row: checks
+  col: 53
+  kind: gr
+  text: 'CoE выдан до начала занятий. Ожидается: Подтверждён документ о зачислении. Фактическое участие в занятиях остаётся отдельным фактом.'
+- row: checks
+  col: 29
+  kind: gr
+  text: 'У человека есть право на место, но свободных мест нет. Ожидается: Правовое условие и наличие свободного места имеют отдельные результаты и источники.'
+- row: checks
+  col: 28
+  kind: gr
+  text: 'Две альтернативы допуска, первая неизвестна, вторая выполнена. Ожидается: Выражение ANY выполнено. Неизвестность первой ветви и основание второй сохранены.'
+- row: checks
+  col: 39
+  kind: gr
+  text: 'Найден запрос о заверении документа. Ожидается: Требование удостоверения — Q11.13, оформление — Q13.16, проверка подлинности — Q13.09, признание — Q13.05a.'
+- row: checks
+  col: 29
+  kind: gr
+  text: 'Результат конкурса есть только за прошлый год. Ожидается: Он сохраняется как историческое наблюдение, текущий порог и личное решение не выводятся.'
+- row: v4_demand
+  col: 1
+  kind: b
+  text: 'P01 · Диагностика и образовательный маршрут. Уровень D3 (коммерческая формулировка): 4 562 запросов в 74 рынках; D3 7, D2 2 065, D1 2 490. Рынки проекта: AE 7 (D2); RU 12 (D2)'
+- row: v4_decision
+  col: 1
+  kind: y
+  text: P01 · Отдельная гипотеза после короткой пробы Продукт R06.
+- row: v4_free
+  col: 1
+  kind: g
+  text: 'P01 · Короткая проба и две возможные развилки. Самостоятельно: Сопоставить интересы, ограничения и доступные маршруты'
+- row: v4_cta
+  col: 1
+  kind: y
+  text: 'P01 · /{locale}/{destination}/orientation/. F: E10 «Пройти короткую пробу» → diagnostic-preview. A: E20 «Заказать разбор маршрута» → offer/r06. C: E20 «Заказать разбор маршрута» → checkout/r06'
+- row: v4_trigger
+  col: 1
+  kind: w
+  text: P01 · Неясны приоритеты, выбор между несопоставимыми маршрутами
+- row: v4_payer
+  col: 1
+  kind: w
+  text: 'P01 · MainExperts, разовая экспертная услуга. Платный результат: Отчёт о маршрутах, основаниях выбора и следующих шагах. Исполнение: Анкета и проба, затем фиксированная экспертная сессия и отчёт.'
+- row: v4_risk
+  col: 1
+  kind: r
+  text: 'P01 · Бесплатно уже есть: Самооценка, школьный консультант, открытые тесты. Риск: Подмена образовательной рекомендации психологическим диагнозом, данные несовершеннолетних'
+- row: v4_demand
+  col: 4
+  kind: b
+  text: 'P02 · Персональное объяснение образовательной системы. Уровень D1 (информационный запрос): 2 247 запросов в 63 рынках; D3 0, D2 0, D1 2 247. Рынки проекта: AE 14 (D1); RU 12 (D1)'
+- row: v4_decision
+  col: 4
+  kind: y
+  text: P02 · Включить в бесплатную базу и R02 Продукт R02.
+- row: v4_free
+  col: 4
+  kind: g
+  text: 'P02 · Применимая схема и ссылка на правила. Самостоятельно: Выбрать ветвь системы по уровню, предыдущему образованию и цели'
+- row: v4_cta
+  col: 4
+  kind: y
+  text: 'P02 · /{locale}/{destination}/system/. F: E01 «Посмотреть свой маршрут» → system-route. A: E20 «Заказать проверку допуска» → offer/r02. O: E03 «Открыть официальный источник» → education-authority'
+- row: v4_trigger
+  col: 4
+  kind: w
+  text: P02 · Исключение или переход между юрисдикциями
+- row: v4_payer
+  col: 4
+  kind: w
+  text: 'P02 · входит в бесплатную базу, платно только исключение. Платный результат: Персональная схема входа и альтернатив в составе аудита. Исполнение: Официальные правила с версиями, спорный случай направляется на разбор.'
+- row: v4_risk
+  col: 4
+  kind: r
+  text: 'P02 · Бесплатно уже есть: Порталы образования и приёмные комиссии. Риск: Продажа пересказа официального справочника'
+- row: v4_demand
+  col: 7
+  kind: b
+  text: 'P03 · Проверка образовательной организации. Уровень D0 (сигнала в выгрузках нет): 0 запросов в 0 рынках; D3 0, D2 0, D1 0. В России и ОАЭ запросов по услуге нет.'
+- row: v4_decision
+  col: 7
+  kind: y
+  text: P03 · Компонент R10 для редких случаев Продукт R10.
+- row: v4_free
+  col: 7
+  kind: g
+  text: 'P03 · Факты, статус записей и источники. Самостоятельно: Посмотреть организацию, подразделение и публичные данные'
+- row: v4_cta
+  col: 7
+  kind: y
+  text: 'P03 · /{locale}/{destination}/institutions/check/. F: E06 «Проверить организацию» → institution-facts. A: E20 «Заказать проверку источников» → offer/r10. C: E20 «Заказать проверку источников» → checkout/r10. O: E03 «Открыть официальный реестр» → official-register'
+- row: v4_trigger
+  col: 7
+  kind: w
+  text: P03 · Высокая цена зачисления и противоречащие документы или обещания
+- row: v4_payer
+  col: 7
+  kind: w
+  text: 'P03 · MainExperts, разовая экспертная услуга. Платный результат: Досье по проверяемым фактам, статусу и ограничениям. Исполнение: Автоматический сбор проверяемых фактов и ручной разбор исключений.'
+- row: v4_risk
+  col: 7
+  kind: r
+  text: 'P03 · Бесплатно уже есть: Официальные реестры, сайт учреждения. Риск: Ошибочный вывод о надёжности из рейтинга или одного реестра'
+- row: v4_demand
+  col: 10
+  kind: b
+  text: 'P04 · Аудит образовательной программы. Уровень D2 (запрос инструмента или персонального результата): 11 446 запросов в 108 рынках; D3 0, D2 1, D1 11 445. Рынки проекта: AE 159 (D1); RU 230 (D1)'
+- row: v4_decision
+  col: 10
+  kind: y
+  text: P04 · Компонент R03/R10 для конкретного выбора Продукт R03.
+- row: v4_free
+  col: 10
+  kind: g
+  text: 'P04 · План, требования и результат программы с датами. Самостоятельно: Сопоставить план, результаты, длительность и требования'
+- row: v4_cta
+  col: 10
+  kind: y
+  text: 'P04 · /{locale}/{destination}/programs/review/. F: E06 «Посмотреть данные программы» → program-facts. A: E20 «Заказать проверенный список программ» → offer/r03. C: E20 «Заказать проверенный список программ» → checkout/r03. O: E03 «Открыть официальный источник» → program-provider'
+- row: v4_trigger
+  col: 10
+  kind: w
+  text: P04 · Программа описана неоднозначно, невозвратный депозит или дорогая смена
+- row: v4_payer
+  col: 10
+  kind: w
+  text: 'P04 · MainExperts, разовая услуга. Платный результат: Проверка соответствия программе цели и ограничениям. Исполнение: Версионированная карточка и проверка первичных документов.'
+- row: v4_risk
+  col: 10
+  kind: r
+  text: 'P04 · Бесплатно уже есть: Сайт программы, открытые учебные планы. Риск: Подмена фактов рекомендацией либо неактуальный план'
+- row: v4_demand
+  col: 13
+  kind: b
+  text: 'P05 · Мониторинг наборов и сроков. Уровень D1 (информационный запрос): 7 476 запросов в 37 рынках; D3 0, D2 0, D1 7 476. Рынки проекта: AE 16 (D1); RU 3 (D1)'
+- row: v4_decision
+  col: 13
+  kind: y
+  text: P05 · Базовые напоминания бесплатно; платный пилот только на портфеле заявок Продукт R05.
+- row: v4_free
+  col: 13
+  kind: g
+  text: 'P05 · Календарь со ссылкой на первоисточник. Самостоятельно: Сохранить официальные даты и источник'
+- row: v4_cta
+  col: 13
+  kind: y
+  text: 'P05 · /{locale}/{destination}/deadlines/. F: E26 «Открыть календарь сроков» → deadline-calendar. A: E20 «Подключить контроль заявок» → offer/r05. C: E20 «Подключить контроль заявок» → checkout/r05. O: E03 «Сверить сроки у источника» → provider-calendar'
+- row: v4_trigger
+  col: 13
+  kind: w
+  text: P05 · Частые изменения и параллельные заявки
+- row: v4_payer
+  col: 13
+  kind: w
+  text: 'P05 · MainExperts, сезонный пропуск. Платный результат: Сезонный журнал изменений со ссылками и планом действий. Исполнение: Снимки источников, сравнение версий и уведомления.'
+- row: v4_risk
+  col: 13
+  kind: r
+  text: 'P05 · Бесплатно уже есть: Официальные календари, личные напоминания. Риск: Пропуск обновления, ложная тревога либо неверный часовой пояс'
+- row: v4_demand
+  col: 16
+  kind: b
+  text: 'P06 · Персональный подбор образования. Уровень D2 (запрос инструмента или персонального результата): 66 991 запросов в 129 рынках; D3 0, D2 169, D1 66 822. Рынки проекта: AE 666 (D1); RU 525 (D2)'
+- row: v4_decision
+  col: 16
+  kind: y
+  text: P06 · Пилот ограниченного каталога Продукт R03.
+- row: v4_free
+  col: 16
+  kind: g
+  text: 'P06 · Открытая выдача и список ограничений. Самостоятельно: Искать и фильтровать по цене, срокам, формату, языку'
+- row: v4_cta
+  col: 16
+  kind: y
+  text: 'P06 · /{locale}/{destination}/programs/. F: E05 «Найти подходящие программы» → filtered-programs. A: E20 «Заказать проверенный список программ» → offer/r03. C: E20 «Заказать проверенный список программ» → checkout/r03'
+- row: v4_trigger
+  col: 16
+  kind: w
+  text: P06 · Нужен короткий список с проверкой сложных ограничений
+- row: v4_payer
+  col: 16
+  kind: w
+  text: 'P06 · MainExperts, разовая услуга. Платный результат: Короткий список с аргументами, доказательствами и альтернативами. Исполнение: Поисковый результат, правила отсева, платная проверенная выдача.'
+- row: v4_risk
+  col: 16
+  kind: r
+  text: 'P06 · Бесплатно уже есть: UCAS, Parcoursup, Study Australia, сайты вузов. Риск: Комиссия поставщика искажает ранжирование'
+- row: v4_demand
+  col: 19
+  kind: b
+  text: 'P07 · Аналитическое сравнение вариантов. Уровень D1 (информационный запрос): 26 055 запросов в 118 рынках; D3 0, D2 0, D1 26 055. Рынки проекта: AE 425 (D1); RU 138 (D1)'
+- row: v4_decision
+  col: 19
+  kind: y
+  text: P07 · Открытое сравнение бесплатно; платный разбор как часть R03/R07 Продукт R03.
+- row: v4_free
+  col: 19
+  kind: g
+  text: 'P07 · Сопоставимые метрики, годы и источники. Самостоятельно: Сравнить метрики, годы, программы и показатели выпускников'
+- row: v4_cta
+  col: 19
+  kind: y
+  text: 'P07 · /{locale}/{destination}/compare/. F: E07 «Сравнить варианты» → comparison-result. A: E20 «Заказать проверенный список программ» → offer/r03'
+- row: v4_trigger
+  col: 19
+  kind: w
+  text: P07 · Нужна своя система весов и объяснение компромиссов
+- row: v4_payer
+  col: 19
+  kind: w
+  text: 'P07 · входит в бесплатную базу, платно только исключение. Платный результат: Матрица выбора с индивидуальными весами и источниками. Исполнение: Сравнение совместимых метрик и сценарная проверка весов.'
+- row: v4_risk
+  col: 19
+  kind: r
+  text: 'P07 · Бесплатно уже есть: Discover Uni, College Scorecard, рейтинги. Риск: Несопоставимые знаменатели и годы, скрытые веса модели'
+- row: v4_demand
+  col: 25
+  kind: b
+  text: 'P08 · Проверка статуса и аккредитации. Уровень D1 (информационный запрос): 261 запросов в 15 рынках; D3 0, D2 0, D1 261. Рынки проекта: AE 1 (D1)'
+- row: v4_decision
+  col: 25
+  kind: y
+  text: P08 · Бесплатная проверка; исключения в R10 Продукт R10.
+- row: v4_free
+  col: 25
+  kind: g
+  text: 'P08 · Запись официального источника или статус «не удалось установить». Самостоятельно: Сверить тип статуса, объект, период и область действия по реестру'
+- row: v4_cta
+  col: 25
+  kind: y
+  text: 'P08 · /{locale}/{destination}/accreditation/. F: E25 «Проверить официальный статус» → status-record. A: E20 «Заказать проверку источников» → offer/r10. O: E03 «Открыть официальный реестр» → official-register'
+- row: v4_trigger
+  col: 25
+  kind: w
+  text: P08 · Запись неоднозначна, отсутствует или расходится с рекламой
+- row: v4_payer
+  col: 25
+  kind: w
+  text: 'P08 · входит в бесплатную базу, платно только исключение. Платный результат: Экспертная записка с источниками и перечнем неясностей. Исполнение: Переход в реестр, ручная сверка конфликтов по заказу.'
+- row: v4_risk
+  col: 25
+  kind: r
+  text: 'P08 · Бесплатно уже есть: Официальные регистры, государственные справочники. Риск: Аккредитация учреждения ошибочно переносится на программу или кампус'
+- row: v4_demand
+  col: 28
+  kind: b
+  text: 'P09 · Аудит соответствия требованиям поступления. Уровень D2 (запрос инструмента или персонального результата): 21 119 запросов в 34 рынках; D3 0, D2 283, D1 20 836. Рынки проекта: AE 11 (D1); RU 10 (D1)'
+- row: v4_decision
+  col: 28
+  kind: y
+  text: P09 · Главный пилот для сложного профиля Продукт R02.
+- row: v4_free
+  col: 28
+  kind: g
+  text: 'P09 · Сверка прозрачных требований и перечень неизвестных. Самостоятельно: Сверить прозрачные обязательные требования программы'
+- row: v4_cta
+  col: 28
+  kind: y
+  text: 'P09 · /{locale}/{destination}/eligibility/. F: E11 «Сверить требования к поступлению» → eligibility-preview. A: E20 «Заказать проверку допуска» → offer/r02. C: E20 «Заказать проверку допуска» → checkout/r02. O: E03 «Связаться с приёмной» → official-admissions-desk'
+- row: v4_trigger
+  col: 28
+  kind: w
+  text: P09 · Иностранный документ, пограничный результат, несколько программ
+- row: v4_payer
+  col: 28
+  kind: w
+  text: 'P09 · MainExperts, автоматика и эксперт на исключениях. Платный результат: Обоснованный статус по каждому требованию и варианты устранения пробелов. Исполнение: Автоматические проверки, спорные правила проверяет эксперт, при необходимости запрос вузу.'
+- row: v4_risk
+  col: 28
+  kind: r
+  text: 'P09 · Бесплатно уже есть: Фильтры UCAS, требования ведущих площадок, приёмная служба. Риск: Смешение формального допуска, конкурсного шанса и признания документа'
+- row: v4_demand
+  col: 31
+  kind: b
+  text: 'P10 · Организация экзаменов и оценивания. Уровень D2 (запрос инструмента или персонального результата): 3 145 запросов в 69 рынках; D3 0, D2 1 127, D1 2 018. Рынки проекта: AE 17 (D2); RU 7 (D2)'
+- row: v4_decision
+  col: 31
+  kind: y
+  text: P10 · Бесплатное направление в официальный центр; платная подготовка отдельна Продукт R08.
+- row: v4_free
+  col: 31
+  kind: g
+  text: 'P10 · Даты, регистрация, требования и официальные ссылки. Самостоятельно: Найти формат, даты, центр и правила регистрации'
+- row: v4_cta
+  col: 31
+  kind: y
+  text: 'P10 · /{locale}/{destination}/exams/. F: E06 «Найти экзамен и даты» → exam-provider-list. A: E20 «Выбрать подготовку у партнёра» → offer/r08. C: E20 «Выбрать подготовку у партнёра» → partner-checkout/r08. O: E03 «Перейти к регистрации на экзамен» → exam-owner-register'
+- row: v4_trigger
+  col: 31
+  kind: w
+  text: P10 · Нужна подготовка по результатам диагностики
+- row: v4_payer
+  col: 31
+  kind: w
+  text: 'P10 · официальный оператор или партнёр. Платный результат: План подготовки или курс поставщика. Исполнение: Запись и экзаменационный сбор у центра, подготовка у исполнителя. Внешний платёж отдельно: экзаменационный сбор.'
+- row: v4_risk
+  col: 31
+  kind: r
+  text: 'P10 · Бесплатно уже есть: Официальные регистраторы, бесплатные материалы тестов. Риск: Смешение сбора за экзамен и цены подготовки'
+- row: v4_demand
+  col: 37
+  kind: b
+  text: 'P11 · Подготовка документов и заявки. Уровень D2 (запрос инструмента или персонального результата): 475 запросов в 24 рынках; D3 0, D2 16, D1 459. Рынки проекта: AE 1 (D1); RU 2 (D1)'
+- row: v4_decision
+  col: 37
+  kind: y
+  text: P11 · Главный пилот перед подачей Продукт R01.
+- row: v4_free
+  col: 37
+  kind: g
+  text: 'P11 · Актуальный список документов и сроков. Самостоятельно: Собрать чек-лист, черновики и сроки по официальным источникам'
+- row: v4_cta
+  col: 37
+  kind: y
+  text: 'P11 · /{locale}/{destination}/applications/check/. F: E13 «Открыть список документов» → application-checklist. A: E20 «Заказать проверку комплекта» → offer/r01. C: E20 «Заказать проверку комплекта» → checkout/r01. O: E03 «Перейти к официальной подаче» → official-application'
+- row: v4_trigger
+  col: 37
+  kind: w
+  text: P11 · Неясны комплектность, форматы, противоречия и сроки
+- row: v4_payer
+  col: 37
+  kind: w
+  text: 'P11 · MainExperts, автоматика и эксперт на исключениях. Платный результат: Размеченный отчёт проверки комплекта с исправлениями и приоритетами. Исполнение: Форматная проверка и ручная проверка неоднозначных пунктов, оплату подачи принимает оператор. Внешний платёж отдельно: сбор за заявку, перевод, заверение.'
+- row: v4_risk
+  col: 37
+  kind: r
+  text: 'P11 · Бесплатно уже есть: Официальные инструкции и приложения приёмных систем. Риск: Конфиденциальность, подача от чужого имени, изменение требований'
+- row: v4_demand
+  col: 40
+  kind: b
+  text: 'P12 · Анализ оффера и сопровождение зачисления. Уровень D1 (информационный запрос): 145 запросов в 15 рынках; D3 0, D2 0, D1 145. Рынки проекта: AE 3 (D1); RU 1 (D1)'
+- row: v4_decision
+  col: 40
+  kind: y
+  text: P12 · Пилот после получения оффера Продукт R07.
+- row: v4_free
+  col: 40
+  kind: g
+  text: 'P12 · Структура офферов и неизвестные условия. Самостоятельно: Сверить дату, цену, депозит и условия по письму'
+- row: v4_cta
+  col: 40
+  kind: y
+  text: 'P12 · /{locale}/{destination}/offers/compare/. F: E07 «Сравнить условия офферов» → offer-summary. A: E20 «Заказать разбор оффера» → offer/r07. C: E20 «Заказать разбор оффера» → checkout/r07. O: E03 «Связаться с приёмной» → provider-admissions'
+- row: v4_trigger
+  col: 40
+  kind: w
+  text: P12 · Два предложения, короткий срок или неоднозначные условия
+- row: v4_payer
+  col: 40
+  kind: w
+  text: 'P12 · MainExperts, автоматика и эксперт на исключениях. Платный результат: Таблица условий, открытые вопросы и порядок действий. Исполнение: Локальное извлечение, где возможно, ручная проверка значимых условий. Внешний платёж отдельно: депозит или плата за обучение.'
+- row: v4_risk
+  col: 40
+  kind: r
+  text: 'P12 · Бесплатно уже есть: Приёмная служба и оригинальные условия оффера. Риск: Автоматическое обещание возврата депозита или зачисления'
+- row: v4_demand
+  col: 43
+  kind: b
+  text: 'P13 · Сопровождение признания квалификации. Уровень D3 (коммерческая формулировка): 311 запросов в 34 рынках; D3 2, D2 0, D1 309. Рынки проекта: AE 1 (D1); RU 1 (D1)'
+- row: v4_decision
+  col: 43
+  kind: y
+  text: P13 · Официальный маршрут и партнёр; навигатор бесплатный Продукт R09.
+- row: v4_free
+  col: 43
+  kind: g
+  text: 'P13 · Подходящий тип формальной оценки и подтверждённый маршрут. Самостоятельно: Проверить получателя, тип оценки и список доверенных операторов'
+- row: v4_cta
+  col: 43
+  kind: y
+  text: 'P13 · /{locale}/{destination}/recognition/. F: E09 «Найти порядок признания» → recognition-routing. A: E20 «Перейти к заказу у поставщика» → offer/r09. O: E03 «Перейти к оператору признания» → authorized-evaluation-provider'
+- row: v4_trigger
+  col: 43
+  kind: w
+  text: P13 · Несколько документов, нужен формальный отчёт или перевод
+- row: v4_payer
+  col: 43
+  kind: w
+  text: 'P13 · официальный оператор или партнёр. Платный результат: Официальный отчёт уполномоченной организации либо заказ перевода. Исполнение: Маршрут направляется организации, она принимает оплату, документы и решение. Внешний платёж отдельно: сбор органа, заверение.'
+- row: v4_risk
+  col: 43
+  kind: r
+  text: 'P13 · Бесплатно уже есть: Национальные центры признания и требования получателя. Риск: Подмена официального решения продуктом MainExperts'
+- row: v4_demand
+  col: 46
+  kind: b
+  text: 'P14 · Персональный расчёт образовательного бюджета. Уровень D2 (запрос инструмента или персонального результата): 8 884 запросов в 56 рынках; D3 0, D2 108, D1 8 776. Рынки проекта: AE 50 (D1); RU 9 (D1)'
+- row: v4_decision
+  col: 46
+  kind: y
+  text: P14 · Открытый калькулятор; план бюджета как часть R07/R03 Продукт R07.
+- row: v4_free
+  col: 46
+  kind: g
+  text: 'P14 · Расчёт стоимости по строкам и явно заданным допущениям. Самостоятельно: Сложить расходы и проверить источник, валюту и период'
+- row: v4_cta
+  col: 46
+  kind: y
+  text: 'P14 · /{locale}/{destination}/budget/. F: E08 «Рассчитать бюджет» → budget-result. A: E20 «Заказать разбор оффера» → offer/r07. O: E03 «Открыть официальный калькулятор» → official-net-price'
+- row: v4_trigger
+  col: 46
+  kind: w
+  text: P14 · Сравниваются сценарии валют, проживания, грантов и платежей
+- row: v4_payer
+  col: 46
+  kind: w
+  text: 'P14 · входит в бесплатную базу, платно только исключение. Платный результат: Сценарный бюджет с чувствительностью и графиком платежей. Исполнение: Детерминированный калькулятор, сохранение допущений, ссылки на тарифы. Внешний платёж отдельно: обучение, начисления, залоги.'
+- row: v4_risk
+  col: 46
+  kind: r
+  text: 'P14 · Бесплатно уже есть: Net Price Calculator, тарифы вузов, официальные калькуляторы. Риск: Точная на вид смета по неполным данным, конвертация валют без даты'
+- row: v4_demand
+  col: 49
+  kind: b
+  text: 'P15 · Подбор финансирования. Уровень D2 (запрос инструмента или персонального результата): 2 283 запросов в 77 рынках; D3 0, D2 10, D1 2 273. Рынки проекта: AE 23 (D1); RU 9 (D1)'
+- row: v4_decision
+  col: 49
+  kind: y
+  text: P15 · Бесплатный фильтр, проверка заявки вынесена в P24 Продукт R11.
+- row: v4_free
+  col: 49
+  kind: g
+  text: 'P15 · Фильтр грантов с требованиями, сроками и источниками. Самостоятельно: Найти подходящие гранты и сроки'
+- row: v4_cta
+  col: 49
+  kind: y
+  text: 'P15 · /{locale}/{destination}/funding/. F: E05 «Найти подходящие стипендии» → funding-results. A: E20 «Заказать проверку заявки на грант» → offer/r11. O: E03 «Открыть сайт фонда» → official-funder'
+- row: v4_trigger
+  col: 49
+  kind: w
+  text: P15 · Нужно подготовить доказательства соответствия или исключить пограничные варианты
+- row: v4_payer
+  col: 49
+  kind: w
+  text: 'P15 · входит в бесплатную базу, платно только исключение. Платный результат: Персональная проверка оснований и досье для отправки вместе с P24. Исполнение: Публичный каталог и фильтры, платная работа только по конкретной заявке.'
+- row: v4_risk
+  col: 49
+  kind: r
+  text: 'P15 · Бесплатно уже есть: DAAD, государственные и университетские базы. Риск: Гарантии гранта, комиссия от суммы финансирования без проверки правил'
+- row: v4_demand
+  col: 52
+  kind: b
+  text: 'P16 · Визовое и миграционное сопровождение. Уровень D3 (коммерческая формулировка): 4 275 запросов в 76 рынках; D3 115, D2 1, D1 4 159. Рынки проекта: AE 86 (D3); RU 42 (D3)'
+- row: v4_decision
+  col: 52
+  kind: y
+  text: P16 · Только авторизованный партнёр на проверенных рынках Продукт R12.
+- row: v4_free
+  col: 52
+  kind: g
+  text: 'P16 · Общие применимые источники и этапы. Самостоятельно: Получить официальную общую информацию и нужный портал'
+- row: v4_cta
+  col: 52
+  kind: y
+  text: 'P16 · /{locale}/{destination}/mobility/. F: E03 «Посмотреть официальные правила» → official-mobility-guide. A: E20 «Перейти к уполномоченному специалисту» → offer/r12. C: E20 «Перейти к уполномоченному специалисту» → partner-checkout/r12. O: E03 «Открыть миграционный портал» → official-immigration-portal'
+- row: v4_trigger
+  col: 52
+  kind: w
+  text: P16 · Нужен индивидуальный совет или представительство
+- row: v4_payer
+  col: 52
+  kind: w
+  text: 'P16 · партнёр принимает оплату и отвечает за исполнение. Платный результат: Проверка или сопровождение от уполномоченного исполнителя. Исполнение: Внешняя запись и оплата, проверка полномочий до передачи, трекинг с согласия. Внешний платёж отдельно: визовый сбор.'
+- row: v4_risk
+  col: 52
+  kind: r
+  text: 'P16 · Бесплатно уже есть: Официальные миграционные органы. Риск: Регулируемая деятельность, риск ложных обещаний и использования документов'
+- row: v4_demand
+  col: 58
+  kind: b
+  text: 'P17 · Сопровождение обучения. Уровень D1 (информационный запрос): 389 запросов в 8 рынках; D3 0, D2 0, D1 389. Рынки проекта: RU 1 (D1)'
+- row: v4_decision
+  col: 58
+  kind: y
+  text: P17 · Не запускать как открытое универсальное сопровождение Продукта нет.
+- row: v4_free
+  col: 58
+  kind: g
+  text: 'P17 · Процедура и подходящий контакт учреждения. Самостоятельно: Найти правила оценки, контакты и помощь учреждения'
+- row: v4_cta
+  col: 58
+  kind: y
+  text: 'P17 · /{locale}/{destination}/study/support/. F: E03 «Найти поддержку в вузе» → support-directory. O: E03 «Перейти в службу поддержки» → provider-support'
+- row: v4_trigger
+  col: 58
+  kind: w
+  text: P17 · Требуется конкретная задача и договорённость по результату
+- row: v4_payer
+  col: 58
+  kind: w
+  text: 'P17 · платного предложения нет. Платный результат: Гипотеза точечной академической поддержки по отдельному запросу. Исполнение: Помощь учреждения и сервисы фактической доставки.'
+- row: v4_risk
+  col: 58
+  kind: r
+  text: 'P17 · Бесплатно уже есть: Поддержка кампуса и преподавателей. Риск: Неограниченные обращения, нарушение академических правил'
+- row: v4_demand
+  col: 55
+  kind: b
+  text: 'P18 · Организация проживания и бытовой поддержки. Уровень D3 (коммерческая формулировка): 1 282 запросов в 51 рынках; D3 2, D2 2, D1 1 278. Рынки проекта: AE 2 (D1); RU 26 (D1)'
+- row: v4_decision
+  col: 55
+  kind: y
+  text: P18 · Партнёр при проверке поставщика Продукт R13.
+- row: v4_free
+  col: 55
+  kind: g
+  text: 'P18 · Подходящие типы жилья и базовые варианты. Самостоятельно: Сравнить жильё, правила заселения и условия возврата'
+- row: v4_cta
+  col: 55
+  kind: y
+  text: 'P18 · /{locale}/{destination}/housing/. F: E05 «Найти варианты жилья» → housing-results. A: E20 «Проверить наличие и бронь у партнёра» → offer/r13. C: E20 «Проверить наличие и бронь у партнёра» → partner-checkout/r13. O: E03 «Открыть службу жилья вуза» → provider-housing-desk'
+- row: v4_trigger
+  col: 55
+  kind: w
+  text: P18 · Высокая срочность, удалённость или сложность проверки объекта
+- row: v4_payer
+  col: 55
+  kind: w
+  text: 'P18 · партнёр принимает оплату и отвечает за исполнение. Платный результат: Бронирование и подтверждение от партнёра. Исполнение: Переход к проверенному поставщику с едиными идентификаторами и условиями. Внешний платёж отдельно: жильё, страховка, трансфер.'
+- row: v4_risk
+  col: 55
+  kind: r
+  text: 'P18 · Бесплатно уже есть: Службы проживания вузов и открытые каталоги. Риск: Мошенничество, невозвратные депозиты и ложная доступность'
+- row: v4_demand
+  col: 61
+  kind: b
+  text: 'P19 · Построение карьерного маршрута. Уровень D1 (информационный запрос): 5 039 запросов в 37 рынках; D3 0, D2 0, D1 5 039. Рынки проекта: AE 4 (D1); RU 6 (D1)'
+- row: v4_decision
+  col: 61
+  kind: y
+  text: P19 · Ограниченная гипотеза после диагностики R06 Продукт R06.
+- row: v4_free
+  col: 61
+  kind: g
+  text: 'P19 · Профили ролей, связанные программы и задания для пробы. Самостоятельно: Сопоставить роли, программы, навыки и способы пробы'
+- row: v4_cta
+  col: 61
+  kind: y
+  text: 'P19 · /{locale}/{destination}/careers/. F: E06 «Посмотреть карьерные пути» → career-pathways. A: E20 «Заказать разбор карьерного перехода» → offer/r06. C: E20 «Заказать разбор карьерного перехода» → checkout/r06'
+- row: v4_trigger
+  col: 61
+  kind: w
+  text: P19 · Смена отрасли и высокие издержки ошибки
+- row: v4_payer
+  col: 61
+  kind: w
+  text: 'P19 · MainExperts, разовая экспертная услуга. Платный результат: План перехода с проверяемыми шагами, пробами и навыками. Исполнение: Профиль, исследование вариантов и ограниченная сессия.'
+- row: v4_risk
+  col: 61
+  kind: r
+  text: 'P19 · Бесплатно уже есть: Карьерные центры, вакансии, открытые профили профессий. Риск: Обещания дохода или трудоустройства, нерелевантные нормы рынка'
+- row: v4_demand
+  col: 34
+  kind: b
+  text: 'P20 · Подготовка и обучение. Уровень D3 (коммерческая формулировка): 1 992 запросов в 71 рынках; D3 174, D2 1 068, D1 750. Рынки проекта: AE 11 (D2); RU 4 (D2)'
+- row: v4_decision
+  col: 34
+  kind: y
+  text: P20 · Партнёрский пилот по узкому экзамену или компетенции Продукт R08.
+- row: v4_free
+  col: 34
+  kind: g
+  text: 'P20 · Пробное задание и проверяемая ссылка на официальные материалы. Самостоятельно: Пройти пробное задание и выбрать официальные материалы'
+- row: v4_cta
+  col: 34
+  kind: y
+  text: 'P20 · /{locale}/{destination}/preparation/. F: E10 «Выполнить пробное задание» → diagnostic-practice. A: E20 «Выбрать подготовку у партнёра» → offer/r08. C: E20 «Выбрать подготовку у партнёра» → partner-checkout/r08. O: E03 «Открыть официальные задания» → official-practice'
+- row: v4_trigger
+  col: 34
+  kind: w
+  text: P20 · Нужны обратная связь, график и ответственность наставника
+- row: v4_payer
+  col: 34
+  kind: w
+  text: 'P20 · партнёр принимает оплату и отвечает за исполнение. Платный результат: Программа подготовки с измеримым объёмом проверки заданий. Исполнение: Поставщик публикует программу, доступность, правила оплаты и возврата. Внешний платёж отдельно: курс или репетитор.'
+- row: v4_risk
+  col: 34
+  kind: r
+  text: 'P20 · Бесплатно уже есть: Bluebook и Khan Academy для SAT, открытые задания. Риск: Обещание результата экзамена, сложная поддержка широкого каталога'
+- row: v4_demand
+  col: 22
+  kind: b
+  text: 'P21 · Экспертные консультации. Уровень D3 (коммерческая формулировка): 2 385 запросов в 20 рынках; D3 97, D2 0, D1 2 288. Рынки проекта: AE 1 (D1); RU 4 (D3)'
+- row: v4_decision
+  col: 22
+  kind: y
+  text: P21 · Канал исполнения и точечный продукт; открытая консультация без результата не приоритет Продукт R06.
+- row: v4_free
+  col: 22
+  kind: g
+  text: 'P21 · Варианты специалиста, компетенции, стоимость и пример результата. Самостоятельно: Сначала проверить материалы и нужный вопрос'
+- row: v4_cta
+  col: 22
+  kind: y
+  text: 'P21 · /{locale}/{destination}/experts/. F: E17 «Найти эксперта» → expert-directory. A: E20 «Записаться на консультацию» → offer/r06. C: E20 «Записаться на консультацию» → checkout/r06. O: E03 «Связаться с приёмной» → official-advising-centre'
+- row: v4_trigger
+  col: 22
+  kind: w
+  text: P21 · У вопроса есть определённый владелец, сложность и понятный результат
+- row: v4_payer
+  col: 22
+  kind: w
+  text: 'P21 · MainExperts, разовая экспертная услуга. Платный результат: Фиксированная консультация с письменными итогами и объёмом работ. Исполнение: Конфигуратор вопроса, слот и оплата, краткий итог в кабинете. Внешний платёж отдельно: платное пробное занятие.'
+- row: v4_risk
+  col: 22
+  kind: r
+  text: 'P21 · Бесплатно уже есть: Приёмные комиссии и региональные консультационные службы. Риск: Эксперт тратит время на пресейл, повторные консультации и широкий запрос'
+- row: v4_demand
+  col: 64
+  kind: b
+  text: 'P22 · Сопровождение перевода и смены программы. Уровень D1 (информационный запрос): 1 353 запросов в 8 рынках; D3 0, D2 0, D1 1 353. В России и ОАЭ запросов по услуге нет.'
+- row: v4_decision
+  col: 64
+  kind: y
+  text: P22 · Волна 2 для узких комбинаций учебных систем Продукт R14.
+- row: v4_free
+  col: 64
+  kind: g
+  text: 'P22 · Правила, список документов и контакты. Самостоятельно: Собрать академическую выписку и правила принимающей стороны'
+- row: v4_cta
+  col: 64
+  kind: y
+  text: 'P22 · /{locale}/{destination}/transfer/. F: E13 «Проверить порядок перевода» → transfer-checklist. A: E20 «Заказать сопоставление дисциплин» → offer/r14. C: E20 «Заказать сопоставление дисциплин» → checkout/r14. O: E03 «Открыть правила перевода» → official-transfer-portal'
+- row: v4_trigger
+  col: 64
+  kind: w
+  text: P22 · Сложно оценить перенос кредитов и потери срока
+- row: v4_payer
+  col: 64
+  kind: w
+  text: 'P22 · MainExperts, автоматика и эксперт на исключениях. Платный результат: Матрица сопоставления дисциплин, вопросы к приёмной и развилки. Исполнение: Сверка учебных планов и ручная проверка, решение принимает учреждение.'
+- row: v4_risk
+  col: 64
+  kind: r
+  text: 'P22 · Бесплатно уже есть: Координаторы перевода и официальные регламенты. Риск: Обещание перезачёта или сокращения срока обучения'
+- row: v4_demand
+  col: 37
+  kind: b
+  text: 'P23 · Проверка авторского эссе, мотивационного письма или портфолио. Уровень D3 (коммерческая формулировка): 4 390 запросов в 106 рынках; D3 1, D2 627, D1 3 762. Рынки проекта: AE 31 (D2); RU 49 (D2)'
+- row: v4_decision
+  col: 37
+  kind: y
+  text: P23 · Главный пилот отдельной услуги Продукт R04.
+- row: v4_free
+  col: 37
+  kind: g
+  text: 'P23 · Критерии и обезличенный пример обратной связи. Самостоятельно: Проверить критерии, формат, структуру и авторский черновик'
+- row: v4_cta
+  col: 37
+  kind: y
+  text: 'P23 · /{locale}/{destination}/applications/writing/. F: E13 «Посмотреть критерии проверки» → writing-rubric. A: E20 «Заказать разбор работы» → offer/r04. C: E20 «Заказать разбор работы» → checkout/r04'
+- row: v4_trigger
+  col: 37
+  kind: w
+  text: P23 · Нужна содержательная обратная связь в срок
+- row: v4_payer
+  col: 37
+  kind: w
+  text: 'P23 · MainExperts, разовая экспертная услуга. Платный результат: Размеченный авторский документ и список приоритетных исправлений. Исполнение: Загрузка после оплаты, один раунд проверки с нормой объёма.'
+- row: v4_risk
+  col: 37
+  kind: r
+  text: 'P23 · Бесплатно уже есть: Рубрики, образцы, школьные консультанты. Риск: Подмена авторства и нарушение правил приёмной организации'
+- row: v4_demand
+  col: 49
+  kind: b
+  text: 'P24 · Проверка заявки на финансирование. Уровень D2 (запрос инструмента или персонального результата): 131 запросов в 27 рынках; D3 0, D2 2, D1 129. Рынки проекта: AE 1 (D1); RU 1 (D1)'
+- row: v4_decision
+  col: 49
+  kind: y
+  text: P24 · Волна 2, отдельный пилот после P11 Продукт R11.
+- row: v4_free
+  col: 49
+  kind: g
+  text: 'P24 · Чек-лист одного фонда и ссылки. Самостоятельно: Найти правила фонда и пройти чек-лист'
+- row: v4_cta
+  col: 49
+  kind: y
+  text: 'P24 · /{locale}/{destination}/funding/check/. F: E13 «Открыть требования фонда» → fund-checklist. A: E20 «Заказать проверку заявки на грант» → offer/r11. C: E20 «Заказать проверку заявки на грант» → checkout/r11. O: E03 «Открыть сайт фонда» → official-funder'
+- row: v4_trigger
+  col: 49
+  kind: w
+  text: P24 · Высокая цена пропуска доказательства или срока
+- row: v4_payer
+  col: 49
+  kind: w
+  text: 'P24 · MainExperts, автоматика и эксперт на исключениях. Платный результат: Проверенный пакет под один фонд и список исправлений. Исполнение: Структурная проверка, эксперт сверяет доказательства и спорные правила.'
+- row: v4_risk
+  col: 49
+  kind: r
+  text: 'P24 · Бесплатно уже есть: Официальные инструкции фонда, стипендиальный офис. Риск: Пользователь ожидает одобрение финансирования или бесплатную помощь'
+- row: v4_demand
+  col: 37
+  kind: b
+  text: 'P25 · Перевод, заверение и доставка документов. Уровень D2 (запрос инструмента или персонального результата): 100 запросов в 5 рынках; D3 0, D2 14, D1 86. Рынки проекта: AE 3 (D1)'
+- row: v4_decision
+  col: 37
+  kind: y
+  text: P25 · Партнёрская операция отдельной цепочки Продукт R09.
+- row: v4_free
+  col: 37
+  kind: g
+  text: 'P25 · Источники о допустимом переводе, заверении и доставке. Самостоятельно: Выяснить, кто именно вправе подготовить допустимый документ'
+- row: v4_cta
+  col: 37
+  kind: y
+  text: 'P25 · /{locale}/{destination}/documents/. F: E13 «Уточнить требования к документу» → document-rules. A: E20 «Перейти к заказу у поставщика» → offer/r09. C: E20 «Перейти к заказу у поставщика» → partner-checkout/r09. O: E03 «Открыть список уполномоченных поставщиков» → authorized-service-list'
+- row: v4_trigger
+  col: 37
+  kind: w
+  text: P25 · Нужно заказать перевод, заверение или пересылку
+- row: v4_payer
+  col: 37
+  kind: w
+  text: 'P25 · партнёр принимает оплату и отвечает за исполнение. Платный результат: Документ или подтверждение доставки от партнёра. Исполнение: Внешнее бронирование, согласие на передачу, отслеживание у партнёра.'
+- row: v4_risk
+  col: 37
+  kind: r
+  text: 'P25 · Бесплатно уже есть: Принимающие учреждения публикуют требования и перечни исполнителей. Риск: Утечка данных и заказ документа недопустимого типа'
+- row: v4_demand
+  col: 37
+  kind: b
+  text: 'P26 · Контроль обязательных действий по нескольким заявкам. Уровень D0 (сигнала в выгрузках нет): 0 запросов в 0 рынках; D3 0, D2 0, D1 0. В России и ОАЭ запросов по услуге нет.'
+- row: v4_decision
+  col: 37
+  kind: y
+  text: P26 · Сезонный пилот после ручной проверки источников Продукт R05.
+- row: v4_free
+  col: 37
+  kind: g
+  text: 'P26 · Черновая доска статусов и известных действий. Самостоятельно: Вести календарь и задачи по каждой заявке'
+- row: v4_cta
+  col: 37
+  kind: y
+  text: 'P26 · /{locale}/{destination}/applications/track/. F: E26 «Собрать календарь заявок» → application-board-preview. A: E20 «Подключить контроль заявок» → offer/r05. C: E20 «Подключить контроль заявок» → checkout/r05. O: E03 «Перейти к официальной подаче» → official-application'
+- row: v4_trigger
+  col: 37
+  kind: w
+  text: P26 · Несколько заявок, смена статусов, зависимость задач
+- row: v4_payer
+  col: 37
+  kind: w
+  text: 'P26 · MainExperts, сезонный пропуск. Платный результат: Сезонная доска с источниками, версиями, уведомлениями и эскалациями. Исполнение: Автоматические уведомления, исправление ошибочных событий, без входа в чужие аккаунты.'
+- row: v4_risk
+  col: 37
+  kind: r
+  text: 'P26 · Бесплатно уже есть: Календари, университетские кабинеты, таблицы. Риск: Пропуск срока, неполные статусы и низкая повторяемость продаж'
+- row: v4_region
+  col: 37
+  kind: gr
+  text: 'RU · Россия / Москва, J05. Маршрут: Подача в вуз и выбор конкурсной группы. Официальный источник: Приёмная комиссия УУНиТ о Госуслугах. Бесплатно: Карточка набора, сроки, применимые каналы и ссылка в официальный сервис. Платное: Смысл платной проверки появляется при нескольких конкурсных группах или несогласованном комплекте.'
+- row: v4_region
+  col: 28
+  kind: gr
+  text: 'GB · Великобритания, J03. Маршрут: Бакалавриат с международной квалификацией. Официальный источник: UCAS. Бесплатно: Требования из источника, известные критерии и отметки о недостающих сведениях. Платное: Если сопоставление иностранной квалификации осталось неясным, предложить проверку человеком с трассировкой оснований.'
+- row: v4_region
+  col: 37
+  kind: gr
+  text: 'US · США, J05. Маршрут: Проверка авторского эссе в комплекте заявки. Официальный источник: EducationUSA. Бесплатно: Самопроверка авторского черновика по критериям программы. Платное: Платный письменный разбор доступен при готовом черновике и понятных сроках. Человек сохраняет авторство.'
+- row: v4_region
+  col: 16
+  kind: gr
+  text: 'CA · Канада, J02. Маршрут: Поиск программы на английском или французском. Официальный источник: EduCanada. Бесплатно: Фильтры и прямые ссылки на сопоставимые предложения и стоимость из источника. Платное: Персональный подбор уместен при нескольких ограничениях и проверяемой разнице по каждому варианту.'
+- row: v4_region
+  col: 25
+  kind: gr
+  text: 'CH · Швейцария, J03. Маршрут: Проверка официального статуса учреждения. Официальный источник: swissuniversities. Бесплатно: Прямая ссылка на перечень с датой просмотра и ясным предметом проверки. Платное: Платное досье уместно при требовании сверить несколько организаций, уровней или версий сведений.'
+- row: v4_region
+  col: 37
+  kind: gr
+  text: 'FR · Франция, J05. Маршрут: Выбор применимой процедуры подачи. Официальный источник: Service Public. Бесплатно: Проверка применимости по странице органа и отдельная ссылка на выбранный канал. Платное: Предложить проверку комплекта, если применимая процедура известна и пользователь видит состав результата.'
+- row: v4_region
+  col: 37
+  kind: gr
+  text: 'IT · Италия, J05. Маршрут: Предзачисление при международном поступлении. Официальный источник: Universitaly. Бесплатно: Пошаговый список с отдельными подтверждениями подачи, ответа учреждения и следующего процесса. Платное: Платёж за аудит пакета возможен после выбора программы и маршрута.'
+- row: v4_region
+  col: 43
+  kind: gr
+  text: 'ES · Испания, J03. Маршрут: Иностранная квалификация и требования вуза. Официальный источник: UNEDasiss. Бесплатно: Ссылки на требования вуза и UNEDasiss, критерии сопоставления. Платное: Работа с комплектом допустима после проверки применимости. Сбор органа проходит отдельно.'
+- row: v4_region
+  col: 25
+  kind: gr
+  text: 'AE · ОАЭ, J03. Маршрут: Проверка статуса выбранной программы. Официальный источник: Commission for Academic Accreditation. Бесплатно: Официальная карточка либо документированный пробел по совпадению. Платное: При несогласованных реестрах предложить проверку с перечнем источников и ручной верификацией.'
+- row: v4_region
+  col: 28
+  kind: gr
+  text: 'SG · Сингапур, J03. Маршрут: Подбор послешкольного маршрута. Официальный источник: Ministry of Education. Бесплатно: Справочник вариантов и ссылка на инструкцию MOE по подходящей процедуре. Платное: Платная персональная проверка имеет смысл при выборе нескольких различных маршрутов.'
+- row: v4_region
+  col: 37
+  kind: gr
+  text: 'HK · Гонконг, J05. Маршрут: Подача через JUPAS при соблюдении условий. Официальный источник: JUPAS. Бесплатно: Навигатор применимости, ссылка в JUPAS и отдельный маршрут проверки прямой подачи. Платное: Предложить аудит документов после выбора канала, если задача осталась открытой.'
+- row: v4_region
+  col: 49
+  kind: gr
+  text: 'CN · Китай, J03. Маршрут: Подготовка заявки на стипендию CSC. Официальный источник: Посольство КНР. Бесплатно: Официальные материалы по соответствующей кампании и персональный список вопросов. Платное: Аудит пакета рассматривается отдельно от официальной заявки. Кейсы различаются по стране и кампании.'
+- row: v4_region
+  col: 37
+  kind: gr
+  text: 'DE · Германия, J05. Маршрут: Подача с иностранным документом об образовании. Официальный источник: uni-assist. Бесплатно: Ссылка на применимый канал, список материалов и правило проверки реквизитов у официальной стороны. Платное: Внешний сбор за официальный процесс отделён от независимой проверки комплекта.'
+- row: v4_region
+  col: 16
+  kind: gr
+  text: 'AU · Австралия, J02. Маршрут: Сравнение программ в каталоге и проверка регистрационного статуса. Официальный источник: Study Australia. Бесплатно: Карточки сопоставимых программ с источником, датой и ссылкой к поставщику. Платное: Платный подбор уместен после исчерпания бесплатных фильтров или при сложных ограничениях.'
+- row: v4_jstate
+  col: 1
+  kind: w
+  text: 'J01 · Определить цель и попробовать. Классы Q01, Q02, Q19, Q21. Результат: Цель, ограничения и следующий проверяемый шаг. Развилка: Если цель известна, открыть поиск или известный набор напрямую. Переходы: J02: цель и ограничения сформулированы.'
+- row: v4_jstate
+  col: 4
+  kind: w
+  text: 'J02 · Найти варианты. Классы Q02, Q03, Q04, Q05, Q06, Q08, Q21. Результат: Короткий список конкретных вариантов и наборов со ссылками. Развилка: Нет подходящего набора — изменить ограничения, подписаться на обновление либо завершить поиск. Переходы: J03: выбран конкретный набор или список.'
+- row: v4_jstate
+  col: 10
+  kind: w
+  text: 'J03 · Сравнить условия и бюджет. Классы Q04, Q07, Q08, Q09, Q13, Q14, Q15, Q18. Результат: Сопоставимая смета, применимые критерии и неизвестные по вариантам. Развилка: Нет бюджета — проверить финансирование. При недостающих сведениях открыть источник или запросить уточнение. Переходы: J04: требуется подготовка; J05: применимые условия выполнены; J02: ограничение нельзя устранить для данного набора.'
+- row: v4_jstate
+  col: 13
+  kind: w
+  text: 'J04 · Подготовиться и проверить допуск. Классы Q05, Q08, Q09, Q13, Q15, Q20, Q10, Q21. Результат: Выполненные условия допуска, подготовка и полученные результаты оценивания. Развилка: При соблюдении условий перейти к заявке. Если неприменимы правила выбранного набора, найти другой. Переходы: J05: есть подтверждённые результаты и комплект.'
+- row: v4_jstate
+  col: 37
+  kind: w
+  text: 'J05 · Подать и отследить. Классы Q11, Q05, Q13, Q15, Q21. Результат: Проверенный комплект и статус подачи от принимающей стороны. Развилка: При недостающем документе вернуться к подготовке. Отправка подтверждается официальным каналом. Переходы: J06: получено решение принимающей стороны; J04: нужны повторная проверка или недостающий документ.'
+- row: v4_jstate
+  col: 40
+  kind: w
+  text: 'J06 · Разобрать решение и зачислиться. Классы Q12, Q14, Q15, Q16, Q18. Результат: Условия оффера, выбранное действие пользователя и отдельное подтверждение зачисления. Развилка: Отказ или истечение срока возвращает к поиску. Условный оффер возвращает к выполнению условий. Переходы: J07: нужны переезд и бытовая поддержка; J08: подтверждено зачисление и переезд не требуется; J04: нужно исполнить условия оффера; J02: отказ.'
+- row: v4_jstate
+  col: 43
+  kind: w
+  text: 'J07 · Организовать мобильность и быт. Классы Q13, Q14, Q15, Q16, Q18. Результат: Готовность к переезду и доступ к бытовой поддержке. Развилка: Порядок отдельных действий зависит от официальных требований. Для местного и дистанционного обучения шаг можно пропустить. Переходы: J08: подтверждено участие и выполнены применимые условия; J04: выявлено невыполненное применимое условие.'
+- row: v4_jstate
+  col: 58
+  kind: w
+  text: 'J08 · Учиться и применять. Классы Q17, Q18, Q19, Q20, Q21. Результат: Прогресс, доступ к поддержке и план учебных или карьерных действий. Развилка: При препятствиях открыть нужную помощь. При несовпадении цели оценить переход. Переходы: J09: завершение или решение сменить маршрут.'
+- row: v4_jstate
+  col: 64
+  kind: w
+  text: 'J09 · Завершить, сменить или выйти в профессию. Классы Q22, Q13, Q17, Q19, Q01. Результат: Подтверждённый переход, квалификация или новая цель. Развилка: Новая цель запускает параллельный маршрут с сохранением уже полученных результатов. Переходы: J01: появилась новая образовательная цель.'
+- row: v4_events
+  stage: p1
+  kind: gr
+  text: 'Услуг этапа: 2. Сценариев по событиям: free_result_rendered ×2 (бесплатный результат показан); qualified_offer_opened ×2 (открыто предложение при триггере); checkout_started ×1 (начато оформление); official_handoff_clicked ×1 (переход к официальному источнику). После checkout_started: payment_confirmed, fulfilment_delivered, fulfilment_accepted, order_refunded.'
+- row: v4_events
+  stage: p2
+  kind: gr
+  text: 'Услуг этапа: 6. Сценариев по событиям: free_result_rendered ×6 (бесплатный результат показан); qualified_offer_opened ×6 (открыто предложение при триггере); checkout_started ×5 (начато оформление); official_handoff_clicked ×4 (переход к официальному источнику). После checkout_started: payment_confirmed, fulfilment_delivered, fulfilment_accepted, order_refunded.'
+- row: v4_events
+  stage: p3
+  kind: gr
+  text: 'Услуг этапа: 2. Сценариев по событиям: free_result_rendered ×2 (бесплатный результат показан); qualified_offer_opened ×2 (открыто предложение при триггере); checkout_started ×1 (начато оформление); official_handoff_clicked ×2 (переход к официальному источнику). После checkout_started: payment_confirmed, fulfilment_delivered, fulfilment_accepted, order_refunded.'
+- row: v4_events
+  stage: p4
+  kind: gr
+  text: 'Услуг этапа: 2. Сценариев по событиям: free_result_rendered ×2 (бесплатный результат показан); qualified_offer_opened ×2 (открыто предложение при триггере); partner_handoff_clicked ×2 (переход к партнёру); official_handoff_clicked ×2 (переход к официальному источнику). После checkout_started: payment_confirmed, fulfilment_delivered, fulfilment_accepted, order_refunded.'
+- row: v4_events
+  stage: p5
+  kind: gr
+  text: 'Услуг этапа: 5. Сценариев по событиям: free_result_rendered ×5 (бесплатный результат показан); qualified_offer_opened ×5 (открыто предложение при триггере); checkout_started ×4 (начато оформление); partner_handoff_clicked ×1 (переход к партнёру); official_handoff_clicked ×4 (переход к официальному источнику). После checkout_started: payment_confirmed, fulfilment_delivered, fulfilment_accepted, order_refunded.'
+- row: v4_events
+  stage: p6
+  kind: gr
+  text: 'Услуг этапа: 4. Сценариев по событиям: free_result_rendered ×4 (бесплатный результат показан); qualified_offer_opened ×4 (открыто предложение при триггере); checkout_started ×1 (начато оформление); official_handoff_clicked ×4 (переход к официальному источнику). После checkout_started: payment_confirmed, fulfilment_delivered, fulfilment_accepted, order_refunded.'
+- row: v4_events
+  stage: p7
+  kind: gr
+  text: 'Услуг этапа: 2. Сценариев по событиям: free_result_rendered ×2 (бесплатный результат показан); qualified_offer_opened ×2 (открыто предложение при триггере); partner_handoff_clicked ×2 (переход к партнёру); official_handoff_clicked ×2 (переход к официальному источнику). После checkout_started: payment_confirmed, fulfilment_delivered, fulfilment_accepted, order_refunded.'
+- row: v4_events
+  stage: p8
+  kind: gr
+  text: 'Услуг этапа: 2. Сценариев по событиям: free_result_rendered ×2 (бесплатный результат показан); qualified_offer_opened ×1 (открыто предложение при триггере); checkout_started ×1 (начато оформление); official_handoff_clicked ×1 (переход к официальному источнику). После checkout_started: payment_confirmed, fulfilment_delivered, fulfilment_accepted, order_refunded.'
+- row: v4_events
+  stage: p9
+  kind: gr
+  text: 'Услуг этапа: 1. Сценариев по событиям: free_result_rendered ×1 (бесплатный результат показан); qualified_offer_opened ×1 (открыто предложение при триггере); checkout_started ×1 (начато оформление); official_handoff_clicked ×1 (переход к официальному источнику). После checkout_started: payment_confirmed, fulfilment_delivered, fulfilment_accepted, order_refunded.'

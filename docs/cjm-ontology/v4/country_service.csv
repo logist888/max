@@ -1,0 +1,288 @@
+SEARCH_MARKET,SERVICE_ID,EVIDENCE_LEVEL,UNIQUE_QUERIES,D3_QUERIES,D2_QUERIES,D1_QUERIES,LANGUAGES
+AE,P01,D2,7,0,7,0,en
+AE,P02,D1,14,0,0,14,en
+AE,P04,D1,159,0,0,159,ar; en
+AE,P05,D1,16,0,0,16,ar; en
+AE,P06,D1,666,0,0,666,ar; en
+AE,P07,D1,425,0,0,425,ar; en
+AE,P08,D1,1,0,0,1,ar
+AE,P09,D1,11,0,0,11,ar; en
+AE,P10,D2,17,0,5,12,en
+AE,P11,D1,1,0,0,1,en
+AE,P12,D1,3,0,0,3,en
+AE,P13,D1,1,0,0,1,en
+AE,P14,D1,50,0,0,50,ar; en
+AE,P15,D1,23,0,0,23,ar; en
+AE,P16,D3,86,1,0,85,en
+AE,P18,D1,2,0,0,2,en
+AE,P19,D1,4,0,0,4,en
+AE,P20,D2,11,0,7,4,en
+AE,P21,D1,1,0,0,1,en
+AE,P23,D2,31,0,7,24,en
+AE,P24,D1,1,0,0,1,ar
+AE,P25,D1,3,0,0,3,ar
+AU,P01,D2,56,0,56,0,de; en
+AU,P02,D1,49,0,0,49,en; fr
+AU,P04,D1,987,0,0,987,en
+AU,P05,D1,134,0,0,134,en
+AU,P06,D1,2061,0,0,2061,de; en; es
+AU,P07,D1,4611,0,0,4611,en; zh
+AU,P08,D1,3,0,0,3,en
+AU,P09,D1,20,0,0,20,en
+AU,P10,D2,45,0,15,30,en
+AU,P11,D1,4,0,0,4,en
+AU,P12,D1,7,0,0,7,en
+AU,P13,D1,1,0,0,1,zh
+AU,P14,D2,494,0,1,493,en; zh
+AU,P15,D1,44,0,0,44,en; zh
+AU,P16,D3,597,11,1,585,en; es; zh
+AU,P18,D3,320,1,2,317,en; es; und
+AU,P19,D1,59,0,0,59,en
+AU,P20,D2,13,0,4,9,en
+AU,P21,D3,17,5,0,12,en
+AU,P23,D2,48,0,10,38,en
+AU,P24,D1,2,0,0,2,en
+CA,P01,D2,38,0,38,0,en; fr
+CA,P02,D1,50,0,0,50,en; fr
+CA,P04,D1,269,0,0,269,en; fr
+CA,P05,D1,148,0,0,148,en; fr
+CA,P06,D2,1473,0,1,1472,de; en; es; fr
+CA,P07,D1,625,0,0,625,en; es; fr; ru; zh
+CA,P08,D1,1,0,0,1,es
+CA,P09,D1,91,0,0,91,en; es
+CA,P10,D2,104,0,31,73,en; fr
+CA,P11,D1,18,0,0,18,en
+CA,P12,D1,10,0,0,10,en; fr
+CA,P13,D3,9,1,0,8,en; fr; zh
+CA,P14,D2,112,0,4,108,en; fr; zh
+CA,P15,D1,71,0,0,71,en; es; fr
+CA,P16,D3,380,3,0,377,en; es; fr
+CA,P18,D1,17,0,0,17,en; fr
+CA,P19,D1,19,0,0,19,en; fr; zh
+CA,P20,D2,18,0,16,2,en
+CA,P21,D3,15,1,0,14,en
+CA,P23,D2,54,0,8,46,en; fr
+CA,P24,D1,7,0,0,7,en; fr
+CH,P01,D2,7,0,7,0,de; en
+CH,P02,D1,7,0,0,7,de; en
+CH,P04,D1,34,0,0,34,de; en; es; fr; it; und
+CH,P06,D1,24,0,0,24,de; en; fr
+CH,P07,D1,20,0,0,20,en; fr
+CH,P10,D2,1,0,1,0,fr
+CH,P14,D1,1,0,0,1,en
+CH,P15,D1,1,0,0,1,de
+CH,P16,D1,4,0,0,4,en
+CH,P18,D1,5,0,0,5,de; en
+CH,P19,D1,2,0,0,2,de
+CH,P20,D2,1,0,1,0,en
+CH,P23,D2,4,0,1,3,de; en
+DE,P01,D2,55,0,53,2,de; en
+DE,P02,D1,70,0,0,70,ar; de; en; es
+DE,P04,D1,413,0,0,413,de; en; fr
+DE,P05,D1,57,0,0,57,de; en
+DE,P06,D2,850,0,1,849,ar; de; en; es; fr; ru
+DE,P07,D1,242,0,0,242,ar; de; en; es; ru; zh
+DE,P09,D2,173,0,9,164,de; es
+DE,P10,D2,20,0,6,14,ar; de; en; zh
+DE,P13,D1,1,0,0,1,en
+DE,P14,D1,30,0,0,30,de; en
+DE,P15,D1,22,0,0,22,ar; de; en; es
+DE,P16,D1,27,0,0,27,de; en; es; ru
+DE,P17,D1,3,0,0,3,de; en
+DE,P18,D1,55,0,0,55,de; en
+DE,P19,D1,96,0,0,96,de; en
+DE,P20,D2,4,0,4,0,en
+DE,P22,D1,12,0,0,12,de
+DE,P23,D2,25,0,9,16,de; en
+DE,P24,D2,18,0,1,17,de
+ES,P01,D2,38,0,32,6,de; en; es
+ES,P02,D1,50,0,0,50,en; es
+ES,P04,D1,352,0,0,352,en; es; fr
+ES,P05,D1,92,0,0,92,en; es
+ES,P06,D1,321,0,0,321,de; en; es; fr
+ES,P07,D1,274,0,0,274,en; es; fr; zh
+ES,P08,D1,22,0,0,22,es
+ES,P09,D1,3258,0,0,3258,es
+ES,P10,D2,9,0,6,3,en; es; fr; it
+ES,P13,D1,106,0,0,106,en; es; zh
+ES,P14,D1,2,0,0,2,en
+ES,P15,D1,67,0,0,67,en; es
+ES,P16,D1,9,0,0,9,en; es
+ES,P17,D1,3,0,0,3,en; es; fr
+ES,P18,D1,11,0,0,11,en; es; fr
+ES,P19,D1,11,0,0,11,en; es; fr
+ES,P20,D2,6,0,2,4,en; es
+ES,P22,D1,18,0,0,18,es
+ES,P23,D2,18,0,2,16,en; fr
+ES,P24,D1,1,0,0,1,es
+ES,P25,D2,6,0,2,4,es
+FR,P01,D2,74,0,62,12,en; fr
+FR,P02,D1,127,0,0,127,de; en; es; fr
+FR,P04,D1,2410,0,0,2410,en; fr; und
+FR,P05,D1,92,0,0,92,en; fr
+FR,P06,D1,386,0,0,386,de; en; es; fr
+FR,P07,D1,231,0,0,231,en; es; fr; zh
+FR,P08,D1,2,0,0,2,fr
+FR,P09,D2,13,0,1,12,es; fr
+FR,P10,D2,48,0,13,35,en; fr
+FR,P11,D2,7,0,2,5,fr
+FR,P12,D1,2,0,0,2,fr
+FR,P13,D1,13,0,0,13,es; fr
+FR,P14,D1,44,0,0,44,en; fr
+FR,P15,D1,27,0,0,27,en; fr
+FR,P16,D1,54,0,0,54,en; fr
+FR,P17,D1,28,0,0,28,en; fr
+FR,P18,D3,373,1,0,372,en; es; fr; und
+FR,P19,D1,1138,0,0,1138,en; fr
+FR,P20,D2,72,0,50,22,en; fr
+FR,P21,D3,4,1,0,3,fr
+FR,P22,D1,12,0,0,12,fr
+FR,P23,D2,189,0,42,147,en; fr
+FR,P24,D1,29,0,0,29,fr
+GB,P01,D2,50,0,45,5,en
+GB,P02,D1,80,0,0,80,en
+GB,P04,D2,180,0,1,179,en; fr
+GB,P05,D1,137,0,0,137,en
+GB,P06,D1,2324,0,0,2324,en; fr
+GB,P07,D1,1829,0,0,1829,en; es; zh
+GB,P08,D1,5,0,0,5,en
+GB,P09,D1,843,0,0,843,en; es
+GB,P10,D2,120,0,102,18,en
+GB,P11,D1,17,0,0,17,en
+GB,P12,D1,62,0,0,62,en
+GB,P13,D1,3,0,0,3,en; zh
+GB,P14,D2,175,0,3,172,en
+GB,P15,D2,57,0,1,56,en
+GB,P16,D1,79,0,0,79,en
+GB,P17,D1,1,0,0,1,de
+GB,P18,D1,68,0,0,68,en; fr
+GB,P19,D1,341,0,0,341,en
+GB,P20,D3,28,2,12,14,en
+GB,P21,D3,144,5,0,139,en
+GB,P22,D1,6,0,0,6,en
+GB,P23,D2,1668,0,158,1510,en; fr
+GB,P24,D1,8,0,0,8,en
+HK,P01,D2,5,0,4,1,en; zh
+HK,P02,D1,13,0,0,13,en; zh
+HK,P04,D1,36,0,0,36,en
+HK,P05,D1,4,0,0,4,en; zh
+HK,P06,D1,58,0,0,58,en
+HK,P07,D1,222,0,0,222,en; zh
+HK,P09,D1,6,0,0,6,en; zh
+HK,P10,D1,9,0,0,9,en; zh
+HK,P12,D1,3,0,0,3,en
+HK,P13,D1,1,0,0,1,zh
+HK,P14,D1,358,0,0,358,en; zh
+HK,P15,D1,5,0,0,5,en; zh
+HK,P16,D1,19,0,0,19,en
+HK,P18,D1,16,0,0,16,en; und; zh
+HK,P19,D1,18,0,0,18,en; zh
+HK,P20,D2,5,0,2,3,en; zh
+HK,P21,D3,12,5,0,7,en; zh
+HK,P23,D2,43,0,4,39,en; zh
+IT,P01,D2,24,0,12,12,de; en; it
+IT,P02,D1,13,0,0,13,en; es; it
+IT,P04,D1,141,0,0,141,en; fr; it
+IT,P05,D1,37,0,0,37,en; it
+IT,P06,D1,162,0,0,162,en; es; it
+IT,P07,D1,256,0,0,256,en; es; it; zh
+IT,P09,D1,3,0,0,3,es; it
+IT,P10,D2,9,0,2,7,en; it
+IT,P13,D1,6,0,0,6,es; it
+IT,P14,D1,34,0,0,34,it
+IT,P15,D1,105,0,0,105,en; it
+IT,P16,D1,8,0,0,8,en
+IT,P17,D1,1,0,0,1,fr
+IT,P18,D1,3,0,0,3,en; fr
+IT,P19,D1,2,0,0,2,it
+IT,P20,D2,4,0,4,0,en
+IT,P21,D1,2,0,0,2,it
+IT,P23,D2,12,0,2,10,de; en
+IT,P24,D1,2,0,0,2,it
+IT,P25,D1,2,0,0,2,it
+RU,P01,D2,12,0,12,0,de; en; fr
+RU,P02,D1,12,0,0,12,de; en
+RU,P04,D1,230,0,0,230,en; es; fr
+RU,P05,D1,3,0,0,3,en
+RU,P06,D2,525,0,1,524,de; en; es; fr; ru
+RU,P07,D1,138,0,0,138,en; es; it; ru; zh
+RU,P09,D1,10,0,0,10,de; en; es
+RU,P10,D2,7,0,3,4,en; fr
+RU,P11,D1,2,0,0,2,en
+RU,P12,D1,1,0,0,1,en
+RU,P13,D1,1,0,0,1,en
+RU,P14,D1,9,0,0,9,de; en; ru
+RU,P15,D1,9,0,0,9,en; es; fr; ru
+RU,P16,D3,42,1,0,41,en; ru
+RU,P17,D1,1,0,0,1,en
+RU,P18,D1,26,0,0,26,en; fr
+RU,P19,D1,6,0,0,6,en; fr
+RU,P20,D2,4,0,3,1,en
+RU,P21,D3,4,1,0,3,en; fr
+RU,P23,D2,49,0,4,45,en; fr; ru
+RU,P24,D1,1,0,0,1,fr
+SG,P01,D2,5,0,5,0,en
+SG,P02,D1,24,0,0,24,en
+SG,P04,D1,96,0,0,96,en; und
+SG,P05,D1,28,0,0,28,en
+SG,P06,D1,258,0,0,258,en
+SG,P07,D1,387,0,0,387,en; zh
+SG,P09,D1,17,0,0,17,en
+SG,P10,D2,26,0,1,25,en
+SG,P12,D1,2,0,0,2,en
+SG,P13,D1,1,0,0,1,zh
+SG,P14,D1,43,0,0,43,en
+SG,P15,D1,6,0,0,6,en
+SG,P16,D1,24,0,0,24,en
+SG,P18,D1,10,0,0,10,en
+SG,P19,D1,37,0,0,37,en
+SG,P20,D2,9,0,5,4,en; zh
+SG,P21,D3,4,2,0,2,en; zh
+SG,P23,D2,32,0,6,26,en
+US,P01,D2,345,0,344,1,de; en; fr
+US,P02,D1,93,0,0,93,de; en; es; fr
+US,P04,D1,499,0,0,499,de; en; es; fr; it
+US,P05,D1,214,0,0,214,en; es; fr; zh
+US,P06,D2,7993,0,18,7975,de; en; es; fr; ru
+US,P07,D1,4592,0,0,4592,ar; en; es; fr; it; ru; zh
+US,P08,D1,6,0,0,6,en; es
+US,P09,D1,207,0,0,207,de; en; es
+US,P10,D2,534,0,45,489,en; fr; und; zh
+US,P11,D2,41,0,1,40,de; en; fr
+US,P12,D1,8,0,0,8,en
+US,P13,D1,10,0,0,10,en; es; zh
+US,P14,D2,223,0,97,126,ar; de; en; fr; zh
+US,P15,D1,599,0,0,599,de; en; es; fr; it; zh
+US,P16,D3,224,7,0,217,en; es; fr; zh
+US,P18,D1,106,0,0,106,en; fr; zh
+US,P19,D1,70,0,0,70,de; en; es; fr; zh
+US,P20,D3,366,48,223,95,en
+US,P21,D3,35,22,0,13,en; fr
+US,P22,D1,4,0,0,4,en
+US,P23,D3,813,1,54,758,de; en; es; fr
+US,P24,D2,19,0,1,18,de; en; fr
+US,P25,D1,1,0,0,1,es
+ZZ-RU,P01,D3,3562,7,1110,2445,en; ru
+ZZ-RU,P02,D1,1288,0,0,1288,de; en; ru
+ZZ-RU,P04,D1,3578,0,0,3578,de; en; ru; und
+ZZ-RU,P05,D1,6399,0,0,6399,en; ru
+ZZ-RU,P06,D2,39448,0,148,39300,de; en; ru
+ZZ-RU,P07,D1,7113,0,0,7113,en; ru
+ZZ-RU,P08,D1,205,0,0,205,ru
+ZZ-RU,P09,D2,16366,0,273,16093,ru
+ZZ-RU,P10,D2,1743,0,874,869,en; ru; und
+ZZ-RU,P11,D2,349,0,11,338,ru
+ZZ-RU,P12,D1,2,0,0,2,en; ru
+ZZ-RU,P13,D1,110,0,0,110,de; en; ru
+ZZ-RU,P14,D2,6589,0,1,6588,en; ru
+ZZ-RU,P15,D2,459,0,9,450,en; ru
+ZZ-RU,P16,D1,370,0,0,370,en; ru
+ZZ-RU,P17,D1,347,0,0,347,ru
+ZZ-RU,P18,D1,73,0,0,73,ru; und
+ZZ-RU,P19,D1,3144,0,0,3144,en; ru
+ZZ-RU,P20,D3,1231,123,549,559,ru
+ZZ-RU,P21,D3,2075,8,0,2067,ru
+ZZ-RU,P22,D1,1296,0,0,1296,ru
+ZZ-RU,P23,D2,446,0,122,324,en; ru
+ZZ-RU,P24,D1,4,0,0,4,ru
+ZZ-RU,P25,D2,87,0,12,75,ru

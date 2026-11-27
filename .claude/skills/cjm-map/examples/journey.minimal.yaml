@@ -1,0 +1,70 @@
+# Минимальный пример: три этапа, три дорожки, один путь клиента.
+# Запуск: python scripts/cjm_map/build.py examples/journey.minimal.yaml --out out/minimal
+# Правило: текст с двоеточием, запятой или вопросом берите в кавычки.
+meta:
+  title: "Пример: клиент записывается на консультацию"
+  subtitle: "Учебный пример для быстрого старта. Замените тексты своими."
+  date: "2026-01-01"
+  version: "0.1"
+  source: "учебный пример, данных клиентов нет"
+header:
+  job: "Записаться на консультацию без звонков и переписки"
+  assumption: "Допущение примера: клиент заходит с телефона и знает, что хочет получить консультацию."
+  drivers: ["Запись за две минуты", "Видно свободные даты"]
+  barriers: ["Не уверен, что консультация поможет"]
+
+lanes:                      # дорожки блок-схемы; style 0–6 задаёт цвет
+  - {id: client, label: "Клиент", style: 0}
+  - {id: site, label: "Сайт", style: 1}
+  - {id: team, label: "Команда", style: 5}
+
+stages:                     # этапы: диапазон колонок и название; одни и те же колонки у схемы и у стикеров
+  - {id: s1, from: 0, to: 1, label: "1. Знакомство", color: cyan}
+  - {id: s2, from: 2, to: 3, label: "2. Запись", color: cyan}
+  - {id: s3, from: 4, to: 5, label: "3. Консультация", color: blue}
+
+flow:
+  lane_height: 200
+  nodes:                    # shape: term, proc, dec, data, doc, db, manual, pre, note
+    - {id: start, shape: term, col: 0, lane: client, text: "Начало: клиент ищет, как получить консультацию"}
+    - {id: open, shape: proc, col: 1, lane: client, text: "Открывает страницу консультации"}
+    - {id: ask, shape: dec, col: 1, lane: site, text: "Подходит ли формат?"}
+    - {id: leave, shape: term, col: 1, lane: team, text: "Уходит со страницы", hypothesis: true}
+    - {id: form, shape: data, col: 2, lane: client, text: "Оставляет имя и контакт"}
+    - {id: slot, shape: proc, col: 2, lane: site, text: "Показывает свободные даты и принимает запись"}
+    - {id: call, shape: proc, col: 4, lane: team, text: "Проводит консультацию"}
+    - {id: doc, shape: doc, col: 5, lane: team, text: "Отправляет итоги письмом"}
+  edges:                    # ports: откуда и куда выходит стрелка (l, r, t, b); не указали — выберется само
+    - {from: start, to: open}
+    - {from: open, to: ask, ports: bt}
+    - {from: ask, to: form, ports: rl, label: "Да"}
+    - {from: ask, to: leave, ports: bt, label: "Нет", loss: true}
+    - {from: form, to: slot, ports: bt}
+    - {from: slot, to: call, ports: rl}
+    - {from: call, to: doc}
+
+rows:                       # ряды CJM под схемой; type: stack (по умолчанию), goal, emotion, screens
+  - {id: goal, label: "Цель этапа", type: goal}
+  - {id: actions, label: "Действия клиента"}
+  - {id: thoughts, label: "Ожидания и мысли"}
+  - {id: emotion, label: "Эмоции клиента", type: emotion}
+
+stickies:                   # kind: y жёлтый, b синий, g зелёный, r красный, o оранжевый, w белый, gr серый, ghost гипотеза, ey нейтральная эмоция
+  - {row: goal, stage: s1, kind: y, text: "Понять, что консультация решает задачу"}
+  - {row: goal, stage: s2, kind: y, text: "Записаться без лишних шагов"}
+  - {row: goal, stage: s3, kind: y, text: "Получить понятный итог"}
+  - {row: actions, col: 0, kind: y, id: a0, text: "Ищет в поиске"}
+  - {row: actions, col: 1, kind: y, id: a1, text: "Читает страницу"}
+  - {row: actions, col: 2, kind: b, id: a3, text: "Оставляет контакт"}
+  - {row: actions, col: 4, kind: y, id: a4, text: "Приходит на консультацию"}
+  - {row: thoughts, col: 1, kind: y, text: "«Не потеряю ли я время?»"}
+  - {row: thoughts, col: 2, kind: y, text: "«Хорошо бы без звонков»"}
+  - {row: emotion, col: 0, kind: ey, level: 0, text: "Нейтрально"}
+  - {row: emotion, col: 1, kind: r, level: -1, text: "Сомнение"}
+  - {row: emotion, col: 2, kind: g, level: 1, text: "Облегчение"}
+  - {row: emotion, col: 5, kind: g, level: 1, text: "Довольство"}
+
+sticky_links:               # стрелки между стикерами по id
+  - {from: a0, to: a1}
+  - {from: a1, to: a3}
+  - {from: a3, to: a4}
