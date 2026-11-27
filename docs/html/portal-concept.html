@@ -411,6 +411,25 @@ details.more summary{cursor:pointer;font-weight:600}
 .step .n{width:24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;display:inline-flex;justify-content:center;align-items:center;font-size:13px;margin-bottom:6px}
 .pill{font-size:12px;border-radius:999px;padding:1px 9px;background:#eceef3}
 .sttl{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+/* слой конверсии v4 */
+.tag.open2{background:#e6edfb;color:#1d3f9a}.tag.pt{background:#fdecd9;color:#8a4b00}
+.ofc h3{margin:4px 0}.fp{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}.fp>div{background:#f6f7fb;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.price-b{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-end;margin-top:6px}
+.exl{background:#f6f7fb;border-inline-start:3px solid var(--gold);border-radius:6px;padding:7px 10px;margin:6px 0;font-size:14px}
+.okc{background:#eef7f0;border-color:#bfdcc7;margin-top:12px}.badc{background:#fdf1ef;border-color:#f0c4be;margin-top:12px}
+.chk,.chkrow{display:flex;gap:8px;align-items:flex-start;margin:8px 0;font-size:14px;cursor:pointer}.chk input,.chkrow input{margin-top:3px;accent-color:var(--gold)}
+.chkrow{padding:8px 0;border-bottom:1px solid var(--line)}
+.tl{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}.tls{flex:1;min-width:110px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px;text-align:center;font-size:13px;color:var(--mute)}
+.tls i{display:inline-flex;width:24px;height:24px;border-radius:50%;background:#e3e6ee;color:#333;align-items:center;justify-content:center;font-style:normal;margin-bottom:4px}
+.tls.done{color:var(--ink)}.tls.done i{background:#3f9a55;color:#fff}.tls.cur{border-color:var(--gold);color:var(--ink);font-weight:600}.tls.cur i{background:var(--gold);color:#fff}
+.upl{border:1.5px dashed #bdbdbd;border-radius:12px;padding:14px;margin-top:8px;font-size:13px}.upl .btn{margin-top:8px}
+.bar2{height:8px;background:#e3e6ee;border-radius:6px;overflow:hidden;margin:6px 0}.bar2 i{display:block;height:100%;background:var(--gold)}
+.evp{display:none;position:fixed;left:12px;bottom:60px;width:330px;max-width:calc(100vw - 24px);background:#0d1b2a;color:#dfe8f5;border-radius:12px;padding:10px 12px;font-size:12px;z-index:55;box-shadow:0 8px 30px rgba(0,0,0,.35);direction:ltr;text-align:left}
+body.ev-on .evp{display:block}.evp code{color:#9fb6d6}.evp .mute{color:#9fb6d6}
+.evh{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.evh button{background:none;border:1px solid #456;color:#cde;border-radius:6px;font-size:11px;padding:1px 8px;cursor:pointer}
+.evf{display:grid;grid-template-columns:1fr 1fr;gap:2px 14px}.evr{display:flex;justify-content:space-between;gap:6px}.evr span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.evk{margin:6px 0;color:#9fd0a8}.evl{border-top:1px solid #2b3f55;padding-top:6px;max-height:120px;overflow:auto}
+@media(max-width:640px){.fp{grid-template-columns:1fr}.evp{left:6px;bottom:50px}}
 </style>
 </head>
 <body>
@@ -425,10 +444,11 @@ details.more summary{cursor:pointer;font-weight:600}
  </div>
 </header>
 <main id="view"></main>
-<footer><div id="sfoot"></div><div class="wrap lightbar"><div id="foot"></div><a href="#" class="tgl-f" style="margin-inline-end:16px" onclick="go('map');return false">Соответствие карте</a><label class="tgl-f"><input type="checkbox" id="annoSw" onchange="document.body.classList.toggle('anno-on',this.checked)"> Карта CJM</label></div></footer>
+<footer><div id="sfoot"></div><div class="wrap lightbar"><div id="foot"></div><a href="#" class="tgl-f" style="margin-inline-end:16px" onclick="go('map');return false">Соответствие карте</a><label class="tgl-f"><input type="checkbox" id="annoSw" onchange="document.body.classList.toggle('anno-on',this.checked)"> Карта CJM</label><label class="tgl-f" style="margin-inline-start:16px"><input type="checkbox" onchange="document.body.classList.toggle('ev-on',this.checked);evPanel()"> События</label></div></footer>
 <div id="cookie" class="cookie"></div>
 <div class="ov" id="ov"><div class="modal" id="modal"></div></div>
 <div class="toast" id="toast"></div>
+<div class="evp" id="evp"></div>
 
 <script>
 "use strict";
@@ -999,12 +1019,6 @@ function setStatus(s){const x=item(S.bigFor);S.apps=S.apps.filter(a=>a.t!==x.id|
 
 /* ---------- вторичные экраны (на языке страны только заголовки и кнопки) ---------- */
 function sec(){return LI==="ru"?"":'<div class="small mute" style="margin:6px 0">'+T("Экран пока только на русском (концепт).")+'</div>'}
-function vServices(){
-  const L=[["Поступление: подготовка и подача заявок","Помощь с документами и сроками"],["Индивидуальный подбор","Подбор вариантов под ребёнка вместе со специалистом"],["Поступление «под ключ»","Подбор, подача, сопровождение"],["Поступление плюс виза","Пакет: как отель плюс билет"],["Сопровождение при переезде и адаптации","Жильё, школа, первые месяцы [гипотеза]"]];
-  return `<div class="wrap sub">${A("Блок 8: «Дополнительные пакеты и услуги агентства». Состав и цены не заданы; исполнители — партнёры-провайдеры [гипотеза]. Вместо цены — лист ожидания для проверки спроса.")}
-  <h1>${T("Услуги и пакеты")}</h1><p class="lead">${T("Состав и условия пока определяются. Встаньте в лист ожидания на то, что вам нужно: так мы поймём спрос.")}</p>${sec()}
-  <div class="grid g2" style="margin-top:14px">${L.map(s=>'<div class="card"><h3>'+T(s[0])+'</h3><p class="small mute">'+T(s[1])+'</p><button class="btn sm '+(S.wait.includes(s[0])?'ghost':'gold')+'" onclick="joinWait(\''+s[0]+'\')">'+(S.wait.includes(s[0])?T('В листе ожидания')+' ✓':T('Встать в лист ожидания'))+'</button></div>').join("")}</div></div>`;
-}
 function joinWait(n){if(!S.wait.includes(n)){S.wait.push(n);toast(T("Вы в листе ожидания. Напишем, когда услуга откроется."))}render()}
 function vOrient(){
   const q=[["Что ему интереснее?",["Разбираться, как всё устроено","Придумывать и рисовать","Помогать и общаться","Организовывать и вести"]],["Как он чаще всего проводит свободное время?",["Читает или смотрит видео","Играет в компьютерные игры","Занимается спортом или музыкой","С друзьями"]],["Что у него получается лучше всего?",["Математика и логика","Язык и речь","Рисунок и творчество","Работа руками"]]];
@@ -1066,23 +1080,415 @@ function vCabinet(){
   <div class="small mute">${T("В короткий список можно добавить до 4 вариантов")}</div><div class="short">${sl}</div>
   ${groups}</div>`;
 }
-function vMap(){
-  const R=[
-   ["1–2. Осознание, поиск сайта","Встречает материалы; поисковая система → портал","Главная: страна, язык и валюта подставлены; свободный запрос","docs/27"],
-   ["3. Выбор направления и ввод условий","Выбирает, что искать → форма → проверка недостающего","Вкладки направлений, панель поиска, подсветка незаполненного","Обязательность не утверждена"],
-   ["4. Подбор и выдача","Выдача, фильтры, сравнение до 4, избранное","Календарь цен, сортировка, карточки с картинкой и ценой, фильтр по цене","Данные демонстрационные"],
-   ["4. Подборка подошла?","Ответ да или нет → статистика","Вопрос с пояснением: ответ делает подбор точнее","—"],
-   ["Блоки 6–8","Плашки и баннеры","Одна плашка на экран","Блок 6: статус под вопросом"],
-   ["5. Выбор варианта","Профессия → вуз; «большая кнопка»","«Где учиться»; окно из трёх вариантов","Заявка через портал — гипотеза"],
-   ["5. Возврат","Статус; письмо по email","Вкладка сайта, статус, сердечко «Сохранённое»","docs/21"]];
-  return `<div class="wrap sub"><h1>Соответствие карте</h1><table class="map"><tr><th>Этап карты</th><th>Узлы</th><th>Экран</th><th>Статус</th></tr>${R.map(r=>'<tr>'+r.map(c=>'<td>'+esc(c)+'</td>').join("")+'</tr>').join("")}</table></div>`;
-}
 
 /* ---------- каркас ---------- */
 function openModal(h){$("#modal").innerHTML=h;$("#ov").classList.add("on")}
 function closeModal(){$("#ov").classList.remove("on","sheetov");document.getElementById("modal").classList.remove("wide","sheet")}
 $("#ov").addEventListener("click",e=>{if(e.target.id==="ov")closeModal()});
 const SCR={home:vHome,search:vSearch,results:vResults,outbound:vOutbound,returned:vReturned,services:vServices,orient:vOrient,article:vArticle,consult:vConsult,cabinet:vCabinet,compare:vCompare,map:vMap};
+/* ====================================================================
+   КОНВЕРСИЯ (слой v4.0 от 26.11.2026, доработка концепта 27.11.2026)
+   Сценарии F · A · C · O из реестра docs/cjm-ontology/v4/conversions.tsv:
+   F — бесплатный результат, A — предложение после результата по триггеру,
+   C — прямой заказ, O — официальный переход / партнёр.
+   Цены, сроки и условия возврата — демонстрационные, не утверждены [пробел].
+   ==================================================================== */
+Object.assign(S,{orders:[],ev:[],offerId:null,offerVia:null,cfg:{},cfgRes:null,ordId:null,elig:{qual:"",progs:"1",lang:"",run:false},chk:{},cD:false,cP:false,cX:false,paying:false,partnerId:null,upl:0});
+const CTAL={"Пройти короткую пробу": ["Try the short assessment", "ابدأ اختبار التوجيه القصير"], "Проверить первоисточник": ["Check the original source", "تحقق من المصدر الأصلي"], "Заказать разбор маршрута": ["Book a pathway review", "احجز مراجعة لمسارك الدراسي"], "Посмотреть пример результата": ["View a sample result", "اعرض نموذجًا للنتيجة"], "Открыть календарь сроков": ["View application deadlines", "عرض مواعيد التقديم"], "Сверить сроки у источника": ["Check dates with the provider", "تحقق من المواعيد لدى المؤسسة"], "Подключить контроль заявок": ["Activate application tracking", "فعّل تتبع طلباتك"], "Найти подходящие программы": ["Find matching programs", "اعثر على برامج مناسبة"], "Заказать проверенный список программ": ["Order a verified shortlist", "اطلب قائمة مختصرة تم التحقق منها"], "Сверить требования к поступлению": ["Check entry requirements", "تحقق من شروط القبول"], "Связаться с приёмной": ["Contact admissions", "تواصل مع مكتب القبول"], "Заказать проверку допуска": ["Order an eligibility review", "اطلب مراجعة أهلية القبول"], "Открыть список документов": ["View the application checklist", "عرض قائمة مستندات التقديم"], "Перейти к официальной подаче": ["Go to the official application", "انتقل إلى بوابة التقديم الرسمية"], "Заказать проверку комплекта": ["Order an application check", "اطلب مراجعة طلب التقديم"], "Сравнить условия офферов": ["Compare offer terms", "قارن شروط عروض القبول"], "Заказать разбор оффера": ["Order an offer review", "اطلب مراجعة عرض القبول"], "Рассчитать бюджет": ["Estimate study costs", "احسب تكاليف الدراسة"], "Открыть официальный калькулятор": ["Open the official cost calculator", "افتح حاسبة التكاليف الرسمية"], "Посмотреть официальные правила": ["View official visa rules", "اطّلع على قواعد التأشيرة الرسمية"], "Открыть миграционный портал": ["Open the official immigration portal", "افتح بوابة الهجرة الرسمية"], "Перейти к уполномоченному специалисту": ["Go to an authorized adviser", "انتقل إلى مستشار معتمد"], "Посмотреть критерии проверки": ["View the review criteria", "اطّلع على معايير المراجعة"], "Заказать разбор работы": ["Order feedback on your draft", "اطلب ملاحظات على مسودتك"], "Открыть требования фонда": ["View the funder’s requirements", "عرض متطلبات الجهة المانحة"], "Открыть сайт фонда": ["Open the funder’s website", "افتح موقع الجهة المانحة"], "Заказать проверку заявки на грант": ["Order a scholarship application review", "اطلب مراجعة طلب المنحة"], "Уточнить требования к документу": ["Check document requirements", "تحقق من متطلبات المستند"], "Открыть список уполномоченных поставщиков": ["See authorized providers", "عرض مقدمي الخدمات المعتمدين"], "Перейти к заказу у поставщика": ["Go to provider checkout", "انتقل إلى الطلب لدى مقدم الخدمة"]};
+function X(ru,en,ar){const r=DICTM[ru];if(!r)DICTM[ru]=[ru,en||"","","",ar||""];else{if(en&&!r[1])r[1]=en;if(ar&&!r[4])r[4]=ar}return T(ru)}
+function XC(ru){const c=CTAL[ru];if(c&&!DICTM[ru])DICTM[ru]=[ru,c[0],"","",c[1]];return T(ru)}
+function secC(){return (LI==="ru"||LI==="en")?"":'<div class="small mute" style="margin:6px 0">'+T("Экран переведён частично: кнопки по реестру v4, остальное на русском (концепт).")+'</div>'}
+const EVN={free_result_rendered:"Бесплатный результат показан",qualified_offer_opened:"Предложение открыто по триггеру",official_handoff_clicked:"Переход к официальному источнику",checkout_started:"Начато оформление",payment_confirmed:"Оплата подтверждена",partner_handoff_clicked:"Переход к партнёру",partner_order_confirmed:"Партнёр подтвердил заказ",fulfilment_delivered:"Результат выдан",fulfilment_accepted:"Результат принят",order_refunded:"Возврат оформлен"};
+const EVONCE={};
+function ev(n,p){S.ev.push({n:n,p:p||"",t:new Date().toLocaleTimeString("ru-RU")});evPanel()}
+function ev1(n,key,p){const k=n+"|"+key;if(EVONCE[k])return;EVONCE[k]=1;ev(n,p)}
+function evPanel(){
+  const el=$("#evp");if(!el)return;const c={};S.ev.forEach(e=>c[e.n]=(c[e.n]||0)+1);
+  const pc=(a,b)=>c[b]?Math.round(100*(c[a]||0)/c[b])+"%":"—";
+  el.innerHTML='<div class="evh"><b>События измерения (v4)</b><button onclick="S.ev=[];evPanel()">очистить</button></div>'
+   +'<div class="evf">'+Object.keys(EVN).map(k=>'<div class="evr"><span title="'+EVN[k]+'">'+k+'</span><b>'+(c[k]||0)+'</b></div>').join("")+'</div>'
+   +'<div class="evk">предложение → оформление: '+pc("checkout_started","qualified_offer_opened")+' · оформление → оплата: '+pc("payment_confirmed","checkout_started")+' · оплата → принято: '+pc("fulfilment_accepted","payment_confirmed")+'</div>'
+   +'<div class="evl">'+S.ev.slice(-7).reverse().map(e=>'<div><code>'+e.t+'</code> '+e.n+(e.p?' <span class="mute">'+esc(e.p)+'</span>':'')+'</div>').join("")+'</div>';
+}
+const AEV=(code,el,evn,extra)=>A("Слой v4: <b>"+code+"</b> · элемент <b>"+el+"</b> · событие <code>"+evn+"</code>."+(extra?" "+extra:""));
+
+/* ---------- предложения: MainExperts (me) и партнёр (pt) ---------- */
+const BADCFG=0;
+const OFR={
+ r06:{pid:"P01",code:"R06",pay:"me",usd:60,route:"C-P01-A · E20",
+  n:"Расширенный разбор маршрута",sub:"Профиль 360: отчёт и экспертная сессия",
+  nen:"Extended pathway review",
+  free:"Короткая проба и две возможные развилки",paid:"Отчёт о маршрутах, основаниях выбора и следующих шагах",
+  scope:["Анкета и короткая проба","Одна экспертная сессия","Письменный отчёт с основаниями и альтернативами"],
+  sla:"5 рабочих дней",ref:"Полный возврат, если отчёт не выдан в срок или услуга не подошла по проверке",
+  alt:"Самооценка, школьный консультант, открытые тесты",trig:"Неясны приоритеты или нужен выбор между несопоставимыми маршрутами",
+  risk:"Ориентир по образовательным маршрутам, не психологический диагноз; данные несовершеннолетних собираются минимально",
+  ex:["Маршрут А (ближе всего к профилю): программа с уклоном в дизайн, вход через портфолио.","Маршрут Б: инженерное направление; нужен усиленный профильный предмет.","Основание: интересы и навыки из анкеты; допущения и неизвестные перечислены в конце отчёта."],
+  up:"Анкета и результаты скрининга подставлены; проверьте ответы",
+  cfg:[{k:"age",l:"Возраст ученика",o:[["10–12"],["13–15"],["16–18"],["Старше 18",0,"Сервис рассчитан на возраст 10–18 лет"]]},{k:"scr",l:"Бесплатный скрининг пройден",o:[["Да"],["Нет",0,"Сначала пройдите бесплатный скрининг: разбор строится на его результате","orient"]]}]},
+ r03:{pid:"P06",code:"R03",pay:"me",usd:90,route:"C-P06-A · E20",
+  n:"Проверенный список программ",sub:"Короткий список с основаниями и исключениями",
+  nen:"Verified shortlist",
+  free:"Открытая выдача и список ограничений",paid:"Короткий список из 3 вариантов с проверкой сложных ограничений и объяснением, что исключено и почему",
+  scope:["До 4 вариантов из вашего списка","Проверка сроков, допуска и бюджета","Письменное объяснение компромиссов"],
+  sla:"3 рабочих дня",ref:"Полный возврат, если список не выдан в срок",
+  alt:"Фильтры и сравнение на портале, официальные каталоги, приёмные комиссии",trig:"В списке три и более варианта, нужна проверка сложных ограничений",
+  risk:"Платный подбор — это пилот ограниченного каталога; самостоятельный платный подбор требует собственного доказательства спроса",
+  ex:["Оставлено 3 из 4: исключён вариант Б — срок подачи истекает раньше срока ваших документов.","Компромисс: вариант А дешевле на 18 %, но требует доказательства уровня языка."],
+  up:"Список вариантов подставлен из сохранённого",
+  cfg:[{k:"dir",l:"Направление",o:[["Вузы"],["Колледжи"],["Короткие программы"],["Профессии",0,"Платный подбор по профессиям не предлагаем: на портале он бесплатный через переход «Где учиться»"]]},{k:"cnt",l:"Сколько вариантов в списке",o:[["2"],["3"],["4"],["Больше 4",0,"Сначала сократите список до четырёх: на портале сравнение идёт до четырёх вариантов"]]}]},
+ r02:{pid:"P09",code:"R02",pay:"me",usd:80,route:"C-P09-A · E20",
+  n:"Проверка допуска по профилю",sub:"Статус по каждому требованию и варианты устранения пробелов",
+  nen:"Eligibility review",
+  free:"Сверка прозрачных требований и перечень неизвестных",paid:"Обоснованный статус по каждому требованию, перечень неопределённостей и допустимые альтернативы",
+  scope:["До 2 программ","Ссылка на источник и дату у каждого вывода","Спорные правила проверяет эксперт; при необходимости запрос вузу"],
+  sla:"3 рабочих дня",ref:"Полный возврат, если проверка не выдана в срок",
+  alt:"Приёмная комиссия вуза, официальный фильтр требований",trig:"Иностранная квалификация, пограничный результат или несколько программ",
+  risk:"Решение о допуске принимает вуз: мы даём статусы и основания, не обещаем приём",
+  ex:["Требование: язык обучения B2. Статус: требует подтверждения. Основание: правила приёма, раздел 4, сверено 03.11.2026.","Что сделать: сертификат принимается, если выдан не ранее чем за 24 месяца; запрос в приёмную подготовлен."],
+  up:"Документы об образовании и результаты экзаменов",
+  cfg:[{k:"q",l:"Квалификация",o:[["Аттестат страны"],["Международная (IB, A-level)"],["Иностранный аттестат или диплом"],["Другая",0,"Другие типы квалификации в пилот не входят"]]},{k:"n",l:"Программ для проверки",o:[["1"],["2"],["Больше 2",0,"Пилот ограничен двумя программами: разделите проверку на две"]]}]},
+ r01:{pid:"P11",code:"R01",pay:"me",usd:70,route:"C-P11-A · E20",
+  n:"Проверка комплекта заявки",sub:"Замечания и приоритеты исправления перед подачей",
+  nen:"Application check",
+  free:"Актуальный список документов, шаблоны и сроки",paid:"Комплект замечаний и приоритеты исправления по одной версии заявки",
+  scope:["Один вуз и один комплект","Проверка форматов, полноты и противоречий","Размеченный комплект и список правок"],
+  sla:"3 рабочих дня",ref:"Полный возврат, если проверка не выдана в срок",
+  alt:"Инструкция вуза, школьный консультант, приёмная",trig:"Неясны комплектность, форматы, противоречия и сроки",
+  risk:"Пропущенный дефект и утечка документов: загрузка отдельным экраном, доступ ограничен, срок хранения задан",
+  ex:["Комплект: 7 из 9 документов в порядке.","Замечание 1 (срочно): дата рождения в копии паспорта и в анкете записана в разных форматах.","Замечание 2: перевод диплома без заверения; требование вуза — раздел 3."],
+  up:"Комплект документов (PDF, DOCX)",
+  cfg:[{k:"set",l:"Комплект",o:[["Один вуз"],["Несколько вузов",0,"Пилот проверяет один комплект: выберите один вуз"]]},{k:"lang",l:"Язык документов",o:[["Русский"],["Английский"],["Другой",0,"Другой язык документов в пилот не входит"]]},{k:"term",l:"Срок до подачи",o:[["Больше 2 недель"],["1–2 недели"],["Меньше 5 дней",0,"Проверка занимает 3 рабочих дня; к вашему сроку не гарантируем"]]}]},
+ r04:{pid:"P23",code:"R04",pay:"me",usd:50,route:"C-P23-C · E20",
+  n:"Разбор эссе или мотивационного письма",sub:"Один раунд обратной связи с размеченным текстом",
+  nen:"Essay feedback",
+  free:"Критерии и обезличенный пример обратной связи",paid:"Размеченный авторский документ и список приоритетных исправлений",
+  scope:["Один текст до 650 слов","Один раунд проверки","Авторство остаётся за вами: текст не переписываем"],
+  sla:"3 рабочих дня",ref:"Полный возврат, если разбор не выдан в срок или не подошёл по проверке",
+  alt:"Рубрики и образцы, школьный преподаватель, публичные примеры",trig:"Нужна оценка собственного текста перед подачей",
+  risk:"Авторство и академическая честность: мы размечаем, а не пишем текст; конфиденциальность черновика",
+  ex:["Абзац 2: тезис появляется только в конце. Вынесите его в первое предложение. Приоритет 1 из 5.","Абзац 4: пример без результата. Добавьте, что изменилось после вашего действия."],
+  up:"Текст (DOCX, PDF) до 650 слов",
+  cfg:[{k:"mat",l:"Вид материала",o:[["Эссе"],["Мотивационное письмо"],["Портфолио",0,"Портфолио в пилоте не проверяем: нужен профильный эксперт"]]},{k:"lang",l:"Язык",o:[["Английский"],["Русский"],["Другой",0,"Другой язык в пилот не входит"]]},{k:"term",l:"Срок до подачи",o:[["Больше 2 недель"],["1–2 недели"],["Меньше 5 дней",0,"Проверка занимает 3 рабочих дня; к вашему сроку не гарантируем"]]}]},
+ p25:{pid:"P25",code:"партнёр",pay:"pt",usd:40,route:"C-P25-O · E03",
+  n:"Перевод, заверение и доставка документов",sub:"Исполняет и принимает оплату партнёр",
+  nen:"Translation, certification and delivery",
+  free:"Источники о допустимом переводе, заверении и доставке",paid:"Перевод и заверение документа проверенным поставщиком",
+  spec:"Присяжный и заверенный перевод документов об образовании",auth:"Полномочие подтверждается партнёром; перед передачей данных проверяется [пробел: порядок проверки не задан]",
+  term:"Срок задаёт партнёр; зависит от получателя документа",claims:"Оплату и претензии принимает партнёр; MainExperts фиксирует переход и подтверждённый заказ",
+  need:"Назначение, форма, язык и получатель документа",
+  alt:"Официальный перечень уполномоченных переводчиков получателя документа"},
+ p16:{pid:"P16",code:"партнёр",pay:"pt",usd:0,route:"C-P16-O · E03",
+  n:"Визовое и миграционное сопровождение",sub:"Только уполномоченный представитель на проверенных рынках",
+  nen:"Visa and immigration support",
+  free:"Общие применимые источники и этапы",paid:"Индивидуальный совет или представительство уполномоченным специалистом",
+  spec:"Миграционный консультант или адвокат с правом представительства",auth:"Только лица с полномочием в стране назначения; MainExperts сам визовые советы не даёт",
+  term:"Срок задаёт партнёр",claims:"Договор, оплата и претензии — у партнёра; визовый сбор оплачивается государству отдельно",
+  need:"Страна назначения, цель, гражданство, срок",
+  alt:"Официальный миграционный портал страны назначения",off:"Открыть официальный миграционный портал"}
+};
+const OFR_PILOT=["r06","r03","r02","r01","r04"];
+function payTag(o){return o.pay==="me"?'<span class="tag open2">'+X("Оплата: MainExperts","Paid to MainExperts")+'</span>':'<span class="tag pt">'+X("Оплата: партнёру","Paid to a partner")+'</span>'}
+function demoTag(){return '<span class="tag demo">'+X("демо-цена, не утверждена","demo price, not approved")+'</span>'}
+function offN(o){return LI==="en"&&o.nen?o.nen:T(o.n)}
+function offerCard(id,via){
+  const o=OFR[id];
+  const free=o.free,paid=o.paid;
+  const open=o.pay==="me"?"openOffer('"+id+"','"+(via||"C")+"')":"partnerModal('"+id+"')";
+  const cta=o.pay==="me"?(id==="r06"?XC("Заказать разбор маршрута"):id==="r03"?XC("Заказать проверенный список программ"):id==="r02"?XC("Заказать проверку допуска"):id==="r01"?XC("Заказать проверку комплекта"):XC("Заказать разбор работы")):(id==="p16"?XC("Перейти к уполномоченному специалисту"):XC("Открыть список уполномоченных поставщиков"));
+  return '<div class="card ofc"><div class="row" style="gap:6px;margin-bottom:6px">'+payTag(o)+(o.code!=="партнёр"?'<span class="pill">'+o.code+'</span>':'')+'</div>'
+   +'<h3>'+esc(offN(o))+'</h3><p class="small mute">'+T(o.sub)+'</p>'
+   +'<div class="fp"><div><b>'+X("Бесплатно","Free")+'</b><div class="small">'+T(free)+'</div></div><div><b>'+X("Платно","Paid")+'</b><div class="small">'+T(paid)+'</div></div></div>'
+   +(o.pay==="me"?'<div class="price" style="margin:8px 0 2px">'+money(o.usd)+'</div><div class="small mute">'+demoTag()+' · '+X("срок","turnaround")+': '+T(o.sla)+'</div>':'<div class="small mute" style="margin:8px 0">'+X("Цену и оплату определяет партнёр","Price and payment are set by the partner")+'</div>')
+   +'<button class="btn gold sm" style="margin-top:8px" onclick="'+open+'">'+cta+'</button></div>';
+}
+function openOffer(id,via){
+  S.offerId=id;S.offerVia=via||"C";S.cfg={};S.cfgRes=null;closeModal();
+  if(S.offerVia==="A")ev("qualified_offer_opened",OFR[id].pid+" · "+OFR[id].code);
+  go("offer");
+}
+/* триггерная карточка предложения (маршрут A): одна на экран, закрытая не возвращается */
+function trigCard(id,why){
+  const k="trg_"+id;if(S.plashOff[k])return"";
+  const o=OFR[id];
+  return '<div class="plash" style="margin:14px 0"><div class="t"><b>'+T(why[0])+'</b><div class="small mute">'+T(why[1])+'</div><div class="small" style="margin-top:4px">'+offN(o)+' · '+(o.pay==="me"?money(o.usd)+' '+demoTag():X("цену задаёт партнёр","partner sets the price"))+'</div></div>'
+   +'<button class="btn gold sm" onclick="'+(o.pay==="me"?"openOffer('"+id+"','A')":"partnerModal('"+id+"')")+'">'+T(why[2])+'</button>'
+   +'<button class="x" title="'+esc(T("Закрыть: в этой сессии не покажем"))+'" onclick="S.plashOff[\''+k+'\']=true;render()">×</button></div>';
+}
+function vOffer(){
+  const o=OFR[S.offerId];if(!o){return '<div class="wrap sub"><h1>'+X("Услуга не выбрана","No service selected")+'</h1></div>'}
+  const sel=o.cfg||[];
+  const cr=S.cfgRes;
+  const cfgHtml=sel.map(f=>'<div class="field"><label>'+T(f.l)+'</label><div class="opts">'+f.o.map(v=>'<button class="opt '+(S.cfg[f.k]===v[0]?'on':'')+'" onclick="S.cfg[\''+f.k+'\']=\''+v[0]+'\';S.cfgRes=null;render()">'+T(v[0])+'</button>').join("")+'</div></div>').join("");
+  let res="";
+  if(cr&&cr.ok)res='<div class="card okc"><b>'+X("Подходит.","Suitable.")+'</b> '+X("Объём и срок подтверждены до оплаты.","Scope and turnaround are confirmed before payment.")+'<div class="price" style="margin:6px 0">'+money(o.usd)+'</div><div class="small mute">'+X("Полная цена, без скрытых сборов. Внешних сборов нет.","Full price, no hidden fees. No external fees.")+'</div><button class="btn gold" style="margin-top:8px" onclick="startCheckout(\''+S.offerId+'\')">'+X("Перейти к оформлению","Continue to checkout")+'</button></div>';
+  else if(cr&&!cr.ok)res='<div class="card badc"><b>'+X("Не подходит для этой услуги.","Not suitable for this service.")+'</b> '+T(cr.why)+'<div class="small" style="margin-top:6px"><b>'+X("Бесплатно вместо этого:","Free instead:")+'</b> '+T(o.alt)+'</div>'+(cr.go?'<button class="btn ghost sm" style="margin-top:8px" onclick="go(\''+cr.go+'\')">'+X("Пройти бесплатный скрининг","Take the free screening")+'</button>':'')+'<button class="btn ghost sm" style="margin-top:8px" onclick="joinWait(\''+esc(o.n)+'\')">'+X("Сообщить, когда расширим","Notify me when we expand")+'</button></div>';
+  return `<div class="wrap sub">${AEV(o.route.split(" · ")[0]+" (предложение "+(S.offerVia==="A"?"A, по триггеру":"C, прямой заказ")+")","E20 карточка услуги · E21 конфигуратор · E27 пример результата","qualified_offer_opened → checkout_started","Цена и условия видны до оплаты, проверка пригодности — до оплаты (docs/cjm-ontology/v4).")}
+  <div class="crumb small"><a style="color:#0062e3;cursor:pointer" onclick="go('services')">${X("Услуги","Services")}</a> / ${esc(offN(o))}</div>
+  <div class="sttl"><h1>${esc(offN(o))}</h1><div class="row" style="gap:6px">${payTag(o)}<span class="tag hyp">${X("гипотеза: покупки не проверены","hypothesis: purchases not tested")}</span></div></div>
+  <p class="lead">${T(o.sub)}</p>${secC()}
+  <div class="grid g2" style="margin-top:12px">
+   <div class="card"><h3>${X("Что бесплатно","What is free")}</h3><p>${T(o.free)}</p><div class="small mute"><b>${X("Бесплатные альтернативы вне портала:","Free alternatives elsewhere:")}</b> ${T(o.alt)}</div>
+    <div class="small" style="margin-top:8px"><b>${X("Когда платное имеет смысл:","When the paid one makes sense:")}</b> ${T(o.trig)}</div></div>
+   <div class="card"><h3>${X("Что даёт платный результат","What the paid result gives")}</h3><p>${T(o.paid)}</p>
+    <ul class="small" style="margin:6px 0 8px 18px">${o.scope.map(s=>'<li>'+T(s)+'</li>').join("")}</ul>
+    <div class="price-b"><div><div class="price">${money(o.usd)}</div>${demoTag()}</div><div class="small"><div><b>${X("Срок","Turnaround")}:</b> ${T(o.sla)}</div><div><b>${X("Возврат","Refund")}:</b> ${T(o.ref)}</div><div><b>${X("Продавец","Seller")}:</b> MainExperts</div></div></div></div>
+  </div>
+  <div class="card" style="margin-top:14px"><h3>${X("Пример результата","Sample result")} <span class="tag demo">${X("обезличенный, синтетический","anonymised, synthetic")}</span></h3>
+   ${o.ex.map(s=>'<div class="exl">'+T(s)+'</div>').join("")}
+   <div class="small mute" style="margin-top:6px">${X("Риск и граница:","Risk and boundary:")} ${T(o.risk)}</div></div>
+  <div class="card" style="margin-top:14px"><h3>${X("Проверим, подходит ли вам","Check if it fits you")}</h3><p class="small mute">${X("До оплаты. Если не подходит, покажем бесплатный путь и ничего не спишем.","Before payment. If it does not fit we show the free route and charge nothing.")}</p>
+   ${cfgHtml}<button class="btn gold" onclick="runCfg()">${X("Проверить пригодность","Check suitability")}</button>${res}</div></div>`;
+}
+function runCfg(){
+  const o=OFR[S.offerId];
+  for(const f of o.cfg){if(!S.cfg[f.k]){toast(T("Ответьте на все вопросы: ")+T(f.l));return}}
+  for(const f of o.cfg){const v=f.o.find(x=>x[0]===S.cfg[f.k]);if(v&&v[1]===0){S.cfgRes={ok:false,why:v[2],go:v[3]||null};render();return}}
+  S.cfgRes={ok:true};render();
+}
+function startCheckout(id){S.offerId=id;S.cD=false;S.cP=false;S.cX=false;S.paying=false;ev("checkout_started",OFR[id].pid+" · "+OFR[id].code);go("checkout")}
+function vCheckout(){
+  const o=OFR[S.offerId];
+  return `<div class="wrap sub">${AEV("Оформление","E22 платёжная форма","checkout_started → payment_confirmed","Заказ создаётся один раз (ключ идемпотентности); оплата подтверждается сервером, а не нажатием кнопки.")}
+  <div class="crumb small"><a style="color:#0062e3;cursor:pointer" onclick="go('offer')">${esc(offN(o))}</a> / ${X("Оформление","Checkout")}</div>
+  <h1>${X("Оформление заказа","Checkout")}</h1>${secC()}
+  <div class="grid g2"><div class="card"><h3>${X("Ваш заказ","Your order")}</h3>
+   <table class="map" style="width:100%"><tr><td>${X("Услуга","Service")}</td><td>${esc(offN(o))}</td></tr>
+   <tr><td>${X("Продавец","Seller")}</td><td>MainExperts</td></tr>
+   <tr><td>${X("Параметры","Details")}</td><td>${Object.keys(S.cfg).map(k=>esc(T(S.cfg[k]))).join(" · ")||"—"}</td></tr>
+   <tr><td>${X("Срок","Turnaround")}</td><td>${T(o.sla)}</td></tr>
+   <tr><td>${X("Возврат","Refund")}</td><td>${T(o.ref)}</td></tr>
+   <tr><td>${X("Внешние сборы","External fees")}</td><td>${X("нет","none")}</td></tr>
+   <tr><td><b>${X("Итого","Total")}</b></td><td><b class="price">${money(o.usd)}</b> ${demoTag()}</td></tr></table></div>
+  <div class="card"><h3>${X("Оплата","Payment")}</h3>
+   <div class="field"><label>${X("Карта (имитация)","Card (mock-up)")}</label><input type="text" value="•••• •••• •••• 4242" disabled></div>
+   <label class="chk"><input type="checkbox" ${S.cD?'checked':''} onchange="S.cD=this.checked;render()"> ${X("Согласие на обработку данных, нужных для исполнения заказа","Consent to process the data needed to fulfil the order")}</label>
+   <label class="chk"><input type="checkbox" ${S.cP?'checked':''} onchange="S.cP=this.checked;render()"> ${X("Я родитель или законный представитель ученика младше 18 лет","I am the parent or legal guardian of a student under 18")}</label>
+   <label class="chk"><input type="checkbox" ${S.cX?'checked':''} onchange="S.cX=this.checked;render()"> ${X("Я понимаю: результат — ориентир, решение принимает учебное заведение","I understand the result is guidance; the institution makes the decision")}</label>
+   <button class="btn gold" style="margin-top:10px" ${(S.cD&&S.cP&&S.cX)?'':'disabled'} onclick="payNow()">${X("Оплатить","Pay")} ${money(o.usd)}</button>
+   <div class="small mute" style="margin-top:8px">${X("Повторное нажатие не создаёт второй заказ. Платёж сверяется с подписанным событием провайдера.","A second click does not create a second order. The payment is matched to a signed provider event.")}</div></div></div></div>`;
+}
+function payNow(){if(S.paying)return;needAuth("order",doPay)}
+function doPay(){
+  if(S.paying)return;S.paying=true;const o=OFR[S.offerId];
+  const id="M-"+(1001+S.orders.length);
+  S.orders.push({id:id,o:S.offerId,st:0,partner:false,usd:o.usd,cur:curCode(),cfg:Object.assign({},S.cfg),file:false});
+  ev("payment_confirmed",id+" · "+money(o.usd));S.ordId=id;toast(T("Оплата подтверждена. Заказ создан."));go("order");
+}
+const OST=["Оплачен","Материалы приняты","В работе","Результат готов","Принят"];
+function ordGet(){return S.orders.find(x=>x.id===S.ordId)}
+function vOrder(){
+  const r=ordGet();if(!r)return '<div class="wrap sub"><h1>'+X("Заказ не найден","Order not found")+'</h1></div>';
+  const o=OFR[r.o];
+  if(r.partner)return vOrderPt(r,o);
+  const refunded=r.st===-1;
+  const tl='<div class="tl">'+OST.map((s,i)=>'<div class="tls '+(refunded?'':(i<r.st?'done':i===r.st?'cur':''))+'"><i>'+(i<r.st&&!refunded?'✓':i+1)+'</i><span>'+X(s,{"Оплачен":"Paid","Материалы приняты":"Materials received","В работе":"In progress","Результат готов":"Result ready","Принят":"Accepted"}[s])+'</span></div>').join("")+'</div>';
+  let body="";
+  if(refunded)body='<div class="card badc"><b>'+X("Возврат оформлен.","Refund issued.")+'</b> '+X("Сумма вернётся на карту; заказ закрыт.","The amount returns to your card; the order is closed.")+'</div>';
+  else if(r.st===0)body='<div class="card"><h3>'+X("Загрузите материалы","Upload your materials")+'</h3><p class="small mute">'+T(o.up)+'</p>'
+    +'<div class="upl"><div>'+X("Допустимо: PDF, DOCX; до 10 МБ. Файл хранится 30 дней и затем удаляется; доступ только у проверяющего эксперта. Значения демонстрационные.","Allowed: PDF, DOCX; up to 10 MB. Stored 30 days then deleted; only the reviewing expert has access. Demo values.")+'</div>'
+    +(S.upl?'<div class="bar2"><i style="width:'+Math.min(100,S.upl)+'%"></i></div>':'')
+    +'<button class="btn gold sm" onclick="doUpload()">'+(S.upl&&S.upl<100?X("Загружаем…","Uploading…"):X("Выбрать файл и загрузить (имитация)","Choose file and upload (mock-up)"))+'</button></div></div>';
+  else if(r.st===3)body='<div class="card okc"><h3>'+X("Результат готов","Result ready")+'</h3>'+o.ex.map(s=>'<div class="exl">'+T(s)+'</div>').join("")+'<div class="small mute" style="margin:6px 0">'+X("Здесь показан пример; в продукте — размеченный файл и список правок.","This is a sample; the product delivers a marked-up file and a list of fixes.")+'</div>'
+    +'<div class="row"><button class="btn gold" onclick="acceptOrder()">'+X("Принять результат","Accept the result")+'</button><button class="btn ghost" onclick="refundOrder()">'+X("Запросить возврат","Request a refund")+'</button></div></div>';
+  else if(r.st===4)body='<div class="card okc"><b>'+X("Результат принят.","Result accepted.")+'</b> '+X("Заказ закрыт. Следующий шаг по карте: подача заявки.","Order closed. Next step: submit the application.")+'<div class="row" style="margin-top:8px"><button class="btn ghost sm" onclick="go(\'check\')">'+X("Открыть список документов","Open the document checklist")+'</button></div></div>';
+  else body='<div class="card"><b>'+X("Заказ в работе.","Order in progress.")+'</b> '+X("Автоматические проверки выполнены; случай у эксперта. Срок:","Automatic checks done; the case is with an expert. Turnaround:")+' '+T(o.sla)+'.</div>';
+  return `<div class="wrap sub">${AEV("Исполнение заказа","E23 личный кабинет · E12 загрузка · E24 прогресс","fulfilment_delivered → fulfilment_accepted | order_refunded","Статусы оплаты и исполнения раздельны.")}
+  <div class="crumb small"><a style="color:#0062e3;cursor:pointer" onclick="go('cabinet')">${X("Сохранённое","Saved")}</a> / ${X("Заказ","Order")} ${r.id}</div>
+  <div class="sttl"><h1>${esc(offN(o))}</h1><span class="pill">${r.id}</span></div>${secC()}${tl}${body}
+  ${(!refunded&&r.st<4)?'<div class="row" style="margin-top:10px"><button class="btn ghost sm" onclick="advOrder()">'+X("Демо: перейти к следующему статусу","Demo: advance to next status")+'</button>'+(r.st<3?'<button class="btn ghost sm" onclick="refundOrder()">'+X("Отменить и вернуть деньги","Cancel and refund")+'</button>':'')+'</div>':''}</div>`;
+}
+function vOrderPt(r,o){
+  return `<div class="wrap sub">${AEV("Партнёрский заказ","E03 внешняя ссылка · E17 каталог","partner_handoff_clicked → partner_order_confirmed","Клик по ссылке — не покупка: заказ считается после подтверждённого идентификатора от партнёра.")}
+  <div class="crumb small"><a style="color:#0062e3;cursor:pointer" onclick="go('cabinet')">${X("Сохранённое","Saved")}</a> / ${r.id}</div>
+  <h1>${esc(offN(o))}</h1>${secC()}
+  <div class="card ${r.st>=1?'okc':''}"><b>${r.st>=1?X("Партнёр подтвердил заказ.","The partner confirmed the order."):X("Вы перешли к партнёру. Заказ пока не подтверждён.","You were handed over to the partner. The order is not confirmed yet.")}</b>
+   <p class="small mute">${T(o.claims)}</p>
+   ${r.st<1?'<button class="btn ghost sm" onclick="ptConfirm()">'+X("Демо: партнёр прислал номер заказа","Demo: partner sent the order number")+'</button>':'<div class="small">ID у партнёра: PRT-'+r.id.slice(2)+'</div>'}</div></div>`;
+}
+function doUpload(){
+  const r=ordGet();if(S.upl&&S.upl<100)return;S.upl=1;
+  const t=setInterval(()=>{S.upl+=33;if(S.upl>=100){S.upl=100;clearInterval(t);r.st=1;r.file=true;S.upl=0;if(S.screen==="order")render()}else if(S.screen==="order")render()},350);render();
+}
+function advOrder(){const r=ordGet();if(r.st>=3)return;r.st++;if(r.st===3)ev("fulfilment_delivered",r.id);render()}
+function acceptOrder(){const r=ordGet();r.st=4;ev("fulfilment_accepted",r.id);toast(T("Результат принят."));render()}
+function refundOrder(){const r=ordGet();r.st=-1;ev("order_refunded",r.id+" · полный");toast(T("Возврат оформлен."));render()}
+function ptConfirm(){const r=ordGet();r.st=1;ev("partner_order_confirmed",r.id);render()}
+
+/* ---------- партнёр и официальный переход (маршрут O) ---------- */
+function partnerModal(id){
+  const o=OFR[id];S.partnerId=id;S.cX=false;
+  const off=o.off?'<div class="opt-card" onclick="officialModal(\''+id+'\')"><div class="t"><b>'+XC("Посмотреть официальные правила")+'</b><div class="small mute">'+T(o.alt)+'. '+X("Бесплатно; сбор государства оплачивается ему напрямую.","Free; the state fee is paid to the state directly.")+'</div></div></div>':'';
+  openModal('<h2>'+esc(offN(o))+'</h2><p class="mute small">'+T(o.sub)+'</p>'
+   +'<div class="card" style="margin-bottom:10px"><table class="map" style="width:100%"><tr><td>'+X("Специализация","Specialisation")+'</td><td>'+T(o.spec)+'</td></tr>'
+   +'<tr><td>'+X("Полномочия","Authority")+'</td><td>'+T(o.auth)+'</td></tr><tr><td>'+X("Срок","Turnaround")+'</td><td>'+T(o.term)+'</td></tr>'
+   +'<tr><td>'+X("Кто принимает деньги и претензии","Who takes payment and claims")+'</td><td>'+T(o.claims)+'</td></tr><tr><td>'+X("Что передадим партнёру","What we pass on")+'</td><td>'+T(o.need)+'</td></tr></table>'
+   +'<div class="small mute" style="margin-top:6px">'+X("Партнёр в концепте условный: названий и цен нет.","The partner is a placeholder: no names or prices.")+'</div></div>'
+   +'<label class="chk"><input type="checkbox" onchange="S.cX=this.checked;document.getElementById(\'ptgo\').disabled=!this.checked"> '+X("Согласен передать партнёру перечисленные данные","I agree to pass the listed data to the partner")+'</label>'
+   +off
+   +'<div class="row" style="margin-top:8px"><button class="btn gold" id="ptgo" disabled onclick="ptGo()">'+XC("Перейти к заказу у поставщика")+'</button><button class="btn ghost" onclick="closeModal()">'+T("Закрыть")+'</button></div>'
+   +A("Слой v4: <b>"+o.route+"</b> · событие <code>partner_handoff_clicked</code>; затем <code>partner_order_confirmed</code> только по подтверждению партнёра."));
+}
+function ptGo(){
+  const o=OFR[S.partnerId];const id="P-"+(1001+S.orders.length);
+  S.orders.push({id:id,o:S.partnerId,st:0,partner:true,usd:0,cur:curCode(),cfg:{}});
+  ev("partner_handoff_clicked",o.pid+" · "+id);closeModal();S.ordId=id;go("order");
+}
+function officialModal(id){
+  const o=id&&OFR[id]?OFR[id]:null;
+  openModal('<h2>'+X("Официальный источник","Official source")+'</h2><p class="small mute">'+X("Вы выходите на сайт уполномоченного органа или оператора. Его сбор оплачивается ему напрямую и не входит в оплату MainExperts.","You leave for the website of the authorised body or operator. Its fee is paid to it directly and is not part of any MainExperts payment.")+'</p>'
+   +'<div class="card" style="background:#f4f4f4"><div class="small mute">'+X("Имитация внешнего сайта: подтверждённый адрес, получатель, дата сверки","Mock external site: verified address, recipient, date checked")+' · 03.11.2026</div></div>'
+   +'<div class="row" style="margin-top:10px"><button class="btn gold" onclick="ev(\'official_handoff_clicked\',\''+(o?o.pid:'P09')+'\');closeModal();toast(T(\'Переход зафиксирован. Сбор оператора — отдельно.\'))">'+X("Открыть (имитация)","Open (mock-up)")+'</button><button class="btn ghost" onclick="closeModal()">'+T("Закрыть")+'</button></div>'
+   +A("Слой v4: маршрут <b>O</b> · событие <code>official_handoff_clicked</code>; успешность внешнего контакта измеряется отдельно."));
+}
+
+/* ---------- бесплатная сверка допуска (E11, маршрут F → A) ---------- */
+const QUALS=["Аттестат страны","Международная (IB, A-level)","Иностранный аттестат или диплом"];
+function eligRows(){
+  const e=S.elig,rows=[];const src="Правила приёма 2026/27 · сверено 03.11.2026";
+  const dom=e.qual===QUALS[0],intl=e.qual===QUALS[1],fr=e.qual===QUALS[2];
+  rows.push(["Минимальный средний балл",fr?"требует подтверждения":"выполнено",fr?"Шкала оценок иностранная: нужен пересчёт":"Требование определено",src]);
+  rows.push(["Профильные предметы",fr?"неизвестно":"выполнено",fr?"Нужен перечень изученных предметов":"Совпадает с требованием набора",src]);
+  const l=e.lang;rows.push(["Язык обучения (уровень B2)",l==="B2 и выше"?"выполнено":l==="Ниже B2"?"не выполнено":"неизвестно",l==="Ниже B2"?"Есть альтернатива: подготовительный курс (справка приёмной)":l==="B2 и выше"?"Сертификат принимается":"Уровень не указан",src]);
+  rows.push(["Признание документа об образовании",dom?"не требуется":intl?"выполнено":"требует подтверждения",dom?"Документ национальный":intl?"Признаётся напрямую":"Нужна оценка квалификации оператором",src]);
+  return rows;
+}
+function vElig(){
+  const e=S.elig;const x=S.bigFor?item(S.bigFor):null;
+  const rows=e.run?eligRows():[];
+  const need=e.run&&(e.qual===QUALS[2]||e.progs!=="1"||rows.some(r=>r[1]==="требует подтверждения"||r[1]==="неизвестно"));
+  if(e.run)ev1("free_result_rendered","elig|"+e.qual+e.progs+e.lang,"P09 · сверка допуска");
+  const sel=(k,l,list)=>'<div class="field"><label>'+T(l)+'</label><div class="opts">'+list.map(v=>'<button class="opt '+(e[k]===v?'on':'')+'" onclick="S.elig.'+k+'=\''+v+'\';S.elig.run=false;render()">'+T(v)+'</button>').join("")+'</div></div>';
+  const ic={"выполнено":"✓","не требуется":"✓","неизвестно":"?","требует подтверждения":"!","не выполнено":"✕"};
+  return `<div class="wrap sub">${AEV("C-P09-F → C-P09-A","E11 форма ввода · E20 карточка услуги","free_result_rendered → qualified_offer_opened","Платное предложение появляется только при триггере: иностранная квалификация, спорное требование или несколько программ.")}
+  <h1>${X("Сверка требований к поступлению","Entry requirements check")}</h1><p class="lead">${x?esc(tn(x))+'. ':''}${X("Бесплатно: покажем, что выполнено, что неизвестно и откуда это известно.","Free: we show what is met, what is unknown and where it comes from.")}</p>${secC()}
+  <div class="card">${sel("qual","Квалификация ученика",QUALS)}${sel("progs","Программ для сверки",["1","2","3"])}${sel("lang","Уровень английского",["Не знаю","B2 и выше","Ниже B2"])}
+   <button class="btn gold" ${(e.qual&&e.lang)?'':'disabled'} onclick="S.elig.run=true;render()">${XC("Сверить требования к поступлению")}</button></div>
+  ${e.run?'<div class="card" style="margin-top:14px"><h3>'+X("Результат сверки","Check result")+'</h3><table class="map" style="width:100%"><tr><th>'+X("Требование","Requirement")+'</th><th>'+X("Статус","Status")+'</th><th>'+X("Основание","Basis")+'</th><th>'+X("Источник и дата","Source and date")+'</th></tr>'
+     +rows.map(r=>'<tr><td>'+T(r[0])+'</td><td><b>'+ic[r[1]]+' '+T(r[1])+'</b></td><td>'+T(r[2])+'</td><td class="small mute">'+T(r[3])+'</td></tr>').join("")+'</table>'
+     +'<div class="small mute" style="margin:8px 0">'+X("Источники и даты демонстрационные. Решение о допуске принимает учебное заведение.","Sources and dates are demo. The institution makes the admission decision.")+'</div>'
+     +'<div class="row"><button class="btn ghost sm" onclick="officialModal(\'r02\')">'+XC("Проверить первоисточник")+'</button><button class="btn ghost sm" onclick="toast(T(\'Контакты приёмной: в продукте здесь адрес и имя получателя.\'))">'+XC("Связаться с приёмной")+'</button><button class="btn ghost sm" onclick="go(\'check\')">'+XC("Открыть список документов")+'</button></div></div>'
+     +(need?trigCard("r02",["Часть требований не определена.","Эксперт проверит иностранную квалификацию и спорные пункты и даст статус по каждому требованию.",XC("Заказать проверку допуска")]):'<div class="card okc" style="margin-top:14px"><b>'+X("Платное не предлагаем.","No paid offer.")+'</b> '+X("Все требования определены: бесплатного результата достаточно.","All requirements are determined: the free result is enough.")+'</div>'):''}
+  </div>`;
+}
+
+/* ---------- список документов и срок подачи (E13/E24, F → A → O) ---------- */
+const CHK=[["Заявление и анкета",null],["Копия документа об образовании",null],["Перевод и заверение документа","p25"],["Мотивационное письмо или эссе","r04"],["Рекомендательное письмо",null],["Языковой сертификат",null],["Фото и копия паспорта",null],["Оплата сбора вузу","fee"]];
+function vCheck(){
+  const x=S.bigFor?item(S.bigFor):null;
+  const done=CHK.filter((c,i)=>S.chk[i]).length;const total=CHK.length;
+  const dl=x&&x.dl?dateTxt(x.dl[0],x.dl[1]):null;
+  ev1("free_result_rendered","chk","P11 · список документов");
+  const rows=CHK.map((c,i)=>'<label class="chkrow"><input type="checkbox" '+(S.chk[i]?'checked':'')+' onchange="S.chk['+i+']=this.checked;render()"> <span>'+T(c[0])+(c[1]==="fee"?' <span class="pill">'+X("платёж вузу, отдельно от MainExperts","paid to the institution, separate from MainExperts")+'</span>':'')+'</span></label>').join("");
+  let tr="";
+  if(!S.chk[3])tr+=trigCard("r04",["Нужна оценка текста перед подачей?","Один раунд обратной связи с разметкой: авторство остаётся за вами.",XC("Заказать разбор работы")]);
+  else if(done>=4)tr+=trigCard("r01",["Комплект почти собран.","Проверка комплекта перед подачей: полнота, форматы, противоречия.",XC("Заказать проверку комплекта")]);
+  if(!S.chk[2]&&!S.plashOff.trg_p25)tr+=trigCard("p25",["Нужен перевод или заверение?","Исполняет проверенный партнёр; оплата и претензии у партнёра.",XC("Открыть список уполномоченных поставщиков")]);
+  return `<div class="wrap sub">${AEV("C-P11-F → C-P11-A / C-P23-A / C-P25-O","E13 чек-лист · E24 индикатор прогресса","free_result_rendered → qualified_offer_opened","Не больше одной платной карточки за раз у каждого пункта; закрытая не возвращается в сессии.")}
+  <h1>${X("Список документов","Document checklist")}</h1><p class="lead">${x?esc(tn(x))+'. ':''}${dl?X("Срок подачи","Application deadline")+': <b>'+dl+'</b>. ':''}${X("Бесплатно: актуальный список и порядок действий.","Free: the current list and order of steps.")}</p>${secC()}
+  <div class="card"><div class="small" style="margin-bottom:6px">${X("Готово","Done")}: <b>${done} / ${total}</b></div><div class="bar2" style="margin-bottom:10px"><i style="width:${Math.round(100*done/total)}%"></i></div>${rows}
+   <div class="row" style="margin-top:10px"><button class="btn gold sm" onclick="officialModal()">${XC("Перейти к официальной подаче")}</button><span class="small mute">${X("Подача идёт через официальный канал приёма; сбор вузу — отдельно.","Submission goes through the official admissions channel; the institution fee is separate.")}</span></div></div>
+  ${tr}</div>`;
+}
+
+/* ---------- услуги: каталог предложений вместо одного листа ожидания ---------- */
+function vServices(){
+  const wl=[["Анализ оффера и сопровождение зачисления","P12 · волна 2","Offer review and enrolment support"],["Персональный расчёт бюджета","P14 · открытый калькулятор бесплатно, платный план в составе других услуг","Personal budget plan"],["Проверка заявки на финансирование","P24 · волна 2, после проверки комплекта","Funding application review"],["Мониторинг наборов и сроков","P05 · напоминания бесплатно, платный пилот на портфеле заявок","Intake and deadline monitoring"]];
+  return `<div class="wrap sub">${A("Слой v4, блок 8: сначала бесплатный результат, платное — по триггеру или прямому заказу. Первый платный запуск по стратегии v4: R04 (эссе, США), затем R01 и R02. Цены демонстрационные; решение по ценам не принято [пробел].")}
+  <h1>${T("Услуги и пакеты")}</h1><p class="lead">${X("Каждая услуга — конкретный результат с объёмом, сроком и ценой до оплаты. Что можно получить бесплатно, показано рядом.","Each service is a defined result with scope, turnaround and price before payment. What you can get free is shown beside it.")}</p>${secC()}
+  <div class="sttl" style="margin-top:14px"><h2>${X("Исполняет MainExperts","Delivered by MainExperts")}</h2><span class="tag hyp">${X("гипотезы: покупки не проверены","hypotheses: purchases not tested")}</span></div>
+  <div class="grid g2" style="margin-top:8px">${OFR_PILOT.map(id=>offerCard(id,"C")).join("")}</div>
+  <div class="sttl" style="margin-top:22px"><h2>${X("Исполняет партнёр или официальный оператор","Delivered by a partner or official operator")}</h2></div>
+  <div class="grid g2" style="margin-top:8px">${["p25","p16"].map(id=>offerCard(id,"O")).join("")}</div>
+  <div class="sttl" style="margin-top:22px"><h2>${X("Пока не открыто","Not open yet")}</h2></div>
+  <div class="grid g2" style="margin-top:8px">${wl.map(s=>'<div class="card"><h3>'+X(s[0],s[2])+'</h3><p class="small mute">'+esc(s[1])+'</p><button class="btn sm '+(S.wait.includes(s[0])?'ghost':'gold')+'" onclick="joinWait(\''+s[0]+'\')">'+(S.wait.includes(s[0])?T('В листе ожидания')+' ✓':T('Встать в лист ожидания'))+'</button></div>').join("")}</div></div>`;
+}
+
+/* ---------- карта соответствия: добавлены строки слоя конверсии ---------- */
+function vMap(){
+  const R=[
+   ["1–2. Осознание, поиск сайта","Встречает материалы; поисковая система → портал","Главная: страна, язык и валюта подставлены; переключатель направлений; свободный запрос","docs/27"],
+   ["3. Выбор направления и ввод условий","Выбирает, что искать → форма → проверка недостающего","Вкладки направлений, панель поиска, подсветка незаполненного","Обязательность не утверждена"],
+   ["4. Подбор и выдача","Выдача, фильтры, сравнение до 4, избранное","Календарь цен, сортировка, карточки с картинкой и ценой, фильтр по цене","Данные демонстрационные"],
+   ["4. Подборка подошла?","Ответ да или нет → статистика","Вопрос с пояснением: ответ делает подбор точнее","—"],
+   ["Блоки 6–8","Плашки и баннеры","Одна плашка на экран; триггерные карточки платных услуг","Блок 6: статус под вопросом"],
+   ["5. Выбор варианта","Профессия → вуз; «большая кнопка»","«Где учиться»; окно: сайт, заявка, сверка допуска, список документов, услуги","Заявка через портал — гипотеза"],
+   ["5. Возврат","Статус; письмо по email","Вкладка сайта, статус, сердечко «Сохранённое»","docs/21"],
+   ["v4 · J04 Подготовиться и проверить допуск, P09","F → A: сверка требований → проверка допуска (R02)","Экран «Сверка требований», триггер при иностранной квалификации","D2 · 21 119 запросов; покупок нет"],
+   ["v4 · J05 Подать и отследить, P11, P23","F → A: список документов → проверка комплекта (R01), разбор эссе (R04)","Экран «Список документов», карточки по пунктам","R04: D3 у 1 запроса в США; для РФ и ОАЭ 49 и 31 запрос (D2)"],
+   ["v4 · J03 Сравнить условия, P06","A: сравнение трёх и более вариантов → проверенный список (R03)","Плашка в выдаче и блок под сравнением","D2 · 66 991 запрос; самостоятельный платный подбор не доказан"],
+   ["v4 · J01 Цель, P01","F → A: скрининг → расширенный разбор маршрута (R06, Профиль 360)","Блок после результата скрининга","D3 у 7 запросов из 4 562; центральная гипотеза не проверена"],
+   ["v4 · оформление и исполнение","C: карточка услуги → пригодность → оплата → загрузка → результат → приёмка или возврат","Экраны «Услуга», «Оформление», «Заказ»; заказы в «Сохранённом»","E20–E24, E27; платёж и исполнение раздельны"],
+   ["v4 · O: партнёр и официальный источник, P25, P16","Переход к партнёру или оператору; клик ≠ покупка","Окно партнёра с согласием; окно официального источника","Партнёры условные; визы — только уполномоченный"],
+   ["v4 · измерение","10 событий от показа результата до возврата","Панель «События» в подвале страницы","Деноминаторы и атрибуция фиксируются до теста [пробел]"]];
+  return `<div class="wrap sub"><h1>Соответствие карте</h1><table class="map"><tr><th>Этап карты</th><th>Узлы</th><th>Экран</th><th>Статус</th></tr>${R.map(r=>'<tr>'+r.map(c=>'<td>'+esc(c)+'</td>').join("")+'</tr>').join("")}</table></div>`;
+}
+
+/* ---------- встраивание в существующие экраны ---------- */
+const _vOrient=vOrient;
+vOrient=function(){
+  let h=_vOrient();
+  if(S.quizDone){
+    ev1("free_result_rendered","orient","P01 · первые направления");
+    const o=OFR.r06;
+    const b='<div class="card" style="margin-top:14px"><div class="sttl"><h2>'+X("Что дальше: подробный разбор","What next: a detailed review")+'</h2><span class="tag hyp">'+X("ставка: центральная гипотеза не проверена","bet: the central hypothesis is not validated")+'</span></div>'
+      +'<div class="fp"><div><b>'+X("Бесплатно, уже получено","Free, already received")+'</b><div class="small">'+X("Первые направления без деталей. Ответы можно менять.","First directions without detail. Answers can be changed.")+'</div></div><div><b>'+X("Платно","Paid")+'</b><div class="small">'+T(o.paid)+'</div></div></div>'
+      +'<div class="small mute" style="margin:6px 0">'+X("Это ориентир, а не диагноз. Платный результат показываем после бесплатного, а не вместо него.","This is guidance, not a diagnosis. The paid result comes after the free one, not instead of it.")+'</div>'
+      +'<div class="row"><button class="btn gold" onclick="openOffer(\'r06\',\'A\')">'+XC("Заказать разбор маршрута")+'</button><button class="btn ghost" onclick="openOffer(\'r06\',\'A\')">'+XC("Посмотреть пример результата")+'</button></div></div>'
+      +AEV("C-P01-F → C-P01-A","E10 диагностическая проба · E20 карточка услуги","free_result_rendered → qualified_offer_opened");
+    const i=h.lastIndexOf("</div>");h=h.slice(0,i)+b+h.slice(i);
+  }
+  return h;
+};
+const _vCompare=vCompare;
+vCompare=function(){
+  let h=_vCompare();
+  const its=S.short.filter(id=>S.favs.includes(id));
+  if(its.length>=3){const i=h.lastIndexOf("</div>");h=h.slice(0,i)+trigCard("r03",["Сравнение показывает различия, но не компромиссы.","Проверим сроки, допуск и бюджет и объясним, какие варианты стоит оставить.",XC("Заказать проверенный список программ")])+h.slice(i)}
+  return h;
+};
+const _plashka=plashka;
+plashka=function(){
+  if(favsOf(S.d).length>=3&&!S.plashOff.consult&&!S.plashOff.trg_r03)return ["trg_r03","<b>"+T("Нужен выбор среди трёх и более вариантов?")+"</b><div class='small mute'>"+T("Проверим сроки, допуск и бюджет. Можно сначала оставить анкету, мы ответим письмом.")+"</div>",XC("Заказать проверенный список программ"),"offerR03"];
+  return _plashka();
+};
+const _cardHtml=cardHtml;
+cardHtml=function(x){
+  let h=_cardHtml(x);
+  if(x.d==="vuz"||x.d==="col"){
+    const k="</button></div></div>";const i=h.lastIndexOf(k);
+    if(i>0)h=h.slice(0,i)+'</button><button class="chip btnlike" style="margin-top:6px" onclick="S.bigFor=\''+x.id+'\';S.elig.run=false;go(\'elig\')">'+X("Сверить допуск","Check entry requirements")+'</button></div></div>'+h.slice(i+k.length);
+  }
+  return h;
+};
+/* плашка R03 ведёт в карточку услуги, а не в старый экран */
+const _go=go;
+go=function(s){if(s==="offerR03"){openOffer("r03","A");return}_go(s)};
+/* окно «большая кнопка»: бесплатная сверка допуска и список документов */
+const _big=big;
+big=function(id){
+  _big(id);
+  const x=item(id);if(x.d==="pro")return;
+  const m=document.getElementById("modal");const a=m.querySelector(".opt-card:last-of-type");
+  const add='<div class="opt-card" onclick="closeModal();S.elig.run=false;go(\'elig\')"><div class="t"><b>'+X("Сверить допуск (бесплатно)","Check entry requirements (free)")+'</b><div class="small mute">'+X("Что выполнено, что неизвестно и откуда это известно.","What is met, what is unknown and where it comes from.")+'</div></div></div>'
+   +'<div class="opt-card" onclick="closeModal();go(\'check\')"><div class="t"><b>'+X("Список документов и срок подачи (бесплатно)","Document checklist and deadline (free)")+'</b><div class="small mute">'+X("Что подготовить и в каком порядке.","What to prepare and in what order.")+'</div></div></div>';
+  if(a)a.insertAdjacentHTML("afterend",add);
+};
+/* сердечко: заказы */
+COLL.push({k:"orders",g:"Действия",n:"Заказы и результаты",c:"#0f7de6",cnt:()=>S.orders.length});
+const _openColl=openColl;
+openColl=function(k,keep){
+  if(k!=="orders"){_openColl(k,keep);return}
+  S.collOpen=k;
+  const body=S.orders.map(r=>{const o=OFR[r.o];const st=r.partner?(r.st>=1?"заказ подтверждён партнёром":"переход к партнёру"):(r.st===-1?"возврат оформлен":OST[r.st]);
+    return '<div class="crow"><span></span><div><b>'+esc(offN(o))+'</b> <span class="pill">'+r.id+'</span> <span class="chip known">'+T(st)+'</span></div><button class="btn ghost sm" onclick="closeModal();S.ordId=\''+r.id+'\';go(\'order\')">'+T("Открыть")+'</button></div>'}).join("")||'<div class="small mute" style="padding:12px 0">'+T("Пока пусто.")+'</div>';
+  openModal('<div class="sttl"><h2 style="margin:0">'+T("Сохранённое")+': '+T("Заказы и результаты")+'</h2></div><div class="cwrap">'+body+'</div><div class="row" style="margin-top:14px"><button class="btn ghost" onclick="closeModal();go(\'services\')">'+T("Услуги и пакеты")+'</button><button class="btn gold" onclick="closeModal()">'+T("Закрыть")+'</button></div>');
+  document.getElementById("modal").classList.add("wide");
+};
+Object.assign(SCR,{offer:vOffer,checkout:vCheckout,order:vOrder,elig:vElig,check:vCheck});
+Object.assign(DICTM,{});
+
+SCR.orient=vOrient;SCR.compare=vCompare;
 function setLang(l){S.lang=l;S.langManual=true;render()}
 /* окно регистрации в стиле Skyscanner: открывается в моментах 1–4 и по сердечку */
 const AUTH_TXT={
@@ -1092,6 +1498,7 @@ const AUTH_TXT={
  quiz:["Сохраните результат разбора","Результат и подходящие направления будут доступны в любое время, а ответы можно будет изменить."],
  fav:["Не потеряйте сохранённое","Создайте аккаунт: мы напомним о сроках подачи и сохраним выбор на любом устройстве."],
  heart:["Войдите, чтобы увидеть сохранённое","Подборки, избранное, заявки и лист ожидания хранятся в аккаунте."],
+ order:["Укажите email, чтобы оформить заказ","Пришлём подтверждение оплаты и ссылку на результат. Данные нужны только для исполнения заказа."],
  login:["Войдите или создайте аккаунт","Подборки, избранное, заявки и напоминания о сроках в одном месте."]
 };
 function openAuth(reason,after,skip){
@@ -1151,7 +1558,7 @@ function render(){
   LI=curLang();
   document.documentElement.lang=LI;document.documentElement.dir=LI==="ar"?"rtl":"ltr";
   $("#strip").innerHTML='<span>'+T("Не знаете, кем стать?")+'</span><a onclick="go(\'orient\')">'+T("Пройти бесплатный тест")+'</a>';
-  $("#nav").innerHTML='<button data-s="home" onclick="go(\'home\')">'+T("Поиск")+'</button><button data-s="orient" onclick="go(\'orient\')">'+T("Не знаете, кем стать?")+'</button>';
+  $("#nav").innerHTML='<button data-s="home" onclick="go(\'home\')">'+T("Поиск")+'</button><button data-s="orient" onclick="go(\'orient\')">'+T("Не знаете, кем стать?")+'</button><button data-s="services" onclick="go(\'services\')">'+T("Услуги и пакеты")+'</button>';
   const cf={"Россия":"ru","Казахстан":"kz","ОАЭ":"ae","Узбекистан":"uz","Великобритания":"gb","Другая страна":"xx"}[S.country];
   const cy=curCode();const sy=(SYM[cy][LI]||SYM[cy].def||"");
   $("#ctx").innerHTML='<button class="reg-btn" onclick="openRegion()" aria-label="'+esc(T("Региональные настройки"))+'"><span class="dsk">'+LANGS[LI]+'</span><span class="mob">'+LI.toUpperCase()+'</span><span class="flag flag-c-'+cf+'"></span><span class="dsk">'+esc(T(S.country))+'</span><span class="dsk">'+sy+' '+cy+'</span><span class="mob">'+((SYM[cy].def)||cy)+'</span></button><button class="heart-btn" onclick="heart()" aria-label="'+esc(T("Сохранённое"))+'"><svg viewBox="0 0 24 24" fill="'+(cabCount()?'#ff5a6e':'none')+'" stroke="#fff" stroke-width="1.8"><path d="M12 21s-7.5-4.6-9.4-9.1C1.3 8.6 3.2 5 6.7 5c2 0 3.5 1.1 4.3 2.5C11.8 6.1 13.3 5 15.3 5c3.5 0 5.4 3.6 4.1 6.9C19.5 16.4 12 21 12 21z"/></svg>'+(cabCount()?'<span class="badge">'+cabCount()+'</span>':'')+'</button>'+(S.user?'<button class="avatar" onclick="heart()" title="'+esc(S.user.email)+'">'+esc(S.user.email[0].toUpperCase())+'</button>':'<button class="login-btn" onclick="openAuth(\'login\')">'+T("Войти")+'</button>');
@@ -1160,6 +1567,7 @@ function render(){
   $("#foot").textContent=T("Концепт портала. Все названия, цены, курсы, сроки и изображения демонстрационные. Цены пересчитаны по демонстрационному курсу. Концепт не утверждён основателем.");
   if(S.screen==="home"){bannerStart()}
   if(S.screen==="home"&&!S.tabPinned){const el=document.getElementById("typed");if(el&&TY.pos===0){el.textContent=" "}TY.timer=setTimeout(typedTick,TY.pos?60:300)}
+  if(typeof evPanel==="function")evPanel();
   document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.s===S.screen||(b.dataset.s==="home"&&["search","results"].includes(S.screen))));
 }
 splashRun();
