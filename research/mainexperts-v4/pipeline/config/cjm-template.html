@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MainExperts · CJM v4.0</title>
+<style>
+:root{--ink:#172c48;--muted:#536983;--line:#dde5ef;--blue:#1757aa;--surface:#f4f7fc;--teal:#08777c;--paper:#fff}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font:15px/1.55 Inter,"Noto Sans","Noto Sans CJK SC","Noto Sans Arabic",Arial,sans-serif;background:var(--paper)}
+a{color:#1757aa;text-underline-offset:3px}
+main{max-width:1300px;margin:auto;padding:32px 36px 90px}
+.page-header{display:grid;align-items:start;grid-template-columns:1fr auto;gap:12px;padding:22px 0 28px;border-bottom:1px solid var(--line)}
+.brand{color:var(--blue);font-weight:780;font-size:18px;letter-spacing:-.045em}
+h1,h2,h3,h4{line-height:1.2;letter-spacing:-.025em;font-weight:750}
+h1{font-size:clamp(34px,6vw,66px);margin:16px 0 8px;grid-column:1/-1}
+h2{font-size:30px;margin:0 0 16px}
+h3{font-size:23px;margin:24px 0 13px}
+h4{font-size:17px;margin:16px 0 9px}
+p{max-width:84ch}
+.header-date{color:var(--muted);text-align:right}
+.lead{font-size:19px;color:var(--muted);margin:0;grid-column:1/-1}
+nav{display:flex;column-gap:22px;row-gap:5px;flex-wrap:wrap;position:sticky;top:0;background:#fffffff6;padding:14px 0;z-index:2;border-bottom:1px solid var(--line)}
+nav a{text-decoration:none;font-weight:650}
+section{margin-top:48px;scroll-margin-top:76px}
+article,.card{padding:16px 19px;border:1px solid var(--line);border-radius:10px;background:white;margin:12px 0}
+article:target,.card:target{border-color:#6199e0;box-shadow:0 0 0 3px #e4effe}
+article h3{margin:0 0 8px}
+.notice{padding:11px 14px;border-left:3px solid var(--teal);background:var(--surface);color:var(--muted)}
+.table{overflow-x:auto;margin:12px 0 20px}
+table{border-collapse:collapse;width:100%;font-size:.94em}
+th,td{padding:8px 10px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{background:var(--surface)}
+dl{display:grid;grid-template-columns:minmax(140px,26%) 1fr;column-gap:15px;row-gap:4px;margin:9px 0}
+dt{font-weight:690}
+dd{margin:0;color:#253c55}
+figure{margin:12px 0 22px}
+figcaption{font-weight:690;color:var(--muted);margin-bottom:6px}
+.canvas{overflow:auto;border-radius:5px;border:1px solid var(--line);background:#eef2f7}
+.canvas svg{width:100%;height:auto;min-width:610px;display:block}
+.canvas.scaled svg{width:max(100%,var(--native-width));height:auto}
+button,input{font:inherit}
+button.scale{margin-left:8px;border:1px solid var(--line);border-radius:5px;background:white;color:var(--blue);cursor:pointer;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:11px}
+.grid article{margin:0}
+.jump{display:flex;flex-wrap:wrap;gap:7px;font-size:.9em}
+.jump a{display:inline-block;background:var(--surface);border-radius:5px;padding:3px 7px;text-decoration:none}
+.details{margin-top:16px;padding:9px 0;border-top:1px solid var(--line)}
+details summary{cursor:pointer;font-weight:700}
+.details h4{margin:0 0 7px}
+.code{font-size:.84em;color:var(--blue);font-weight:700}
+footer{border-top:1px solid var(--line);margin:40px 0 0;color:var(--muted)}
+@media(max-width:680px){main{padding:18px 15px 40px}.page-header{padding-top:8px}dl{grid-template-columns:1fr;row-gap:2px}dd{margin:0 0 7px}.canvas svg{min-width:730px}section{margin-top:32px}nav{top:0;gap:8px;font-size:.86em}h2{font-size:24px}}
+@page{
+ size:A4 landscape;margin:11mm 12mm 13mm;
+ @bottom-right{content:"MainExperts · CJM v4.0 · " counter(page) " / " counter(pages);font:8pt "Noto Sans",sans-serif;color:#536983}
+}
+@media print{
+ body{font-size:9.25pt;line-height:1.35;color:#182b42;print-color-adjust:exact}
+ main{max-width:none;margin:0;padding:0}
+ .page-header{display:block;position:relative;padding-top:1mm;padding-bottom:3mm;margin-bottom:3mm}
+ h1{font-size:27pt;margin:3mm 0 1mm}.brand{font-size:11pt}
+ .lead{font-size:10pt;max-width:none}.header-date{font-size:9pt;position:absolute;right:0;top:1mm;white-space:nowrap}
+ nav,.scale,.jump,.stage-map,.print-hide{display:none!important}
+ section{margin-top:3mm;break-before:page}
+ #overview{break-before:auto}
+ h2{font-size:17pt;margin:0 0 3mm}
+ h3{font-size:13pt;margin:4mm 0 2mm}
+ h2,h3,h4,summary,figcaption{break-after:avoid}
+ p{max-width:none;margin:2mm 0}
+ .notice{padding:1mm 2mm}
+ .figure.overview{margin:1mm 0 0;break-inside:avoid}
+ .figure.overview svg{min-width:0;width:100%;height:auto;max-height:115mm}
+ .canvas{overflow:visible}
+ article,.card{padding:2mm;border-radius:3px;margin:1mm 0}
+ article{break-inside:avoid}
+ dl{grid-template-columns:58mm 1fr;row-gap:.5mm;margin:1mm 0}
+ dt,dd{line-height:1.3}
+ .grid{display:block}
+ .grid article{margin:1mm 0}
+ .table{margin:1.5mm 0;overflow:visible}
+ th,td{padding:1mm 2mm;font-size:8.7pt}
+ tr{break-inside:avoid}
+ .details{padding-top:0;margin:2mm 0}
+ .case-grid article{break-inside:avoid}
+ footer{margin-top:4mm}
+}
+</style>
+</head>
+<body>
+<main>
+<!-- PUBLICATION -->
+</main>
+<script>
+for (const button of document.querySelectorAll(".scale")) {
+ const canvas = button.closest("figure").querySelector(".canvas");
+ const svg = canvas.querySelector("svg");
+ canvas.style.setProperty("--native-width", svg.getAttribute("width") + "px");
+ button.addEventListener("click", () => {
+  const zoom = canvas.classList.toggle("scaled");
+  button.textContent = zoom ? "Вписать" : "Масштаб";
+  button.setAttribute("aria-pressed", String(zoom));
+ });
+}
+const wasOpen = new Set();
+window.addEventListener("beforeprint", () => {
+ for (const detail of document.querySelectorAll("details")) {
+  if (detail.open) wasOpen.add(detail);
+  detail.open = true;
+ }
+});
+window.addEventListener("afterprint", () => {
+ for (const detail of document.querySelectorAll("details")) detail.open = wasOpen.has(detail);
+ wasOpen.clear();
+});
+</script>
+</body>
+</html>

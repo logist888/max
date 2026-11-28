@@ -1,0 +1,61 @@
+{
+  "checks": {
+    "orphan_task_labels": 0,
+    "mislabeled_task_branch": 0,
+    "unknown_cluster_families": 0,
+    "incompatible_l4_labels": 0,
+    "incompatible_l5_labels": 0,
+    "analysis_labels_above_search_only_level": 0,
+    "commercial_labels_without_service": 0
+  },
+  "classified_rows": 3213902,
+  "distinct_classified_keys": 3213902,
+  "navigational_keys": 96877,
+  "classification_outcomes": [
+    {
+      "relevance": "unresolved",
+      "total": 2839742,
+      "with_task": 0
+    },
+    {
+      "relevance": "relevant",
+      "total": 177347,
+      "with_task": 177347
+    },
+    {
+      "relevance": "navigation",
+      "total": 96877,
+      "with_task": 96877
+    },
+    {
+      "relevance": "provider_navigation_unresolved",
+      "total": 95004,
+      "with_task": 0
+    },
+    {
+      "relevance": "continuation",
+      "total": 3424,
+      "with_task": 3424
+    },
+    {
+      "relevance": "external_action",
+      "total": 691,
+      "with_task": 691
+    },
+    {
+      "relevance": "commercial",
+      "total": 398,
+      "with_task": 398
+    },
+    {
+      "relevance": "excluded_explicit",
+      "total": 329,
+      "with_task": 0
+    },
+    {
+      "relevance": "outside_purchase",
+      "total": 90,
+      "with_task": 90
+    }
+  ]
+}

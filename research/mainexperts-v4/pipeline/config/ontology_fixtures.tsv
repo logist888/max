@@ -1,0 +1,37 @@
+CASE_ID	LANGUAGE	SEARCH_MARKET	QUERY_TEXT	EXPECTED_Q	EXPECTED_TASK	MAX_EVIDENCE	TEST_BOUNDARY
+T01	ru		тест на профориентацию для подростков	Q01		D2	Диагностика без явной покупки
+T02	fr	FR	équivalence des classes scolaires france angleterre	Q02	Q02.07	D2	Соответствие ступеней, без дела о признании
+T03	en	GB	where is the university of leeds campus	Q03	Q03.03	D1	Известная организация и площадка
+T04	de	DE	modulhandbuch informatik bachelor tu berlin	Q04	Q04.03	D1	Учебный план программы
+T05	en	AU	when does melbourne university semester 2 start	Q05	Q05.04	D1	Временной срез учебной реализации
+T06	en	GB	find part time online masters degrees in the uk	Q06	Q06.02a	D2	Набор результатов по формату
+T07	ru		отзывы студентов о мгу	Q07	Q07.04	D1	Отзывы без статуса организации
+T08	en	AU	check cricos registration for this course	Q08		D2	Реестровая проверка конкретного объекта
+T09	en	GB	minimum ucas tariff required for leeds psychology course	Q09	Q09.07	D1	Порог программы, без расчёта баллов
+T10	en	GB	ucas tariff points calculator for a levels	Q10		D2	Расчёт показателя, без проверки допуска
+T11	fr	FR	date limite pour déposer une candidature mon master	Q11	Q11.02	D1	Крайний срок подачи, без даты старта курса
+T12	en	US	what does conditional university admission offer mean	Q12	Q12.02	D1	Объяснение условия оффера
+T13	es	ES	documentos para homologación de título extranjero para estudiar	Q13	Q13.08	D1	Пакет конкретного дела о признании
+T14	en	AU	calculate total cost of studying in australia including rent	Q14	Q14.06	D2	Полная смета, без отбора финансовой поддержки
+T15	en	US	scholarship eligibility for international undergraduate students	Q15	Q15.02	D2	Финансирование, без цены учёбы
+T16	en	CA	student visa application status canada	Q16	Q16.09	D1	Статус миграционного дела
+T17	en	GB	how to request a student attendance certificate from university	Q17	Q17.07	D1	Доказательство участия в уже начатом обучении
+T18	en	CA	find off campus student housing toronto	Q18	Q18.01	D2	Жильё в привязке к обучению
+T19	de	DE	praktikumsplatz für studierende finden	Q19	Q19.04	D2	Учебная стажировка, без обычной работы
+T20	en	US	free sat practice tests with answers	Q20	Q20.02b	D2	Явно бесплатная подготовка
+T21	en	GB	university open days booking leeds	Q21	Q21.05a	D2	Запись на ознакомительное мероприятие
+T22	it	IT	come fare trasferimento a un altro ateneo	Q22	Q22.01a	D1	Порядок смены организации
+T23	en	GB	ucas login			D1	Навигация сама по себе не даёт продажи
+T24	en	US	common app application fee	Q14	Q14.02	D1	Внешний сбор, а не коммерческая помощь
+T25	en	AU	book university admission consultant online	Q21	Q21.04		Явный исполнитель и действие
+T26	en	CA	student visa canada fee payment	Q16/Q14		D1	Платёж органу не подтверждает покупку сопровождения
+T27	en	US	what is princeton tuition fee	Q14	Q14.01	D1	Обычная цена обучения
+T28	fr	FR	mon master connexion			D1	Навигационная брендовая фраза
+T29	en	US	pay for college application essay review	Q11			Указан конкретный оплачиваемый результат
+T30	ru		купить диплом без обучения			D0	Вне области правомерного образовательного сервиса
+T31	en	GB	best university ranking uk	Q07	Q07.01	D1	Слово best само по себе не даёт D3
+T32	zh	CN	中国大学奖学金申请条件	Q15	Q15.02	D1	Требования к финансированию
+T33	zh	HK	香港大學聯招 jupas 報名截止日期	Q11	Q11.02	D1	Крайний срок подачи для конкретной процедуры
+T34	ar	AE	رسوم الدراسة في المدارس الدولية في دبي	Q14	Q14.01	D1	Стоимость обучения, арабская формулировка
+T35	en	GB	italian courses in london	Q06	Q06.02a	D2	Italian обозначает язык/предмет, не назначение Италия
+T36	en	CA	study in france from canada	Q06/Q16		D2	Рынок CA и назначение FR независимы

@@ -1,0 +1,29 @@
+CASE_ID	LANGUAGE	SEARCH_MARKET	QUERY_TEXT	EXPECTED_Q	EXPECTED_TASK	MAX_EVIDENCE	TEST_BOUNDARY
+H01	ru		егэ минимальный балл для поступления в медицинский вуз	Q09	Q09.07	D1	Текущий порог, не расчёт вероятности
+H02	ru		сколько стоит разбор мотивационного письма для поступления	Q11	Q11.04		Цена экспертной работы
+H03	en	GB	ucas clearing places for nursing this september	Q05/Q06/Q11		D2	Доступные варианты в процессе текущего набора
+H04	en	GB	ucl waitlist position where can i see my number	Q12	Q12.10	D1	Опубликованная позиция, не сам статус участия
+H05	en	US	college gpa calculator with weighted ap classes	Q10	Q10.06a	D2	Формула и шкала оценивания
+H06	en	US	proof of enrollment letter from community college	Q17	Q17.07	D1	Уже существующий статус обучения
+H07	fr	CA	conditions admission cegep pour un diplome etranger	Q09	Q09.01	D1	Допуск в учреждение, не формальное признание
+H08	en	CA	college tuition deposit refund policy international student	Q14	Q14.08a	D1	Право на возврат внешнего платежа
+H09	de	CH	lehrstelle als informatiker efz in zürich finden	Q19	Q19.04	D2	Учебно-трудовой формат, не обычная вакансия
+H10	fr	CH	reconnaissance de diplôme étranger pour études en suisse	Q13	Q13.04	D1	Проверка процедуры признания
+H11	fr	FR	que faire après un refus sur parcoursup	Q01/Q11/Q12		D2	Разбор следующего шага после внешнего решения
+H12	fr	FR	combien coûtent les études au lycée privé	Q14	Q14.01	D1	Тариф обучения
+H13	it	IT	come pagare la tassa di iscrizione universitaly	Q14	Q14.04	D1	Платёж получателю извне
+H14	it	IT	termine per domanda di borsa di studio dsu	Q15	Q15.03	D1	Окно расчёта или подачи на поддержку
+H15	es	ES	comparativa de escuelas de diseño en madrid	Q06	Q06.04	D2	Явное сравнение вариантов
+H16	es	ES	qué pruebas pide el acceso para bachiller extranjero unedasiss	Q09/Q10/Q13		D1	Документы и проверка критериев международного маршрута
+H17	ar	AE	كيف اعرف اذا الجامعة معتمدة في دبي	Q08	Q08.01	D1	Проверка организации, а не программы
+H18	en	AE	school bus charges for british schools in dubai	Q14/Q18		D1	Сбор за часть реализации, если предмет выбран явно
+H19	en	SG	skillsfuture course fee subsidy eligibility	Q15	Q15.02	D2	Требования финансирования сильнее сигнала цены курса
+H20	en	SG	early admissions exercise application dates singapore polytechnic	Q11	Q11.02	D1	Срок подачи в конкретную процедуру
+H21	zh	HK	非聯招申請需要甚麼文件	Q11	Q11.03a	D1	Перечень документов на подачу, традиционная письменность
+H22	en	HK	when do jupas offers come out	Q12	Q12.01	D1	Решение по кампании, не срок подачи
+H23	zh	CN	中国大学留学生需要什么汉语水平考试成绩	Q09/Q10		D1	Языковое условие допуска и измеренный результат
+H24	zh	CN	申请入学需要多少学费	Q14	Q14.01	D1	Плата за обучение, не требование допуска
+H25	de	DE	brauche ich eine vpd für meine masterbewerbung	Q11/Q13		D1	Маршрут документа в немецкой процедуре
+H26	de	DE	welches zeugnis ist für das studienkolleg notwendig	Q09/Q11		D1	Требования к исходному документу
+H27	en	AU	verify an overseas student health cover provider for nursing course	Q18	Q18.04a	D1	Применимость страховки
+H28	en	AU	what is the adjustment factor for university selection rank	Q09/Q10		D1	Коррекция шкалы и правило отбора

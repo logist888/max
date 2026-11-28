@@ -1,0 +1,820 @@
+CONVERSION_ID	LANGUAGE	CTA_PRIMARY	CTA_SECONDARY	CTA_PRIMARY_RU	CTA_SECONDARY_RU
+C-P01-F	ru	Пройти короткую пробу	Проверить первоисточник	Пройти короткую пробу	Проверить первоисточник
+C-P01-F	en	Try the short assessment	Check the original source	Пройти короткую пробу	Проверить первоисточник
+C-P01-F	fr	Faire le test d’orientation	Consulter la source d’origine	Пройти короткую пробу	Проверить первоисточник
+C-P01-F	de	Kurztest starten	Originalquelle prüfen	Пройти короткую пробу	Проверить первоисточник
+C-P01-F	it	Fai il test di orientamento	Consulta la fonte originale	Пройти короткую пробу	Проверить первоисточник
+C-P01-F	es	Hacer la prueba de orientación	Consultar la fuente original	Пройти короткую пробу	Проверить первоисточник
+C-P01-F	ar	ابدأ اختبار التوجيه القصير	تحقق من المصدر الأصلي	Пройти короткую пробу	Проверить первоисточник
+C-P01-F	zh-Hans	进行简短测评	查看原始来源	Пройти короткую пробу	Проверить первоисточник
+C-P01-F	zh-Hant	進行簡短評估	查看原始來源	Пройти короткую пробу	Проверить первоисточник
+C-P01-A	ru	Заказать разбор маршрута	Проверить первоисточник	Заказать разбор маршрута	Проверить первоисточник
+C-P01-A	en	Book a pathway review	Check the original source	Заказать разбор маршрута	Проверить первоисточник
+C-P01-A	fr	Réserver un bilan d’orientation	Consulter la source d’origine	Заказать разбор маршрута	Проверить первоисточник
+C-P01-A	de	Beratungscheck zum Bildungsweg buchen	Originalquelle prüfen	Заказать разбор маршрута	Проверить первоисточник
+C-P01-A	it	Prenota una consulenza di orientamento	Consulta la fonte originale	Заказать разбор маршрута	Проверить первоисточник
+C-P01-A	es	Reservar una revisión del itinerario	Consultar la fuente original	Заказать разбор маршрута	Проверить первоисточник
+C-P01-A	ar	احجز مراجعة لمسارك الدراسي	تحقق من المصدر الأصلي	Заказать разбор маршрута	Проверить первоисточник
+C-P01-A	zh-Hans	预约升学路径分析	查看原始来源	Заказать разбор маршрута	Проверить первоисточник
+C-P01-A	zh-Hant	預約升學途徑分析	查看原始來源	Заказать разбор маршрута	Проверить первоисточник
+C-P01-C	ru	Заказать разбор маршрута	Посмотреть пример результата	Заказать разбор маршрута	Посмотреть пример результата
+C-P01-C	en	Book a pathway review	View a sample result	Заказать разбор маршрута	Посмотреть пример результата
+C-P01-C	fr	Réserver un bilan d’orientation	Voir un exemple de résultat	Заказать разбор маршрута	Посмотреть пример результата
+C-P01-C	de	Beratungscheck zum Bildungsweg buchen	Beispielbericht ansehen	Заказать разбор маршрута	Посмотреть пример результата
+C-P01-C	it	Prenota una consulenza di orientamento	Vedi un esempio del risultato	Заказать разбор маршрута	Посмотреть пример результата
+C-P01-C	es	Reservar una revisión del itinerario	Ver un ejemplo del resultado	Заказать разбор маршрута	Посмотреть пример результата
+C-P01-C	ar	احجز مراجعة لمسارك الدراسي	اعرض نموذجًا للنتيجة	Заказать разбор маршрута	Посмотреть пример результата
+C-P01-C	zh-Hans	预约升学路径分析	查看结果示例	Заказать разбор маршрута	Посмотреть пример результата
+C-P01-C	zh-Hant	預約升學途徑分析	查看結果示例	Заказать разбор маршрута	Посмотреть пример результата
+C-P02-F	ru	Посмотреть свой маршрут	Открыть официальный источник	Посмотреть свой маршрут	Открыть официальный источник
+C-P02-F	en	See your study pathway	Open the official source	Посмотреть свой маршрут	Открыть официальный источник
+C-P02-F	fr	Voir mon parcours	Ouvrir la source officielle	Посмотреть свой маршрут	Открыть официальный источник
+C-P02-F	de	Bildungsweg ansehen	Offizielle Quelle öffnen	Посмотреть свой маршрут	Открыть официальный источник
+C-P02-F	it	Vedi il tuo percorso	Apri la fonte ufficiale	Посмотреть свой маршрут	Открыть официальный источник
+C-P02-F	es	Ver mi itinerario educativo	Abrir la fuente oficial	Посмотреть свой маршрут	Открыть официальный источник
+C-P02-F	ar	استعرض مسارك الدراسي	افتح المصدر الرسمي	Посмотреть свой маршрут	Открыть официальный источник
+C-P02-F	zh-Hans	查看适合你的升学路径	打开官方来源	Посмотреть свой маршрут	Открыть официальный источник
+C-P02-F	zh-Hant	查看適合你的升學途徑	開啟官方來源	Посмотреть свой маршрут	Открыть официальный источник
+C-P02-O	ru	Открыть официальный источник	Посмотреть свой маршрут	Открыть официальный источник	Посмотреть свой маршрут
+C-P02-O	en	Open the official source	See your study pathway	Открыть официальный источник	Посмотреть свой маршрут
+C-P02-O	fr	Ouvrir la source officielle	Voir mon parcours	Открыть официальный источник	Посмотреть свой маршрут
+C-P02-O	de	Offizielle Quelle öffnen	Bildungsweg ansehen	Открыть официальный источник	Посмотреть свой маршрут
+C-P02-O	it	Apri la fonte ufficiale	Vedi il tuo percorso	Открыть официальный источник	Посмотреть свой маршрут
+C-P02-O	es	Abrir la fuente oficial	Ver mi itinerario educativo	Открыть официальный источник	Посмотреть свой маршрут
+C-P02-O	ar	افتح المصدر الرسمي	استعرض مسارك الدراسي	Открыть официальный источник	Посмотреть свой маршрут
+C-P02-O	zh-Hans	打开官方来源	查看适合你的升学路径	Открыть официальный источник	Посмотреть свой маршрут
+C-P02-O	zh-Hant	開啟官方來源	查看適合你的升學途徑	Открыть официальный источник	Посмотреть свой маршрут
+C-P02-A	ru	Заказать проверку допуска	Открыть официальный источник	Заказать проверку допуска	Открыть официальный источник
+C-P02-A	en	Order an eligibility review	Open the official source	Заказать проверку допуска	Открыть официальный источник
+C-P02-A	fr	Commander une vérification d’admissibilité	Ouvrir la source officielle	Заказать проверку допуска	Открыть официальный источник
+C-P02-A	de	Zulassungsprofil prüfen lassen	Offizielle Quelle öffnen	Заказать проверку допуска	Открыть официальный источник
+C-P02-A	it	Richiedi la verifica di ammissibilità	Apri la fonte ufficiale	Заказать проверку допуска	Открыть официальный источник
+C-P02-A	es	Pedir una revisión de elegibilidad	Abrir la fuente oficial	Заказать проверку допуска	Открыть официальный источник
+C-P02-A	ar	اطلب مراجعة أهلية القبول	افتح المصدر الرسمي	Заказать проверку допуска	Открыть официальный источник
+C-P02-A	zh-Hans	购买入学资格审核	打开官方来源	Заказать проверку допуска	Открыть официальный источник
+C-P02-A	zh-Hant	購買入學資格審核	開啟官方來源	Заказать проверку допуска	Открыть официальный источник
+C-P03-F	ru	Проверить организацию	Открыть официальный реестр	Проверить организацию	Открыть официальный реестр
+C-P03-F	en	Check an institution	Open the official register	Проверить организацию	Открыть официальный реестр
+C-P03-F	fr	Vérifier un établissement	Ouvrir le registre officiel	Проверить организацию	Открыть официальный реестр
+C-P03-F	de	Bildungseinrichtung prüfen	Offizielles Register öffnen	Проверить организацию	Открыть официальный реестр
+C-P03-F	it	Verifica l’istituto	Apri il registro ufficiale	Проверить организацию	Открыть официальный реестр
+C-P03-F	es	Comprobar el centro educativo	Abrir el registro oficial	Проверить организацию	Открыть официальный реестр
+C-P03-F	ar	تحقق من المؤسسة التعليمية	افتح السجل الرسمي	Проверить организацию	Открыть официальный реестр
+C-P03-F	zh-Hans	核查院校信息	打开官方名录	Проверить организацию	Открыть официальный реестр
+C-P03-F	zh-Hant	核查院校資料	開啟官方名錄	Проверить организацию	Открыть официальный реестр
+C-P03-O	ru	Открыть официальный реестр	Проверить организацию	Открыть официальный реестр	Проверить организацию
+C-P03-O	en	Open the official register	Check an institution	Открыть официальный реестр	Проверить организацию
+C-P03-O	fr	Ouvrir le registre officiel	Vérifier un établissement	Открыть официальный реестр	Проверить организацию
+C-P03-O	de	Offizielles Register öffnen	Bildungseinrichtung prüfen	Открыть официальный реестр	Проверить организацию
+C-P03-O	it	Apri il registro ufficiale	Verifica l’istituto	Открыть официальный реестр	Проверить организацию
+C-P03-O	es	Abrir el registro oficial	Comprobar el centro educativo	Открыть официальный реестр	Проверить организацию
+C-P03-O	ar	افتح السجل الرسمي	تحقق من المؤسسة التعليمية	Открыть официальный реестр	Проверить организацию
+C-P03-O	zh-Hans	打开官方名录	核查院校信息	Открыть официальный реестр	Проверить организацию
+C-P03-O	zh-Hant	開啟官方名錄	核查院校資料	Открыть официальный реестр	Проверить организацию
+C-P03-A	ru	Заказать проверку источников	Открыть официальный реестр	Заказать проверку источников	Открыть официальный реестр
+C-P03-A	en	Order a verification report	Open the official register	Заказать проверку источников	Открыть официальный реестр
+C-P03-A	fr	Commander un rapport de vérification	Ouvrir le registre officiel	Заказать проверку источников	Открыть официальный реестр
+C-P03-A	de	Prüfbericht bestellen	Offizielles Register öffnen	Заказать проверку источников	Открыть официальный реестр
+C-P03-A	it	Richiedi un rapporto di verifica	Apri il registro ufficiale	Заказать проверку источников	Открыть официальный реестр
+C-P03-A	es	Pedir un informe de verificación	Abrir el registro oficial	Заказать проверку источников	Открыть официальный реестр
+C-P03-A	ar	اطلب تقرير تحقق	افتح السجل الرسمي	Заказать проверку источников	Открыть официальный реестр
+C-P03-A	zh-Hans	购买来源核查报告	打开官方名录	Заказать проверку источников	Открыть официальный реестр
+C-P03-A	zh-Hant	購買來源核查報告	開啟官方名錄	Заказать проверку источников	Открыть официальный реестр
+C-P03-C	ru	Заказать проверку источников	Посмотреть пример результата	Заказать проверку источников	Посмотреть пример результата
+C-P03-C	en	Order a verification report	View a sample result	Заказать проверку источников	Посмотреть пример результата
+C-P03-C	fr	Commander un rapport de vérification	Voir un exemple de résultat	Заказать проверку источников	Посмотреть пример результата
+C-P03-C	de	Prüfbericht bestellen	Beispielbericht ansehen	Заказать проверку источников	Посмотреть пример результата
+C-P03-C	it	Richiedi un rapporto di verifica	Vedi un esempio del risultato	Заказать проверку источников	Посмотреть пример результата
+C-P03-C	es	Pedir un informe de verificación	Ver un ejemplo del resultado	Заказать проверку источников	Посмотреть пример результата
+C-P03-C	ar	اطلب تقرير تحقق	اعرض نموذجًا للنتيجة	Заказать проверку источников	Посмотреть пример результата
+C-P03-C	zh-Hans	购买来源核查报告	查看结果示例	Заказать проверку источников	Посмотреть пример результата
+C-P03-C	zh-Hant	購買來源核查報告	查看結果示例	Заказать проверку источников	Посмотреть пример результата
+C-P04-F	ru	Посмотреть данные программы	Открыть официальный источник	Посмотреть данные программы	Открыть официальный источник
+C-P04-F	en	View program details	Open the official source	Посмотреть данные программы	Открыть официальный источник
+C-P04-F	fr	Voir la fiche de formation	Ouvrir la source officielle	Посмотреть данные программы	Открыть официальный источник
+C-P04-F	de	Studiengang ansehen	Offizielle Quelle öffnen	Посмотреть данные программы	Открыть официальный источник
+C-P04-F	it	Vedi i dettagli del corso	Apri la fonte ufficiale	Посмотреть данные программы	Открыть официальный источник
+C-P04-F	es	Ver los datos del programa	Abrir la fuente oficial	Посмотреть данные программы	Открыть официальный источник
+C-P04-F	ar	اطّلع على تفاصيل البرنامج	افتح المصدر الرسمي	Посмотреть данные программы	Открыть официальный источник
+C-P04-F	zh-Hans	查看课程详情	打开官方来源	Посмотреть данные программы	Открыть официальный источник
+C-P04-F	zh-Hant	查看課程詳情	開啟官方來源	Посмотреть данные программы	Открыть официальный источник
+C-P04-O	ru	Открыть официальный источник	Посмотреть данные программы	Открыть официальный источник	Посмотреть данные программы
+C-P04-O	en	Open the official source	View program details	Открыть официальный источник	Посмотреть данные программы
+C-P04-O	fr	Ouvrir la source officielle	Voir la fiche de formation	Открыть официальный источник	Посмотреть данные программы
+C-P04-O	de	Offizielle Quelle öffnen	Studiengang ansehen	Открыть официальный источник	Посмотреть данные программы
+C-P04-O	it	Apri la fonte ufficiale	Vedi i dettagli del corso	Открыть официальный источник	Посмотреть данные программы
+C-P04-O	es	Abrir la fuente oficial	Ver los datos del programa	Открыть официальный источник	Посмотреть данные программы
+C-P04-O	ar	افتح المصدر الرسمي	اطّلع على تفاصيل البرنامج	Открыть официальный источник	Посмотреть данные программы
+C-P04-O	zh-Hans	打开官方来源	查看课程详情	Открыть официальный источник	Посмотреть данные программы
+C-P04-O	zh-Hant	開啟官方來源	查看課程詳情	Открыть официальный источник	Посмотреть данные программы
+C-P04-A	ru	Заказать проверенный список программ	Открыть официальный источник	Заказать проверенный список программ	Открыть официальный источник
+C-P04-A	en	Order a verified shortlist	Open the official source	Заказать проверенный список программ	Открыть официальный источник
+C-P04-A	fr	Commander une sélection vérifiée	Ouvrir la source officielle	Заказать проверенный список программ	Открыть официальный источник
+C-P04-A	de	Geprüfte Studienauswahl bestellen	Offizielle Quelle öffnen	Заказать проверенный список программ	Открыть официальный источник
+C-P04-A	it	Richiedi una selezione verificata	Apri la fonte ufficiale	Заказать проверенный список программ	Открыть официальный источник
+C-P04-A	es	Pedir una selección verificada	Abrir la fuente oficial	Заказать проверенный список программ	Открыть официальный источник
+C-P04-A	ar	اطلب قائمة مختصرة تم التحقق منها	افتح المصدر الرسمي	Заказать проверенный список программ	Открыть официальный источник
+C-P04-A	zh-Hans	购买已核实的课程清单	打开官方来源	Заказать проверенный список программ	Открыть официальный источник
+C-P04-A	zh-Hant	購買已核實的課程清單	開啟官方來源	Заказать проверенный список программ	Открыть официальный источник
+C-P04-C	ru	Заказать проверенный список программ	Посмотреть пример результата	Заказать проверенный список программ	Посмотреть пример результата
+C-P04-C	en	Order a verified shortlist	View a sample result	Заказать проверенный список программ	Посмотреть пример результата
+C-P04-C	fr	Commander une sélection vérifiée	Voir un exemple de résultat	Заказать проверенный список программ	Посмотреть пример результата
+C-P04-C	de	Geprüfte Studienauswahl bestellen	Beispielbericht ansehen	Заказать проверенный список программ	Посмотреть пример результата
+C-P04-C	it	Richiedi una selezione verificata	Vedi un esempio del risultato	Заказать проверенный список программ	Посмотреть пример результата
+C-P04-C	es	Pedir una selección verificada	Ver un ejemplo del resultado	Заказать проверенный список программ	Посмотреть пример результата
+C-P04-C	ar	اطلب قائمة مختصرة تم التحقق منها	اعرض نموذجًا للنتيجة	Заказать проверенный список программ	Посмотреть пример результата
+C-P04-C	zh-Hans	购买已核实的课程清单	查看结果示例	Заказать проверенный список программ	Посмотреть пример результата
+C-P04-C	zh-Hant	購買已核實的課程清單	查看結果示例	Заказать проверенный список программ	Посмотреть пример результата
+C-P05-F	ru	Открыть календарь сроков	Сверить сроки у источника	Открыть календарь сроков	Сверить сроки у источника
+C-P05-F	en	View application deadlines	Check dates with the provider	Открыть календарь сроков	Сверить сроки у источника
+C-P05-F	fr	Voir le calendrier des candidatures	Vérifier les dates auprès de l’établissement	Открыть календарь сроков	Сверить сроки у источника
+C-P05-F	de	Bewerbungsfristen ansehen	Fristen beim Anbieter prüfen	Открыть календарь сроков	Сверить сроки у источника
+C-P05-F	it	Vedi le scadenze	Controlla le scadenze presso l’ente	Открыть календарь сроков	Сверить сроки у источника
+C-P05-F	es	Ver los plazos de solicitud	Verificar los plazos con la institución	Открыть календарь сроков	Сверить сроки у источника
+C-P05-F	ar	عرض مواعيد التقديم	تحقق من المواعيد لدى المؤسسة	Открыть календарь сроков	Сверить сроки у источника
+C-P05-F	zh-Hans	查看申请截止日期	向院校核实截止日期	Открыть календарь сроков	Сверить сроки у источника
+C-P05-F	zh-Hant	查看申請截止日期	向院校核實截止日期	Открыть календарь сроков	Сверить сроки у источника
+C-P05-O	ru	Сверить сроки у источника	Открыть календарь сроков	Сверить сроки у источника	Открыть календарь сроков
+C-P05-O	en	Check dates with the provider	View application deadlines	Сверить сроки у источника	Открыть календарь сроков
+C-P05-O	fr	Vérifier les dates auprès de l’établissement	Voir le calendrier des candidatures	Сверить сроки у источника	Открыть календарь сроков
+C-P05-O	de	Fristen beim Anbieter prüfen	Bewerbungsfristen ansehen	Сверить сроки у источника	Открыть календарь сроков
+C-P05-O	it	Controlla le scadenze presso l’ente	Vedi le scadenze	Сверить сроки у источника	Открыть календарь сроков
+C-P05-O	es	Verificar los plazos con la institución	Ver los plazos de solicitud	Сверить сроки у источника	Открыть календарь сроков
+C-P05-O	ar	تحقق من المواعيد لدى المؤسسة	عرض مواعيد التقديم	Сверить сроки у источника	Открыть календарь сроков
+C-P05-O	zh-Hans	向院校核实截止日期	查看申请截止日期	Сверить сроки у источника	Открыть календарь сроков
+C-P05-O	zh-Hant	向院校核實截止日期	查看申請截止日期	Сверить сроки у источника	Открыть календарь сроков
+C-P05-A	ru	Подключить контроль заявок	Сверить сроки у источника	Подключить контроль заявок	Сверить сроки у источника
+C-P05-A	en	Activate application tracking	Check dates with the provider	Подключить контроль заявок	Сверить сроки у источника
+C-P05-A	fr	Activer le suivi des candidatures	Vérifier les dates auprès de l’établissement	Подключить контроль заявок	Сверить сроки у источника
+C-P05-A	de	Bewerbungsverfolgung aktivieren	Fristen beim Anbieter prüfen	Подключить контроль заявок	Сверить сроки у источника
+C-P05-A	it	Attiva il monitoraggio delle domande	Controlla le scadenze presso l’ente	Подключить контроль заявок	Сверить сроки у источника
+C-P05-A	es	Activar el seguimiento de solicitudes	Verificar los plazos con la institución	Подключить контроль заявок	Сверить сроки у источника
+C-P05-A	ar	فعّل تتبع طلباتك	تحقق من المواعيد لدى المؤسسة	Подключить контроль заявок	Сверить сроки у источника
+C-P05-A	zh-Hans	开启申请进度跟踪	向院校核实截止日期	Подключить контроль заявок	Сверить сроки у источника
+C-P05-A	zh-Hant	開啟申請進度追蹤	向院校核實截止日期	Подключить контроль заявок	Сверить сроки у источника
+C-P05-C	ru	Подключить контроль заявок	Посмотреть пример результата	Подключить контроль заявок	Посмотреть пример результата
+C-P05-C	en	Activate application tracking	View a sample result	Подключить контроль заявок	Посмотреть пример результата
+C-P05-C	fr	Activer le suivi des candidatures	Voir un exemple de résultat	Подключить контроль заявок	Посмотреть пример результата
+C-P05-C	de	Bewerbungsverfolgung aktivieren	Beispielbericht ansehen	Подключить контроль заявок	Посмотреть пример результата
+C-P05-C	it	Attiva il monitoraggio delle domande	Vedi un esempio del risultato	Подключить контроль заявок	Посмотреть пример результата
+C-P05-C	es	Activar el seguimiento de solicitudes	Ver un ejemplo del resultado	Подключить контроль заявок	Посмотреть пример результата
+C-P05-C	ar	فعّل تتبع طلباتك	اعرض نموذجًا للنتيجة	Подключить контроль заявок	Посмотреть пример результата
+C-P05-C	zh-Hans	开启申请进度跟踪	查看结果示例	Подключить контроль заявок	Посмотреть пример результата
+C-P05-C	zh-Hant	開啟申請進度追蹤	查看結果示例	Подключить контроль заявок	Посмотреть пример результата
+C-P06-F	ru	Найти подходящие программы	Проверить первоисточник	Найти подходящие программы	Проверить первоисточник
+C-P06-F	en	Find matching programs	Check the original source	Найти подходящие программы	Проверить первоисточник
+C-P06-F	fr	Trouver des formations adaptées	Consulter la source d’origine	Найти подходящие программы	Проверить первоисточник
+C-P06-F	de	Passende Studiengänge finden	Originalquelle prüfen	Найти подходящие программы	Проверить первоисточник
+C-P06-F	it	Trova i corsi adatti	Consulta la fonte originale	Найти подходящие программы	Проверить первоисточник
+C-P06-F	es	Buscar programas adecuados	Consultar la fuente original	Найти подходящие программы	Проверить первоисточник
+C-P06-F	ar	اعثر على برامج مناسبة	تحقق من المصدر الأصلي	Найти подходящие программы	Проверить первоисточник
+C-P06-F	zh-Hans	查找适合的课程	查看原始来源	Найти подходящие программы	Проверить первоисточник
+C-P06-F	zh-Hant	查找合適的課程	查看原始來源	Найти подходящие программы	Проверить первоисточник
+C-P06-A	ru	Заказать проверенный список программ	Проверить первоисточник	Заказать проверенный список программ	Проверить первоисточник
+C-P06-A	en	Order a verified shortlist	Check the original source	Заказать проверенный список программ	Проверить первоисточник
+C-P06-A	fr	Commander une sélection vérifiée	Consulter la source d’origine	Заказать проверенный список программ	Проверить первоисточник
+C-P06-A	de	Geprüfte Studienauswahl bestellen	Originalquelle prüfen	Заказать проверенный список программ	Проверить первоисточник
+C-P06-A	it	Richiedi una selezione verificata	Consulta la fonte originale	Заказать проверенный список программ	Проверить первоисточник
+C-P06-A	es	Pedir una selección verificada	Consultar la fuente original	Заказать проверенный список программ	Проверить первоисточник
+C-P06-A	ar	اطلب قائمة مختصرة تم التحقق منها	تحقق من المصدر الأصلي	Заказать проверенный список программ	Проверить первоисточник
+C-P06-A	zh-Hans	购买已核实的课程清单	查看原始来源	Заказать проверенный список программ	Проверить первоисточник
+C-P06-A	zh-Hant	購買已核實的課程清單	查看原始來源	Заказать проверенный список программ	Проверить первоисточник
+C-P06-C	ru	Заказать проверенный список программ	Посмотреть пример результата	Заказать проверенный список программ	Посмотреть пример результата
+C-P06-C	en	Order a verified shortlist	View a sample result	Заказать проверенный список программ	Посмотреть пример результата
+C-P06-C	fr	Commander une sélection vérifiée	Voir un exemple de résultat	Заказать проверенный список программ	Посмотреть пример результата
+C-P06-C	de	Geprüfte Studienauswahl bestellen	Beispielbericht ansehen	Заказать проверенный список программ	Посмотреть пример результата
+C-P06-C	it	Richiedi una selezione verificata	Vedi un esempio del risultato	Заказать проверенный список программ	Посмотреть пример результата
+C-P06-C	es	Pedir una selección verificada	Ver un ejemplo del resultado	Заказать проверенный список программ	Посмотреть пример результата
+C-P06-C	ar	اطلب قائمة مختصرة تم التحقق منها	اعرض نموذجًا للنتيجة	Заказать проверенный список программ	Посмотреть пример результата
+C-P06-C	zh-Hans	购买已核实的课程清单	查看结果示例	Заказать проверенный список программ	Посмотреть пример результата
+C-P06-C	zh-Hant	購買已核實的課程清單	查看結果示例	Заказать проверенный список программ	Посмотреть пример результата
+C-P07-F	ru	Сравнить варианты	Проверить первоисточник	Сравнить варианты	Проверить первоисточник
+C-P07-F	en	Compare options	Check the original source	Сравнить варианты	Проверить первоисточник
+C-P07-F	fr	Comparer les options	Consulter la source d’origine	Сравнить варианты	Проверить первоисточник
+C-P07-F	de	Optionen vergleichen	Originalquelle prüfen	Сравнить варианты	Проверить первоисточник
+C-P07-F	it	Confronta le opzioni	Consulta la fonte originale	Сравнить варианты	Проверить первоисточник
+C-P07-F	es	Comparar opciones	Consultar la fuente original	Сравнить варианты	Проверить первоисточник
+C-P07-F	ar	قارن الخيارات	تحقق من المصدر الأصلي	Сравнить варианты	Проверить первоисточник
+C-P07-F	zh-Hans	比较各个选项	查看原始来源	Сравнить варианты	Проверить первоисточник
+C-P07-F	zh-Hant	比較各個選項	查看原始來源	Сравнить варианты	Проверить первоисточник
+C-P07-A	ru	Заказать проверенный список программ	Проверить первоисточник	Заказать проверенный список программ	Проверить первоисточник
+C-P07-A	en	Order a verified shortlist	Check the original source	Заказать проверенный список программ	Проверить первоисточник
+C-P07-A	fr	Commander une sélection vérifiée	Consulter la source d’origine	Заказать проверенный список программ	Проверить первоисточник
+C-P07-A	de	Geprüfte Studienauswahl bestellen	Originalquelle prüfen	Заказать проверенный список программ	Проверить первоисточник
+C-P07-A	it	Richiedi una selezione verificata	Consulta la fonte originale	Заказать проверенный список программ	Проверить первоисточник
+C-P07-A	es	Pedir una selección verificada	Consultar la fuente original	Заказать проверенный список программ	Проверить первоисточник
+C-P07-A	ar	اطلب قائمة مختصرة تم التحقق منها	تحقق من المصدر الأصلي	Заказать проверенный список программ	Проверить первоисточник
+C-P07-A	zh-Hans	购买已核实的课程清单	查看原始来源	Заказать проверенный список программ	Проверить первоисточник
+C-P07-A	zh-Hant	購買已核實的課程清單	查看原始來源	Заказать проверенный список программ	Проверить первоисточник
+C-P08-F	ru	Проверить официальный статус	Открыть официальный реестр	Проверить официальный статус	Открыть официальный реестр
+C-P08-F	en	Check official status	Open the official register	Проверить официальный статус	Открыть официальный реестр
+C-P08-F	fr	Vérifier le statut officiel	Ouvrir le registre officiel	Проверить официальный статус	Открыть официальный реестр
+C-P08-F	de	Offiziellen Status prüfen	Offizielles Register öffnen	Проверить официальный статус	Открыть официальный реестр
+C-P08-F	it	Verifica lo stato ufficiale	Apri il registro ufficiale	Проверить официальный статус	Открыть официальный реестр
+C-P08-F	es	Comprobar el reconocimiento oficial	Abrir el registro oficial	Проверить официальный статус	Открыть официальный реестр
+C-P08-F	ar	تحقق من الوضع الرسمي	افتح السجل الرسمي	Проверить официальный статус	Открыть официальный реестр
+C-P08-F	zh-Hans	查询官方认可状态	打开官方名录	Проверить официальный статус	Открыть официальный реестр
+C-P08-F	zh-Hant	查詢官方認可狀態	開啟官方名錄	Проверить официальный статус	Открыть официальный реестр
+C-P08-O	ru	Открыть официальный реестр	Проверить официальный статус	Открыть официальный реестр	Проверить официальный статус
+C-P08-O	en	Open the official register	Check official status	Открыть официальный реестр	Проверить официальный статус
+C-P08-O	fr	Ouvrir le registre officiel	Vérifier le statut officiel	Открыть официальный реестр	Проверить официальный статус
+C-P08-O	de	Offizielles Register öffnen	Offiziellen Status prüfen	Открыть официальный реестр	Проверить официальный статус
+C-P08-O	it	Apri il registro ufficiale	Verifica lo stato ufficiale	Открыть официальный реестр	Проверить официальный статус
+C-P08-O	es	Abrir el registro oficial	Comprobar el reconocimiento oficial	Открыть официальный реестр	Проверить официальный статус
+C-P08-O	ar	افتح السجل الرسمي	تحقق من الوضع الرسمي	Открыть официальный реестр	Проверить официальный статус
+C-P08-O	zh-Hans	打开官方名录	查询官方认可状态	Открыть официальный реестр	Проверить официальный статус
+C-P08-O	zh-Hant	開啟官方名錄	查詢官方認可狀態	Открыть официальный реестр	Проверить официальный статус
+C-P08-A	ru	Заказать проверку источников	Открыть официальный реестр	Заказать проверку источников	Открыть официальный реестр
+C-P08-A	en	Order a verification report	Open the official register	Заказать проверку источников	Открыть официальный реестр
+C-P08-A	fr	Commander un rapport de vérification	Ouvrir le registre officiel	Заказать проверку источников	Открыть официальный реестр
+C-P08-A	de	Prüfbericht bestellen	Offizielles Register öffnen	Заказать проверку источников	Открыть официальный реестр
+C-P08-A	it	Richiedi un rapporto di verifica	Apri il registro ufficiale	Заказать проверку источников	Открыть официальный реестр
+C-P08-A	es	Pedir un informe de verificación	Abrir el registro oficial	Заказать проверку источников	Открыть официальный реестр
+C-P08-A	ar	اطلب تقرير تحقق	افتح السجل الرسمي	Заказать проверку источников	Открыть официальный реестр
+C-P08-A	zh-Hans	购买来源核查报告	打开官方名录	Заказать проверку источников	Открыть официальный реестр
+C-P08-A	zh-Hant	購買來源核查報告	開啟官方名錄	Заказать проверку источников	Открыть официальный реестр
+C-P09-F	ru	Сверить требования к поступлению	Связаться с приёмной	Сверить требования к поступлению	Связаться с приёмной
+C-P09-F	en	Check entry requirements	Contact admissions	Сверить требования к поступлению	Связаться с приёмной
+C-P09-F	fr	Vérifier les conditions d’admission	Contacter le service des admissions	Сверить требования к поступлению	Связаться с приёмной
+C-P09-F	de	Zulassungsvoraussetzungen prüfen	Zulassungsstelle kontaktieren	Сверить требования к поступлению	Связаться с приёмной
+C-P09-F	it	Verifica i requisiti di ammissione	Contatta l’ufficio ammissioni	Сверить требования к поступлению	Связаться с приёмной
+C-P09-F	es	Comprobar los requisitos de admisión	Contactar con admisiones	Сверить требования к поступлению	Связаться с приёмной
+C-P09-F	ar	تحقق من شروط القبول	تواصل مع مكتب القبول	Сверить требования к поступлению	Связаться с приёмной
+C-P09-F	zh-Hans	核对入学要求	联系招生办公室	Сверить требования к поступлению	Связаться с приёмной
+C-P09-F	zh-Hant	核對入學要求	聯絡招生處	Сверить требования к поступлению	Связаться с приёмной
+C-P09-O	ru	Связаться с приёмной	Сверить требования к поступлению	Связаться с приёмной	Сверить требования к поступлению
+C-P09-O	en	Contact admissions	Check entry requirements	Связаться с приёмной	Сверить требования к поступлению
+C-P09-O	fr	Contacter le service des admissions	Vérifier les conditions d’admission	Связаться с приёмной	Сверить требования к поступлению
+C-P09-O	de	Zulassungsstelle kontaktieren	Zulassungsvoraussetzungen prüfen	Связаться с приёмной	Сверить требования к поступлению
+C-P09-O	it	Contatta l’ufficio ammissioni	Verifica i requisiti di ammissione	Связаться с приёмной	Сверить требования к поступлению
+C-P09-O	es	Contactar con admisiones	Comprobar los requisitos de admisión	Связаться с приёмной	Сверить требования к поступлению
+C-P09-O	ar	تواصل مع مكتب القبول	تحقق من شروط القبول	Связаться с приёмной	Сверить требования к поступлению
+C-P09-O	zh-Hans	联系招生办公室	核对入学要求	Связаться с приёмной	Сверить требования к поступлению
+C-P09-O	zh-Hant	聯絡招生處	核對入學要求	Связаться с приёмной	Сверить требования к поступлению
+C-P09-A	ru	Заказать проверку допуска	Связаться с приёмной	Заказать проверку допуска	Связаться с приёмной
+C-P09-A	en	Order an eligibility review	Contact admissions	Заказать проверку допуска	Связаться с приёмной
+C-P09-A	fr	Commander une vérification d’admissibilité	Contacter le service des admissions	Заказать проверку допуска	Связаться с приёмной
+C-P09-A	de	Zulassungsprofil prüfen lassen	Zulassungsstelle kontaktieren	Заказать проверку допуска	Связаться с приёмной
+C-P09-A	it	Richiedi la verifica di ammissibilità	Contatta l’ufficio ammissioni	Заказать проверку допуска	Связаться с приёмной
+C-P09-A	es	Pedir una revisión de elegibilidad	Contactar con admisiones	Заказать проверку допуска	Связаться с приёмной
+C-P09-A	ar	اطلب مراجعة أهلية القبول	تواصل مع مكتب القبول	Заказать проверку допуска	Связаться с приёмной
+C-P09-A	zh-Hans	购买入学资格审核	联系招生办公室	Заказать проверку допуска	Связаться с приёмной
+C-P09-A	zh-Hant	購買入學資格審核	聯絡招生處	Заказать проверку допуска	Связаться с приёмной
+C-P09-C	ru	Заказать проверку допуска	Посмотреть пример результата	Заказать проверку допуска	Посмотреть пример результата
+C-P09-C	en	Order an eligibility review	View a sample result	Заказать проверку допуска	Посмотреть пример результата
+C-P09-C	fr	Commander une vérification d’admissibilité	Voir un exemple de résultat	Заказать проверку допуска	Посмотреть пример результата
+C-P09-C	de	Zulassungsprofil prüfen lassen	Beispielbericht ansehen	Заказать проверку допуска	Посмотреть пример результата
+C-P09-C	it	Richiedi la verifica di ammissibilità	Vedi un esempio del risultato	Заказать проверку допуска	Посмотреть пример результата
+C-P09-C	es	Pedir una revisión de elegibilidad	Ver un ejemplo del resultado	Заказать проверку допуска	Посмотреть пример результата
+C-P09-C	ar	اطلب مراجعة أهلية القبول	اعرض نموذجًا للنتيجة	Заказать проверку допуска	Посмотреть пример результата
+C-P09-C	zh-Hans	购买入学资格审核	查看结果示例	Заказать проверку допуска	Посмотреть пример результата
+C-P09-C	zh-Hant	購買入學資格審核	查看結果示例	Заказать проверку допуска	Посмотреть пример результата
+C-P10-F	ru	Найти экзамен и даты	Перейти к регистрации на экзамен	Найти экзамен и даты	Перейти к регистрации на экзамен
+C-P10-F	en	Find test dates	Go to official test registration	Найти экзамен и даты	Перейти к регистрации на экзамен
+C-P10-F	fr	Trouver les dates d’examen	Accéder à l’inscription à l’examen	Найти экзамен и даты	Перейти к регистрации на экзамен
+C-P10-F	de	Prüfungstermine finden	Zur offiziellen Prüfungsanmeldung	Найти экзамен и даты	Перейти к регистрации на экзамен
+C-P10-F	it	Cerca le date d’esame	Vai all’iscrizione all’esame	Найти экзамен и даты	Перейти к регистрации на экзамен
+C-P10-F	es	Buscar fechas de examen	Ir a la inscripción oficial del examen	Найти экзамен и даты	Перейти к регистрации на экзамен
+C-P10-F	ar	ابحث عن مواعيد الاختبار	انتقل إلى التسجيل الرسمي للاختبار	Найти экзамен и даты	Перейти к регистрации на экзамен
+C-P10-F	zh-Hans	查询考试日期	前往考试官方报名页面	Найти экзамен и даты	Перейти к регистрации на экзамен
+C-P10-F	zh-Hant	查詢考試日期	前往考試官方報名頁面	Найти экзамен и даты	Перейти к регистрации на экзамен
+C-P10-O	ru	Перейти к регистрации на экзамен	Найти экзамен и даты	Перейти к регистрации на экзамен	Найти экзамен и даты
+C-P10-O	en	Go to official test registration	Find test dates	Перейти к регистрации на экзамен	Найти экзамен и даты
+C-P10-O	fr	Accéder à l’inscription à l’examen	Trouver les dates d’examen	Перейти к регистрации на экзамен	Найти экзамен и даты
+C-P10-O	de	Zur offiziellen Prüfungsanmeldung	Prüfungstermine finden	Перейти к регистрации на экзамен	Найти экзамен и даты
+C-P10-O	it	Vai all’iscrizione all’esame	Cerca le date d’esame	Перейти к регистрации на экзамен	Найти экзамен и даты
+C-P10-O	es	Ir a la inscripción oficial del examen	Buscar fechas de examen	Перейти к регистрации на экзамен	Найти экзамен и даты
+C-P10-O	ar	انتقل إلى التسجيل الرسمي للاختبار	ابحث عن مواعيد الاختبار	Перейти к регистрации на экзамен	Найти экзамен и даты
+C-P10-O	zh-Hans	前往考试官方报名页面	查询考试日期	Перейти к регистрации на экзамен	Найти экзамен и даты
+C-P10-O	zh-Hant	前往考試官方報名頁面	查詢考試日期	Перейти к регистрации на экзамен	Найти экзамен и даты
+C-P10-A	ru	Выбрать подготовку у партнёра	Перейти к регистрации на экзамен	Выбрать подготовку у партнёра	Перейти к регистрации на экзамен
+C-P10-A	en	Choose partner test preparation	Go to official test registration	Выбрать подготовку у партнёра	Перейти к регистрации на экзамен
+C-P10-A	fr	Choisir une préparation partenaire	Accéder à l’inscription à l’examen	Выбрать подготовку у партнёра	Перейти к регистрации на экзамен
+C-P10-A	de	Kurs beim Partner auswählen	Zur offiziellen Prüfungsanmeldung	Выбрать подготовку у партнёра	Перейти к регистрации на экзамен
+C-P10-A	it	Scegli la preparazione del partner	Vai all’iscrizione all’esame	Выбрать подготовку у партнёра	Перейти к регистрации на экзамен
+C-P10-A	es	Elegir preparación con un proveedor asociado	Ir a la inscripción oficial del examen	Выбрать подготовку у партнёра	Перейти к регистрации на экзамен
+C-P10-A	ar	اختر التحضير لدى الشريك	انتقل إلى التسجيل الرسمي للاختبار	Выбрать подготовку у партнёра	Перейти к регистрации на экзамен
+C-P10-A	zh-Hans	选择合作方备考课程	前往考试官方报名页面	Выбрать подготовку у партнёра	Перейти к регистрации на экзамен
+C-P10-A	zh-Hant	選擇合作夥伴備試課程	前往考試官方報名頁面	Выбрать подготовку у партнёра	Перейти к регистрации на экзамен
+C-P10-C	ru	Выбрать подготовку у партнёра	Посмотреть пример результата	Выбрать подготовку у партнёра	Посмотреть пример результата
+C-P10-C	en	Choose partner test preparation	View a sample result	Выбрать подготовку у партнёра	Посмотреть пример результата
+C-P10-C	fr	Choisir une préparation partenaire	Voir un exemple de résultat	Выбрать подготовку у партнёра	Посмотреть пример результата
+C-P10-C	de	Kurs beim Partner auswählen	Beispielbericht ansehen	Выбрать подготовку у партнёра	Посмотреть пример результата
+C-P10-C	it	Scegli la preparazione del partner	Vedi un esempio del risultato	Выбрать подготовку у партнёра	Посмотреть пример результата
+C-P10-C	es	Elegir preparación con un proveedor asociado	Ver un ejemplo del resultado	Выбрать подготовку у партнёра	Посмотреть пример результата
+C-P10-C	ar	اختر التحضير لدى الشريك	اعرض نموذجًا للنتيجة	Выбрать подготовку у партнёра	Посмотреть пример результата
+C-P10-C	zh-Hans	选择合作方备考课程	查看结果示例	Выбрать подготовку у партнёра	Посмотреть пример результата
+C-P10-C	zh-Hant	選擇合作夥伴備試課程	查看結果示例	Выбрать подготовку у партнёра	Посмотреть пример результата
+C-P11-F	ru	Открыть список документов	Перейти к официальной подаче	Открыть список документов	Перейти к официальной подаче
+C-P11-F	en	View the application checklist	Go to the official application	Открыть список документов	Перейти к официальной подаче
+C-P11-F	fr	Voir la liste des pièces	Accéder à la candidature officielle	Открыть список документов	Перейти к официальной подаче
+C-P11-F	de	Unterlagenliste ansehen	Zur offiziellen Bewerbung	Открыть список документов	Перейти к официальной подаче
+C-P11-F	it	Vedi l’elenco dei documenti	Vai alla candidatura ufficiale	Открыть список документов	Перейти к официальной подаче
+C-P11-F	es	Ver la lista de documentos	Ir a la solicitud oficial	Открыть список документов	Перейти к официальной подаче
+C-P11-F	ar	عرض قائمة مستندات التقديم	انتقل إلى بوابة التقديم الرسمية	Открыть список документов	Перейти к официальной подаче
+C-P11-F	zh-Hans	查看申请材料清单	前往官方申请平台	Открыть список документов	Перейти к официальной подаче
+C-P11-F	zh-Hant	查看申請文件清單	前往官方申請平台	Открыть список документов	Перейти к официальной подаче
+C-P11-O	ru	Перейти к официальной подаче	Открыть список документов	Перейти к официальной подаче	Открыть список документов
+C-P11-O	en	Go to the official application	View the application checklist	Перейти к официальной подаче	Открыть список документов
+C-P11-O	fr	Accéder à la candidature officielle	Voir la liste des pièces	Перейти к официальной подаче	Открыть список документов
+C-P11-O	de	Zur offiziellen Bewerbung	Unterlagenliste ansehen	Перейти к официальной подаче	Открыть список документов
+C-P11-O	it	Vai alla candidatura ufficiale	Vedi l’elenco dei documenti	Перейти к официальной подаче	Открыть список документов
+C-P11-O	es	Ir a la solicitud oficial	Ver la lista de documentos	Перейти к официальной подаче	Открыть список документов
+C-P11-O	ar	انتقل إلى بوابة التقديم الرسمية	عرض قائمة مستندات التقديم	Перейти к официальной подаче	Открыть список документов
+C-P11-O	zh-Hans	前往官方申请平台	查看申请材料清单	Перейти к официальной подаче	Открыть список документов
+C-P11-O	zh-Hant	前往官方申請平台	查看申請文件清單	Перейти к официальной подаче	Открыть список документов
+C-P11-A	ru	Заказать проверку комплекта	Перейти к официальной подаче	Заказать проверку комплекта	Перейти к официальной подаче
+C-P11-A	en	Order an application check	Go to the official application	Заказать проверку комплекта	Перейти к официальной подаче
+C-P11-A	fr	Commander une vérification du dossier	Accéder à la candidature officielle	Заказать проверку комплекта	Перейти к официальной подаче
+C-P11-A	de	Bewerbungsunterlagen prüfen lassen	Zur offiziellen Bewerbung	Заказать проверку комплекта	Перейти к официальной подаче
+C-P11-A	it	Richiedi la verifica della domanda	Vai alla candidatura ufficiale	Заказать проверку комплекта	Перейти к официальной подаче
+C-P11-A	es	Pedir una revisión de la solicitud	Ir a la solicitud oficial	Заказать проверку комплекта	Перейти к официальной подаче
+C-P11-A	ar	اطلب مراجعة طلب التقديم	انتقل إلى بوابة التقديم الرسمية	Заказать проверку комплекта	Перейти к официальной подаче
+C-P11-A	zh-Hans	购买申请材料核查	前往官方申请平台	Заказать проверку комплекта	Перейти к официальной подаче
+C-P11-A	zh-Hant	購買申請文件核對	前往官方申請平台	Заказать проверку комплекта	Перейти к официальной подаче
+C-P11-C	ru	Заказать проверку комплекта	Посмотреть пример результата	Заказать проверку комплекта	Посмотреть пример результата
+C-P11-C	en	Order an application check	View a sample result	Заказать проверку комплекта	Посмотреть пример результата
+C-P11-C	fr	Commander une vérification du dossier	Voir un exemple de résultat	Заказать проверку комплекта	Посмотреть пример результата
+C-P11-C	de	Bewerbungsunterlagen prüfen lassen	Beispielbericht ansehen	Заказать проверку комплекта	Посмотреть пример результата
+C-P11-C	it	Richiedi la verifica della domanda	Vedi un esempio del risultato	Заказать проверку комплекта	Посмотреть пример результата
+C-P11-C	es	Pedir una revisión de la solicitud	Ver un ejemplo del resultado	Заказать проверку комплекта	Посмотреть пример результата
+C-P11-C	ar	اطلب مراجعة طلب التقديم	اعرض نموذجًا للنتيجة	Заказать проверку комплекта	Посмотреть пример результата
+C-P11-C	zh-Hans	购买申请材料核查	查看结果示例	Заказать проверку комплекта	Посмотреть пример результата
+C-P11-C	zh-Hant	購買申請文件核對	查看結果示例	Заказать проверку комплекта	Посмотреть пример результата
+C-P12-F	ru	Сравнить условия офферов	Связаться с приёмной	Сравнить условия офферов	Связаться с приёмной
+C-P12-F	en	Compare offer terms	Contact admissions	Сравнить условия офферов	Связаться с приёмной
+C-P12-F	fr	Comparer les conditions des offres	Contacter le service des admissions	Сравнить условия офферов	Связаться с приёмной
+C-P12-F	de	Zulassungsangebote vergleichen	Zulassungsstelle kontaktieren	Сравнить условия офферов	Связаться с приёмной
+C-P12-F	it	Confronta le condizioni delle offerte	Contatta l’ufficio ammissioni	Сравнить условия офферов	Связаться с приёмной
+C-P12-F	es	Comparar las condiciones de las ofertas	Contactar con admisiones	Сравнить условия офферов	Связаться с приёмной
+C-P12-F	ar	قارن شروط عروض القبول	تواصل مع مكتب القبول	Сравнить условия офферов	Связаться с приёмной
+C-P12-F	zh-Hans	比较录取条件	联系招生办公室	Сравнить условия офферов	Связаться с приёмной
+C-P12-F	zh-Hant	比較取錄條件	聯絡招生處	Сравнить условия офферов	Связаться с приёмной
+C-P12-O	ru	Связаться с приёмной	Сравнить условия офферов	Связаться с приёмной	Сравнить условия офферов
+C-P12-O	en	Contact admissions	Compare offer terms	Связаться с приёмной	Сравнить условия офферов
+C-P12-O	fr	Contacter le service des admissions	Comparer les conditions des offres	Связаться с приёмной	Сравнить условия офферов
+C-P12-O	de	Zulassungsstelle kontaktieren	Zulassungsangebote vergleichen	Связаться с приёмной	Сравнить условия офферов
+C-P12-O	it	Contatta l’ufficio ammissioni	Confronta le condizioni delle offerte	Связаться с приёмной	Сравнить условия офферов
+C-P12-O	es	Contactar con admisiones	Comparar las condiciones de las ofertas	Связаться с приёмной	Сравнить условия офферов
+C-P12-O	ar	تواصل مع مكتب القبول	قارن شروط عروض القبول	Связаться с приёмной	Сравнить условия офферов
+C-P12-O	zh-Hans	联系招生办公室	比较录取条件	Связаться с приёмной	Сравнить условия офферов
+C-P12-O	zh-Hant	聯絡招生處	比較取錄條件	Связаться с приёмной	Сравнить условия офферов
+C-P12-A	ru	Заказать разбор оффера	Связаться с приёмной	Заказать разбор оффера	Связаться с приёмной
+C-P12-A	en	Order an offer review	Contact admissions	Заказать разбор оффера	Связаться с приёмной
+C-P12-A	fr	Commander une analyse de l’offre	Contacter le service des admissions	Заказать разбор оффера	Связаться с приёмной
+C-P12-A	de	Zulassungsangebot prüfen lassen	Zulassungsstelle kontaktieren	Заказать разбор оффера	Связаться с приёмной
+C-P12-A	it	Richiedi l’analisi dell’offerta	Contatta l’ufficio ammissioni	Заказать разбор оффера	Связаться с приёмной
+C-P12-A	es	Pedir una revisión de la oferta	Contactar con admisiones	Заказать разбор оффера	Связаться с приёмной
+C-P12-A	ar	اطلب مراجعة عرض القبول	تواصل مع مكتب القبول	Заказать разбор оффера	Связаться с приёмной
+C-P12-A	zh-Hans	购买录取方案分析	联系招生办公室	Заказать разбор оффера	Связаться с приёмной
+C-P12-A	zh-Hant	購買取錄方案分析	聯絡招生處	Заказать разбор оффера	Связаться с приёмной
+C-P12-C	ru	Заказать разбор оффера	Посмотреть пример результата	Заказать разбор оффера	Посмотреть пример результата
+C-P12-C	en	Order an offer review	View a sample result	Заказать разбор оффера	Посмотреть пример результата
+C-P12-C	fr	Commander une analyse de l’offre	Voir un exemple de résultat	Заказать разбор оффера	Посмотреть пример результата
+C-P12-C	de	Zulassungsangebot prüfen lassen	Beispielbericht ansehen	Заказать разбор оффера	Посмотреть пример результата
+C-P12-C	it	Richiedi l’analisi dell’offerta	Vedi un esempio del risultato	Заказать разбор оффера	Посмотреть пример результата
+C-P12-C	es	Pedir una revisión de la oferta	Ver un ejemplo del resultado	Заказать разбор оффера	Посмотреть пример результата
+C-P12-C	ar	اطلب مراجعة عرض القبول	اعرض نموذجًا للنتيجة	Заказать разбор оффера	Посмотреть пример результата
+C-P12-C	zh-Hans	购买录取方案分析	查看结果示例	Заказать разбор оффера	Посмотреть пример результата
+C-P12-C	zh-Hant	購買取錄方案分析	查看結果示例	Заказать разбор оффера	Посмотреть пример результата
+C-P13-F	ru	Найти порядок признания	Перейти к оператору признания	Найти порядок признания	Перейти к оператору признания
+C-P13-F	en	Find the recognition process	Go to the credential evaluator	Найти порядок признания	Перейти к оператору признания
+C-P13-F	fr	Trouver la procédure de reconnaissance	Accéder à l’organisme de reconnaissance	Найти порядок признания	Перейти к оператору признания
+C-P13-F	de	Anerkennungsverfahren finden	Zur Anerkennungsstelle	Найти порядок признания	Перейти к оператору признания
+C-P13-F	it	Trova la procedura di riconoscimento	Vai all’ente di riconoscimento	Найти порядок признания	Перейти к оператору признания
+C-P13-F	es	Buscar el trámite de reconocimiento	Ir al organismo evaluador	Найти порядок признания	Перейти к оператору признания
+C-P13-F	ar	اعثر على إجراءات الاعتراف بالمؤهل	انتقل إلى جهة تقييم المؤهل	Найти порядок признания	Перейти к оператору признания
+C-P13-F	zh-Hans	查询学历认证流程	前往学历认证机构	Найти порядок признания	Перейти к оператору признания
+C-P13-F	zh-Hant	查詢學歷認可程序	前往學歷評估機構	Найти порядок признания	Перейти к оператору признания
+C-P13-O	ru	Перейти к оператору признания	Найти порядок признания	Перейти к оператору признания	Найти порядок признания
+C-P13-O	en	Go to the credential evaluator	Find the recognition process	Перейти к оператору признания	Найти порядок признания
+C-P13-O	fr	Accéder à l’organisme de reconnaissance	Trouver la procédure de reconnaissance	Перейти к оператору признания	Найти порядок признания
+C-P13-O	de	Zur Anerkennungsstelle	Anerkennungsverfahren finden	Перейти к оператору признания	Найти порядок признания
+C-P13-O	it	Vai all’ente di riconoscimento	Trova la procedura di riconoscimento	Перейти к оператору признания	Найти порядок признания
+C-P13-O	es	Ir al organismo evaluador	Buscar el trámite de reconocimiento	Перейти к оператору признания	Найти порядок признания
+C-P13-O	ar	انتقل إلى جهة تقييم المؤهل	اعثر على إجراءات الاعتراف بالمؤهل	Перейти к оператору признания	Найти порядок признания
+C-P13-O	zh-Hans	前往学历认证机构	查询学历认证流程	Перейти к оператору признания	Найти порядок признания
+C-P13-O	zh-Hant	前往學歷評估機構	查詢學歷認可程序	Перейти к оператору признания	Найти порядок признания
+C-P13-A	ru	Перейти к заказу у поставщика	Перейти к оператору признания	Перейти к заказу у поставщика	Перейти к оператору признания
+C-P13-A	en	Go to provider checkout	Go to the credential evaluator	Перейти к заказу у поставщика	Перейти к оператору признания
+C-P13-A	fr	Accéder à la commande du prestataire	Accéder à l’organisme de reconnaissance	Перейти к заказу у поставщика	Перейти к оператору признания
+C-P13-A	de	Zur Bestellung beim Anbieter	Zur Anerkennungsstelle	Перейти к заказу у поставщика	Перейти к оператору признания
+C-P13-A	it	Vai all’ordine sul sito del fornitore	Vai all’ente di riconoscimento	Перейти к заказу у поставщика	Перейти к оператору признания
+C-P13-A	es	Ir al pedido con el proveedor	Ir al organismo evaluador	Перейти к заказу у поставщика	Перейти к оператору признания
+C-P13-A	ar	انتقل إلى الطلب لدى مقدم الخدمة	انتقل إلى جهة تقييم المؤهل	Перейти к заказу у поставщика	Перейти к оператору признания
+C-P13-A	zh-Hans	前往供应商下单	前往学历认证机构	Перейти к заказу у поставщика	Перейти к оператору признания
+C-P13-A	zh-Hant	前往服務供應商下單	前往學歷評估機構	Перейти к заказу у поставщика	Перейти к оператору признания
+C-P14-F	ru	Рассчитать бюджет	Открыть официальный калькулятор	Рассчитать бюджет	Открыть официальный калькулятор
+C-P14-F	en	Estimate study costs	Open the official cost calculator	Рассчитать бюджет	Открыть официальный калькулятор
+C-P14-F	fr	Estimer mon budget	Ouvrir le calculateur officiel	Рассчитать бюджет	Открыть официальный калькулятор
+C-P14-F	de	Studienkosten berechnen	Offiziellen Kostenrechner öffnen	Рассчитать бюджет	Открыть официальный калькулятор
+C-P14-F	it	Calcola il costo degli studi	Apri il calcolatore ufficiale	Рассчитать бюджет	Открыть официальный калькулятор
+C-P14-F	es	Calcular el presupuesto de estudios	Abrir la calculadora oficial	Рассчитать бюджет	Открыть официальный калькулятор
+C-P14-F	ar	احسب تكاليف الدراسة	افتح حاسبة التكاليف الرسمية	Рассчитать бюджет	Открыть официальный калькулятор
+C-P14-F	zh-Hans	估算留学预算	打开官方费用计算器	Рассчитать бюджет	Открыть официальный калькулятор
+C-P14-F	zh-Hant	估算升學開支	開啟官方費用計算工具	Рассчитать бюджет	Открыть официальный калькулятор
+C-P14-O	ru	Открыть официальный калькулятор	Рассчитать бюджет	Открыть официальный калькулятор	Рассчитать бюджет
+C-P14-O	en	Open the official cost calculator	Estimate study costs	Открыть официальный калькулятор	Рассчитать бюджет
+C-P14-O	fr	Ouvrir le calculateur officiel	Estimer mon budget	Открыть официальный калькулятор	Рассчитать бюджет
+C-P14-O	de	Offiziellen Kostenrechner öffnen	Studienkosten berechnen	Открыть официальный калькулятор	Рассчитать бюджет
+C-P14-O	it	Apri il calcolatore ufficiale	Calcola il costo degli studi	Открыть официальный калькулятор	Рассчитать бюджет
+C-P14-O	es	Abrir la calculadora oficial	Calcular el presupuesto de estudios	Открыть официальный калькулятор	Рассчитать бюджет
+C-P14-O	ar	افتح حاسبة التكاليف الرسمية	احسب تكاليف الدراسة	Открыть официальный калькулятор	Рассчитать бюджет
+C-P14-O	zh-Hans	打开官方费用计算器	估算留学预算	Открыть официальный калькулятор	Рассчитать бюджет
+C-P14-O	zh-Hant	開啟官方費用計算工具	估算升學開支	Открыть официальный калькулятор	Рассчитать бюджет
+C-P14-A	ru	Заказать разбор оффера	Открыть официальный калькулятор	Заказать разбор оффера	Открыть официальный калькулятор
+C-P14-A	en	Order an offer review	Open the official cost calculator	Заказать разбор оффера	Открыть официальный калькулятор
+C-P14-A	fr	Commander une analyse de l’offre	Ouvrir le calculateur officiel	Заказать разбор оффера	Открыть официальный калькулятор
+C-P14-A	de	Zulassungsangebot prüfen lassen	Offiziellen Kostenrechner öffnen	Заказать разбор оффера	Открыть официальный калькулятор
+C-P14-A	it	Richiedi l’analisi dell’offerta	Apri il calcolatore ufficiale	Заказать разбор оффера	Открыть официальный калькулятор
+C-P14-A	es	Pedir una revisión de la oferta	Abrir la calculadora oficial	Заказать разбор оффера	Открыть официальный калькулятор
+C-P14-A	ar	اطلب مراجعة عرض القبول	افتح حاسبة التكاليف الرسمية	Заказать разбор оффера	Открыть официальный калькулятор
+C-P14-A	zh-Hans	购买录取方案分析	打开官方费用计算器	Заказать разбор оффера	Открыть официальный калькулятор
+C-P14-A	zh-Hant	購買取錄方案分析	開啟官方費用計算工具	Заказать разбор оффера	Открыть официальный калькулятор
+C-P15-F	ru	Найти подходящие стипендии	Открыть сайт фонда	Найти подходящие стипендии	Открыть сайт фонда
+C-P15-F	en	Find matching scholarships	Open the funder’s website	Найти подходящие стипендии	Открыть сайт фонда
+C-P15-F	fr	Trouver des bourses adaptées	Ouvrir le site du financeur	Найти подходящие стипендии	Открыть сайт фонда
+C-P15-F	de	Passende Stipendien finden	Website des Fördergebers öffnen	Найти подходящие стипендии	Открыть сайт фонда
+C-P15-F	it	Trova borse di studio adatte	Apri il sito dell’ente	Найти подходящие стипендии	Открыть сайт фонда
+C-P15-F	es	Buscar becas compatibles	Abrir el sitio web de la entidad	Найти подходящие стипендии	Открыть сайт фонда
+C-P15-F	ar	ابحث عن منح مناسبة	افتح موقع الجهة المانحة	Найти подходящие стипендии	Открыть сайт фонда
+C-P15-F	zh-Hans	查找符合条件的奖学金	打开资助方网站	Найти подходящие стипендии	Открыть сайт фонда
+C-P15-F	zh-Hant	查找符合條件的獎學金	開啟資助機構網站	Найти подходящие стипендии	Открыть сайт фонда
+C-P15-O	ru	Открыть сайт фонда	Найти подходящие стипендии	Открыть сайт фонда	Найти подходящие стипендии
+C-P15-O	en	Open the funder’s website	Find matching scholarships	Открыть сайт фонда	Найти подходящие стипендии
+C-P15-O	fr	Ouvrir le site du financeur	Trouver des bourses adaptées	Открыть сайт фонда	Найти подходящие стипендии
+C-P15-O	de	Website des Fördergebers öffnen	Passende Stipendien finden	Открыть сайт фонда	Найти подходящие стипендии
+C-P15-O	it	Apri il sito dell’ente	Trova borse di studio adatte	Открыть сайт фонда	Найти подходящие стипендии
+C-P15-O	es	Abrir el sitio web de la entidad	Buscar becas compatibles	Открыть сайт фонда	Найти подходящие стипендии
+C-P15-O	ar	افتح موقع الجهة المانحة	ابحث عن منح مناسبة	Открыть сайт фонда	Найти подходящие стипендии
+C-P15-O	zh-Hans	打开资助方网站	查找符合条件的奖学金	Открыть сайт фонда	Найти подходящие стипендии
+C-P15-O	zh-Hant	開啟資助機構網站	查找符合條件的獎學金	Открыть сайт фонда	Найти подходящие стипендии
+C-P15-A	ru	Заказать проверку заявки на грант	Открыть сайт фонда	Заказать проверку заявки на грант	Открыть сайт фонда
+C-P15-A	en	Order a scholarship application review	Open the funder’s website	Заказать проверку заявки на грант	Открыть сайт фонда
+C-P15-A	fr	Commander une vérification du dossier de bourse	Ouvrir le site du financeur	Заказать проверку заявки на грант	Открыть сайт фонда
+C-P15-A	de	Stipendienantrag prüfen lassen	Website des Fördergebers öffnen	Заказать проверку заявки на грант	Открыть сайт фонда
+C-P15-A	it	Richiedi la verifica della domanda di borsa	Apri il sito dell’ente	Заказать проверку заявки на грант	Открыть сайт фонда
+C-P15-A	es	Pedir una revisión de la solicitud de beca	Abrir el sitio web de la entidad	Заказать проверку заявки на грант	Открыть сайт фонда
+C-P15-A	ar	اطلب مراجعة طلب المنحة	افتح موقع الجهة المانحة	Заказать проверку заявки на грант	Открыть сайт фонда
+C-P15-A	zh-Hans	购买奖学金申请审核	打开资助方网站	Заказать проверку заявки на грант	Открыть сайт фонда
+C-P15-A	zh-Hant	購買獎學金申請審核	開啟資助機構網站	Заказать проверку заявки на грант	Открыть сайт фонда
+C-P16-F	ru	Посмотреть официальные правила	Открыть миграционный портал	Посмотреть официальные правила	Открыть миграционный портал
+C-P16-F	en	View official visa rules	Open the official immigration portal	Посмотреть официальные правила	Открыть миграционный портал
+C-P16-F	fr	Voir les règles officielles de visa	Ouvrir le portail officiel de l’immigration	Посмотреть официальные правила	Открыть миграционный портал
+C-P16-F	de	Offizielle Visaregeln ansehen	Offizielles Einwanderungsportal öffnen	Посмотреть официальные правила	Открыть миграционный портал
+C-P16-F	it	Vedi le regole ufficiali sul visto	Apri il portale ufficiale per l’immigrazione	Посмотреть официальные правила	Открыть миграционный портал
+C-P16-F	es	Ver las reglas oficiales del visado	Abrir el portal oficial de inmigración	Посмотреть официальные правила	Открыть миграционный портал
+C-P16-F	ar	اطّلع على قواعد التأشيرة الرسمية	افتح بوابة الهجرة الرسمية	Посмотреть официальные правила	Открыть миграционный портал
+C-P16-F	zh-Hans	查看官方签证规定	打开官方移民门户	Посмотреть официальные правила	Открыть миграционный портал
+C-P16-F	zh-Hant	查看官方簽證規定	開啟官方入境事務網站	Посмотреть официальные правила	Открыть миграционный портал
+C-P16-O	ru	Открыть миграционный портал	Посмотреть официальные правила	Открыть миграционный портал	Посмотреть официальные правила
+C-P16-O	en	Open the official immigration portal	View official visa rules	Открыть миграционный портал	Посмотреть официальные правила
+C-P16-O	fr	Ouvrir le portail officiel de l’immigration	Voir les règles officielles de visa	Открыть миграционный портал	Посмотреть официальные правила
+C-P16-O	de	Offizielles Einwanderungsportal öffnen	Offizielle Visaregeln ansehen	Открыть миграционный портал	Посмотреть официальные правила
+C-P16-O	it	Apri il portale ufficiale per l’immigrazione	Vedi le regole ufficiali sul visto	Открыть миграционный портал	Посмотреть официальные правила
+C-P16-O	es	Abrir el portal oficial de inmigración	Ver las reglas oficiales del visado	Открыть миграционный портал	Посмотреть официальные правила
+C-P16-O	ar	افتح بوابة الهجرة الرسمية	اطّلع على قواعد التأشيرة الرسمية	Открыть миграционный портал	Посмотреть официальные правила
+C-P16-O	zh-Hans	打开官方移民门户	查看官方签证规定	Открыть миграционный портал	Посмотреть официальные правила
+C-P16-O	zh-Hant	開啟官方入境事務網站	查看官方簽證規定	Открыть миграционный портал	Посмотреть официальные правила
+C-P16-A	ru	Перейти к уполномоченному специалисту	Открыть миграционный портал	Перейти к уполномоченному специалисту	Открыть миграционный портал
+C-P16-A	en	Go to an authorized adviser	Open the official immigration portal	Перейти к уполномоченному специалисту	Открыть миграционный портал
+C-P16-A	fr	Contacter un conseiller habilité	Ouvrir le portail officiel de l’immigration	Перейти к уполномоченному специалисту	Открыть миграционный портал
+C-P16-A	de	Zur zugelassenen Beratung	Offizielles Einwanderungsportal öffnen	Перейти к уполномоченному специалисту	Открыть миграционный портал
+C-P16-A	it	Vai a un consulente autorizzato	Apri il portale ufficiale per l’immigrazione	Перейти к уполномоченному специалисту	Открыть миграционный портал
+C-P16-A	es	Ir a un asesor autorizado	Abrir el portal oficial de inmigración	Перейти к уполномоченному специалисту	Открыть миграционный портал
+C-P16-A	ar	انتقل إلى مستشار معتمد	افتح بوابة الهجرة الرسمية	Перейти к уполномоченному специалисту	Открыть миграционный портал
+C-P16-A	zh-Hans	前往获授权的顾问	打开官方移民门户	Перейти к уполномоченному специалисту	Открыть миграционный портал
+C-P16-A	zh-Hant	前往獲授權的顧問	開啟官方入境事務網站	Перейти к уполномоченному специалисту	Открыть миграционный портал
+C-P16-C	ru	Перейти к уполномоченному специалисту	Посмотреть пример результата	Перейти к уполномоченному специалисту	Посмотреть пример результата
+C-P16-C	en	Go to an authorized adviser	View a sample result	Перейти к уполномоченному специалисту	Посмотреть пример результата
+C-P16-C	fr	Contacter un conseiller habilité	Voir un exemple de résultat	Перейти к уполномоченному специалисту	Посмотреть пример результата
+C-P16-C	de	Zur zugelassenen Beratung	Beispielbericht ansehen	Перейти к уполномоченному специалисту	Посмотреть пример результата
+C-P16-C	it	Vai a un consulente autorizzato	Vedi un esempio del risultato	Перейти к уполномоченному специалисту	Посмотреть пример результата
+C-P16-C	es	Ir a un asesor autorizado	Ver un ejemplo del resultado	Перейти к уполномоченному специалисту	Посмотреть пример результата
+C-P16-C	ar	انتقل إلى مستشار معتمد	اعرض نموذجًا للنتيجة	Перейти к уполномоченному специалисту	Посмотреть пример результата
+C-P16-C	zh-Hans	前往获授权的顾问	查看结果示例	Перейти к уполномоченному специалисту	Посмотреть пример результата
+C-P16-C	zh-Hant	前往獲授權的顧問	查看結果示例	Перейти к уполномоченному специалисту	Посмотреть пример результата
+C-P17-F	ru	Найти поддержку в вузе	Перейти в службу поддержки	Найти поддержку в вузе	Перейти в службу поддержки
+C-P17-F	en	Find campus support	Contact student support	Найти поддержку в вузе	Перейти в службу поддержки
+C-P17-F	fr	Trouver un service d’aide	Contacter le service d’aide	Найти поддержку в вузе	Перейти в службу поддержки
+C-P17-F	de	Unterstützung an der Hochschule finden	Studierendenservice kontaktieren	Найти поддержку в вузе	Перейти в службу поддержки
+C-P17-F	it	Trova assistenza nell’ateneo	Contatta il servizio di supporto	Найти поддержку в вузе	Перейти в службу поддержки
+C-P17-F	es	Buscar apoyo en la institución	Contactar con atención al estudiante	Найти поддержку в вузе	Перейти в службу поддержки
+C-P17-F	ar	اعثر على خدمات الدعم في مؤسستك	تواصل مع خدمات دعم الطلاب	Найти поддержку в вузе	Перейти в службу поддержки
+C-P17-F	zh-Hans	查找校内支持服务	联系学生支持部门	Найти поддержку в вузе	Перейти в службу поддержки
+C-P17-F	zh-Hant	查找院校支援服務	聯絡學生支援部門	Найти поддержку в вузе	Перейти в службу поддержки
+C-P17-O	ru	Перейти в службу поддержки	Найти поддержку в вузе	Перейти в службу поддержки	Найти поддержку в вузе
+C-P17-O	en	Contact student support	Find campus support	Перейти в службу поддержки	Найти поддержку в вузе
+C-P17-O	fr	Contacter le service d’aide	Trouver un service d’aide	Перейти в службу поддержки	Найти поддержку в вузе
+C-P17-O	de	Studierendenservice kontaktieren	Unterstützung an der Hochschule finden	Перейти в службу поддержки	Найти поддержку в вузе
+C-P17-O	it	Contatta il servizio di supporto	Trova assistenza nell’ateneo	Перейти в службу поддержки	Найти поддержку в вузе
+C-P17-O	es	Contactar con atención al estudiante	Buscar apoyo en la institución	Перейти в службу поддержки	Найти поддержку в вузе
+C-P17-O	ar	تواصل مع خدمات دعم الطلاب	اعثر على خدمات الدعم في مؤسستك	Перейти в службу поддержки	Найти поддержку в вузе
+C-P17-O	zh-Hans	联系学生支持部门	查找校内支持服务	Перейти в службу поддержки	Найти поддержку в вузе
+C-P17-O	zh-Hant	聯絡學生支援部門	查找院校支援服務	Перейти в службу поддержки	Найти поддержку в вузе
+C-P18-F	ru	Найти варианты жилья	Открыть службу жилья вуза	Найти варианты жилья	Открыть службу жилья вуза
+C-P18-F	en	Find housing options	Open the university housing service	Найти варианты жилья	Открыть службу жилья вуза
+C-P18-F	fr	Trouver des logements	Contacter le service de logement	Найти варианты жилья	Открыть службу жилья вуза
+C-P18-F	de	Unterkünfte finden	Wohnservice der Hochschule öffnen	Найти варианты жилья	Открыть службу жилья вуза
+C-P18-F	it	Trova un alloggio	Apri il servizio alloggi dell’ateneo	Найти варианты жилья	Открыть службу жилья вуза
+C-P18-F	es	Buscar opciones de alojamiento	Abrir el servicio de alojamiento de la universidad	Найти варианты жилья	Открыть службу жилья вуза
+C-P18-F	ar	ابحث عن خيارات السكن	افتح خدمة السكن الجامعي	Найти варианты жилья	Открыть службу жилья вуза
+C-P18-F	zh-Hans	查找住宿选项	打开学校住宿服务页面	Найти варианты жилья	Открыть службу жилья вуза
+C-P18-F	zh-Hant	查找住宿選擇	開啟院校住宿服務頁面	Найти варианты жилья	Открыть службу жилья вуза
+C-P18-O	ru	Открыть службу жилья вуза	Найти варианты жилья	Открыть службу жилья вуза	Найти варианты жилья
+C-P18-O	en	Open the university housing service	Find housing options	Открыть службу жилья вуза	Найти варианты жилья
+C-P18-O	fr	Contacter le service de logement	Trouver des logements	Открыть службу жилья вуза	Найти варианты жилья
+C-P18-O	de	Wohnservice der Hochschule öffnen	Unterkünfte finden	Открыть службу жилья вуза	Найти варианты жилья
+C-P18-O	it	Apri il servizio alloggi dell’ateneo	Trova un alloggio	Открыть службу жилья вуза	Найти варианты жилья
+C-P18-O	es	Abrir el servicio de alojamiento de la universidad	Buscar opciones de alojamiento	Открыть службу жилья вуза	Найти варианты жилья
+C-P18-O	ar	افتح خدمة السكن الجامعي	ابحث عن خيارات السكن	Открыть службу жилья вуза	Найти варианты жилья
+C-P18-O	zh-Hans	打开学校住宿服务页面	查找住宿选项	Открыть службу жилья вуза	Найти варианты жилья
+C-P18-O	zh-Hant	開啟院校住宿服務頁面	查找住宿選擇	Открыть службу жилья вуза	Найти варианты жилья
+C-P18-A	ru	Проверить наличие и бронь у партнёра	Открыть службу жилья вуза	Проверить наличие и бронь у партнёра	Открыть службу жилья вуза
+C-P18-A	en	Check availability with the housing provider	Open the university housing service	Проверить наличие и бронь у партнёра	Открыть службу жилья вуза
+C-P18-A	fr	Voir les disponibilités chez le partenaire	Contacter le service de logement	Проверить наличие и бронь у партнёра	Открыть службу жилья вуза
+C-P18-A	de	Verfügbarkeit beim Unterkunftsanbieter prüfen	Wohnservice der Hochschule öffnen	Проверить наличие и бронь у партнёра	Открыть службу жилья вуза
+C-P18-A	it	Controlla la disponibilità dal fornitore	Apri il servizio alloggi dell’ateneo	Проверить наличие и бронь у партнёра	Открыть службу жилья вуза
+C-P18-A	es	Comprobar disponibilidad con el proveedor	Abrir el servicio de alojamiento de la universidad	Проверить наличие и бронь у партнёра	Открыть службу жилья вуза
+C-P18-A	ar	تحقق من التوافر لدى مزود السكن	افتح خدمة السكن الجامعي	Проверить наличие и бронь у партнёра	Открыть службу жилья вуза
+C-P18-A	zh-Hans	向住宿供应商查询房源	打开学校住宿服务页面	Проверить наличие и бронь у партнёра	Открыть службу жилья вуза
+C-P18-A	zh-Hant	向住宿供應商查詢房源	開啟院校住宿服務頁面	Проверить наличие и бронь у партнёра	Открыть службу жилья вуза
+C-P18-C	ru	Проверить наличие и бронь у партнёра	Посмотреть пример результата	Проверить наличие и бронь у партнёра	Посмотреть пример результата
+C-P18-C	en	Check availability with the housing provider	View a sample result	Проверить наличие и бронь у партнёра	Посмотреть пример результата
+C-P18-C	fr	Voir les disponibilités chez le partenaire	Voir un exemple de résultat	Проверить наличие и бронь у партнёра	Посмотреть пример результата
+C-P18-C	de	Verfügbarkeit beim Unterkunftsanbieter prüfen	Beispielbericht ansehen	Проверить наличие и бронь у партнёра	Посмотреть пример результата
+C-P18-C	it	Controlla la disponibilità dal fornitore	Vedi un esempio del risultato	Проверить наличие и бронь у партнёра	Посмотреть пример результата
+C-P18-C	es	Comprobar disponibilidad con el proveedor	Ver un ejemplo del resultado	Проверить наличие и бронь у партнёра	Посмотреть пример результата
+C-P18-C	ar	تحقق من التوافر لدى مزود السكن	اعرض نموذجًا للنتيجة	Проверить наличие и бронь у партнёра	Посмотреть пример результата
+C-P18-C	zh-Hans	向住宿供应商查询房源	查看结果示例	Проверить наличие и бронь у партнёра	Посмотреть пример результата
+C-P18-C	zh-Hant	向住宿供應商查詢房源	查看結果示例	Проверить наличие и бронь у партнёра	Посмотреть пример результата
+C-P19-F	ru	Посмотреть карьерные пути	Проверить первоисточник	Посмотреть карьерные пути	Проверить первоисточник
+C-P19-F	en	Explore career paths	Check the original source	Посмотреть карьерные пути	Проверить первоисточник
+C-P19-F	fr	Explorer les parcours professionnels	Consulter la source d’origine	Посмотреть карьерные пути	Проверить первоисточник
+C-P19-F	de	Berufswege erkunden	Originalquelle prüfen	Посмотреть карьерные пути	Проверить первоисточник
+C-P19-F	it	Esplora i percorsi professionali	Consulta la fonte originale	Посмотреть карьерные пути	Проверить первоисточник
+C-P19-F	es	Explorar trayectorias profesionales	Consultar la fuente original	Посмотреть карьерные пути	Проверить первоисточник
+C-P19-F	ar	استكشف المسارات المهنية	تحقق من المصدر الأصلي	Посмотреть карьерные пути	Проверить первоисточник
+C-P19-F	zh-Hans	探索职业发展路径	查看原始来源	Посмотреть карьерные пути	Проверить первоисточник
+C-P19-F	zh-Hant	探索職涯發展途徑	查看原始來源	Посмотреть карьерные пути	Проверить первоисточник
+C-P19-A	ru	Заказать разбор карьерного перехода	Проверить первоисточник	Заказать разбор карьерного перехода	Проверить первоисточник
+C-P19-A	en	Book a career transition review	Check the original source	Заказать разбор карьерного перехода	Проверить первоисточник
+C-P19-A	fr	Réserver un bilan de transition professionnelle	Consulter la source d’origine	Заказать разбор карьерного перехода	Проверить первоисточник
+C-P19-A	de	Beratung zum Berufswechsel buchen	Originalquelle prüfen	Заказать разбор карьерного перехода	Проверить первоисточник
+C-P19-A	it	Prenota una consulenza sul cambio di carriera	Consulta la fonte originale	Заказать разбор карьерного перехода	Проверить первоисточник
+C-P19-A	es	Reservar una revisión del cambio profesional	Consultar la fuente original	Заказать разбор карьерного перехода	Проверить первоисточник
+C-P19-A	ar	احجز مراجعة للانتقال المهني	تحقق من المصدر الأصلي	Заказать разбор карьерного перехода	Проверить первоисточник
+C-P19-A	zh-Hans	预约职业转型分析	查看原始来源	Заказать разбор карьерного перехода	Проверить первоисточник
+C-P19-A	zh-Hant	預約轉職分析	查看原始來源	Заказать разбор карьерного перехода	Проверить первоисточник
+C-P19-C	ru	Заказать разбор карьерного перехода	Посмотреть пример результата	Заказать разбор карьерного перехода	Посмотреть пример результата
+C-P19-C	en	Book a career transition review	View a sample result	Заказать разбор карьерного перехода	Посмотреть пример результата
+C-P19-C	fr	Réserver un bilan de transition professionnelle	Voir un exemple de résultat	Заказать разбор карьерного перехода	Посмотреть пример результата
+C-P19-C	de	Beratung zum Berufswechsel buchen	Beispielbericht ansehen	Заказать разбор карьерного перехода	Посмотреть пример результата
+C-P19-C	it	Prenota una consulenza sul cambio di carriera	Vedi un esempio del risultato	Заказать разбор карьерного перехода	Посмотреть пример результата
+C-P19-C	es	Reservar una revisión del cambio profesional	Ver un ejemplo del resultado	Заказать разбор карьерного перехода	Посмотреть пример результата
+C-P19-C	ar	احجز مراجعة للانتقال المهني	اعرض نموذجًا للنتيجة	Заказать разбор карьерного перехода	Посмотреть пример результата
+C-P19-C	zh-Hans	预约职业转型分析	查看结果示例	Заказать разбор карьерного перехода	Посмотреть пример результата
+C-P19-C	zh-Hant	預約轉職分析	查看結果示例	Заказать разбор карьерного перехода	Посмотреть пример результата
+C-P20-F	ru	Выполнить пробное задание	Открыть официальные задания	Выполнить пробное задание	Открыть официальные задания
+C-P20-F	en	Try a practice task	Open official practice materials	Выполнить пробное задание	Открыть официальные задания
+C-P20-F	fr	Faire un exercice d’entraînement	Voir les exercices officiels	Выполнить пробное задание	Открыть официальные задания
+C-P20-F	de	Probeaufgabe bearbeiten	Offizielle Übungsmaterialien öffnen	Выполнить пробное задание	Открыть официальные задания
+C-P20-F	it	Prova un esercizio	Apri i materiali ufficiali	Выполнить пробное задание	Открыть официальные задания
+C-P20-F	es	Hacer un ejercicio de práctica	Abrir los ejercicios oficiales	Выполнить пробное задание	Открыть официальные задания
+C-P20-F	ar	جرّب تمرينًا تدريبيًا	افتح مواد التدريب الرسمية	Выполнить пробное задание	Открыть официальные задания
+C-P20-F	zh-Hans	尝试练习题	查看官方练习资料	Выполнить пробное задание	Открыть официальные задания
+C-P20-F	zh-Hant	試做練習題	查看官方練習資料	Выполнить пробное задание	Открыть официальные задания
+C-P20-O	ru	Открыть официальные задания	Выполнить пробное задание	Открыть официальные задания	Выполнить пробное задание
+C-P20-O	en	Open official practice materials	Try a practice task	Открыть официальные задания	Выполнить пробное задание
+C-P20-O	fr	Voir les exercices officiels	Faire un exercice d’entraînement	Открыть официальные задания	Выполнить пробное задание
+C-P20-O	de	Offizielle Übungsmaterialien öffnen	Probeaufgabe bearbeiten	Открыть официальные задания	Выполнить пробное задание
+C-P20-O	it	Apri i materiali ufficiali	Prova un esercizio	Открыть официальные задания	Выполнить пробное задание
+C-P20-O	es	Abrir los ejercicios oficiales	Hacer un ejercicio de práctica	Открыть официальные задания	Выполнить пробное задание
+C-P20-O	ar	افتح مواد التدريب الرسمية	جرّب تمرينًا تدريبيًا	Открыть официальные задания	Выполнить пробное задание
+C-P20-O	zh-Hans	查看官方练习资料	尝试练习题	Открыть официальные задания	Выполнить пробное задание
+C-P20-O	zh-Hant	查看官方練習資料	試做練習題	Открыть официальные задания	Выполнить пробное задание
+C-P20-A	ru	Выбрать подготовку у партнёра	Открыть официальные задания	Выбрать подготовку у партнёра	Открыть официальные задания
+C-P20-A	en	Choose partner test preparation	Open official practice materials	Выбрать подготовку у партнёра	Открыть официальные задания
+C-P20-A	fr	Choisir une préparation partenaire	Voir les exercices officiels	Выбрать подготовку у партнёра	Открыть официальные задания
+C-P20-A	de	Kurs beim Partner auswählen	Offizielle Übungsmaterialien öffnen	Выбрать подготовку у партнёра	Открыть официальные задания
+C-P20-A	it	Scegli la preparazione del partner	Apri i materiali ufficiali	Выбрать подготовку у партнёра	Открыть официальные задания
+C-P20-A	es	Elegir preparación con un proveedor asociado	Abrir los ejercicios oficiales	Выбрать подготовку у партнёра	Открыть официальные задания
+C-P20-A	ar	اختر التحضير لدى الشريك	افتح مواد التدريب الرسمية	Выбрать подготовку у партнёра	Открыть официальные задания
+C-P20-A	zh-Hans	选择合作方备考课程	查看官方练习资料	Выбрать подготовку у партнёра	Открыть официальные задания
+C-P20-A	zh-Hant	選擇合作夥伴備試課程	查看官方練習資料	Выбрать подготовку у партнёра	Открыть официальные задания
+C-P20-C	ru	Выбрать подготовку у партнёра	Посмотреть пример результата	Выбрать подготовку у партнёра	Посмотреть пример результата
+C-P20-C	en	Choose partner test preparation	View a sample result	Выбрать подготовку у партнёра	Посмотреть пример результата
+C-P20-C	fr	Choisir une préparation partenaire	Voir un exemple de résultat	Выбрать подготовку у партнёра	Посмотреть пример результата
+C-P20-C	de	Kurs beim Partner auswählen	Beispielbericht ansehen	Выбрать подготовку у партнёра	Посмотреть пример результата
+C-P20-C	it	Scegli la preparazione del partner	Vedi un esempio del risultato	Выбрать подготовку у партнёра	Посмотреть пример результата
+C-P20-C	es	Elegir preparación con un proveedor asociado	Ver un ejemplo del resultado	Выбрать подготовку у партнёра	Посмотреть пример результата
+C-P20-C	ar	اختر التحضير لدى الشريك	اعرض نموذجًا للنتيجة	Выбрать подготовку у партнёра	Посмотреть пример результата
+C-P20-C	zh-Hans	选择合作方备考课程	查看结果示例	Выбрать подготовку у партнёра	Посмотреть пример результата
+C-P20-C	zh-Hant	選擇合作夥伴備試課程	查看結果示例	Выбрать подготовку у партнёра	Посмотреть пример результата
+C-P21-F	ru	Найти эксперта	Связаться с приёмной	Найти эксперта	Связаться с приёмной
+C-P21-F	en	Find a specialist	Contact admissions	Найти эксперта	Связаться с приёмной
+C-P21-F	fr	Trouver un spécialiste	Contacter le service des admissions	Найти эксперта	Связаться с приёмной
+C-P21-F	de	Fachberatung finden	Zulassungsstelle kontaktieren	Найти эксперта	Связаться с приёмной
+C-P21-F	it	Trova un esperto	Contatta l’ufficio ammissioni	Найти эксперта	Связаться с приёмной
+C-P21-F	es	Buscar a un especialista	Contactar con admisiones	Найти эксперта	Связаться с приёмной
+C-P21-F	ar	اعثر على مختص	تواصل مع مكتب القبول	Найти эксперта	Связаться с приёмной
+C-P21-F	zh-Hans	查找顾问	联系招生办公室	Найти эксперта	Связаться с приёмной
+C-P21-F	zh-Hant	查找顧問	聯絡招生處	Найти эксперта	Связаться с приёмной
+C-P21-O	ru	Связаться с приёмной	Найти эксперта	Связаться с приёмной	Найти эксперта
+C-P21-O	en	Contact admissions	Find a specialist	Связаться с приёмной	Найти эксперта
+C-P21-O	fr	Contacter le service des admissions	Trouver un spécialiste	Связаться с приёмной	Найти эксперта
+C-P21-O	de	Zulassungsstelle kontaktieren	Fachberatung finden	Связаться с приёмной	Найти эксперта
+C-P21-O	it	Contatta l’ufficio ammissioni	Trova un esperto	Связаться с приёмной	Найти эксперта
+C-P21-O	es	Contactar con admisiones	Buscar a un especialista	Связаться с приёмной	Найти эксперта
+C-P21-O	ar	تواصل مع مكتب القبول	اعثر على مختص	Связаться с приёмной	Найти эксперта
+C-P21-O	zh-Hans	联系招生办公室	查找顾问	Связаться с приёмной	Найти эксперта
+C-P21-O	zh-Hant	聯絡招生處	查找顧問	Связаться с приёмной	Найти эксперта
+C-P21-A	ru	Записаться на консультацию	Связаться с приёмной	Записаться на консультацию	Связаться с приёмной
+C-P21-A	en	Book a consultation	Contact admissions	Записаться на консультацию	Связаться с приёмной
+C-P21-A	fr	Réserver une consultation	Contacter le service des admissions	Записаться на консультацию	Связаться с приёмной
+C-P21-A	de	Beratungstermin buchen	Zulassungsstelle kontaktieren	Записаться на консультацию	Связаться с приёмной
+C-P21-A	it	Prenota una consulenza	Contatta l’ufficio ammissioni	Записаться на консультацию	Связаться с приёмной
+C-P21-A	es	Reservar una consulta	Contactar con admisiones	Записаться на консультацию	Связаться с приёмной
+C-P21-A	ar	احجز استشارة	تواصل مع مكتب القبول	Записаться на консультацию	Связаться с приёмной
+C-P21-A	zh-Hans	预约咨询	联系招生办公室	Записаться на консультацию	Связаться с приёмной
+C-P21-A	zh-Hant	預約諮詢	聯絡招生處	Записаться на консультацию	Связаться с приёмной
+C-P21-C	ru	Записаться на консультацию	Посмотреть пример результата	Записаться на консультацию	Посмотреть пример результата
+C-P21-C	en	Book a consultation	View a sample result	Записаться на консультацию	Посмотреть пример результата
+C-P21-C	fr	Réserver une consultation	Voir un exemple de résultat	Записаться на консультацию	Посмотреть пример результата
+C-P21-C	de	Beratungstermin buchen	Beispielbericht ansehen	Записаться на консультацию	Посмотреть пример результата
+C-P21-C	it	Prenota una consulenza	Vedi un esempio del risultato	Записаться на консультацию	Посмотреть пример результата
+C-P21-C	es	Reservar una consulta	Ver un ejemplo del resultado	Записаться на консультацию	Посмотреть пример результата
+C-P21-C	ar	احجز استشارة	اعرض نموذجًا للنتيجة	Записаться на консультацию	Посмотреть пример результата
+C-P21-C	zh-Hans	预约咨询	查看结果示例	Записаться на консультацию	Посмотреть пример результата
+C-P21-C	zh-Hant	預約諮詢	查看結果示例	Записаться на консультацию	Посмотреть пример результата
+C-P22-F	ru	Проверить порядок перевода	Открыть правила перевода	Проверить порядок перевода	Открыть правила перевода
+C-P22-F	en	Check transfer rules	Open official transfer rules	Проверить порядок перевода	Открыть правила перевода
+C-P22-F	fr	Vérifier les règles de transfert	Ouvrir les règles officielles de transfert	Проверить порядок перевода	Открыть правила перевода
+C-P22-F	de	Wechselregeln prüfen	Offizielle Wechselregeln öffnen	Проверить порядок перевода	Открыть правила перевода
+C-P22-F	it	Verifica le regole per il trasferimento	Apri le regole ufficiali per il trasferimento	Проверить порядок перевода	Открыть правила перевода
+C-P22-F	es	Consultar las reglas de traslado	Abrir las normas oficiales de traslado	Проверить порядок перевода	Открыть правила перевода
+C-P22-F	ar	تحقق من قواعد الانتقال الدراسي	افتح قواعد الانتقال الرسمية	Проверить порядок перевода	Открыть правила перевода
+C-P22-F	zh-Hans	查询转学规定	查看官方转学规定	Проверить порядок перевода	Открыть правила перевода
+C-P22-F	zh-Hant	查詢轉學規定	查看官方轉學規定	Проверить порядок перевода	Открыть правила перевода
+C-P22-O	ru	Открыть правила перевода	Проверить порядок перевода	Открыть правила перевода	Проверить порядок перевода
+C-P22-O	en	Open official transfer rules	Check transfer rules	Открыть правила перевода	Проверить порядок перевода
+C-P22-O	fr	Ouvrir les règles officielles de transfert	Vérifier les règles de transfert	Открыть правила перевода	Проверить порядок перевода
+C-P22-O	de	Offizielle Wechselregeln öffnen	Wechselregeln prüfen	Открыть правила перевода	Проверить порядок перевода
+C-P22-O	it	Apri le regole ufficiali per il trasferimento	Verifica le regole per il trasferimento	Открыть правила перевода	Проверить порядок перевода
+C-P22-O	es	Abrir las normas oficiales de traslado	Consultar las reglas de traslado	Открыть правила перевода	Проверить порядок перевода
+C-P22-O	ar	افتح قواعد الانتقال الرسمية	تحقق من قواعد الانتقال الدراسي	Открыть правила перевода	Проверить порядок перевода
+C-P22-O	zh-Hans	查看官方转学规定	查询转学规定	Открыть правила перевода	Проверить порядок перевода
+C-P22-O	zh-Hant	查看官方轉學規定	查詢轉學規定	Открыть правила перевода	Проверить порядок перевода
+C-P22-A	ru	Заказать сопоставление дисциплин	Открыть правила перевода	Заказать сопоставление дисциплин	Открыть правила перевода
+C-P22-A	en	Order a credit transfer review	Open official transfer rules	Заказать сопоставление дисциплин	Открыть правила перевода
+C-P22-A	fr	Commander une analyse des équivalences	Ouvrir les règles officielles de transfert	Заказать сопоставление дисциплин	Открыть правила перевода
+C-P22-A	de	Anerkennung von Studienleistungen prüfen lassen	Offizielle Wechselregeln öffnen	Заказать сопоставление дисциплин	Открыть правила перевода
+C-P22-A	it	Richiedi la verifica dei crediti trasferibili	Apri le regole ufficiali per il trasferimento	Заказать сопоставление дисциплин	Открыть правила перевода
+C-P22-A	es	Pedir una revisión de convalidación de créditos	Abrir las normas oficiales de traslado	Заказать сопоставление дисциплин	Открыть правила перевода
+C-P22-A	ar	اطلب مراجعة معادلة الساعات المعتمدة	افتح قواعد الانتقال الرسمية	Заказать сопоставление дисциплин	Открыть правила перевода
+C-P22-A	zh-Hans	购买转学分评估	查看官方转学规定	Заказать сопоставление дисциплин	Открыть правила перевода
+C-P22-A	zh-Hant	購買學分轉移評估	查看官方轉學規定	Заказать сопоставление дисциплин	Открыть правила перевода
+C-P22-C	ru	Заказать сопоставление дисциплин	Посмотреть пример результата	Заказать сопоставление дисциплин	Посмотреть пример результата
+C-P22-C	en	Order a credit transfer review	View a sample result	Заказать сопоставление дисциплин	Посмотреть пример результата
+C-P22-C	fr	Commander une analyse des équivalences	Voir un exemple de résultat	Заказать сопоставление дисциплин	Посмотреть пример результата
+C-P22-C	de	Anerkennung von Studienleistungen prüfen lassen	Beispielbericht ansehen	Заказать сопоставление дисциплин	Посмотреть пример результата
+C-P22-C	it	Richiedi la verifica dei crediti trasferibili	Vedi un esempio del risultato	Заказать сопоставление дисциплин	Посмотреть пример результата
+C-P22-C	es	Pedir una revisión de convalidación de créditos	Ver un ejemplo del resultado	Заказать сопоставление дисциплин	Посмотреть пример результата
+C-P22-C	ar	اطلب مراجعة معادلة الساعات المعتمدة	اعرض نموذجًا للنتيجة	Заказать сопоставление дисциплин	Посмотреть пример результата
+C-P22-C	zh-Hans	购买转学分评估	查看结果示例	Заказать сопоставление дисциплин	Посмотреть пример результата
+C-P22-C	zh-Hant	購買學分轉移評估	查看結果示例	Заказать сопоставление дисциплин	Посмотреть пример результата
+C-P23-F	ru	Посмотреть критерии проверки	Проверить первоисточник	Посмотреть критерии проверки	Проверить первоисточник
+C-P23-F	en	View the review criteria	Check the original source	Посмотреть критерии проверки	Проверить первоисточник
+C-P23-F	fr	Voir les critères de relecture	Consulter la source d’origine	Посмотреть критерии проверки	Проверить первоисточник
+C-P23-F	de	Prüfkriterien ansehen	Originalquelle prüfen	Посмотреть критерии проверки	Проверить первоисточник
+C-P23-F	it	Vedi i criteri di revisione	Consulta la fonte originale	Посмотреть критерии проверки	Проверить первоисточник
+C-P23-F	es	Ver los criterios de revisión	Consultar la fuente original	Посмотреть критерии проверки	Проверить первоисточник
+C-P23-F	ar	اطّلع على معايير المراجعة	تحقق من المصدر الأصلي	Посмотреть критерии проверки	Проверить первоисточник
+C-P23-F	zh-Hans	查看评审标准	查看原始来源	Посмотреть критерии проверки	Проверить первоисточник
+C-P23-F	zh-Hant	查看評審準則	查看原始來源	Посмотреть критерии проверки	Проверить первоисточник
+C-P23-A	ru	Заказать разбор работы	Проверить первоисточник	Заказать разбор работы	Проверить первоисточник
+C-P23-A	en	Order feedback on your draft	Check the original source	Заказать разбор работы	Проверить первоисточник
+C-P23-A	fr	Commander une relecture	Consulter la source d’origine	Заказать разбор работы	Проверить первоисточник
+C-P23-A	de	Entwurf prüfen lassen	Originalquelle prüfen	Заказать разбор работы	Проверить первоисточник
+C-P23-A	it	Richiedi una revisione della bozza	Consulta la fonte originale	Заказать разбор работы	Проверить первоисточник
+C-P23-A	es	Pedir comentarios sobre mi borrador	Consultar la fuente original	Заказать разбор работы	Проверить первоисточник
+C-P23-A	ar	اطلب ملاحظات على مسودتك	تحقق من المصدر الأصلي	Заказать разбор работы	Проверить первоисточник
+C-P23-A	zh-Hans	购买文书或作品集反馈	查看原始来源	Заказать разбор работы	Проверить первоисточник
+C-P23-A	zh-Hant	購買文書或作品集回饋	查看原始來源	Заказать разбор работы	Проверить первоисточник
+C-P23-C	ru	Заказать разбор работы	Посмотреть пример результата	Заказать разбор работы	Посмотреть пример результата
+C-P23-C	en	Order feedback on your draft	View a sample result	Заказать разбор работы	Посмотреть пример результата
+C-P23-C	fr	Commander une relecture	Voir un exemple de résultat	Заказать разбор работы	Посмотреть пример результата
+C-P23-C	de	Entwurf prüfen lassen	Beispielbericht ansehen	Заказать разбор работы	Посмотреть пример результата
+C-P23-C	it	Richiedi una revisione della bozza	Vedi un esempio del risultato	Заказать разбор работы	Посмотреть пример результата
+C-P23-C	es	Pedir comentarios sobre mi borrador	Ver un ejemplo del resultado	Заказать разбор работы	Посмотреть пример результата
+C-P23-C	ar	اطلب ملاحظات على مسودتك	اعرض نموذجًا للنتيجة	Заказать разбор работы	Посмотреть пример результата
+C-P23-C	zh-Hans	购买文书或作品集反馈	查看结果示例	Заказать разбор работы	Посмотреть пример результата
+C-P23-C	zh-Hant	購買文書或作品集回饋	查看結果示例	Заказать разбор работы	Посмотреть пример результата
+C-P24-F	ru	Открыть требования фонда	Открыть сайт фонда	Открыть требования фонда	Открыть сайт фонда
+C-P24-F	en	View the funder’s requirements	Open the funder’s website	Открыть требования фонда	Открыть сайт фонда
+C-P24-F	fr	Voir les critères du financeur	Ouvrir le site du financeur	Открыть требования фонда	Открыть сайт фонда
+C-P24-F	de	Fördervorgaben ansehen	Website des Fördergebers öffnen	Открыть требования фонда	Открыть сайт фонда
+C-P24-F	it	Vedi i requisiti dell’ente	Apri il sito dell’ente	Открыть требования фонда	Открыть сайт фонда
+C-P24-F	es	Ver los requisitos de la entidad	Abrir el sitio web de la entidad	Открыть требования фонда	Открыть сайт фонда
+C-P24-F	ar	عرض متطلبات الجهة المانحة	افتح موقع الجهة المانحة	Открыть требования фонда	Открыть сайт фонда
+C-P24-F	zh-Hans	查看资助方要求	打开资助方网站	Открыть требования фонда	Открыть сайт фонда
+C-P24-F	zh-Hant	查看資助機構要求	開啟資助機構網站	Открыть требования фонда	Открыть сайт фонда
+C-P24-O	ru	Открыть сайт фонда	Открыть требования фонда	Открыть сайт фонда	Открыть требования фонда
+C-P24-O	en	Open the funder’s website	View the funder’s requirements	Открыть сайт фонда	Открыть требования фонда
+C-P24-O	fr	Ouvrir le site du financeur	Voir les critères du financeur	Открыть сайт фонда	Открыть требования фонда
+C-P24-O	de	Website des Fördergebers öffnen	Fördervorgaben ansehen	Открыть сайт фонда	Открыть требования фонда
+C-P24-O	it	Apri il sito dell’ente	Vedi i requisiti dell’ente	Открыть сайт фонда	Открыть требования фонда
+C-P24-O	es	Abrir el sitio web de la entidad	Ver los requisitos de la entidad	Открыть сайт фонда	Открыть требования фонда
+C-P24-O	ar	افتح موقع الجهة المانحة	عرض متطلبات الجهة المانحة	Открыть сайт фонда	Открыть требования фонда
+C-P24-O	zh-Hans	打开资助方网站	查看资助方要求	Открыть сайт фонда	Открыть требования фонда
+C-P24-O	zh-Hant	開啟資助機構網站	查看資助機構要求	Открыть сайт фонда	Открыть требования фонда
+C-P24-A	ru	Заказать проверку заявки на грант	Открыть сайт фонда	Заказать проверку заявки на грант	Открыть сайт фонда
+C-P24-A	en	Order a scholarship application review	Open the funder’s website	Заказать проверку заявки на грант	Открыть сайт фонда
+C-P24-A	fr	Commander une vérification du dossier de bourse	Ouvrir le site du financeur	Заказать проверку заявки на грант	Открыть сайт фонда
+C-P24-A	de	Stipendienantrag prüfen lassen	Website des Fördergebers öffnen	Заказать проверку заявки на грант	Открыть сайт фонда
+C-P24-A	it	Richiedi la verifica della domanda di borsa	Apri il sito dell’ente	Заказать проверку заявки на грант	Открыть сайт фонда
+C-P24-A	es	Pedir una revisión de la solicitud de beca	Abrir el sitio web de la entidad	Заказать проверку заявки на грант	Открыть сайт фонда
+C-P24-A	ar	اطلب مراجعة طلب المنحة	افتح موقع الجهة المانحة	Заказать проверку заявки на грант	Открыть сайт фонда
+C-P24-A	zh-Hans	购买奖学金申请审核	打开资助方网站	Заказать проверку заявки на грант	Открыть сайт фонда
+C-P24-A	zh-Hant	購買獎學金申請審核	開啟資助機構網站	Заказать проверку заявки на грант	Открыть сайт фонда
+C-P24-C	ru	Заказать проверку заявки на грант	Посмотреть пример результата	Заказать проверку заявки на грант	Посмотреть пример результата
+C-P24-C	en	Order a scholarship application review	View a sample result	Заказать проверку заявки на грант	Посмотреть пример результата
+C-P24-C	fr	Commander une vérification du dossier de bourse	Voir un exemple de résultat	Заказать проверку заявки на грант	Посмотреть пример результата
+C-P24-C	de	Stipendienantrag prüfen lassen	Beispielbericht ansehen	Заказать проверку заявки на грант	Посмотреть пример результата
+C-P24-C	it	Richiedi la verifica della domanda di borsa	Vedi un esempio del risultato	Заказать проверку заявки на грант	Посмотреть пример результата
+C-P24-C	es	Pedir una revisión de la solicitud de beca	Ver un ejemplo del resultado	Заказать проверку заявки на грант	Посмотреть пример результата
+C-P24-C	ar	اطلب مراجعة طلب المنحة	اعرض نموذجًا للنتيجة	Заказать проверку заявки на грант	Посмотреть пример результата
+C-P24-C	zh-Hans	购买奖学金申请审核	查看结果示例	Заказать проверку заявки на грант	Посмотреть пример результата
+C-P24-C	zh-Hant	購買獎學金申請審核	查看結果示例	Заказать проверку заявки на грант	Посмотреть пример результата
+C-P25-F	ru	Уточнить требования к документу	Открыть список уполномоченных поставщиков	Уточнить требования к документу	Открыть список уполномоченных поставщиков
+C-P25-F	en	Check document requirements	See authorized providers	Уточнить требования к документу	Открыть список уполномоченных поставщиков
+C-P25-F	fr	Vérifier les exigences documentaires	Voir les prestataires habilités	Уточнить требования к документу	Открыть список уполномоченных поставщиков
+C-P25-F	de	Vorgaben für Dokumente prüfen	Zugelassene Anbieter ansehen	Уточнить требования к документу	Открыть список уполномоченных поставщиков
+C-P25-F	it	Verifica i requisiti del documento	Vedi i fornitori autorizzati	Уточнить требования к документу	Открыть список уполномоченных поставщиков
+C-P25-F	es	Comprobar los requisitos del documento	Ver proveedores autorizados	Уточнить требования к документу	Открыть список уполномоченных поставщиков
+C-P25-F	ar	تحقق من متطلبات المستند	عرض مقدمي الخدمات المعتمدين	Уточнить требования к документу	Открыть список уполномоченных поставщиков
+C-P25-F	zh-Hans	核对文件要求	查看获认可的服务机构	Уточнить требования к документу	Открыть список уполномоченных поставщиков
+C-P25-F	zh-Hant	核對文件要求	查看獲認可的服務機構	Уточнить требования к документу	Открыть список уполномоченных поставщиков
+C-P25-O	ru	Открыть список уполномоченных поставщиков	Уточнить требования к документу	Открыть список уполномоченных поставщиков	Уточнить требования к документу
+C-P25-O	en	See authorized providers	Check document requirements	Открыть список уполномоченных поставщиков	Уточнить требования к документу
+C-P25-O	fr	Voir les prestataires habilités	Vérifier les exigences documentaires	Открыть список уполномоченных поставщиков	Уточнить требования к документу
+C-P25-O	de	Zugelassene Anbieter ansehen	Vorgaben für Dokumente prüfen	Открыть список уполномоченных поставщиков	Уточнить требования к документу
+C-P25-O	it	Vedi i fornitori autorizzati	Verifica i requisiti del documento	Открыть список уполномоченных поставщиков	Уточнить требования к документу
+C-P25-O	es	Ver proveedores autorizados	Comprobar los requisitos del documento	Открыть список уполномоченных поставщиков	Уточнить требования к документу
+C-P25-O	ar	عرض مقدمي الخدمات المعتمدين	تحقق من متطلبات المستند	Открыть список уполномоченных поставщиков	Уточнить требования к документу
+C-P25-O	zh-Hans	查看获认可的服务机构	核对文件要求	Открыть список уполномоченных поставщиков	Уточнить требования к документу
+C-P25-O	zh-Hant	查看獲認可的服務機構	核對文件要求	Открыть список уполномоченных поставщиков	Уточнить требования к документу
+C-P25-A	ru	Перейти к заказу у поставщика	Открыть список уполномоченных поставщиков	Перейти к заказу у поставщика	Открыть список уполномоченных поставщиков
+C-P25-A	en	Go to provider checkout	See authorized providers	Перейти к заказу у поставщика	Открыть список уполномоченных поставщиков
+C-P25-A	fr	Accéder à la commande du prestataire	Voir les prestataires habilités	Перейти к заказу у поставщика	Открыть список уполномоченных поставщиков
+C-P25-A	de	Zur Bestellung beim Anbieter	Zugelassene Anbieter ansehen	Перейти к заказу у поставщика	Открыть список уполномоченных поставщиков
+C-P25-A	it	Vai all’ordine sul sito del fornitore	Vedi i fornitori autorizzati	Перейти к заказу у поставщика	Открыть список уполномоченных поставщиков
+C-P25-A	es	Ir al pedido con el proveedor	Ver proveedores autorizados	Перейти к заказу у поставщика	Открыть список уполномоченных поставщиков
+C-P25-A	ar	انتقل إلى الطلب لدى مقدم الخدمة	عرض مقدمي الخدمات المعتمدين	Перейти к заказу у поставщика	Открыть список уполномоченных поставщиков
+C-P25-A	zh-Hans	前往供应商下单	查看获认可的服务机构	Перейти к заказу у поставщика	Открыть список уполномоченных поставщиков
+C-P25-A	zh-Hant	前往服務供應商下單	查看獲認可的服務機構	Перейти к заказу у поставщика	Открыть список уполномоченных поставщиков
+C-P25-C	ru	Перейти к заказу у поставщика	Посмотреть пример результата	Перейти к заказу у поставщика	Посмотреть пример результата
+C-P25-C	en	Go to provider checkout	View a sample result	Перейти к заказу у поставщика	Посмотреть пример результата
+C-P25-C	fr	Accéder à la commande du prestataire	Voir un exemple de résultat	Перейти к заказу у поставщика	Посмотреть пример результата
+C-P25-C	de	Zur Bestellung beim Anbieter	Beispielbericht ansehen	Перейти к заказу у поставщика	Посмотреть пример результата
+C-P25-C	it	Vai all’ordine sul sito del fornitore	Vedi un esempio del risultato	Перейти к заказу у поставщика	Посмотреть пример результата
+C-P25-C	es	Ir al pedido con el proveedor	Ver un ejemplo del resultado	Перейти к заказу у поставщика	Посмотреть пример результата
+C-P25-C	ar	انتقل إلى الطلب لدى مقدم الخدمة	اعرض نموذجًا للنتيجة	Перейти к заказу у поставщика	Посмотреть пример результата
+C-P25-C	zh-Hans	前往供应商下单	查看结果示例	Перейти к заказу у поставщика	Посмотреть пример результата
+C-P25-C	zh-Hant	前往服務供應商下單	查看結果示例	Перейти к заказу у поставщика	Посмотреть пример результата
+C-P26-F	ru	Собрать календарь заявок	Перейти к официальной подаче	Собрать календарь заявок	Перейти к официальной подаче
+C-P26-F	en	Build your application calendar	Go to the official application	Собрать календарь заявок	Перейти к официальной подаче
+C-P26-F	fr	Créer mon calendrier de candidatures	Accéder à la candidature officielle	Собрать календарь заявок	Перейти к официальной подаче
+C-P26-F	de	Bewerbungskalender erstellen	Zur offiziellen Bewerbung	Собрать календарь заявок	Перейти к официальной подаче
+C-P26-F	it	Crea il calendario delle candidature	Vai alla candidatura ufficiale	Собрать календарь заявок	Перейти к официальной подаче
+C-P26-F	es	Crear mi calendario de solicitudes	Ir a la solicitud oficial	Собрать календарь заявок	Перейти к официальной подаче
+C-P26-F	ar	أنشئ تقويم طلباتك	انتقل إلى بوابة التقديم الرسمية	Собрать календарь заявок	Перейти к официальной подаче
+C-P26-F	zh-Hans	创建申请日历	前往官方申请平台	Собрать календарь заявок	Перейти к официальной подаче
+C-P26-F	zh-Hant	建立申請日曆	前往官方申請平台	Собрать календарь заявок	Перейти к официальной подаче
+C-P26-O	ru	Перейти к официальной подаче	Собрать календарь заявок	Перейти к официальной подаче	Собрать календарь заявок
+C-P26-O	en	Go to the official application	Build your application calendar	Перейти к официальной подаче	Собрать календарь заявок
+C-P26-O	fr	Accéder à la candidature officielle	Créer mon calendrier de candidatures	Перейти к официальной подаче	Собрать календарь заявок
+C-P26-O	de	Zur offiziellen Bewerbung	Bewerbungskalender erstellen	Перейти к официальной подаче	Собрать календарь заявок
+C-P26-O	it	Vai alla candidatura ufficiale	Crea il calendario delle candidature	Перейти к официальной подаче	Собрать календарь заявок
+C-P26-O	es	Ir a la solicitud oficial	Crear mi calendario de solicitudes	Перейти к официальной подаче	Собрать календарь заявок
+C-P26-O	ar	انتقل إلى بوابة التقديم الرسمية	أنشئ تقويم طلباتك	Перейти к официальной подаче	Собрать календарь заявок
+C-P26-O	zh-Hans	前往官方申请平台	创建申请日历	Перейти к официальной подаче	Собрать календарь заявок
+C-P26-O	zh-Hant	前往官方申請平台	建立申請日曆	Перейти к официальной подаче	Собрать календарь заявок
+C-P26-A	ru	Подключить контроль заявок	Перейти к официальной подаче	Подключить контроль заявок	Перейти к официальной подаче
+C-P26-A	en	Activate application tracking	Go to the official application	Подключить контроль заявок	Перейти к официальной подаче
+C-P26-A	fr	Activer le suivi des candidatures	Accéder à la candidature officielle	Подключить контроль заявок	Перейти к официальной подаче
+C-P26-A	de	Bewerbungsverfolgung aktivieren	Zur offiziellen Bewerbung	Подключить контроль заявок	Перейти к официальной подаче
+C-P26-A	it	Attiva il monitoraggio delle domande	Vai alla candidatura ufficiale	Подключить контроль заявок	Перейти к официальной подаче
+C-P26-A	es	Activar el seguimiento de solicitudes	Ir a la solicitud oficial	Подключить контроль заявок	Перейти к официальной подаче
+C-P26-A	ar	فعّل تتبع طلباتك	انتقل إلى بوابة التقديم الرسمية	Подключить контроль заявок	Перейти к официальной подаче
+C-P26-A	zh-Hans	开启申请进度跟踪	前往官方申请平台	Подключить контроль заявок	Перейти к официальной подаче
+C-P26-A	zh-Hant	開啟申請進度追蹤	前往官方申請平台	Подключить контроль заявок	Перейти к официальной подаче
+C-P26-C	ru	Подключить контроль заявок	Посмотреть пример результата	Подключить контроль заявок	Посмотреть пример результата
+C-P26-C	en	Activate application tracking	View a sample result	Подключить контроль заявок	Посмотреть пример результата
+C-P26-C	fr	Activer le suivi des candidatures	Voir un exemple de résultat	Подключить контроль заявок	Посмотреть пример результата
+C-P26-C	de	Bewerbungsverfolgung aktivieren	Beispielbericht ansehen	Подключить контроль заявок	Посмотреть пример результата
+C-P26-C	it	Attiva il monitoraggio delle domande	Vedi un esempio del risultato	Подключить контроль заявок	Посмотреть пример результата
+C-P26-C	es	Activar el seguimiento de solicitudes	Ver un ejemplo del resultado	Подключить контроль заявок	Посмотреть пример результата
+C-P26-C	ar	فعّل تتبع طلباتك	اعرض نموذجًا للنتيجة	Подключить контроль заявок	Посмотреть пример результата
+C-P26-C	zh-Hans	开启申请进度跟踪	查看结果示例	Подключить контроль заявок	Посмотреть пример результата
+C-P26-C	zh-Hant	開啟申請進度追蹤	查看結果示例	Подключить контроль заявок	Посмотреть пример результата

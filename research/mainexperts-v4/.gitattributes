@@ -1,0 +1,2 @@
+*.tsv text eol=lf whitespace=-blank-at-eol
+*.md text eol=lf whitespace=-blank-at-eol

@@ -1,0 +1,18 @@
+{
+  "original_generator_revision": "14816a72b5a30579cf46a47084e6b0739cb2a36a",
+  "old_stickies_preserved": 503,
+  "original_pay_cells": 22,
+  "new_service_hypotheses": 4,
+  "states": 9,
+  "transitions": 16,
+  "regional_scenarios": 14,
+  "original_tasks_verified": 327,
+  "task_cross_references_restored_in_tables": [
+    "Q12.07b",
+    "Q22.05a"
+  ],
+  "services_checked": 26,
+  "main_cjm_validated": true,
+  "svg_files": 6,
+  "country_service_aggregate_rows_with_queries": 287
+}
